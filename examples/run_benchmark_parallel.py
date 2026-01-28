@@ -22,9 +22,7 @@ AGENTS = [
     "gpt-4o",
     "qwen3-vl-235b-a22b-instruct",
     "qwen3-vl-235b-a22b-thinking",
-    "gemini-2.5-pro-thinking",
-    "doubao-seed-1-8-251228-thinking",
-    "glm-4.6v"
+    "gemini-2.5-pro-thinking"
 ]
 TASKS_DIR = project_root / "tasks_test_small"
 LOGS_DIR = project_root / "logs"
@@ -43,7 +41,7 @@ def get_tasks():
     tasks.extend(list(TASKS_DIR.glob("nav_*.json")))
     tasks.extend(list(TASKS_DIR.glob("height_*.json")))
     tasks.extend(list(TASKS_DIR.glob("dis_*.json")))
-    # tasks.extend(list(TASKS_DIR.glob("angle_*.json")))
+    tasks.extend(list(TASKS_DIR.glob("angle_*.json")))
     
     tasks = sorted(tasks)
     
