@@ -1,0 +1,136 @@
+{
+  "task_id": "nav_0784_target_20260124_1624_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260124_162302",
+  "spawn_point": "DzoRfCLHzabhXiK4O3bwRQ",
+  "spawn_heading": 136.2,
+  "description": "Navigate to CENTRAL BANK OF INDIA - LAL DARWAJA, AHMEDABAD Branch. Navigate down the narrow street, passing a Suzuki showroom on your right, until you reach the T-junction. Turn right at the junction, near Lucky Restaurant, onto the main road. Continue straight for a short distance; the Central Bank of India will be a large building on your right.",
+  "ground_truth": {
+    "target_name": "CENTRAL BANK OF INDIA - LAL DARWAJA, AHMEDABAD Branch",
+    "target_pano_id": "0DEVQupCus00FTfViD2-sQ",
+    "optimal_distance_meters": 195,
+    "route_description": "right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "0DEVQupCus00FTfViD2-sQ"
+  ],
+  "max_steps": 44,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "DzoRfCLHzabhXiK4O3bwRQ",
+      "heading": 136.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "V0dnbZ2ca6Ify39ob3j7Aw",
+      "heading": 136.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "nH70z3n36UqqqqZADu5f2A",
+      "heading": 136.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "lw3UimN9tOPBC7AT9Yct-w",
+      "heading": 136.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "E7aL6VB7ziM65QcAv9afqA",
+      "heading": 136.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "84_dd7yUfRkhPSCEzoG4vg",
+      "heading": 136.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "6EpdNcBc19umS8H1-pe-NQ",
+      "heading": 136.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "-vLvDsebdUUV-QA7FjbqyQ",
+      "heading": 135.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "eiyGf5FhmTR3JJpg4n0nXw",
+      "heading": 142.8
+    },
+    {
+      "step_index": 9,
+      "pano_id": "eB3f5xwEH834Qeo2M4Unig",
+      "heading": 137.8
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Ux_X0ad0D_ULK4g_rjlZXA",
+      "heading": 129.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "ELOxPnKIcTZLuv_Zj2eWow",
+      "heading": 112.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "aIyZaePBLIPRkE6_3JLbUA",
+      "heading": 184.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "4iwz_UiVSk2B04Lg71p33w",
+      "heading": 187.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "_oMkPHrAuVzQ4N1x87tUzA",
+      "heading": 182.8
+    },
+    {
+      "step_index": 15,
+      "pano_id": "LVTo8HbCPb_0uRG_twuzgA",
+      "heading": 179.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "33l3kSfMRoc3nGGA_xPizQ",
+      "heading": 237.2
+    },
+    {
+      "step_index": 17,
+      "pano_id": "vDStEkDq2JE1lPddHyioJg",
+      "heading": 241.3
+    },
+    {
+      "step_index": 18,
+      "pano_id": "fjHL10hmMZLB_AaH6sBrbg",
+      "heading": 244.4
+    },
+    {
+      "step_index": 19,
+      "pano_id": "OaaBE070l0TObw0bLwKZNg",
+      "heading": 252.6
+    },
+    {
+      "step_index": 20,
+      "pano_id": "I85fUT6t2mZfsYxlWwQaCQ",
+      "heading": 244.3
+    },
+    {
+      "step_index": 21,
+      "pano_id": "0DEVQupCus00FTfViD2-sQ",
+      "heading": 248.4
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head southeast [100m] -> Turn Right -> Head straight [39m]",
+  "agent_concise_description": "Navigate down the narrow street, passing a Suzuki showroom on your right, until you reach the T-junction. Turn right at the junction, near Lucky Restaurant, onto the main road. Continue straight for a short distance; the Central Bank of India will be a large building on your right."
+}

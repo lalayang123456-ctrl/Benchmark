@@ -1,0 +1,66 @@
+{
+  "task_id": "nav_0387_target_20260124_1333_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_133201",
+  "spawn_point": "12-q8R0fpqnOGs-d--gqqg",
+  "spawn_heading": 127.5,
+  "description": "Navigate to OXXO Granada Inn. Head along the street with '1975 Cafe' on your right towards the intersection. Turn right at the corner with the 'la rebaja plus' drugstore. The destination, 'Granada Inn', will be on the right side of the street.",
+  "ground_truth": {
+    "target_name": "OXXO Granada Inn",
+    "target_pano_id": "LBV3PhthIKwUYz-abfKMeA",
+    "optimal_distance_meters": 62,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "LBV3PhthIKwUYz-abfKMeA"
+  ],
+  "max_steps": 16,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "12-q8R0fpqnOGs-d--gqqg",
+      "heading": 127.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "fCBCrqCXsVVZcF5SlQle-w",
+      "heading": 127.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "dGdtQG830-sqxk2Vn6vfTA",
+      "heading": 127.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "AmxhPvW3GEqerIQt97aoug",
+      "heading": 115.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "eJ-ea1NlMG5zCZuera9kIg",
+      "heading": 214.9
+    },
+    {
+      "step_index": 5,
+      "pano_id": "0AlQ-dAzwa8-bxQ6otR4gg",
+      "heading": 214.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "XznK8ZqBozjjTHARFWRGlg",
+      "heading": 214.5
+    },
+    {
+      "step_index": 7,
+      "pano_id": "LBV3PhthIKwUYz-abfKMeA",
+      "heading": 214.5
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head southeast [29m] -> Turn right [33m]",
+  "agent_concise_description": "Head along the street with '1975 Cafe' on your right towards the intersection. Turn right at the corner with the 'la rebaja plus' drugstore. The destination, 'Granada Inn', will be on the right side of the street."
+}

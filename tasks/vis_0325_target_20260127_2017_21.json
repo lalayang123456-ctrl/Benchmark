@@ -1,0 +1,111 @@
+{
+  "task_id": "nav_0325_target_20260124_1238_11",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_123648",
+  "spawn_point": "ZtLkgfEITh4-2rBUA9XYSA",
+  "spawn_heading": 183.5,
+  "description": "Proceed past the church with the tall red spire on your left, then follow the road as it curves gently to the right onto Jl. Residen Sudirman. Continue straight ahead until you reach the Indomaret store on the left side of the road.",
+  "ground_truth": {
+    "target_name": "Indomaret | Pacar Keling - Surabaya | Residen Sudirman",
+    "target_pano_id": "tsYSVvJ7gJMEw3S6Pilmrg",
+    "optimal_distance_meters": 150,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "tsYSVvJ7gJMEw3S6Pilmrg"
+  ],
+  "max_steps": 34,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ZtLkgfEITh4-2rBUA9XYSA",
+      "heading": 183.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "lyg9kUs2sZFp3RY9zoa8QA",
+      "heading": 183.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "HeKgXUFXCbtBPcRO6EtZqQ",
+      "heading": 180.8
+    },
+    {
+      "step_index": 3,
+      "pano_id": "N__Wb4yCtkn0wZxGrjaE5g",
+      "heading": 180.3
+    },
+    {
+      "step_index": 4,
+      "pano_id": "qYb6jYyNw_P6Lhkq_FPqcA",
+      "heading": 180.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "QcsBEAW-OIhQTlRLe0ipZw",
+      "heading": 180.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "eP160yyTLoVpkPl6DRqTzw",
+      "heading": 180.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "MvONIievMVvDZh1kAzbohw",
+      "heading": 180.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "PJmfW65Xy0Ze7R1DOdoxXg",
+      "heading": 180.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "UaFahAjb98hmvnQ4p6B11g",
+      "heading": 180.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "pDR8d3RdOPjuCntzcpYxnA",
+      "heading": 180.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "L7aHASv-nIXv19xKgQclKQ",
+      "heading": 180.6
+    },
+    {
+      "step_index": 12,
+      "pano_id": "ypO011ucZcOEmI70n48Qiw",
+      "heading": 181.6
+    },
+    {
+      "step_index": 13,
+      "pano_id": "lyJZut-3iOTNh9AZPQZdiw",
+      "heading": 182.6
+    },
+    {
+      "step_index": 14,
+      "pano_id": "7Ai6CMQ7OvAVvNUKOBICng",
+      "heading": 182.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "ExBCNbvDRfp7ahjgRHAHUQ",
+      "heading": 182.5
+    },
+    {
+      "step_index": 16,
+      "pano_id": "tsYSVvJ7gJMEw3S6Pilmrg",
+      "heading": 182.5
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight -> Curve Right -> Head Straight -> Stop",
+  "agent_concise_description": "Proceed past the church with the tall red spire on your left, then follow the road as it curves gently to the right onto Jl. Residen Sudirman. Continue straight ahead until you reach the Indomaret store on the left side of the road."
+}

@@ -1,0 +1,161 @@
+{
+  "task_id": "nav_0394_target_20260124_1333_11",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_133201",
+  "spawn_point": "6fpbi-o-vPr77-hykIGJ3A",
+  "spawn_heading": 130.8,
+  "description": "Navigate straight down the hill, crossing the intersection with the 'PARE' road marking. Continue straight past the 'itala' store and the 'GRANADA' building on your left. Proceed through the next intersection, passing 'la rebaja plus' and 'Ichiraku Ramen' on the left side.",
+  "ground_truth": {
+    "target_name": "KINGPAPA GRANADA",
+    "target_pano_id": "DxCpN-qRjYPt5otn1BaZ0g",
+    "optimal_distance_meters": 270,
+    "route_description": "straight→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "DxCpN-qRjYPt5otn1BaZ0g"
+  ],
+  "max_steps": 54,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "6fpbi-o-vPr77-hykIGJ3A",
+      "heading": 130.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "c4AqpfiwdbKNGYO-G1He2g",
+      "heading": 130.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "THFzALsc_iiV3Mc5JS3m2w",
+      "heading": 129.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "a7wt-1zvlm4hGCv2DZkWAw",
+      "heading": 105.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "XraTZAB0-UsnS5WtL9mkbQ",
+      "heading": 155.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "WWhJhLlEckJswtWS8FGaAw",
+      "heading": 126.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "pvjIWEM7cDhOMMhoJF6DIA",
+      "heading": 126.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "6bosTvFEIVrk2YjQFbicbA",
+      "heading": 126.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "09hGMlYdxUPBEO_pc6RSzQ",
+      "heading": 126.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "aMAGQYcCdtWIrgKZ5tJ3dg",
+      "heading": 126.3
+    },
+    {
+      "step_index": 10,
+      "pano_id": "FXCJ--K3WZLtgWGjUfhQVQ",
+      "heading": 126.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "7Fg3nh59aUYDXYu_3fir-w",
+      "heading": 126.2
+    },
+    {
+      "step_index": 12,
+      "pano_id": "GmdGqu_uETK5aheU9Djzyg",
+      "heading": 126.3
+    },
+    {
+      "step_index": 13,
+      "pano_id": "K4YzN9dpNGqjEKorD7Cixw",
+      "heading": 84.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "fWXCoxpc6Ky0JjKPGw2hgA",
+      "heading": 34.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "UMcWgSPiNKrDIEMsXymUPw",
+      "heading": 34.5
+    },
+    {
+      "step_index": 16,
+      "pano_id": "1dISLwv19srocOBUlCQVRg",
+      "heading": 34.5
+    },
+    {
+      "step_index": 17,
+      "pano_id": "QQOYBVQgbSGWVu521HZcAA",
+      "heading": 34.5
+    },
+    {
+      "step_index": 18,
+      "pano_id": "LBV3PhthIKwUYz-abfKMeA",
+      "heading": 34.5
+    },
+    {
+      "step_index": 19,
+      "pano_id": "XznK8ZqBozjjTHARFWRGlg",
+      "heading": 34.5
+    },
+    {
+      "step_index": 20,
+      "pano_id": "0AlQ-dAzwa8-bxQ6otR4gg",
+      "heading": 34.5
+    },
+    {
+      "step_index": 21,
+      "pano_id": "eJ-ea1NlMG5zCZuera9kIg",
+      "heading": 34.5
+    },
+    {
+      "step_index": 22,
+      "pano_id": "AmxhPvW3GEqerIQt97aoug",
+      "heading": 34.9
+    },
+    {
+      "step_index": 23,
+      "pano_id": "e5N1vIuqaW2Pcz1orfcheg",
+      "heading": 36.7
+    },
+    {
+      "step_index": 24,
+      "pano_id": "BfJZ-UjSuB2HGfK_0V9vNg",
+      "heading": 36.7
+    },
+    {
+      "step_index": 25,
+      "pano_id": "DF8aCPi7fXlUrk3-GVc99g",
+      "heading": 36.7
+    },
+    {
+      "step_index": 26,
+      "pano_id": "DxCpN-qRjYPt5otn1BaZ0g",
+      "heading": 36.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [270m] -> Stop",
+  "agent_concise_description": "Navigate straight down the hill, crossing the intersection with the 'PARE' road marking. Continue straight past the 'itala' store and the 'GRANADA' building on your left. Proceed through the next intersection, passing 'la rebaja plus' and 'Ichiraku Ramen' on the left side."
+}

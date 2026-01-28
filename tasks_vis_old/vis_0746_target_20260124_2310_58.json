@@ -1,0 +1,46 @@
+{
+  "task_id": "nav_0746_target_20260124_1604_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_160317",
+  "spawn_point": "ezpO-rhMv19sbEEQEW-pbg",
+  "spawn_heading": 43.2,
+  "description": "Navigate to OK便利店 Circle K. The route proceeds straight along the tree-lined road, passing a green minibus and a signalized pedestrian crossing. The path continues forward as the road curves gently to the right, staying on the main thoroughfare. The final left turns described in the text are not shown in the visual sequence.",
+  "ground_truth": {
+    "target_name": "OK便利店 Circle K",
+    "target_pano_id": "RXv8rmPnuYPipTQzSwRcLw",
+    "optimal_distance_meters": 126,
+    "route_description": "left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "RXv8rmPnuYPipTQzSwRcLw"
+  ],
+  "max_steps": 8,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ezpO-rhMv19sbEEQEW-pbg",
+      "heading": 43.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "1a2ySUSK_kbUefH-ql08mg",
+      "heading": 43.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Mx_YHo0_XcORa5vlKhN9Ng",
+      "heading": 43.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "RXv8rmPnuYPipTQzSwRcLw",
+      "heading": 43.4
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head northeast [68m]",
+  "agent_concise_description": "The route proceeds straight along the tree-lined road, passing a green minibus and a signalized pedestrian crossing. The path continues forward as the road curves gently to the right, staying on the main thoroughfare. The final left turns described in the text are not shown in the visual sequence."
+}

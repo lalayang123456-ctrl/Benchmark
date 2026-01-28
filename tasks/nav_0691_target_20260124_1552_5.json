@@ -1,0 +1,68 @@
+{
+  "task_id": "nav_0691_target_20260124_1552_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_155105",
+  "spawn_point": "CHIzt4kMfwrbKWJYASge7g",
+  "spawn_heading": 342.8,
+  "description": "Navigate to Casey's Coffee & Sandwiches. Head north for 76m. Continue for 19m. Total distance: approximately 95 m.",
+  "ground_truth": {
+    "target_name": "Casey's Coffee & Sandwiches",
+    "target_pano_id": "p7FaWZ0_-IP5f5FqaGq3lA",
+    "optimal_distance_meters": 95,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "p7FaWZ0_-IP5f5FqaGq3lA"
+  ],
+  "max_steps": 18,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "CHIzt4kMfwrbKWJYASge7g",
+      "heading": 342.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Ne6AQu3pwUDMxfKffb0BQA",
+      "heading": 342.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "IPqcrFJa5CFCi1_0apq0Ww",
+      "heading": 342.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "8ruGkvjQl3paGsPXbl31fg",
+      "heading": 342.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "m_SQ0quQqWJ8nDvc4Dt__A",
+      "heading": 342.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "E4HFi34oB6CKafqnN4Z5Xw",
+      "heading": 342.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "Z1vclSHPhLSCzuHQt0JvBg",
+      "heading": 342.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "Zch6F8031tuwRj1h0imOaA",
+      "heading": 325.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "p7FaWZ0_-IP5f5FqaGq3lA",
+      "heading": 258.7
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

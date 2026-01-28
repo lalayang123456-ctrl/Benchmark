@@ -1,0 +1,136 @@
+{
+  "task_id": "nav_0084_target_20260124_0318_9",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_031800",
+  "spawn_point": "nTgE8BILA4wQSjDVPPM0cQ",
+  "spawn_heading": 98.7,
+  "description": "Exit the covered parking area and drive straight along the service road, keeping the construction fence on your left and the large Unilever building on your right. At the intersection, turn right onto the main road. Continue straight ahead; the Starbucks U Place is visible on the left, located on the ground floor of the Unilever building.",
+  "ground_truth": {
+    "target_name": "Starbucks U Place",
+    "target_pano_id": "U8a6vWpTLG_4I_ordlJiPw",
+    "optimal_distance_meters": 233,
+    "route_description": "right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "U8a6vWpTLG_4I_ordlJiPw"
+  ],
+  "max_steps": 44,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "nTgE8BILA4wQSjDVPPM0cQ",
+      "heading": 98.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "a8mi0WTjAMUJeHITNmeayQ",
+      "heading": 98.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "4j-NNg-uFxhC0Yt_bOyDIQ",
+      "heading": 100.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "MVM3UWF2upYYmkG_iT4EBw",
+      "heading": 100.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "S2Q8FgXMl0csB4n_x3X2lQ",
+      "heading": 104.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "ps7_VoxU3oWYSf9nPVGvpg",
+      "heading": 102.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "4nTuD9GrQrM8VGJVJo9ajw",
+      "heading": 101.7
+    },
+    {
+      "step_index": 7,
+      "pano_id": "HAttYy4fSsj-U8RM-WSmtw",
+      "heading": 101.7
+    },
+    {
+      "step_index": 8,
+      "pano_id": "LUKstYoguRonbLoAoVNm0g",
+      "heading": 96.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "xss9VslSyNgiYvO8hMGtAg",
+      "heading": 100.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "eJMU-hxyxQ9U052HO4U37A",
+      "heading": 100.7
+    },
+    {
+      "step_index": 11,
+      "pano_id": "bgBf1Pjg1nm24XbM4ki8Mw",
+      "heading": 100.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "xFnUHIUGNmBMjdiRA42WpA",
+      "heading": 80.3
+    },
+    {
+      "step_index": 13,
+      "pano_id": "rh3u_vihyUViILMABXn1QA",
+      "heading": 192.8
+    },
+    {
+      "step_index": 14,
+      "pano_id": "x0LdaI_seIYqxHDMFRSNZg",
+      "heading": 192.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "4lLYgaALaqFx5M326iJZaQ",
+      "heading": 192.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "Q9Ne0GPhUpgcfJAnHkn4Mg",
+      "heading": 192.6
+    },
+    {
+      "step_index": 17,
+      "pano_id": "0C8v2MdmS0wAvf9fa9mkPQ",
+      "heading": 192.7
+    },
+    {
+      "step_index": 18,
+      "pano_id": "uV3lHMo2yysG8ckBFIdslg",
+      "heading": 192.7
+    },
+    {
+      "step_index": 19,
+      "pano_id": "2YQbUhGa8zfUr4XiuUgWIA",
+      "heading": 192.7
+    },
+    {
+      "step_index": 20,
+      "pano_id": "jmCZQ1GGR5oxGrmwnmbfIQ",
+      "heading": 192.8
+    },
+    {
+      "step_index": 21,
+      "pano_id": "U8a6vWpTLG_4I_ordlJiPw",
+      "heading": 192.2
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [133m] -> Turn Right -> Head Straight [92m] -> Stop",
+  "agent_concise_description": "Exit the covered parking area and drive straight along the service road, keeping the construction fence on your left and the large Unilever building on your right. At the intersection, turn right onto the main road. Continue straight ahead; the Starbucks U Place is visible on the left, located on the ground floor of the Unilever building."
+}

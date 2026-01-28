@@ -1,0 +1,116 @@
+{
+  "task_id": "nav_0261_target_20260124_1210_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_gas_station_20260124_120904",
+  "spawn_point": "YWFPwvVfKRxFHiQ_o8Iqxg",
+  "spawn_heading": 277.3,
+  "description": "Navigate to Lyric Service Station. Proceed straight along the street towards the tall tower under construction, passing a red fire station on the left. The path continues forward on the main road and does not show the final left turn described in the text.",
+  "ground_truth": {
+    "target_name": "Lyric Service Station",
+    "target_pano_id": "-T1C-bitt5iUVnwCKyeyKQ",
+    "optimal_distance_meters": 148,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "-T1C-bitt5iUVnwCKyeyKQ"
+  ],
+  "max_steps": 36,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "YWFPwvVfKRxFHiQ_o8Iqxg",
+      "heading": 277.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "vnDfV1mBT3k48CqEsuh2hg",
+      "heading": 277.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "yKotI-dXj-0XmJ99MAhyag",
+      "heading": 279.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "9LqKxqNq-UKeLogKKMvA5A",
+      "heading": 279.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "VYxpXSLIEqgcm_Pitzgk3A",
+      "heading": 279.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "SW-otdCd6Y-qUEgwT6cIsQ",
+      "heading": 279.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "PKn2nTg7ow3lUC6OD2vODw",
+      "heading": 279.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "vx_-rmDv2e2uT5DjsjmUZw",
+      "heading": 280.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "joKaOdoPKyquQ989Lae1hg",
+      "heading": 280.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "78boN2g1C4EVaEx3qGIOIQ",
+      "heading": 280.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "oD9FQyIFbmG99lFtyy3bhw",
+      "heading": 280.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "s4geihBqAAg8gtG7JPoR9Q",
+      "heading": 280.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "G-w6lqA0jtBg7o1sexZU7w",
+      "heading": 188.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "Accteoh9k8W6jHSheXv0TQ",
+      "heading": 189.9
+    },
+    {
+      "step_index": 14,
+      "pano_id": "8HrLP0JJDKpTXLri1Cnbbw",
+      "heading": 189.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "efva_E-o9CqbcRMGiUXtfg",
+      "heading": 189.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "lUH97KmuDxhQmfKA_adhfQ",
+      "heading": 189.9
+    },
+    {
+      "step_index": 17,
+      "pano_id": "-T1C-bitt5iUVnwCKyeyKQ",
+      "heading": 190.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head west [94m]",
+  "agent_concise_description": "Proceed straight along the street towards the tall tower under construction, passing a red fire station on the left. The path continues forward on the main road and does not show the final left turn described in the text."
+}

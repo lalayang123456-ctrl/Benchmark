@@ -1,0 +1,66 @@
+{
+  "task_id": "nav_0309_target_20260124_1232_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_123211",
+  "spawn_point": "G89cZvCG68upiRjNfh1OqA",
+  "spawn_heading": 227.2,
+  "description": "Travel straight along Surface Road with the tree-lined greenway on your left. Turn right onto the pedestrian plaza near the building with a large wall mural. Arrive at the corner with the red lattice fence, marking the entrance to Chinatown.",
+  "ground_truth": {
+    "target_name": "Chinatown Gate",
+    "target_pano_id": "wN3cYTXWzb6yo1_R0l-nOQ",
+    "optimal_distance_meters": 171,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "wN3cYTXWzb6yo1_R0l-nOQ"
+  ],
+  "max_steps": 16,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "G89cZvCG68upiRjNfh1OqA",
+      "heading": 227.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "apud5g_ZLzmVwafdJXiQkQ",
+      "heading": 227.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "BS7AGYNL6_c9PYVXVZSjJg",
+      "heading": 226.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "ytc0hPKKBcsS3SbTOxj43A",
+      "heading": 221.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "QQ21KxJESEVVjYFHfikdfg",
+      "heading": 220.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "E7yBufT2wbWkGOgmHr0Xhg",
+      "heading": 216.6
+    },
+    {
+      "step_index": 6,
+      "pano_id": "QRIoy3-J0XMMxBZR4HaN_w",
+      "heading": 210.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "wN3cYTXWzb6yo1_R0l-nOQ",
+      "heading": 285.1
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 137m -> Turn Right 34m -> Stop",
+  "agent_concise_description": "Travel straight along Surface Road with the tree-lined greenway on your left. Turn right onto the pedestrian plaza near the building with a large wall mural. Arrive at the corner with the red lattice fence, marking the entrance to Chinatown."
+}

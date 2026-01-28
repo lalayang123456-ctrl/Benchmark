@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0109_20260126_192429",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your West (approx. 280\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "DsU7UQXnDVqR6qpkV2qSdA",
+  "spawn_heading": 280.98278774257915,
+  "target_building": {
+    "lat": 45.4566364,
+    "lng": 9.204802599999999,
+    "height": 20.26,
+    "floors": 5,
+    "ground_elevation": 116.2445602416992,
+    "roof_elevation": 136.50433,
+    "name": "buildings/ChIJE7bgACDEhkcRc-aCLziw6d0",
+    "date": "2022-04-11"
+  },
+  "geofence_id": "list_height_0109_20260126_192429",
+  "ground_truth": {
+    "height_meters": 20.26
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T19:24:29.884636",
+    "bearing_deg": 280.98278774257915,
+    "city": "Milan, Italy"
+  }
+}

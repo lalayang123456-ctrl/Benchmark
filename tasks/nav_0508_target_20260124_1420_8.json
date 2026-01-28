@@ -1,0 +1,203 @@
+{
+  "task_id": "nav_0508_target_20260124_1420_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_141848",
+  "spawn_point": "MAHac66arbbT_FfcFOvQUA",
+  "spawn_heading": 87.1,
+  "description": "Navigate to Guaranty Trust Bank Plc ATM Gallery. Head east toward Peninsula Resort Way Pass by Quintin Bell Global Ultimate Ltd (on the right in 79m) Destination will be on the left for 354m. Total distance: approximately 354 m.",
+  "ground_truth": {
+    "target_name": "Guaranty Trust Bank Plc ATM Gallery",
+    "target_pano_id": "ot35ObtjTvdl4p7CyMkGvg",
+    "optimal_distance_meters": 354,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ot35ObtjTvdl4p7CyMkGvg"
+  ],
+  "max_steps": 72,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "MAHac66arbbT_FfcFOvQUA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "P2sZRCeBsvpfsPGs9_iPwQ",
+      "heading": 87.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "wRi6G7sJy8Lh05a45qavig",
+      "heading": 87.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "ryKsrbu7h7e0MpOIMuhhpw",
+      "heading": 87.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "w8i_xSUNH8kpcELnSogsqA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "YFnubpkoV1RwESSn7JcSIA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "TjzCz2WQOUCyR-nEUsDBog",
+      "heading": 87.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "GMHMGCu--rAlUxrR35F2Lw",
+      "heading": 87.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Wh7XlT4tCkEBZ2Yr9EYJfg",
+      "heading": 87.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "MGWQQ_mH4yflc44foHrvOQ",
+      "heading": 87.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "uj4g9OjsvaTbcjbESkeiXQ",
+      "heading": 87.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "8Vm0nytkKrR9CAuXWt8m9w",
+      "heading": 87.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "u2qdS6L4ZqbwN_iF8up4Sg",
+      "heading": 87.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "HnrSB2SH1_qQDIsgqZ9_sA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "6xtHgyhsP-sjxZJzREXZ8g",
+      "heading": 87.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "OWpbTBiMjFIJJ8UyNTxaJg",
+      "heading": 87.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "6_oGRNty9V9zlPCyf3H5sQ",
+      "heading": 87.0
+    },
+    {
+      "step_index": 17,
+      "pano_id": "GA27K6wPCAdqZS2ySaod9g",
+      "heading": 87.1
+    },
+    {
+      "step_index": 18,
+      "pano_id": "yEfPotPWVArkiuO6X8a_3w",
+      "heading": 87.1
+    },
+    {
+      "step_index": 19,
+      "pano_id": "jUFoauvPJhyKXOhzvFNaHQ",
+      "heading": 87.0
+    },
+    {
+      "step_index": 20,
+      "pano_id": "zGvSVnYd2p9WlmuMUlVLdw",
+      "heading": 87.1
+    },
+    {
+      "step_index": 21,
+      "pano_id": "gv6LtK4DztNiP0Qmidk88w",
+      "heading": 87.1
+    },
+    {
+      "step_index": 22,
+      "pano_id": "Opv1cAb4G-M8F4o-OYvaZw",
+      "heading": 87.0
+    },
+    {
+      "step_index": 23,
+      "pano_id": "PlZbdJKGR1HjHLe9TxRISg",
+      "heading": 87.0
+    },
+    {
+      "step_index": 24,
+      "pano_id": "jhKN9kPoMR3oXfff2Y66Lg",
+      "heading": 87.1
+    },
+    {
+      "step_index": 25,
+      "pano_id": "z41IvhUOUHDAQBdXC1CggQ",
+      "heading": 87.1
+    },
+    {
+      "step_index": 26,
+      "pano_id": "6ChFrJIwFsr7lCG6_ysp7w",
+      "heading": 87.1
+    },
+    {
+      "step_index": 27,
+      "pano_id": "DAHhG5T9vr_Jui4ySqyjxw",
+      "heading": 86.6
+    },
+    {
+      "step_index": 28,
+      "pano_id": "TPRoubnlbyu3o1xIU2Tjqw",
+      "heading": 86.4
+    },
+    {
+      "step_index": 29,
+      "pano_id": "ZM_yTFj309SH6n8mXek4EA",
+      "heading": 86.4
+    },
+    {
+      "step_index": 30,
+      "pano_id": "hCx4TGjzlSp1yacjFs1A2A",
+      "heading": 86.5
+    },
+    {
+      "step_index": 31,
+      "pano_id": "ahzWpWB9DoXnnRtj8W6wlA",
+      "heading": 86.4
+    },
+    {
+      "step_index": 32,
+      "pano_id": "0hI2z9JBUuMCBJKet5HpKg",
+      "heading": 86.4
+    },
+    {
+      "step_index": 33,
+      "pano_id": "d_1jE4rC_Rn3sDw4dpTmQw",
+      "heading": 86.4
+    },
+    {
+      "step_index": 34,
+      "pano_id": "Uza9HEOKIWJk8QFMJJ3OZQ",
+      "heading": 85.9
+    },
+    {
+      "step_index": 35,
+      "pano_id": "ot35ObtjTvdl4p7CyMkGvg",
+      "heading": 85.7
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_kfc_20260125_034719</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_kfc_20260125_034719</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"peMQcFiPPiwpznR1NJixpg": {"lat": -25.42275978885249, "lng": -49.27088624064374, "links": [{"pano_id": "LwkxQC9I4wXujZ5lWwP20A", "heading": 191.66348, "description": "R. Mateus Leme"}, {"pano_id": "xLjD9DqtBSO7aWXVRyv6eA", "heading": 11.6357565, "description": "R. Mateus Leme"}]}, "xLjD9DqtBSO7aWXVRyv6eA": {"lat": -25.42267227288485, "lng": -49.27086628706923, "links": [{"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 11.667658, "description": "R. Mateus Leme"}, {"pano_id": "peMQcFiPPiwpznR1NJixpg", "heading": 191.63576, "description": "R. Mateus Leme"}]}, "LwkxQC9I4wXujZ5lWwP20A": {"lat": -25.42285047469193, "lng": -49.27090696761994, "links": [{"pano_id": "peMQcFiPPiwpznR1NJixpg", "heading": 11.663485, "description": "R. Mateus Leme"}, {"pano_id": "-yC8kuEXrAprGvh3FUynLg", "heading": 191.63368, "description": "R. Mateus Leme"}]}, "-yC8kuEXrAprGvh3FUynLg": {"lat": -25.42294106007278, "lng": -49.27092761726408, "links": [{"pano_id": "LwkxQC9I4wXujZ5lWwP20A", "heading": 11.633682, "description": "R. Mateus Leme"}, {"pano_id": "W4c12W2fSr3z4F4z2WVn9Q", "heading": 191.66234, "description": "R. Mateus Leme"}]}, "ijVwGAK3gaA3_PXtvkzEPg": {"lat": -25.42258263509294, "lng": -49.27084579212583, "links": [{"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 11.660571, "description": "R. Mateus Leme"}, {"pano_id": "xLjD9DqtBSO7aWXVRyv6eA", "heading": 191.66766, "description": "R. Mateus Leme"}, {"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 11.57, "distance": 14.8, "virtual": true}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 9.38, "distance": 14.39, "virtual": true}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 22.16, "distance": 14.66, "virtual": true}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 338.07, "distance": 17.49, "virtual": true}]}, "W4c12W2fSr3z4F4z2WVn9Q": {"lat": -25.42302972458242, "lng": -49.27094788021794, "links": [{"pano_id": "-yC8kuEXrAprGvh3FUynLg", "heading": 11.662331, "description": "R. Mateus Leme"}, {"pano_id": "snHMYLx-WiF4PYr8iRjjxg", "heading": 191.63734, "description": "R. Mateus Leme"}]}, "Eg6V3RquOlWNqur3anCJCw": {"lat": -25.4224942951231, "lng": -49.27082560654718, "links": [{"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 11.372469, "description": "R. Mateus Leme"}, {"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 191.66057, "description": "R. Mateus Leme"}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 4.16, "distance": 4.39, "virtual": true}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 43.03, "distance": 5.13, "virtual": true}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 9.94, "distance": 12.96, "virtual": true}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 306.79, "distance": 10.69, "virtual": true}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 82.63, "distance": 13.97, "virtual": true}]}, "I_73JXi6khvzAxsMdvS6QQ": {"lat": -25.42245227420291, "lng": -49.27081624848438, "links": [{"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 191.37247, "description": "R. Mateus Leme"}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 9.106631, "description": "R. Mateus Leme"}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 244.52171, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 109.754196, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 191.57, "distance": 14.8, "virtual": true}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 280.31, "distance": 9.65, "virtual": true}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 102.57, "distance": 13.23, "virtual": true}]}, "snHMYLx-WiF4PYr8iRjjxg": {"lat": -25.42312095890253, "lng": -49.27096868455584, "links": [{"pano_id": "W4c12W2fSr3z4F4z2WVn9Q", "heading": 11.637345, "description": "R. Mateus Leme"}, {"pano_id": "c4gvYZCm0ca4vjH3K3SWLQ", "heading": 191.27277, "description": "R. Mateus Leme"}]}, "XXwVk8bkHdSP05s-pBa89g": {"lat": -25.42245493695669, "lng": -49.27082243563317, "links": [{"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 282.83884, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 64.52172, "description": "R. Mateus Leme"}, {"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 189.38, "distance": 14.39, "virtual": true}, {"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 184.16, "distance": 4.39, "virtual": true}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 101.09, "distance": 3.25, "virtual": true}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 12.88, "distance": 8.6, "virtual": true}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 100.8, "distance": 13.78, "virtual": true}, {"pano_id": "p4MnXQWM_AA40qNsne021g", "heading": 282.86, "distance": 17.56, "virtual": true}]}, "c4gvYZCm0ca4vjH3K3SWLQ": {"lat": -25.42320856703766, "lng": -49.27098801944909, "links": [{"pano_id": "snHMYLx-WiF4PYr8iRjjxg", "heading": 11.272769, "description": "R. Mateus Leme"}, {"pano_id": "O2n2cqKa5cgpfNYRLE3r9A", "heading": 191.29152, "description": "R. Mateus Leme"}]}, "-uJ90chyyBJref9sWHb7Ng": {"lat": -25.42246055212608, "lng": -49.27079072650265, "links": [{"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 289.7542, "description": "R. Mateus Leme"}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 100.71603, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 202.16, "distance": 14.66, "virtual": true}, {"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 223.03, "distance": 5.13, "virtual": true}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 281.09, "distance": 3.25, "virtual": true}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 352.0, "distance": 9.1, "virtual": true}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 282.38, "distance": 12.35, "virtual": true}]}, "hjjFIbRVMW9b7uC62Ug91A": {"lat": -25.42237950102758, "lng": -49.27080333281342, "links": [{"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 189.10663, "description": "R. Mateus Leme"}, {"pano_id": "8D81V__8voGY--_QG2cABA", "heading": 2.5646234, "description": "R. Mateus Leme"}, {"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 189.94, "distance": 12.96, "virtual": true}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 192.88, "distance": 8.6, "virtual": true}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 172.0, "distance": 9.1, "virtual": true}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 239.48, "distance": 12.53, "virtual": true}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 133.36, "distance": 15.98, "virtual": true}]}, "O2n2cqKa5cgpfNYRLE3r9A": {"lat": -25.4232960258728, "lng": -49.27100735434882, "links": [{"pano_id": "SLt8PD75JkmG4z0_DgmauA", "heading": 191.3496, "description": "R. Mateus Leme"}, {"pano_id": "c4gvYZCm0ca4vjH3K3SWLQ", "heading": 11.291514, "description": "R. Mateus Leme"}]}, "OxIuW8VOetklsU0kmqiIqA": {"lat": -25.42243674105353, "lng": -49.27091083459393, "links": [{"pano_id": "p4MnXQWM_AA40qNsne021g", "heading": 282.8851, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 102.83884, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "ijVwGAK3gaA3_PXtvkzEPg", "heading": 158.07, "distance": 17.49, "virtual": true}, {"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 126.79, "distance": 10.69, "virtual": true}, {"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 100.31, "distance": 9.65, "virtual": true}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 102.38, "distance": 12.35, "virtual": true}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 59.48, "distance": 12.53, "virtual": true}]}, "QVNysuzT1qBbUgkLiwbxdg": {"lat": -25.42247817249842, "lng": -49.2706876332792, "links": [{"pano_id": "Wg-XCjGdNMwoLC4Kbr1CrQ", "heading": 100.72892, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "-uJ90chyyBJref9sWHb7Ng", "heading": 280.71603, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "Eg6V3RquOlWNqur3anCJCw", "heading": 262.63, "distance": 13.97, "virtual": true}, {"pano_id": "I_73JXi6khvzAxsMdvS6QQ", "heading": 282.57, "distance": 13.23, "virtual": true}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 280.8, "distance": 13.78, "virtual": true}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 313.36, "distance": 15.98, "virtual": true}]}, "8D81V__8voGY--_QG2cABA": {"lat": -25.42228749211979, "lng": -49.27079876979264, "links": [{"pano_id": "IlUeeNnysYY2pRBK3M1Y5g", "heading": 354.3455, "description": "R. Mateus Leme"}, {"pano_id": "hjjFIbRVMW9b7uC62Ug91A", "heading": 182.56462, "description": "R. Mateus Leme"}]}, "SLt8PD75JkmG4z0_DgmauA": {"lat": -25.4233865052666, "lng": -49.27102746265141, "links": [{"pano_id": "qRk0Xl7UR4k0QAgST9m9Kw", "heading": 191.346, "description": "R. Mateus Leme"}, {"pano_id": "O2n2cqKa5cgpfNYRLE3r9A", "heading": 11.349593, "description": "R. Mateus Leme"}]}, "p4MnXQWM_AA40qNsne021g": {"lat": -25.42241978754695, "lng": -49.27099289184321, "links": [{"pano_id": "isGpkdoPLitd5al2VdyIxg", "heading": 282.83234, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "OxIuW8VOetklsU0kmqiIqA", "heading": 102.8851, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "XXwVk8bkHdSP05s-pBa89g", "heading": 102.86, "distance": 17.56, "virtual": true}]}, "IlUeeNnysYY2pRBK3M1Y5g": {"lat": -25.42219789637296, "lng": -49.27080859188867, "links": [{"pano_id": "8D81V__8voGY--_QG2cABA", "heading": 174.34549, "description": "R. Mateus Leme"}, {"pano_id": "Px5SFSg6y56zd2reheKkBw", "heading": 353.56128, "description": "R. Mateus Leme"}]}, "Wg-XCjGdNMwoLC4Kbr1CrQ": {"lat": -25.42249593365452, "lng": -49.27058384418856, "links": [{"pano_id": "iuLwskAuSCgiya_lG1ii7Q", "heading": 100.68116, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "QVNysuzT1qBbUgkLiwbxdg", "heading": 280.7289, "description": "Rua Bar\u00e3o de Antonina"}]}, "qRk0Xl7UR4k0QAgST9m9Kw": {"lat": -25.42348536878488, "lng": -49.27104942711301, "links": [{"pano_id": "SLt8PD75JkmG4z0_DgmauA", "heading": 11.34599, "description": "R. Mateus Leme"}, {"pano_id": "pljfoJtP_FKVRUvocgQlXw", "heading": 191.42409, "description": "R. Mateus Leme"}]}, "isGpkdoPLitd5al2VdyIxg": {"lat": -25.42239994637574, "lng": -49.27108933439564, "links": [{"pano_id": "p4MnXQWM_AA40qNsne021g", "heading": 102.83232, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "uvIwHp_V3_QciJy9lNzKrw", "heading": 282.88327, "description": "Rua Bar\u00e3o de Antonina"}]}, "Px5SFSg6y56zd2reheKkBw": {"lat": -25.4221025770875, "lng": -49.2708205021491, "links": [{"pano_id": "IlUeeNnysYY2pRBK3M1Y5g", "heading": 173.5613, "description": "R. Mateus Leme"}, {"pano_id": "f6slnB9AkTsHskfCOuADXA", "heading": 353.51843, "description": "R. Mateus Leme"}]}, "iuLwskAuSCgiya_lG1ii7Q": {"lat": -25.42251248082927, "lng": -49.27048670643084, "links": [{"pano_id": "Wg-XCjGdNMwoLC4Kbr1CrQ", "heading": 280.68115, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "eZjWo4k9UvBYfZvAeu-P6g", "heading": 100.716156, "description": "Rua Bar\u00e3o de Antonina"}]}, "eZjWo4k9UvBYfZvAeu-P6g": {"lat": -25.42252951969948, "lng": -49.27038701665687, "links": [{"pano_id": "D-4uK_q5Ix-VFDOHaIktTA", "heading": 100.7182, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "iuLwskAuSCgiya_lG1ii7Q", "heading": 280.71616, "description": "Rua Bar\u00e3o de Antonina"}]}, "uvIwHp_V3_QciJy9lNzKrw": {"lat": -25.42237911299928, "lng": -49.27119018548095, "links": [{"pano_id": "RkcpURPi86m9esAuQ5tPBQ", "heading": 282.8405, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "isGpkdoPLitd5al2VdyIxg", "heading": 102.88328, "description": "Rua Bar\u00e3o de Antonina"}]}, "pljfoJtP_FKVRUvocgQlXw": {"lat": -25.42358146437374, "lng": -49.2710709275448, "links": [{"pano_id": "qRk0Xl7UR4k0QAgST9m9Kw", "heading": 11.424085, "description": "R. Mateus Leme"}, {"pano_id": "jJyIKd4H_gIu8HsAof4ZOA", "heading": 191.41211, "description": "R. Mateus Leme"}]}, "f6slnB9AkTsHskfCOuADXA": {"lat": -25.42201158234084, "lng": -49.27083194837572, "links": [{"pano_id": "Px5SFSg6y56zd2reheKkBw", "heading": 173.51843, "description": "R. Mateus Leme"}, {"pano_id": "EAl-2G0Oeqk2nW4bFmo9lw", "heading": 353.52908, "description": "R. Mateus Leme"}]}, "RkcpURPi86m9esAuQ5tPBQ": {"lat": -25.42235903575768, "lng": -49.27128771112298, "links": [{"pano_id": "uvIwHp_V3_QciJy9lNzKrw", "heading": 102.84051, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "Zd2QilJ_Zu7yE9v0haEHYA", "heading": 282.87534, "description": "Rua Bar\u00e3o de Antonina"}]}, "EAl-2G0Oeqk2nW4bFmo9lw": {"lat": -25.42191735702875, "lng": -49.27084378130158, "links": [{"pano_id": "D6iuwiBAMJZa5tA51n895g", "heading": 353.42166, "description": "R. Mateus Leme"}, {"pano_id": "f6slnB9AkTsHskfCOuADXA", "heading": 173.5291, "description": "R. Mateus Leme"}]}, "D-4uK_q5Ix-VFDOHaIktTA": {"lat": -25.42254653542175, "lng": -49.27028748173242, "links": [{"pano_id": "uFrQsFgM5xrdyz5WVi2lyQ", "heading": 101.49896, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "eZjWo4k9UvBYfZvAeu-P6g", "heading": 280.7182, "description": "Rua Bar\u00e3o de Antonina"}]}, "jJyIKd4H_gIu8HsAof4ZOA": {"lat": -25.42366762827085, "lng": -49.27109018513259, "links": [{"pano_id": "SpC3TR6TpajydM0WhXhPjg", "heading": 191.7009, "description": "R. Mateus Leme"}, {"pano_id": "pljfoJtP_FKVRUvocgQlXw", "heading": 11.412116, "description": "R. Mateus Leme"}]}, "D6iuwiBAMJZa5tA51n895g": {"lat": -25.42182892360584, "lng": -49.270855072854, "links": [{"pano_id": "9bK-idWtvVaTK70JHRSs7Q", "heading": 353.41122, "description": "R. Mateus Leme"}, {"pano_id": "EAl-2G0Oeqk2nW4bFmo9lw", "heading": 173.42166, "description": "R. Mateus Leme"}]}, "SpC3TR6TpajydM0WhXhPjg": {"lat": -25.42375801565972, "lng": -49.27111091218205, "links": [{"pano_id": "jJyIKd4H_gIu8HsAof4ZOA", "heading": 11.700891, "description": "R. Mateus Leme"}, {"pano_id": "QsKXyAMpZ3o6MwmMUNGj9g", "heading": 193.26358, "description": "R. Mateus Leme"}]}, "uFrQsFgM5xrdyz5WVi2lyQ": {"lat": -25.42256461021951, "lng": -49.27018910705742, "links": [{"pano_id": "WMVBmHQrUZHIJqs0gFzJuQ", "heading": 101.92257, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "D-4uK_q5Ix-VFDOHaIktTA", "heading": 281.49896, "description": "Rua Bar\u00e3o de Antonina"}]}, "Zd2QilJ_Zu7yE9v0haEHYA": {"lat": -25.42233923744682, "lng": -49.27138361278739, "links": [{"pano_id": "RkcpURPi86m9esAuQ5tPBQ", "heading": 102.875336, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "5hUtwAkCfnYc_dgC9d4B9Q", "heading": 282.85312, "description": "Rua Bar\u00e3o de Antonina"}]}, "9bK-idWtvVaTK70JHRSs7Q": {"lat": -25.42173942190939, "lng": -49.27086651908748, "links": [{"pano_id": "_KzPPunAWsSMp2PHAR8stQ", "heading": 354.96518, "description": "R. Mateus Leme"}, {"pano_id": "D6iuwiBAMJZa5tA51n895g", "heading": 173.41124, "description": "R. Mateus Leme"}]}, "WMVBmHQrUZHIJqs0gFzJuQ": {"lat": -25.42258398953074, "lng": -49.27008748433816, "links": [{"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 101.97131, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "uFrQsFgM5xrdyz5WVi2lyQ", "heading": 281.92258, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 101.94, "distance": 17.07, "virtual": true}]}, "QsKXyAMpZ3o6MwmMUNGj9g": {"lat": -25.42384454324671, "lng": -49.27113349539366, "links": [{"pano_id": "SpC3TR6TpajydM0WhXhPjg", "heading": 13.263578, "description": "R. Mateus Leme"}, {"pano_id": "yWm1BFLhBPEUH0H0aNFEaw", "heading": 193.23302, "description": "R. Mateus Leme"}]}, "5hUtwAkCfnYc_dgC9d4B9Q": {"lat": -25.42231934692177, "lng": -49.27148013333316, "links": [{"pano_id": "g3cGgTc1wZ3nDa4ggV1AjQ", "heading": 282.86325, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "Zd2QilJ_Zu7yE9v0haEHYA", "heading": 102.85313, "description": "Rua Bar\u00e3o de Antonina"}]}, "yWm1BFLhBPEUH0H0aNFEaw": {"lat": -25.42393513941533, "lng": -49.27115708403168, "links": [{"pano_id": "QsKXyAMpZ3o6MwmMUNGj9g", "heading": 13.233019, "description": "R. Mateus Leme"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 193.15062, "description": "R. Mateus Leme"}]}, "bRP8lS4du_3_it0rzFyFBQ": {"lat": -25.4226002365285, "lng": -49.27000264419896, "links": [{"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 101.91255, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "WMVBmHQrUZHIJqs0gFzJuQ", "heading": 281.9713, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 102.48, "distance": 11.26, "virtual": true}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 98.42, "distance": 11.28, "virtual": true}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 101.37, "distance": 15.62, "virtual": true}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 144.12, "distance": 15.25, "virtual": true}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 56.91, "distance": 15.81, "virtual": true}]}, "_KzPPunAWsSMp2PHAR8stQ": {"lat": -25.42164745151841, "lng": -49.27087549046126, "links": [{"pano_id": "9bK-idWtvVaTK70JHRSs7Q", "heading": 174.96518, "description": "R. Mateus Leme"}, {"pano_id": "rD925q3LNgFOt2_ai95kLg", "heading": 356.31738, "description": "R. Mateus Leme"}]}, "g3cGgTc1wZ3nDa4ggV1AjQ": {"lat": -25.42229896161646, "lng": -49.27157897425167, "links": [{"pano_id": "WL_Js5fXnF0ZOyfZGMCLCg", "heading": 283.01077, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "5hUtwAkCfnYc_dgC9d4B9Q", "heading": 102.86325, "description": "Rua Bar\u00e3o de Antonina"}]}, "WL_Js5fXnF0ZOyfZGMCLCg": {"lat": -25.42227865708637, "lng": -49.27167626852933, "links": [{"pano_id": "2oMsoNA0qThvwna5Gmw-pg", "heading": 283.35544, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "g3cGgTc1wZ3nDa4ggV1AjQ", "heading": 103.01079, "description": "Rua Bar\u00e3o de Antonina"}]}, "A0unDWU736YgBwbZlGzSAg": {"lat": -25.42261575303816, "lng": -49.2699212070633, "links": [{"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 281.91257, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 104.12456, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "WMVBmHQrUZHIJqs0gFzJuQ", "heading": 281.94, "distance": 17.07, "virtual": true}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 88.6, "distance": 2.98, "virtual": true}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 100.75, "distance": 7.27, "virtual": true}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 175.91, "distance": 10.66, "virtual": true}, {"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 100.27, "distance": 16.89, "virtual": true}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 26.09, "distance": 11.53, "virtual": true}]}, "XpGO4e6HcmLgm261Ubbquw": {"lat": -25.42402183937964, "lng": -49.27117951258168, "links": [{"pano_id": "yWm1BFLhBPEUH0H0aNFEaw", "heading": 13.150618, "description": "R. Mateus Leme"}, {"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 193.178, "description": "R. Mateus Leme"}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 193.07, "distance": 10.95, "virtual": true}, {"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 198.66, "distance": 10.41, "virtual": true}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 188.71, "distance": 10.31, "virtual": true}, {"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 236.52, "distance": 14.87, "virtual": true}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 142.75, "distance": 15.32, "virtual": true}]}, "rD925q3LNgFOt2_ai95kLg": {"lat": -25.4215552033462, "lng": -49.27088206431362, "links": [{"pano_id": "J1BQHIJCieDTSrsp2C409w", "heading": 354.14093, "description": "R. Mateus Leme"}, {"pano_id": "_KzPPunAWsSMp2PHAR8stQ", "heading": 176.31738, "description": "R. Mateus Leme"}]}, "2oMsoNA0qThvwna5Gmw-pg": {"lat": -25.42225693258682, "lng": -49.27177758468441, "links": [{"pano_id": "WL_Js5fXnF0ZOyfZGMCLCg", "heading": 103.35543, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "2ZwowyGTk36Y7QEyLkJpKw", "heading": 283.3461, "description": "Rua Bar\u00e3o de Antonina"}]}, "ORTf5G21ZWEuUraZuODi6A": {"lat": -25.42411133593794, "lng": -49.27120271453914, "links": [{"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 274.91882, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 13.177993, "description": "R. Mateus Leme"}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 191.60373, "description": "R. Mateus Leme"}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 107.25083, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 279.84, "distance": 10.22, "virtual": true}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 100.95, "distance": 11.82, "virtual": true}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 191.72, "distance": 8.8, "virtual": true}]}, "_AZfh9EVoovPYtnLhu8uWw": {"lat": -25.42262213339167, "lng": -49.26989313331953, "links": [{"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 284.12457, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 98.49701, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 191.715, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 11.773817, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 282.48, "distance": 11.26, "virtual": true}, {"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 99.47, "distance": 13.99, "virtual": true}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 11.5, "distance": 11.3, "virtual": true}]}, "J1BQHIJCieDTSrsp2C409w": {"lat": -25.42146262937334, "lng": -49.27089258247896, "links": [{"pano_id": "rD925q3LNgFOt2_ai95kLg", "heading": 174.14095, "description": "R. Mateus Leme"}, {"pano_id": "fGoPCal5PA6V6grGwcIb2w", "heading": 353.00897, "description": "R. Mateus Leme"}]}, "TNOq1UQQ7M4x18WLmjJGUg": {"lat": -25.42411779916333, "lng": -49.27120418399676, "links": [{"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 11.6037245, "description": "R. Mateus Leme"}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 191.72737, "description": "R. Mateus Leme"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 13.07, "distance": 10.95, "virtual": true}, {"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 313.29, "distance": 1.17, "virtual": true}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 62.36, "distance": 1.03, "virtual": true}, {"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 283.95, "distance": 10.23, "virtual": true}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 97.4, "distance": 11.85, "virtual": true}]}, "d_F_-IyAqX66OUtIfqJ7PQ": {"lat": -25.42261509599798, "lng": -49.26989150921906, "links": [{"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 191.77382, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 11.481882, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 278.42, "distance": 11.28, "virtual": true}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 268.6, "distance": 2.98, "virtual": true}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 108.96, "distance": 4.39, "virtual": true}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 191.72, "distance": 10.94, "virtual": true}, {"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 102.75, "distance": 13.98, "virtual": true}]}, "u8AG5ECIyz6YYQg_6U8cnA": {"lat": -25.42411056047419, "lng": -49.27121269138372, "links": [{"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 280.3746, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 94.91881, "description": "R. Mateus Leme"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 18.66, "distance": 10.41, "virtual": true}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 133.29, "distance": 1.17, "virtual": true}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 100.4, "distance": 1.8, "virtual": true}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 100.47, "distance": 12.82, "virtual": true}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 185.15, "distance": 8.73, "virtual": true}]}, "fGoPCal5PA6V6grGwcIb2w": {"lat": -25.42136921043672, "lng": -49.27090526615147, "links": [{"pano_id": "J1BQHIJCieDTSrsp2C409w", "heading": 173.00896, "description": "R. Mateus Leme"}]}, "z3SkXBscazxwNIrtYbR8DQ": {"lat": -25.42262793541424, "lng": -49.26985013334178, "links": [{"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 99.9175, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 278.497, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 281.37, "distance": 15.62, "virtual": true}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 280.75, "distance": 7.27, "virtual": true}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 288.96, "distance": 4.39, "virtual": true}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 214.49, "distance": 11.26, "virtual": true}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 350.0, "distance": 11.89, "virtual": true}, {"pano_id": "YZI2hYrIcXfvv0FUsDYnyQ", "heading": 100.17, "distance": 17.08, "virtual": true}]}, "2ZwowyGTk36Y7QEyLkJpKw": {"lat": -25.42223553865249, "lng": -49.27187743154258, "links": [{"pano_id": "2oMsoNA0qThvwna5Gmw-pg", "heading": 103.3461, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "ekhVnBNqLK2VFdNiPWpgEw", "heading": 283.36862, "description": "Rua Bar\u00e3o de Antonina"}]}, "Bg-LcN1P_GW4uWeOMIRYzQ": {"lat": -25.42271139721696, "lng": -49.26991362792452, "links": [{"pano_id": "GLrN8howrkh3Lcgvq808nQ", "heading": 191.7614, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 11.714999, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 324.12, "distance": 15.25, "virtual": true}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 355.91, "distance": 10.66, "virtual": true}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 11.72, "distance": 10.94, "virtual": true}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 34.49, "distance": 11.26, "virtual": true}, {"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 64.33, "distance": 17.6, "virtual": true}]}, "kpZTggbYX21NVjNbWbfR1g": {"lat": -25.42411348325544, "lng": -49.27119505789214, "links": [{"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 287.25082, "description": "R. Mateus Leme"}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 100.48549, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 8.71, "distance": 10.31, "virtual": true}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 242.36, "distance": 1.03, "virtual": true}, {"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 280.4, "distance": 1.8, "virtual": true}, {"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 280.38, "distance": 11.02, "virtual": true}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 196.97, "distance": 8.76, "virtual": true}]}, "GLrN8howrkh3Lcgvq808nQ": {"lat": -25.42279996332459, "lng": -49.26993404519861, "links": [{"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 11.761402, "description": "Av. C\u00e2ndido de Abreu"}]}, "O_oHTjgTn5mR1TZw-IxVyg": {"lat": -25.42409562424184, "lng": -49.27130302444257, "links": [{"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 100.37461, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 56.52, "distance": 14.87, "virtual": true}, {"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 99.84, "distance": 10.22, "virtual": true}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 103.95, "distance": 10.23, "virtual": true}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 100.38, "distance": 11.02, "virtual": true}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 141.34, "distance": 13.27, "virtual": true}]}, "vPi2Z5XZjSK5_k1JcRzOVA": {"lat": -25.4213422740862, "lng": -49.27090240459096, "links": [{"pano_id": "CDxyt9IjNfMZEaMi3YNXYA", "heading": 285.39108, "description": "R. Sen. Xavier da Silva"}, {"pano_id": "pHJFLNqvlfdv1-t7Do8yQg", "heading": 101.27109, "description": "R. Sen. Xavier da Silva"}, {"pano_id": "fGoPCal5PA6V6grGwcIb2w", "heading": 185.48064, "description": "R. Mateus Leme"}, {"pano_id": "IUXMeGQ1Af-yttrLfKgJrw", "heading": 348.33023, "description": "R. Mateus Leme"}, {"pano_id": "J1BQHIJCieDTSrsp2C409w", "heading": 175.78, "distance": 13.42, "virtual": true}]}, "zlCXdTqX6FEFUrGhHJsN3w": {"lat": -25.42264284699059, "lng": -49.26975570364699, "links": [{"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 279.9175, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "YZI2hYrIcXfvv0FUsDYnyQ", "heading": 100.48982, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 280.27, "distance": 16.89, "virtual": true}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 279.47, "distance": 13.99, "virtual": true}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 282.75, "distance": 13.98, "virtual": true}, {"pano_id": "Bg-LcN1P_GW4uWeOMIRYzQ", "heading": 244.33, "distance": 17.6, "virtual": true}, {"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 319.18, "distance": 17.67, "virtual": true}]}, "Xi39wyqG6vXqZZIxF1iLgw": {"lat": -25.42413151725593, "lng": -49.27108716888347, "links": [{"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 280.4855, "description": "R. In\u00e1cio Lustosa"}, {"pano_id": "XpGO4e6HcmLgm261Ubbquw", "heading": 322.75, "distance": 15.32, "virtual": true}, {"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 280.95, "distance": 11.82, "virtual": true}, {"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 277.4, "distance": 11.85, "virtual": true}, {"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 280.47, "distance": 12.82, "virtual": true}, {"pano_id": "epx-nC-IwmfRueM3yfkJGw", "heading": 244.56, "distance": 14.83, "virtual": true}]}, "epx-nC-IwmfRueM3yfkJGw": {"lat": -25.42418879697182, "lng": -49.27122050271284, "links": [{"pano_id": "TNOq1UQQ7M4x18WLmjJGUg", "heading": 11.727376, "description": "R. Mateus Leme"}, {"pano_id": "ORTf5G21ZWEuUraZuODi6A", "heading": 11.72, "distance": 8.8, "virtual": true}, {"pano_id": "u8AG5ECIyz6YYQg_6U8cnA", "heading": 5.15, "distance": 8.73, "virtual": true}, {"pano_id": "kpZTggbYX21NVjNbWbfR1g", "heading": 16.97, "distance": 8.76, "virtual": true}, {"pano_id": "O_oHTjgTn5mR1TZw-IxVyg", "heading": 321.34, "distance": 13.27, "virtual": true}, {"pano_id": "Xi39wyqG6vXqZZIxF1iLgw", "heading": 64.56, "distance": 14.83, "virtual": true}]}, "S71bvOtNFPQIPwDqYiBcBw": {"lat": -25.42252259330624, "lng": -49.26987070526958, "links": [{"pano_id": "Zq74rRi88a97k5dXpwtxJw", "heading": 11.530411, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "d_F_-IyAqX66OUtIfqJ7PQ", "heading": 191.48189, "description": "Av. C\u00e2ndido de Abreu"}, {"pano_id": "bRP8lS4du_3_it0rzFyFBQ", "heading": 236.91, "distance": 15.81, "virtual": true}, {"pano_id": "A0unDWU736YgBwbZlGzSAg", "heading": 206.09, "distance": 11.53, "virtual": true}, {"pano_id": "_AZfh9EVoovPYtnLhu8uWw", "heading": 191.5, "distance": 11.3, "virtual": true}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 170.0, "distance": 11.89, "virtual": true}, {"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 139.18, "distance": 17.67, "virtual": true}]}, "ekhVnBNqLK2VFdNiPWpgEw": {"lat": -25.4222137420073, "lng": -49.27197898007363, "links": [{"pano_id": "2ZwowyGTk36Y7QEyLkJpKw", "heading": 103.36863, "description": "Rua Bar\u00e3o de Antonina"}]}, "Zq74rRi88a97k5dXpwtxJw": {"lat": -25.4224342568257, "lng": -49.26985075204627, "links": [{"pano_id": "S71bvOtNFPQIPwDqYiBcBw", "heading": 191.53041, "description": "Av. C\u00e2ndido de Abreu"}]}, "YZI2hYrIcXfvv0FUsDYnyQ": {"lat": -25.42265505564854, "lng": -49.26968269668342, "links": [{"pano_id": "zlCXdTqX6FEFUrGhHJsN3w", "heading": 280.48984, "description": "Rua Bar\u00e3o de Antonina"}, {"pano_id": "z3SkXBscazxwNIrtYbR8DQ", "heading": 280.17, "distance": 17.08, "virtual": true}]}};
+        const targetPanos = ["peMQcFiPPiwpznR1NJixpg", "qRk0Xl7UR4k0QAgST9m9Kw"];
+        const spawnPoints = ["J1BQHIJCieDTSrsp2C409w", "YZI2hYrIcXfvv0FUsDYnyQ", "fGoPCal5PA6V6grGwcIb2w", "ekhVnBNqLK2VFdNiPWpgEw", "kpZTggbYX21NVjNbWbfR1g", "epx-nC-IwmfRueM3yfkJGw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

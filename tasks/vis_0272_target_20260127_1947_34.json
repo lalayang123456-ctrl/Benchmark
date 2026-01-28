@@ -1,0 +1,41 @@
+{
+  "task_id": "nav_0272_target_20260124_1216_6",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_121407",
+  "spawn_point": "wpSPvGfMcMFGSY_13rXXhw",
+  "spawn_heading": 107.9,
+  "description": "Proceed straight along the sidewalk, keeping the stone building facade with graffiti on your left and the line of trees on your right. Continue forward past the parked cars until you reach the building entrance with large dark gates marked number 20.",
+  "ground_truth": {
+    "target_name": "Conde Duque Park",
+    "target_pano_id": "icL36EdDXnX3AiXlyXutng",
+    "optimal_distance_meters": 21,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "icL36EdDXnX3AiXlyXutng"
+  ],
+  "max_steps": 6,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "wpSPvGfMcMFGSY_13rXXhw",
+      "heading": 107.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "N0hM4gVF9s1YzJM94mWNUA",
+      "heading": 107.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "icL36EdDXnX3AiXlyXutng",
+      "heading": 108.2
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 21m -> Stop",
+  "agent_concise_description": "Proceed straight along the sidewalk, keeping the stone building facade with graffiti on your left and the line of trees on your right. Continue forward past the parked cars until you reach the building entrance with large dark gates marked number 20."
+}

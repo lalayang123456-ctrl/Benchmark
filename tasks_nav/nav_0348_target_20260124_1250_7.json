@@ -1,0 +1,163 @@
+{
+  "task_id": "nav_0348_target_20260124_1250_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_124930",
+  "spawn_point": "M_Ch05-9evBcueVVItEY8Q",
+  "spawn_heading": 138.2,
+  "description": "Navigate to Burger King. Head southeast for 271m. Total distance: approximately 271 m.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "YWNUOeS8FsMHsCCaoAyLLA",
+    "optimal_distance_meters": 271,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "YWNUOeS8FsMHsCCaoAyLLA"
+  ],
+  "max_steps": 56,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "M_Ch05-9evBcueVVItEY8Q",
+      "heading": 138.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "1fJrpbIi8jcJ76iTIze5gQ",
+      "heading": 138.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Kk4uezeD9OCdS7hgxE1o0A",
+      "heading": 150.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "sVPmbCGIcw8pBRHNEvhDjg",
+      "heading": 150.3
+    },
+    {
+      "step_index": 4,
+      "pano_id": "bO9Z51kEWZLKe9NXIlxGmw",
+      "heading": 128.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "LIyy0nvKB2pji5U5937dHw",
+      "heading": 114.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "Y0NX3Z38lvGxHBql9iUDyw",
+      "heading": 142.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "p3ksf3OCyM4Wwa_5QRqYIQ",
+      "heading": 142.9
+    },
+    {
+      "step_index": 8,
+      "pano_id": "bQvvIYP4w3YJMVTIRAFQ8A",
+      "heading": 142.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "CysuKnldzmR5xAxHv6lljA",
+      "heading": 142.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "UPfcWTx_4RlRT2a91GhPyA",
+      "heading": 142.9
+    },
+    {
+      "step_index": 11,
+      "pano_id": "CVaw_mq4ohabzsvtByUdJA",
+      "heading": 142.9
+    },
+    {
+      "step_index": 12,
+      "pano_id": "QNKYvC3etSntWBo9Gq4z9A",
+      "heading": 142.9
+    },
+    {
+      "step_index": 13,
+      "pano_id": "bY_QB_rvz7_PCL7RNWxlSA",
+      "heading": 142.9
+    },
+    {
+      "step_index": 14,
+      "pano_id": "uUpbhA6_YoHQ797gXZvDhw",
+      "heading": 142.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "9Rmf9TCOTbR2vDCHmhvRFg",
+      "heading": 143.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "FvzkuNrWhhGteQQXkQ23Rw",
+      "heading": 142.9
+    },
+    {
+      "step_index": 17,
+      "pano_id": "6YtU3E6ZP899s0VOFksMMA",
+      "heading": 142.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "xTUCCIyVfgxEhk8q8GexIw",
+      "heading": 140.3
+    },
+    {
+      "step_index": 19,
+      "pano_id": "fxwZZLglecvRsKfxPyDesA",
+      "heading": 140.4
+    },
+    {
+      "step_index": 20,
+      "pano_id": "dyp6Pf5uYrV2nELS3DObrw",
+      "heading": 140.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "4STCZC0f4eTTrYfYslxVgg",
+      "heading": 140.3
+    },
+    {
+      "step_index": 22,
+      "pano_id": "K7JCHBVwXWkQY5ifDkwj5Q",
+      "heading": 140.4
+    },
+    {
+      "step_index": 23,
+      "pano_id": "IcEPtF7qG7XkFAqFZqEbsg",
+      "heading": 140.4
+    },
+    {
+      "step_index": 24,
+      "pano_id": "0J5ddZhNRZOcKNGL-S7uaw",
+      "heading": 140.5
+    },
+    {
+      "step_index": 25,
+      "pano_id": "-CDWEODWvpm8xCosLW8IdA",
+      "heading": 140.8
+    },
+    {
+      "step_index": 26,
+      "pano_id": "jitWzoIwhZ5q7u9r-tcZkQ",
+      "heading": 140.9
+    },
+    {
+      "step_index": 27,
+      "pano_id": "YWNUOeS8FsMHsCCaoAyLLA",
+      "heading": 140.8
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

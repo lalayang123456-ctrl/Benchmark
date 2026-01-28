@@ -1,0 +1,131 @@
+{
+  "task_id": "nav_0062_target_20260124_0245_20",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "wDFqrW4wZZEdjF6_eDQe5A",
+  "spawn_heading": 213.3,
+  "description": "Navigate to Lord Petrick Burger and Coffee. The route proceeds straight along Lulu Mall Rd with the large Lulu Mall building on the left, passing visible signage for Decathlon and PVR Superplex. The path remains on the main road throughout the sequence, omitting the final left turn at DEVPURI and the subsequent right turn described in the text.",
+  "ground_truth": {
+    "target_name": "Lord Petrick Burger and Coffee",
+    "target_pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+    "optimal_distance_meters": 218,
+    "route_description": "left→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "bU8Fx38tXpPFvGdtMLgj4A"
+  ],
+  "max_steps": 42,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "wDFqrW4wZZEdjF6_eDQe5A",
+      "heading": 213.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "m_iV4WJ_gjmxZjpMDZIsKQ",
+      "heading": 213.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "z6pRtlbZYZbiqaEMmtgySA",
+      "heading": 213.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "mdowBheArOyE6y12QZ6MJg",
+      "heading": 213.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "2geEamJqiZ2cQpQ-HR2Bxg",
+      "heading": 214.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "3XlpgTsw9sV7nTkgKhORIA",
+      "heading": 211.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "R_GT9NqnWMBLK-0BYUHswA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "FBy42OsVimhsuwPThtBAdQ",
+      "heading": 209.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "KCMzZ8ItwGSJtVOzGK6yQA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "xMC3bA_YDAyDnWD9eECDiQ",
+      "heading": 209.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "tCcldFeEz83aMFccmU9IKg",
+      "heading": 209.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "wEtaoJs3d835bxJzflKS8Q",
+      "heading": 209.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "dSyZvZpQPa7Z32K2QtnY1A",
+      "heading": 209.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "ILyQxXuoIXMEOgR5ewKbRQ",
+      "heading": 210.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "0tGt2ssLYSXBZtMxFNb8Vg",
+      "heading": 210.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Pg3VH3J7pLRL04_2ackNUw",
+      "heading": 210.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "iKG7gYOkiAgAP031LrCF6g",
+      "heading": 210.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 210.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "H5qd1vVz12mSgHMgNTogkw",
+      "heading": 209.8
+    },
+    {
+      "step_index": 19,
+      "pano_id": "LjGAqNgqg1CtvhRHRnfy7w",
+      "heading": 209.4
+    },
+    {
+      "step_index": 20,
+      "pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+      "heading": 209.4
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head southwest on Lulu Mall Rd [162m]",
+  "agent_concise_description": "The route proceeds straight along Lulu Mall Rd with the large Lulu Mall building on the left, passing visible signage for Decathlon and PVR Superplex. The path remains on the main road throughout the sequence, omitting the final left turn at DEVPURI and the subsequent right turn described in the text."
+}

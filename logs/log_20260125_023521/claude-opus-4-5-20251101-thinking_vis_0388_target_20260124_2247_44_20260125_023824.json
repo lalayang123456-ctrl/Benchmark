@@ -1,0 +1,1305 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0388_target_20260124_2247_44",
+  "timestamp": "20260125_023824",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023824_vis_0388_target_20260124_2247_44_20260125023824",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving straight ahead to locate the green fence on the right and find the Burger restaurant intersection as instructed.",
+        "agent_vlm_duration_seconds": 6.254,
+        "agent_total_duration_seconds": 6.254
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 11.1,
+          "heading": 337.54294
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.5,
+          "heading": 336.9
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.9,
+          "heading": 356.22
+        },
+        {
+          "id": 4,
+          "direction": "front-left 42°",
+          "distance": 15.9,
+          "heading": 295.24
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "rotation",
+        "heading": 67.0,
+        "pitch": 0.0,
+        "reason": "Rotating right to identify the green fence and locate the Burger restaurant intersection before proceeding.",
+        "agent_vlm_duration_seconds": 7.102,
+        "agent_total_duration_seconds": 7.102
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.7,
+          "heading": 335.0341
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 5.5,
+          "heading": 51.231403
+        },
+        {
+          "id": 3,
+          "direction": "front-right 74°",
+          "distance": 16.1,
+          "heading": 50.64
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 2.4,
+          "heading": 153.98286
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 13.5,
+          "heading": 156.9
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 10.7,
+          "heading": 237.93903
+        },
+        {
+          "id": 7,
+          "direction": "front-left 12°",
+          "distance": 17.0,
+          "heading": 324.47
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "rotation",
+        "heading": 337.0,
+        "pitch": 0.0,
+        "reason": "Rotating back to original heading to continue straight forward on the main path toward the Burger restaurant intersection.",
+        "agent_vlm_duration_seconds": 5.98,
+        "agent_total_duration_seconds": 5.98
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 2.4,
+          "heading": 153.98286
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 13.5,
+          "heading": 156.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.7,
+          "heading": 237.93903
+        },
+        {
+          "id": 4,
+          "direction": "left-back 13°",
+          "distance": 17.0,
+          "heading": 324.47
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 7.7,
+          "heading": 335.0341
+        },
+        {
+          "id": 6,
+          "direction": "front-left 16°",
+          "distance": 5.5,
+          "heading": 51.231403
+        },
+        {
+          "id": 7,
+          "direction": "front-left 16°",
+          "distance": 16.1,
+          "heading": 50.64
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to approach the Burger restaurant intersection, keeping the green fence on the right as instructed.",
+        "agent_vlm_duration_seconds": 4.857,
+        "agent_total_duration_seconds": 4.857
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.7,
+          "heading": 335.0341
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 5.5,
+          "heading": 51.231403
+        },
+        {
+          "id": 3,
+          "direction": "front-right 74°",
+          "distance": 16.1,
+          "heading": 50.64
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 2.4,
+          "heading": 153.98286
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 13.5,
+          "heading": 156.9
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 10.7,
+          "heading": 237.93903
+        },
+        {
+          "id": 7,
+          "direction": "front-left 13°",
+          "distance": 17.0,
+          "heading": 324.47
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 65.0,
+        "pitch": 0.0,
+        "reason": "Rotating right to identify the Burger restaurant at the intersection before executing the right turn.",
+        "agent_vlm_duration_seconds": 5.643,
+        "agent_total_duration_seconds": 5.643
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 13°",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 2,
+          "direction": "right-back 50°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 154.78
+        },
+        {
+          "id": 5,
+          "direction": "left-back 40°",
+          "distance": 13.9,
+          "heading": 204.72
+        },
+        {
+          "id": 6,
+          "direction": "front-left 19°",
+          "distance": 9.5,
+          "heading": 315.98068
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward-right to execute the right turn at the Burger restaurant intersection and continue toward the Granada Inn building.",
+        "agent_vlm_duration_seconds": 5.958,
+        "agent_total_duration_seconds": 5.958
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 13°",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 154.78
+        },
+        {
+          "id": 5,
+          "direction": "right-back 50°",
+          "distance": 13.9,
+          "heading": 204.72
+        },
+        {
+          "id": 6,
+          "direction": "left-back 19°",
+          "distance": 9.5,
+          "heading": 315.98068
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to continue toward the Granada Inn building, which should be on the left side of this path.",
+        "agent_vlm_duration_seconds": 5.327,
+        "agent_total_duration_seconds": 5.327
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.1,
+          "heading": 72.791145
+        },
+        {
+          "id": 2,
+          "direction": "right-back 54°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 3,
+          "direction": "right-back 62°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 16.1,
+          "heading": 230.64
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 16.1,
+          "heading": 258.22
+        },
+        {
+          "id": 6,
+          "direction": "front-left 38°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 7,
+          "direction": "front-left 33°",
+          "distance": 6.4,
+          "heading": 45.464176
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 343.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to locate the Granada Inn building, which should be visible on the left side of the current path.",
+        "agent_vlm_duration_seconds": 4.985,
+        "agent_total_duration_seconds": 4.985
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 16°",
+          "distance": 11.3,
+          "heading": 88.31857
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 252.79115
+        },
+        {
+          "id": 3,
+          "direction": "left-back 49°",
+          "distance": 4.5,
+          "heading": 293.35
+        },
+        {
+          "id": 4,
+          "direction": "front-left 62°",
+          "distance": 9.8,
+          "heading": 10.86
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Moving left to approach the Granada Inn building, which should be located on the left side of the current path.",
+        "agent_vlm_duration_seconds": 5.91,
+        "agent_total_duration_seconds": 5.91
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 28°",
+          "distance": 9.8,
+          "heading": 10.86
+        },
+        {
+          "id": 2,
+          "direction": "right-back 15°",
+          "distance": 11.3,
+          "heading": 88.31857
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 9.1,
+          "heading": 252.79115
+        },
+        {
+          "id": 4,
+          "direction": "front-left 50°",
+          "distance": 4.5,
+          "heading": 293.35
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "rotation",
+        "heading": 163.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to locate the Granada Inn building, which should be visible on the left side from this westward heading.",
+        "agent_vlm_duration_seconds": 6.189,
+        "agent_total_duration_seconds": 6.189
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.1,
+          "heading": 258.22
+        },
+        {
+          "id": 2,
+          "direction": "right-back 58°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 3,
+          "direction": "right-back 63°",
+          "distance": 6.4,
+          "heading": 45.464176
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 72.791145
+        },
+        {
+          "id": 5,
+          "direction": "front-left 30°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 7,
+          "direction": "front-left 22°",
+          "distance": 16.1,
+          "heading": 230.64
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "rotation",
+        "heading": 253.0,
+        "pitch": 0.0,
+        "reason": "Rotating right to scout for the Granada Inn building in the western direction.",
+        "agent_vlm_duration_seconds": 8.412,
+        "agent_total_duration_seconds": 8.412
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 60°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 2,
+          "direction": "front-right 67°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 3,
+          "direction": "front-right 68°",
+          "distance": 16.1,
+          "heading": 230.64
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 16.1,
+          "heading": 258.22
+        },
+        {
+          "id": 5,
+          "direction": "left-back 32°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 6,
+          "direction": "left-back 28°",
+          "distance": 6.4,
+          "heading": 45.464176
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 9.1,
+          "heading": 72.791145
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to continue searching for the Granada Inn building as instructed in the task.",
+        "agent_vlm_duration_seconds": 5.418,
+        "agent_total_duration_seconds": 5.418
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.1,
+          "heading": 258.22
+        },
+        {
+          "id": 2,
+          "direction": "right-back 58°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 3,
+          "direction": "right-back 62°",
+          "distance": 6.4,
+          "heading": 45.464176
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 72.791145
+        },
+        {
+          "id": 5,
+          "direction": "front-left 30°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 6,
+          "direction": "front-left 23°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 7,
+          "direction": "front-left 22°",
+          "distance": 16.1,
+          "heading": 230.64
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "rotation",
+        "heading": 168.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to identify the Granada Inn building, which should be visible on the left side from this position.",
+        "agent_vlm_duration_seconds": 7.1,
+        "agent_total_duration_seconds": 7.1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 58°",
+          "distance": 9.5,
+          "heading": 315.98068
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 3,
+          "direction": "left-back 53°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 4,
+          "direction": "left-back 13°",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 5,
+          "direction": "left-back 13°",
+          "distance": 10.1,
+          "heading": 154.78
+        },
+        {
+          "id": 6,
+          "direction": "front-left 54°",
+          "distance": 13.9,
+          "heading": 204.72
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "rotation",
+        "heading": 78.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the Granada Inn building on the left side from this southward heading.",
+        "agent_vlm_duration_seconds": 5.612,
+        "agent_total_duration_seconds": 5.612
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 37°",
+          "distance": 13.9,
+          "heading": 204.72
+        },
+        {
+          "id": 2,
+          "direction": "right-back 58°",
+          "distance": 9.5,
+          "heading": 315.98068
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 4,
+          "direction": "front-left 53°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 5,
+          "direction": "front-left 13°",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 6,
+          "direction": "front-left 13°",
+          "distance": 10.1,
+          "heading": 154.78
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to continue searching for the Granada Inn building as instructed.",
+        "agent_vlm_duration_seconds": 5.428,
+        "agent_total_duration_seconds": 5.428
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 2,
+          "direction": "front-right 37°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 3,
+          "direction": "front-right 77°",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 4,
+          "direction": "front-right 77°",
+          "distance": 10.1,
+          "heading": 154.78
+        },
+        {
+          "id": 5,
+          "direction": "right-back 37°",
+          "distance": 13.9,
+          "heading": 204.72
+        },
+        {
+          "id": 6,
+          "direction": "left-back 32°",
+          "distance": 9.5,
+          "heading": 315.98068
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 348.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the Granada Inn building on the left side from this eastward heading.",
+        "agent_vlm_duration_seconds": 5.471,
+        "agent_total_duration_seconds": 5.471
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.1,
+          "heading": 72.791145
+        },
+        {
+          "id": 2,
+          "direction": "right-back 54°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 3,
+          "direction": "right-back 62°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 16.1,
+          "heading": 230.64
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 16.1,
+          "heading": 258.22
+        },
+        {
+          "id": 6,
+          "direction": "front-left 38°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 7,
+          "direction": "front-left 33°",
+          "distance": 6.4,
+          "heading": 45.464176
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 7,
+        "reason": "Moving left to approach the Granada Inn building, which should be on the left side from this northward heading.",
+        "agent_vlm_duration_seconds": 5.475,
+        "agent_total_duration_seconds": 5.475
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 16.1,
+          "heading": 40.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 57°",
+          "distance": 6.4,
+          "heading": 45.464176
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 9.1,
+          "heading": 72.791145
+        },
+        {
+          "id": 4,
+          "direction": "left-back 35°",
+          "distance": 16.9,
+          "heading": 222.57
+        },
+        {
+          "id": 5,
+          "direction": "left-back 28°",
+          "distance": 10.7,
+          "heading": 230.33206
+        },
+        {
+          "id": 6,
+          "direction": "left-back 27°",
+          "distance": 16.1,
+          "heading": 230.64
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 16.1,
+          "heading": 258.22
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward-right to explore the northwest direction, which may lead to the Granada Inn building.",
+        "agent_vlm_duration_seconds": 6.556,
+        "agent_total_duration_seconds": 6.556
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 58°",
+          "distance": 9.5,
+          "heading": 315.98068
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.1,
+          "heading": 78.22
+        },
+        {
+          "id": 3,
+          "direction": "left-back 53°",
+          "distance": 8.3,
+          "heading": 115.27
+        },
+        {
+          "id": 4,
+          "direction": "left-back 13°",
+          "distance": 7.7,
+          "heading": 155.03409
+        },
+        {
+          "id": 5,
+          "direction": "left-back 13°",
+          "distance": 10.1,
+          "heading": 154.78
+        },
+        {
+          "id": 6,
+          "direction": "front-left 54°",
+          "distance": 13.9,
+          "heading": 204.72
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to continue exploring the northwest path toward the Granada Inn building.",
+        "agent_vlm_duration_seconds": 5.783,
+        "agent_total_duration_seconds": 5.783
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 307.5741
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 135.98068
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.0,
+          "heading": 144.47
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.5,
+          "heading": 126.36
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead on this narrow path, which should lead toward the Granada Inn building.",
+        "agent_vlm_duration_seconds": 5.4,
+        "agent_total_duration_seconds": 5.4
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 307.8617
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 127.574104
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 218.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the Granada Inn building, which should be visible on the left side from this position.",
+        "agent_vlm_duration_seconds": 7.018,
+        "agent_total_duration_seconds": 7.018
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 307.97046
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 127.861694
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving left to approach the Granada Inn building, which should be on the left side from this southwest-facing position.",
+        "agent_vlm_duration_seconds": 5.726,
+        "agent_total_duration_seconds": 5.727
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.2,
+          "heading": 307.97046
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 127.861694
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 38.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the Granada Inn building, which should be visible on the left side from this southeast-facing position.",
+        "agent_vlm_duration_seconds": 5.604,
+        "agent_total_duration_seconds": 5.604
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 127.574104
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 307.8617
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving left to approach the Granada Inn building, which should be on the left side from this northeast-facing position.",
+        "agent_vlm_duration_seconds": 6.436,
+        "agent_total_duration_seconds": 6.436
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.7,
+          "heading": 127.574104
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 307.8617
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 38.0,
+        "pitch": 0.0,
+        "reason": "Rotating right to scout for the Granada Inn building or an exit from this narrow corridor.",
+        "agent_vlm_duration_seconds": 16.099,
+        "agent_total_duration_seconds": 16.099
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 307.97046
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 127.861694
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 38.0,
+        "pitch": -30.0,
+        "reason": "Rotating down to look for ground-level details or signage that might identify the Granada Inn building.",
+        "agent_vlm_duration_seconds": 7.574,
+        "agent_total_duration_seconds": 7.574
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 127.861694
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 307.97046
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving left to continue toward the Granada Inn building, following the task instruction to find it on the left side.",
+        "agent_vlm_duration_seconds": 5.664,
+        "agent_total_duration_seconds": 5.664
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 127.861694
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 307.97046
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 308.0,
+        "pitch": 30.0,
+        "reason": "Rotating up to look for the Granada Inn building or other structures that might be visible above the current level.",
+        "agent_vlm_duration_seconds": 5.78,
+        "agent_total_duration_seconds": 5.78
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 308.09
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 127.97045
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 218.0,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the Granada Inn building on the left side from this northwest-facing position.",
+        "agent_vlm_duration_seconds": 8.996,
+        "agent_total_duration_seconds": 8.996
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 308.09
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 127.97045
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving left to continue toward the Granada Inn building, which should be on the left side from this southwest-facing position.",
+        "agent_vlm_duration_seconds": 5.941,
+        "agent_total_duration_seconds": 5.941
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.5,
+          "heading": 308.09
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 127.97045
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving straight ahead to continue through the corridor, which may eventually lead to the Granada Inn building.",
+        "agent_vlm_duration_seconds": 6.824,
+        "agent_total_duration_seconds": 6.824
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 127.861694
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 307.97046
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Moving back to retrace my steps and find the correct path, as I may have missed the Burger restaurant intersection or taken a wrong turn.",
+        "agent_vlm_duration_seconds": 8.767,
+        "agent_total_duration_seconds": 8.768
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 127.574104
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 307.8617
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "rotation",
+        "heading": 38.0,
+        "pitch": 0.0,
+        "reason": "Rotating right to look for exits or buildings on the right side, which may lead to the Burger restaurant or Granada Inn.",
+        "agent_vlm_duration_seconds": 9.38,
+        "agent_total_duration_seconds": 9.38
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 307.97046
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 127.861694
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving right to explore the southeast direction, which may lead to the Burger restaurant intersection or an exit from this narrow corridor.",
+        "agent_vlm_duration_seconds": 7.091,
+        "agent_total_duration_seconds": 7.091
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 127.861694
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 307.97046
+        }
+      ]
+    }
+  ]
+}

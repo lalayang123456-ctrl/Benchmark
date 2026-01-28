@@ -1,0 +1,1818 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0632_target_20260124_2305_06",
+  "timestamp": "20260125_015934",
+  "success": false,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_015934_vis_0632_target_20260124_2305_06_20260125015934",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Already heading northwest (299°) as required; moving forward 10.7m to progress toward the S Van Ness Ave intersection.",
+        "agent_vlm_duration_seconds": 5.156,
+        "agent_total_duration_seconds": 5.156
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.7,
+          "heading": 299.2208
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing northwest toward S Van Ness Ave intersection; moving forward maintains correct heading and progresses toward the goal.",
+        "agent_vlm_duration_seconds": 3.527,
+        "agent_total_duration_seconds": 3.527
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 293.76065
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.7,
+          "heading": 119.2208
+        },
+        {
+          "id": 3,
+          "direction": "front-left 45°",
+          "distance": 17.9,
+          "heading": 254.65
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Still approaching S Van Ness Ave intersection; moving forward 11.4m continues northwest heading toward the goal.",
+        "agent_vlm_duration_seconds": 3.698,
+        "agent_total_duration_seconds": 3.698
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 11.4,
+          "heading": 291.60086
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 113.76065
+        },
+        {
+          "id": 3,
+          "direction": "front-left 75°",
+          "distance": 11.7,
+          "heading": 218.90274
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "rotation",
+        "heading": 21.6,
+        "pitch": 0.0,
+        "reason": "Multiple move options suggest an intersection area; rotating right to scout for S Van Ness Ave intersection before turning.",
+        "agent_vlm_duration_seconds": 6.356,
+        "agent_total_duration_seconds": 6.356
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 15.3,
+          "heading": 308.58
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 11.4,
+          "heading": 111.60086
+        },
+        {
+          "id": 3,
+          "direction": "left-back 35°",
+          "distance": 13.7,
+          "heading": 166.37
+        },
+        {
+          "id": 4,
+          "direction": "front-left 66°",
+          "distance": 11.1,
+          "heading": 225.2
+        },
+        {
+          "id": 5,
+          "direction": "front-left 15°",
+          "distance": 17.8,
+          "heading": 276.17
+        },
+        {
+          "id": 6,
+          "direction": "front-left 11°",
+          "distance": 10.0,
+          "heading": 280.57358
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 201.6,
+        "pitch": 0.0,
+        "reason": "Need to locate S Van Ness Ave intersection; rotating back to see the overall intersection layout and identify the correct turn.",
+        "agent_vlm_duration_seconds": 5.873,
+        "agent_total_duration_seconds": 5.873
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 11.4,
+          "heading": 111.60086
+        },
+        {
+          "id": 2,
+          "direction": "right-back 55°",
+          "distance": 13.7,
+          "heading": 166.37
+        },
+        {
+          "id": 3,
+          "direction": "left-back 66°",
+          "distance": 11.1,
+          "heading": 225.2
+        },
+        {
+          "id": 4,
+          "direction": "left-back 15°",
+          "distance": 17.8,
+          "heading": 276.17
+        },
+        {
+          "id": 5,
+          "direction": "left-back 11°",
+          "distance": 10.0,
+          "heading": 280.57358
+        },
+        {
+          "id": 6,
+          "direction": "front-left 73°",
+          "distance": 15.3,
+          "heading": 308.58
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "rotation",
+        "heading": 291.6,
+        "pitch": 0.0,
+        "reason": "Rotating right to locate S Van Ness Ave, which should be visible to the east/right for the upcoming right turn.",
+        "agent_vlm_duration_seconds": 9.654,
+        "agent_total_duration_seconds": 9.654
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 24°",
+          "distance": 11.1,
+          "heading": 225.2
+        },
+        {
+          "id": 2,
+          "direction": "front-right 75°",
+          "distance": 17.8,
+          "heading": 276.17
+        },
+        {
+          "id": 3,
+          "direction": "front-right 79°",
+          "distance": 10.0,
+          "heading": 280.57358
+        },
+        {
+          "id": 4,
+          "direction": "right-back 17°",
+          "distance": 15.3,
+          "heading": 308.58
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 11.4,
+          "heading": 111.60086
+        },
+        {
+          "id": 6,
+          "direction": "front-left 35°",
+          "distance": 13.7,
+          "heading": 166.37
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Turning right onto S Van Ness Ave using the front-right 17° move, which aligns with the task instruction to turn right and continue down the road.",
+        "agent_vlm_duration_seconds": 6.87,
+        "agent_total_duration_seconds": 6.87
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 15.3,
+          "heading": 308.58
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 11.4,
+          "heading": 111.60086
+        },
+        {
+          "id": 3,
+          "direction": "left-back 35°",
+          "distance": 13.7,
+          "heading": 166.37
+        },
+        {
+          "id": 4,
+          "direction": "front-left 66°",
+          "distance": 11.1,
+          "heading": 225.2
+        },
+        {
+          "id": 5,
+          "direction": "front-left 15°",
+          "distance": 17.8,
+          "heading": 276.17
+        },
+        {
+          "id": 6,
+          "direction": "front-left 11°",
+          "distance": 10.0,
+          "heading": 280.57358
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 218.58,
+        "pitch": 0.0,
+        "reason": "Need to locate the destination on the left side of S Van Ness Ave; rotating left to scout for Enterprise Rent-A-Car and the destination.",
+        "agent_vlm_duration_seconds": 5.582,
+        "agent_total_duration_seconds": 5.582
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 39°",
+          "distance": 6.5,
+          "heading": 347.35535
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 128.58
+        },
+        {
+          "id": 3,
+          "direction": "left-back 54°",
+          "distance": 8.0,
+          "heading": 164.7657
+        },
+        {
+          "id": 4,
+          "direction": "left-back 52°",
+          "distance": 17.8,
+          "heading": 166.81
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.5,
+          "heading": 216.79
+        },
+        {
+          "id": 6,
+          "direction": "front-left 65°",
+          "distance": 14.7,
+          "heading": 243.59
+        },
+        {
+          "id": 7,
+          "direction": "front-left 27°",
+          "distance": 15.9,
+          "heading": 281.78
+        },
+        {
+          "id": 8,
+          "direction": "front-left 21°",
+          "distance": 16.8,
+          "heading": 287.15
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight down S Van Ness Ave in the southwest direction; moving forward 9.5m to progress toward the destination on the left.",
+        "agent_vlm_duration_seconds": 7.868,
+        "agent_total_duration_seconds": 7.868
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 216.79
+        },
+        {
+          "id": 2,
+          "direction": "front-right 25°",
+          "distance": 14.7,
+          "heading": 243.59
+        },
+        {
+          "id": 3,
+          "direction": "front-right 63°",
+          "distance": 15.9,
+          "heading": 281.78
+        },
+        {
+          "id": 4,
+          "direction": "front-right 69°",
+          "distance": 16.8,
+          "heading": 287.15
+        },
+        {
+          "id": 5,
+          "direction": "right-back 39°",
+          "distance": 6.5,
+          "heading": 347.35535
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 15.3,
+          "heading": 128.58
+        },
+        {
+          "id": 7,
+          "direction": "front-left 54°",
+          "distance": 8.0,
+          "heading": 164.7657
+        },
+        {
+          "id": 8,
+          "direction": "front-left 52°",
+          "distance": 17.8,
+          "heading": 166.81
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "rotation",
+        "heading": 306.79,
+        "pitch": 0.0,
+        "reason": "Rotating right to scout for Enterprise Rent-A-Car on the right side of the street, which will help identify the destination location.",
+        "agent_vlm_duration_seconds": 5.003,
+        "agent_total_duration_seconds": 5.003
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 208.05
+        },
+        {
+          "id": 2,
+          "direction": "front-right 62°",
+          "distance": 7.5,
+          "heading": 278.42404
+        },
+        {
+          "id": 3,
+          "direction": "right-back 11°",
+          "distance": 14.7,
+          "heading": 317.71
+        },
+        {
+          "id": 4,
+          "direction": "right-back 14°",
+          "distance": 16.3,
+          "heading": 320.57
+        },
+        {
+          "id": 5,
+          "direction": "right-back 70°",
+          "distance": 14.6,
+          "heading": 16.99
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 36.79
+        },
+        {
+          "id": 7,
+          "direction": "left-back 36°",
+          "distance": 7.8,
+          "heading": 90.51499
+        },
+        {
+          "id": 8,
+          "direction": "left-back 31°",
+          "distance": 17.8,
+          "heading": 96.17
+        },
+        {
+          "id": 9,
+          "direction": "left",
+          "distance": 13.8,
+          "heading": 134.89
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing down S Van Ness Ave with front-right 11° move (14.7m) to progress toward the destination while staying on the street.",
+        "agent_vlm_duration_seconds": 5.818,
+        "agent_total_duration_seconds": 5.818
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 11°",
+          "distance": 14.7,
+          "heading": 317.71
+        },
+        {
+          "id": 2,
+          "direction": "front-right 14°",
+          "distance": 16.3,
+          "heading": 320.57
+        },
+        {
+          "id": 3,
+          "direction": "front-right 70°",
+          "distance": 14.6,
+          "heading": 16.99
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 9.5,
+          "heading": 36.79
+        },
+        {
+          "id": 5,
+          "direction": "right-back 54°",
+          "distance": 7.8,
+          "heading": 90.51499
+        },
+        {
+          "id": 6,
+          "direction": "right-back 59°",
+          "distance": 17.8,
+          "heading": 96.17
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 13.8,
+          "heading": 134.89
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 208.05
+        },
+        {
+          "id": 9,
+          "direction": "front-left 28°",
+          "distance": 7.5,
+          "heading": 278.42404
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "rotation",
+        "heading": 227.71,
+        "pitch": 0.0,
+        "reason": "Rotating left to look for the destination on the left side of S Van Ness Ave, which should be across from Enterprise Rent-A-Car.",
+        "agent_vlm_duration_seconds": 5.67,
+        "agent_total_duration_seconds": 5.67
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 27°",
+          "distance": 10.5,
+          "heading": 345.15
+        },
+        {
+          "id": 2,
+          "direction": "front-right 28°",
+          "distance": 1.8,
+          "heading": 345.24323
+        },
+        {
+          "id": 3,
+          "direction": "right-back 30°",
+          "distance": 14.5,
+          "heading": 77.62
+        },
+        {
+          "id": 4,
+          "direction": "right-back 54°",
+          "distance": 15.9,
+          "heading": 101.78
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.7,
+          "heading": 137.71
+        },
+        {
+          "id": 6,
+          "direction": "left-back 62°",
+          "distance": 10.1,
+          "heading": 165.87466
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 6,
+        "reason": "Moving front-left 62° (10.1m) to continue down S Van Ness Ave toward the destination on the left side of the street.",
+        "agent_vlm_duration_seconds": 6.79,
+        "agent_total_duration_seconds": 6.79
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 27°",
+          "distance": 10.5,
+          "heading": 345.15
+        },
+        {
+          "id": 2,
+          "direction": "right-back 28°",
+          "distance": 1.8,
+          "heading": 345.24323
+        },
+        {
+          "id": 3,
+          "direction": "left-back 60°",
+          "distance": 14.5,
+          "heading": 77.62
+        },
+        {
+          "id": 4,
+          "direction": "left-back 36°",
+          "distance": 15.9,
+          "heading": 101.78
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 14.7,
+          "heading": 137.71
+        },
+        {
+          "id": 6,
+          "direction": "front-left 62°",
+          "distance": 10.1,
+          "heading": 165.87466
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "rotation",
+        "heading": 75.87,
+        "pitch": 0.0,
+        "reason": "Rotating left to look at the left/east side of the street where the destination should be located across from Enterprise Rent-A-Car.",
+        "agent_vlm_duration_seconds": 4.817,
+        "agent_total_duration_seconds": 4.817
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 165.80403
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 345.87466
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 345.78
+        },
+        {
+          "id": 4,
+          "direction": "left-back 34°",
+          "distance": 17.4,
+          "heading": 42.26
+        },
+        {
+          "id": 5,
+          "direction": "left-back 12°",
+          "distance": 14.7,
+          "heading": 63.59
+        },
+        {
+          "id": 6,
+          "direction": "front-left 71°",
+          "distance": 15.3,
+          "heading": 94.4
+        },
+        {
+          "id": 7,
+          "direction": "front-left 67°",
+          "distance": 7.5,
+          "heading": 98.424034
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving front-right 19° (15.3m) to continue exploring the left/east side of the street where the destination should be located.",
+        "agent_vlm_duration_seconds": 8.453,
+        "agent_total_duration_seconds": 8.453
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 94.4
+        },
+        {
+          "id": 2,
+          "direction": "front-right 23°",
+          "distance": 7.5,
+          "heading": 98.424034
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.5,
+          "heading": 165.80403
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 345.87466
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 11.8,
+          "heading": 345.78
+        },
+        {
+          "id": 6,
+          "direction": "front-left 34°",
+          "distance": 17.4,
+          "heading": 42.26
+        },
+        {
+          "id": 7,
+          "direction": "front-left 12°",
+          "distance": 14.7,
+          "heading": 63.59
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 274.4,
+        "pitch": 0.0,
+        "reason": "Rotating back to look west toward the street and identify Enterprise Rent-A-Car and the destination location.",
+        "agent_vlm_duration_seconds": 5.839,
+        "agent_total_duration_seconds": 5.839
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 100.57358
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 9.9,
+          "heading": 168.45657
+        },
+        {
+          "id": 3,
+          "direction": "right-back 50°",
+          "distance": 15.5,
+          "heading": 234.47
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 270.51498
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 274.4
+        },
+        {
+          "id": 6,
+          "direction": "left-back 20°",
+          "distance": 8.0,
+          "heading": 344.7657
+        },
+        {
+          "id": 7,
+          "direction": "left-back 18°",
+          "distance": 14.5,
+          "heading": 345.93
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving front (7.8m) to continue west back toward S Van Ness Ave where the destination should be located.",
+        "agent_vlm_duration_seconds": 5.994,
+        "agent_total_duration_seconds": 5.994
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 270.51498
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.3,
+          "heading": 274.4
+        },
+        {
+          "id": 3,
+          "direction": "front-right 70°",
+          "distance": 8.0,
+          "heading": 344.7657
+        },
+        {
+          "id": 4,
+          "direction": "front-right 72°",
+          "distance": 14.5,
+          "heading": 345.93
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 100.57358
+        },
+        {
+          "id": 6,
+          "direction": "left-back 16°",
+          "distance": 9.9,
+          "heading": 168.45657
+        },
+        {
+          "id": 7,
+          "direction": "front-left 40°",
+          "distance": 15.5,
+          "heading": 234.47
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "rotation",
+        "heading": 180.51,
+        "pitch": 0.0,
+        "reason": "Rotating left to look south along S Van Ness Ave to identify Enterprise Rent-A-Car and the destination on the left side.",
+        "agent_vlm_duration_seconds": 7.406,
+        "agent_total_duration_seconds": 7.406
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.5,
+          "heading": 278.42404
+        },
+        {
+          "id": 2,
+          "direction": "front-right 47°",
+          "distance": 14.7,
+          "heading": 317.71
+        },
+        {
+          "id": 3,
+          "direction": "front-right 50°",
+          "distance": 16.3,
+          "heading": 320.57
+        },
+        {
+          "id": 4,
+          "direction": "right-back 16°",
+          "distance": 14.6,
+          "heading": 16.99
+        },
+        {
+          "id": 5,
+          "direction": "right-back 36°",
+          "distance": 9.5,
+          "heading": 36.79
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 90.51499
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 17.8,
+          "heading": 96.17
+        },
+        {
+          "id": 8,
+          "direction": "left-back 46°",
+          "distance": 13.8,
+          "heading": 134.89
+        },
+        {
+          "id": 9,
+          "direction": "front-left 62°",
+          "distance": 10.3,
+          "heading": 208.05
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "rotation",
+        "heading": 90.51,
+        "pitch": 0.0,
+        "reason": "Rotating left to look east at the left side of S Van Ness Ave where the destination should be across from Enterprise Rent-A-Car.",
+        "agent_vlm_duration_seconds": 5.041,
+        "agent_total_duration_seconds": 5.041
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 28°",
+          "distance": 10.3,
+          "heading": 208.05
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 7.5,
+          "heading": 278.42404
+        },
+        {
+          "id": 3,
+          "direction": "right-back 47°",
+          "distance": 14.7,
+          "heading": 317.71
+        },
+        {
+          "id": 4,
+          "direction": "right-back 50°",
+          "distance": 16.3,
+          "heading": 320.57
+        },
+        {
+          "id": 5,
+          "direction": "left-back 74°",
+          "distance": 14.6,
+          "heading": 16.99
+        },
+        {
+          "id": 6,
+          "direction": "left-back 54°",
+          "distance": 9.5,
+          "heading": 36.79
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 7.8,
+          "heading": 90.51499
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 17.8,
+          "heading": 96.17
+        },
+        {
+          "id": 9,
+          "direction": "front-left 46°",
+          "distance": 13.8,
+          "heading": 134.89
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving front (7.8m) to continue east along the left side of S Van Ness Ave to locate the destination.",
+        "agent_vlm_duration_seconds": 6.108,
+        "agent_total_duration_seconds": 6.108
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 90.51499
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.8,
+          "heading": 96.17
+        },
+        {
+          "id": 3,
+          "direction": "front-right 44°",
+          "distance": 13.8,
+          "heading": 134.89
+        },
+        {
+          "id": 4,
+          "direction": "right-back 28°",
+          "distance": 10.3,
+          "heading": 208.05
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 278.42404
+        },
+        {
+          "id": 6,
+          "direction": "left-back 43°",
+          "distance": 14.7,
+          "heading": 317.71
+        },
+        {
+          "id": 7,
+          "direction": "left-back 40°",
+          "distance": 16.3,
+          "heading": 320.57
+        },
+        {
+          "id": 8,
+          "direction": "front-left 74°",
+          "distance": 14.6,
+          "heading": 16.99
+        },
+        {
+          "id": 9,
+          "direction": "front-left 54°",
+          "distance": 9.5,
+          "heading": 36.79
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 180.51,
+        "pitch": 0.0,
+        "reason": "Rotating right to look south and identify Enterprise Rent-A-Car and the destination on S Van Ness Ave.",
+        "agent_vlm_duration_seconds": 5.84,
+        "agent_total_duration_seconds": 5.84
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 10°",
+          "distance": 10.0,
+          "heading": 100.57358
+        },
+        {
+          "id": 2,
+          "direction": "front-right 78°",
+          "distance": 9.9,
+          "heading": 168.45657
+        },
+        {
+          "id": 3,
+          "direction": "right-back 54°",
+          "distance": 15.5,
+          "heading": 234.47
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 270.51498
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 274.4
+        },
+        {
+          "id": 6,
+          "direction": "left-back 16°",
+          "distance": 8.0,
+          "heading": 344.7657
+        },
+        {
+          "id": 7,
+          "direction": "left-back 15°",
+          "distance": 14.5,
+          "heading": 345.93
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 7,
+        "reason": "Moving front-left 12° (9.9m) to continue south down S Van Ness Ave toward the destination on the left/east side.",
+        "agent_vlm_duration_seconds": 8.502,
+        "agent_total_duration_seconds": 8.502
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 54°",
+          "distance": 15.5,
+          "heading": 234.47
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 7.8,
+          "heading": 270.51498
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 15.3,
+          "heading": 274.4
+        },
+        {
+          "id": 4,
+          "direction": "right-back 74°",
+          "distance": 8.0,
+          "heading": 344.7657
+        },
+        {
+          "id": 5,
+          "direction": "right-back 75°",
+          "distance": 14.5,
+          "heading": 345.93
+        },
+        {
+          "id": 6,
+          "direction": "front-left 80°",
+          "distance": 10.0,
+          "heading": 100.57358
+        },
+        {
+          "id": 7,
+          "direction": "front-left 12°",
+          "distance": 9.9,
+          "heading": 168.45657
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 78.46,
+        "pitch": 0.0,
+        "reason": "Rotating left to look east/northeast at the left side of S Van Ness Ave to identify Enterprise Rent-A-Car and the destination.",
+        "agent_vlm_duration_seconds": 5.985,
+        "agent_total_duration_seconds": 5.985
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 2,
+          "direction": "front-right 65°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 3,
+          "direction": "right-back 14°",
+          "distance": 14.6,
+          "heading": 272.47
+        },
+        {
+          "id": 4,
+          "direction": "right-back 56°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 7,
+          "direction": "left-back 33°",
+          "distance": 11.1,
+          "heading": 45.2
+        },
+        {
+          "id": 8,
+          "direction": "front-left 52°",
+          "distance": 12.4,
+          "heading": 116.27
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving front-right 38° (12.4m) to continue forward and get closer to the destination area on the left side of S Van Ness Ave.",
+        "agent_vlm_duration_seconds": 7.184,
+        "agent_total_duration_seconds": 7.184
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 38°",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 3,
+          "direction": "right-back 65°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 4,
+          "direction": "left-back 76°",
+          "distance": 14.6,
+          "heading": 272.47
+        },
+        {
+          "id": 5,
+          "direction": "left-back 34°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 33°",
+          "distance": 11.1,
+          "heading": 45.2
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 296.27,
+        "pitch": 0.0,
+        "reason": "Rotating back to look northwest and reorient toward S Van Ness Ave to find the destination.",
+        "agent_vlm_duration_seconds": 6.192,
+        "agent_total_duration_seconds": 6.192
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 15.0,
+          "heading": 205.14
+        },
+        {
+          "id": 2,
+          "direction": "right-back 39°",
+          "distance": 9.6,
+          "heading": 245.19
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 12.4,
+          "heading": 296.27
+        },
+        {
+          "id": 4,
+          "direction": "left-back 40°",
+          "distance": 13.7,
+          "heading": 346.37
+        },
+        {
+          "id": 5,
+          "direction": "front-left 77°",
+          "distance": 11.7,
+          "heading": 38.902744
+        },
+        {
+          "id": 6,
+          "direction": "front-left 42°",
+          "distance": 17.9,
+          "heading": 74.65
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving front (12.4m) to continue northwest back toward S Van Ness Ave and the destination.",
+        "agent_vlm_duration_seconds": 5.959,
+        "agent_total_duration_seconds": 5.96
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 12.4,
+          "heading": 296.27
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 13.7,
+          "heading": 346.37
+        },
+        {
+          "id": 3,
+          "direction": "right-back 13°",
+          "distance": 11.7,
+          "heading": 38.902744
+        },
+        {
+          "id": 4,
+          "direction": "right-back 48°",
+          "distance": 17.9,
+          "heading": 74.65
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 15.0,
+          "heading": 205.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 9.6,
+          "heading": 245.19
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "rotation",
+        "heading": 26.27,
+        "pitch": 0.0,
+        "reason": "Rotating right to look northeast and identify S Van Ness Ave, Enterprise Rent-A-Car, and the destination.",
+        "agent_vlm_duration_seconds": 5.589,
+        "agent_total_duration_seconds": 5.589
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 19°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 2,
+          "direction": "front-right 51°",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 52°",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 11.1,
+          "heading": 45.2
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 6,
+          "direction": "left-back 40°",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 7,
+          "direction": "front-left 62°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 24°",
+          "distance": 14.6,
+          "heading": 272.47
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 116.27,
+        "pitch": 0.0,
+        "reason": "Rotating right to look southeast and identify S Van Ness Ave, Enterprise Rent-A-Car, and the destination.",
+        "agent_vlm_duration_seconds": 6.076,
+        "agent_total_duration_seconds": 6.076
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 19°",
+          "distance": 11.1,
+          "heading": 45.2
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 3,
+          "direction": "right-back 50°",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 4,
+          "direction": "left-back 62°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 5,
+          "direction": "left-back 24°",
+          "distance": 14.6,
+          "heading": 272.47
+        },
+        {
+          "id": 6,
+          "direction": "front-left 71°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 7,
+          "direction": "front-left 39°",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 38°",
+          "distance": 9.9,
+          "heading": 348.45657
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 296.27,
+        "pitch": 0.0,
+        "reason": "Rotating back to look northwest and reorient toward S Van Ness Ave to find the destination.",
+        "agent_vlm_duration_seconds": 5.598,
+        "agent_total_duration_seconds": 5.598
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 3,
+          "direction": "right-back 28°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 4,
+          "direction": "right-back 66°",
+          "distance": 14.6,
+          "heading": 272.47
+        },
+        {
+          "id": 5,
+          "direction": "left-back 71°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 6,
+          "direction": "left-back 39°",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 7,
+          "direction": "left-back 38°",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 8,
+          "direction": "front-left 71°",
+          "distance": 11.1,
+          "heading": 45.2
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 206.27,
+        "pitch": 0.0,
+        "reason": "Rotating left to look southwest and see S Van Ness Ave from a different perspective to identify the destination.",
+        "agent_vlm_duration_seconds": 5.698,
+        "agent_total_duration_seconds": 5.698
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 19°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 2,
+          "direction": "front-right 51°",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 52°",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 11.1,
+          "heading": 45.2
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 6,
+          "direction": "left-back 40°",
+          "distance": 9.8,
+          "heading": 165.83768
+        },
+        {
+          "id": 7,
+          "direction": "front-left 62°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 24°",
+          "distance": 14.6,
+          "heading": 272.47
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 8,
+        "reason": "Moving front-left 40° (9.8m) to continue exploring the area and get closer to S Van Ness Ave and the destination.",
+        "agent_vlm_duration_seconds": 7.967,
+        "agent_total_duration_seconds": 7.967
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 28°",
+          "distance": 15.6,
+          "heading": 233.94
+        },
+        {
+          "id": 2,
+          "direction": "front-right 66°",
+          "distance": 14.6,
+          "heading": 272.47
+        },
+        {
+          "id": 3,
+          "direction": "right-back 19°",
+          "distance": 13.8,
+          "heading": 314.89
+        },
+        {
+          "id": 4,
+          "direction": "right-back 51°",
+          "distance": 17.8,
+          "heading": 346.81
+        },
+        {
+          "id": 5,
+          "direction": "right-back 52°",
+          "distance": 9.9,
+          "heading": 348.45657
+        },
+        {
+          "id": 6,
+          "direction": "left-back 71°",
+          "distance": 11.1,
+          "heading": 45.2
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 12.4,
+          "heading": 116.27
+        },
+        {
+          "id": 8,
+          "direction": "front-left 40°",
+          "distance": 9.8,
+          "heading": 165.83768
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "rotation",
+        "heading": 75.84,
+        "pitch": 0.0,
+        "reason": "Rotating left to look east at the left side of S Van Ness Ave to identify Enterprise Rent-A-Car and the destination.",
+        "agent_vlm_duration_seconds": 5.582,
+        "agent_total_duration_seconds": 5.582
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 166.36514
+        },
+        {
+          "id": 2,
+          "direction": "front-right 67°",
+          "distance": 15.9,
+          "heading": 232.57
+        },
+        {
+          "id": 3,
+          "direction": "right-back 15°",
+          "distance": 15.0,
+          "heading": 271.26
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 345.83768
+        },
+        {
+          "id": 5,
+          "direction": "left-back 11°",
+          "distance": 9.6,
+          "heading": 65.19
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Moving front-left 11° (9.6m) to continue forward and get closer to the destination on the left side of S Van Ness Ave.",
+        "agent_vlm_duration_seconds": 6.45,
+        "agent_total_duration_seconds": 6.45
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 166.36514
+        },
+        {
+          "id": 2,
+          "direction": "right-back 67°",
+          "distance": 15.9,
+          "heading": 232.57
+        },
+        {
+          "id": 3,
+          "direction": "left-back 75°",
+          "distance": 15.0,
+          "heading": 271.26
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 9.8,
+          "heading": 345.83768
+        },
+        {
+          "id": 5,
+          "direction": "front-left 11°",
+          "distance": 9.6,
+          "heading": 65.19
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "rotation",
+        "heading": 155.19,
+        "pitch": 0.0,
+        "reason": "Rotating right to look south and identify S Van Ness Ave, Enterprise Rent-A-Car, and the destination.",
+        "agent_vlm_duration_seconds": 5.616,
+        "agent_total_duration_seconds": 5.616
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 74.65
+        },
+        {
+          "id": 2,
+          "direction": "right-back 50°",
+          "distance": 15.0,
+          "heading": 205.14
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 245.19
+        },
+        {
+          "id": 4,
+          "direction": "left-back 39°",
+          "distance": 12.4,
+          "heading": 296.27
+        },
+        {
+          "id": 5,
+          "direction": "front-left 79°",
+          "distance": 13.7,
+          "heading": 346.37
+        },
+        {
+          "id": 6,
+          "direction": "front-left 26°",
+          "distance": 11.7,
+          "heading": 38.902744
+        }
+      ]
+    }
+  ]
+}

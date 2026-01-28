@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_service_20260124_025245</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_service_20260124_025245</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"sEg5BuqDYKJnZNJKm6NdTQ": {"lat": 39.931022076205, "lng": 32.85945636237175, "links": [{"pano_id": "gkZsWHi6gyWzTKKTIFR1NA", "heading": 264.79712, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "mVsolOV_yGHT0-060CPXEw", "heading": 84.795906, "description": "K\u0131z\u0131lay Sk."}]}, "mVsolOV_yGHT0-060CPXEw": {"lat": 39.93103060981998, "lng": 32.85957854844987, "links": [{"pano_id": "sEg5BuqDYKJnZNJKm6NdTQ", "heading": 264.7959, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "qd642FTXFohtrUIeTf5VzA", "heading": 84.799416, "description": "K\u0131z\u0131lay Sk."}]}, "gkZsWHi6gyWzTKKTIFR1NA": {"lat": 39.93101343044449, "lng": 32.85933254125842, "links": [{"pano_id": "sEg5BuqDYKJnZNJKm6NdTQ", "heading": 84.79713, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "CVJkhi1M4P_ktM4AW2m7Nw", "heading": 264.5099, "description": "K\u0131z\u0131lay Sk."}]}, "CVJkhi1M4P_ktM4AW2m7Nw": {"lat": 39.93100419667042, "lng": 32.85920725719749, "links": [{"pano_id": "gkZsWHi6gyWzTKKTIFR1NA", "heading": 84.50988, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "c3C6ryBV5JmWXB_SAw5RTg", "heading": 264.40192, "description": "K\u0131z\u0131lay Sk."}]}, "qd642FTXFohtrUIeTf5VzA": {"lat": 39.93103923972613, "lng": 32.85970219716835, "links": [{"pano_id": "mVsolOV_yGHT0-060CPXEw", "heading": 264.7994, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "Xqh6tOWqt1GEMR3r-acdJw", "heading": 84.812386, "description": "K\u0131z\u0131lay Sk."}]}, "c3C6ryBV5JmWXB_SAw5RTg": {"lat": 39.93099492240986, "lng": 32.8590838660128, "links": [{"pano_id": "CVJkhi1M4P_ktM4AW2m7Nw", "heading": 84.4019, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "GMJ8dZwDewaU1P7r_ezjWw", "heading": 264.40088, "description": "K\u0131z\u0131lay Sk."}]}, "Xqh6tOWqt1GEMR3r-acdJw": {"lat": 39.93104825533542, "lng": 32.85983169688142, "links": [{"pano_id": "M58M8QpOmiREN0cC-tVSzw", "heading": 84.80518, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "qd642FTXFohtrUIeTf5VzA", "heading": 264.81238, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "nlvga470KthW_AE_Q51dPQ", "heading": 75.51, "distance": 16.28, "virtual": true}, {"pano_id": "sn8gmV_WPUll4HCdL8_dlg", "heading": 94.15, "distance": 16.06, "virtual": true}]}, "M58M8QpOmiREN0cC-tVSzw": {"lat": 39.93105781140333, "lng": 32.85996876848954, "links": [{"pano_id": "nlvga470KthW_AE_Q51dPQ", "heading": 53.525307, "description": "A.Adnan Saygun Cd."}, {"pano_id": "Xqh6tOWqt1GEMR3r-acdJw", "heading": 264.80518, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "6tyPDBavKRXAlJxdzm1log", "heading": 14.35, "distance": 13.88, "virtual": true}, {"pano_id": "sn8gmV_WPUll4HCdL8_dlg", "heading": 117.19, "distance": 4.87, "virtual": true}, {"pano_id": "xAlEk6nQRHvGkNzVgFr23A", "heading": 158.64, "distance": 12.95, "virtual": true}]}, "GMJ8dZwDewaU1P7r_ezjWw": {"lat": 39.93098599574236, "lng": 32.8589651212155, "links": [{"pano_id": "c3C6ryBV5JmWXB_SAw5RTg", "heading": 84.40089, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "RDd4NnQdGaVnTV1gxd0aFw", "heading": 264.438, "description": "K\u0131z\u0131lay Sk."}]}, "nlvga470KthW_AE_Q51dPQ": {"lat": 39.93108488361895, "lng": 32.86001652409079, "links": [{"pano_id": "M58M8QpOmiREN0cC-tVSzw", "heading": 233.52531, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "sn8gmV_WPUll4HCdL8_dlg", "heading": 177.19138, "description": "A.Adnan Saygun Cd."}, {"pano_id": "6tyPDBavKRXAlJxdzm1log", "heading": 356.54114, "description": "A.Adnan Saygun Cd."}, {"pano_id": "Xqh6tOWqt1GEMR3r-acdJw", "heading": 255.51, "distance": 16.28, "virtual": true}, {"pano_id": "xAlEk6nQRHvGkNzVgFr23A", "heading": 177.55, "distance": 15.09, "virtual": true}]}, "RDd4NnQdGaVnTV1gxd0aFw": {"lat": 39.93097707716851, "lng": 32.85884568790151, "links": [{"pano_id": "GMJ8dZwDewaU1P7r_ezjWw", "heading": 84.43797, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "jq6Vh3PPChs0gfjOoq-fIA", "heading": 264.389, "description": "K\u0131z\u0131lay Sk."}]}, "jq6Vh3PPChs0gfjOoq-fIA": {"lat": 39.9309682156807, "lng": 32.85872806143744, "links": [{"pano_id": "XH6g_S2OolY_O0jDsYHxOQ", "heading": 264.4532, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "RDd4NnQdGaVnTV1gxd0aFw", "heading": 84.389, "description": "K\u0131z\u0131lay Sk."}]}, "6tyPDBavKRXAlJxdzm1log": {"lat": 39.93117876529436, "lng": 32.86000912412523, "links": [{"pano_id": "IqIaCn0sheHQ5FmX6vQmjQ", "heading": 355.1428, "description": "A.Adnan Saygun Cd."}, {"pano_id": "nlvga470KthW_AE_Q51dPQ", "heading": 176.54112, "description": "A.Adnan Saygun Cd."}, {"pano_id": "M58M8QpOmiREN0cC-tVSzw", "heading": 194.35, "distance": 13.88, "virtual": true}, {"pano_id": "sn8gmV_WPUll4HCdL8_dlg", "heading": 176.76, "distance": 15.7, "virtual": true}]}, "sn8gmV_WPUll4HCdL8_dlg": {"lat": 39.9310378106279, "lng": 32.86001953570452, "links": [{"pano_id": "nlvga470KthW_AE_Q51dPQ", "heading": 357.19138, "description": "A.Adnan Saygun Cd."}, {"pano_id": "xAlEk6nQRHvGkNzVgFr23A", "heading": 177.73683, "description": "A.Adnan Saygun Cd."}, {"pano_id": "Xqh6tOWqt1GEMR3r-acdJw", "heading": 274.15, "distance": 16.06, "virtual": true}, {"pano_id": "M58M8QpOmiREN0cC-tVSzw", "heading": 297.19, "distance": 4.87, "virtual": true}, {"pano_id": "6tyPDBavKRXAlJxdzm1log", "heading": 356.76, "distance": 15.7, "virtual": true}]}, "XH6g_S2OolY_O0jDsYHxOQ": {"lat": 39.93095960998815, "lng": 32.85861249997152, "links": [{"pano_id": "8U9EpQ8IdOloRtCXqoW0Rw", "heading": 264.38486, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "jq6Vh3PPChs0gfjOoq-fIA", "heading": 84.45319, "description": "K\u0131z\u0131lay Sk."}]}, "xAlEk6nQRHvGkNzVgFr23A": {"lat": 39.93094932375081, "lng": 32.86002409614801, "links": [{"pano_id": "ZLVVUE-Y44QHGP6tgbkbfQ", "heading": 177.70389, "description": "A.Adnan Saygun Cd."}, {"pano_id": "sn8gmV_WPUll4HCdL8_dlg", "heading": 357.73682, "description": "A.Adnan Saygun Cd."}, {"pano_id": "M58M8QpOmiREN0cC-tVSzw", "heading": 338.64, "distance": 12.95, "virtual": true}, {"pano_id": "nlvga470KthW_AE_Q51dPQ", "heading": 357.55, "distance": 15.09, "virtual": true}]}, "IqIaCn0sheHQ5FmX6vQmjQ": {"lat": 39.93127116311275, "lng": 32.85999888463711, "links": [{"pano_id": "vgnra_Bw7SXMAt2ZyJTqsw", "heading": 354.3359, "description": "A.Adnan Saygun Cd."}, {"pano_id": "6tyPDBavKRXAlJxdzm1log", "heading": 175.14278, "description": "A.Adnan Saygun Cd."}]}, "vgnra_Bw7SXMAt2ZyJTqsw": {"lat": 39.93136163938204, "lng": 32.8599871823637, "links": [{"pano_id": "IqIaCn0sheHQ5FmX6vQmjQ", "heading": 174.3359, "description": "A.Adnan Saygun Cd."}, {"pano_id": "P5mCibTUucMqGSlGor-Etw", "heading": 354.30457, "description": "A.Adnan Saygun Cd."}]}, "ZLVVUE-Y44QHGP6tgbkbfQ": {"lat": 39.93085881668624, "lng": 32.86002882868348, "links": [{"pano_id": "xAlEk6nQRHvGkNzVgFr23A", "heading": 357.7039, "description": "A.Adnan Saygun Cd."}, {"pano_id": "C6Py1dwud8evB7C6dPJXUg", "heading": 177.70712, "description": "A.Adnan Saygun Cd."}]}, "8U9EpQ8IdOloRtCXqoW0Rw": {"lat": 39.93095089110134, "lng": 32.85849685232576, "links": [{"pano_id": "U_I9s5MJ7kM7HDza82yMSQ", "heading": 264.4415, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "XH6g_S2OolY_O0jDsYHxOQ", "heading": 84.38486, "description": "K\u0131z\u0131lay Sk."}]}, "P5mCibTUucMqGSlGor-Etw": {"lat": 39.93145426048827, "lng": 32.85997513590435, "links": [{"pano_id": "RJ6ZEEzfBkukXtDFXhHmgw", "heading": 354.302, "description": "A.Adnan Saygun Cd."}, {"pano_id": "vgnra_Bw7SXMAt2ZyJTqsw", "heading": 174.30455, "description": "A.Adnan Saygun Cd."}]}, "C6Py1dwud8evB7C6dPJXUg": {"lat": 39.93076488559858, "lng": 32.86003373331091, "links": [{"pano_id": "zGw9KC5fxIFhjfai8uq4Yw", "heading": 177.70743, "description": "A.Adnan Saygun Cd."}, {"pano_id": "ZLVVUE-Y44QHGP6tgbkbfQ", "heading": 357.70712, "description": "A.Adnan Saygun Cd."}]}, "U_I9s5MJ7kM7HDza82yMSQ": {"lat": 39.93094235061278, "lng": 32.85838240921242, "links": [{"pano_id": "1sqBxm75emZ47yqxij5tdw", "heading": 264.39764, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "8U9EpQ8IdOloRtCXqoW0Rw", "heading": 84.4415, "description": "K\u0131z\u0131lay Sk."}]}, "zGw9KC5fxIFhjfai8uq4Yw": {"lat": 39.93067423789691, "lng": 32.86003846584594, "links": [{"pano_id": "nRGXYUCSUuvbYp0Yl4Iw0A", "heading": 177.73419, "description": "A.Adnan Saygun Cd."}, {"pano_id": "C6Py1dwud8evB7C6dPJXUg", "heading": 357.70743, "description": "A.Adnan Saygun Cd."}]}, "RJ6ZEEzfBkukXtDFXhHmgw": {"lat": 39.93153824335509, "lng": 32.85996420804356, "links": [{"pano_id": "P5mCibTUucMqGSlGor-Etw", "heading": 174.30202, "description": "A.Adnan Saygun Cd."}, {"pano_id": "TCg85xQC5xGNbc2Iobm-4A", "heading": 354.2924, "description": "A.Adnan Saygun Cd."}]}, "1sqBxm75emZ47yqxij5tdw": {"lat": 39.93093375525173, "lng": 32.8582681380644, "links": [{"pano_id": "wPKxyZOVcZf9FEBDcT4_SQ", "heading": 264.4396, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "U_I9s5MJ7kM7HDza82yMSQ", "heading": 84.39765, "description": "K\u0131z\u0131lay Sk."}]}, "TCg85xQC5xGNbc2Iobm-4A": {"lat": 39.93162340388122, "lng": 32.85995310808926, "links": [{"pano_id": "RJ6ZEEzfBkukXtDFXhHmgw", "heading": 174.29239, "description": "A.Adnan Saygun Cd."}, {"pano_id": "BnqWpVheVqELS7ma7hROIA", "heading": 354.33905, "description": "A.Adnan Saygun Cd."}]}, "nRGXYUCSUuvbYp0Yl4Iw0A": {"lat": 39.93057918348011, "lng": 32.86004337047291, "links": [{"pano_id": "EmDHTUiJI4zewOnmWViPsg", "heading": 177.7314, "description": "A.Adnan Saygun Cd."}, {"pano_id": "zGw9KC5fxIFhjfai8uq4Yw", "heading": 357.7342, "description": "A.Adnan Saygun Cd."}]}, "wPKxyZOVcZf9FEBDcT4_SQ": {"lat": 39.93092519895619, "lng": 32.8581535225961, "links": [{"pano_id": "1sqBxm75emZ47yqxij5tdw", "heading": 84.4396, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "QsRTlnrsm8eboEEKroeZMg", "heading": 264.4024, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "vrkRIsyoRyodBRZFGXvFWQ", "heading": 312.86, "distance": 16.28, "virtual": true}]}, "BnqWpVheVqELS7ma7hROIA": {"lat": 39.9317159270942, "lng": 32.85994114767202, "links": [{"pano_id": "TCg85xQC5xGNbc2Iobm-4A", "heading": 174.33904, "description": "A.Adnan Saygun Cd."}, {"pano_id": "6R3_sdmJUegcgPGaedgfLA", "heading": 354.33826, "description": "A.Adnan Saygun Cd."}]}, "EmDHTUiJI4zewOnmWViPsg": {"lat": 39.93048591107385, "lng": 32.86004818905356, "links": [{"pano_id": "DMdpN7NUMofUllZwuutf5w", "heading": 177.66904, "description": "A.Adnan Saygun Cd."}, {"pano_id": "nRGXYUCSUuvbYp0Yl4Iw0A", "heading": 357.7314, "description": "A.Adnan Saygun Cd."}]}, "QsRTlnrsm8eboEEKroeZMg": {"lat": 39.93091664971802, "lng": 32.85803976747549, "links": [{"pano_id": "vrkRIsyoRyodBRZFGXvFWQ", "heading": 349.45944, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "wPKxyZOVcZf9FEBDcT4_SQ", "heading": 84.402405, "description": "K\u0131z\u0131lay Sk."}]}, "6R3_sdmJUegcgPGaedgfLA": {"lat": 39.93180976832225, "lng": 32.85992901516099, "links": [{"pano_id": "EeYUzLFlF2iFdEacAbYTXw", "heading": 356.6104, "description": "A.Adnan Saygun Cd."}, {"pano_id": "BnqWpVheVqELS7ma7hROIA", "heading": 174.33826, "description": "A.Adnan Saygun Cd."}]}, "DMdpN7NUMofUllZwuutf5w": {"lat": 39.93039837878131, "lng": 32.86005283554182, "links": [{"pano_id": "Q3GfvLG7hr1kzzpxwlfO8g", "heading": 177.7021, "description": "A.Adnan Saygun Cd."}, {"pano_id": "EmDHTUiJI4zewOnmWViPsg", "heading": 357.66904, "description": "A.Adnan Saygun Cd."}]}, "vrkRIsyoRyodBRZFGXvFWQ": {"lat": 39.93102480615725, "lng": 32.85801352289465, "links": [{"pano_id": "BQL8WVGPf1Ee6lmOuMGOLg", "heading": 4.1735625, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "QsRTlnrsm8eboEEKroeZMg", "heading": 169.45944, "description": "K\u0131z\u0131lay Sk."}, {"pano_id": "wPKxyZOVcZf9FEBDcT4_SQ", "heading": 132.86, "distance": 16.28, "virtual": true}]}, "Q3GfvLG7hr1kzzpxwlfO8g": {"lat": 39.93030794114934, "lng": 32.86005756807595, "links": [{"pano_id": "DMdpN7NUMofUllZwuutf5w", "heading": 357.7021, "description": "A.Adnan Saygun Cd."}, {"pano_id": "7UotCLIdJAzm7SHhF13fGA", "heading": 179.28784, "description": "A.Adnan Saygun Cd."}]}, "BQL8WVGPf1Ee6lmOuMGOLg": {"lat": 39.93112788822727, "lng": 32.85802333234534, "links": [{"pano_id": "vrkRIsyoRyodBRZFGXvFWQ", "heading": 184.17357, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "GVR7uqv7GCxCpTozG4Illw", "heading": 4.1589646, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "EeYUzLFlF2iFdEacAbYTXw": {"lat": 39.93190000271177, "lng": 32.85992204541995, "links": [{"pano_id": "6R3_sdmJUegcgPGaedgfLA", "heading": 176.61041, "description": "A.Adnan Saygun Cd."}, {"pano_id": "opxhteECLeyFTVJ3SvV6JA", "heading": 356.6037, "description": "A.Adnan Saygun Cd."}]}, "7UotCLIdJAzm7SHhF13fGA": {"lat": 39.93021770062839, "lng": 32.86005903085918, "links": [{"pano_id": "Q3GfvLG7hr1kzzpxwlfO8g", "heading": 359.28784, "description": "A.Adnan Saygun Cd."}, {"pano_id": "VMSomiyM_eXxFm6ekGbNiQ", "heading": 184.76508, "description": "A.Adnan Saygun Cd."}]}, "opxhteECLeyFTVJ3SvV6JA": {"lat": 39.93198894620234, "lng": 32.85991516172463, "links": [{"pano_id": "qpMTWtHQZP5QJVtsUIqCtQ", "heading": 356.8012, "description": "A.Adnan Saygun Cd."}, {"pano_id": "EeYUzLFlF2iFdEacAbYTXw", "heading": 176.60368, "description": "A.Adnan Saygun Cd."}]}, "GVR7uqv7GCxCpTozG4Illw": {"lat": 39.93122225910566, "lng": 32.85803228131706, "links": [{"pano_id": "BQL8WVGPf1Ee6lmOuMGOLg", "heading": 184.15897, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "DYmZLNERGqfYCyfIScOTXg", "heading": 4.1856194, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "DYmZLNERGqfYCyfIScOTXg": {"lat": 39.93131061708556, "lng": 32.85804071400123, "links": [{"pano_id": "GVR7uqv7GCxCpTozG4Illw", "heading": 184.18562, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "e6GFZ8FaUHaKpLptwuSUjA", "heading": 4.1840334, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "qpMTWtHQZP5QJVtsUIqCtQ": {"lat": 39.93208221399603, "lng": 32.85990836407503, "links": [{"pano_id": "opxhteECLeyFTVJ3SvV6JA", "heading": 176.80122, "description": "A.Adnan Saygun Cd."}, {"pano_id": "MJ4Em8Oy6Ax7Zfa8TddBGQ", "heading": 356.96625, "description": "A.Adnan Saygun Cd."}]}, "VMSomiyM_eXxFm6ekGbNiQ": {"lat": 39.93012746385575, "lng": 32.86004922160652, "links": [{"pano_id": "7UotCLIdJAzm7SHhF13fGA", "heading": 4.765074, "description": "A.Adnan Saygun Cd."}, {"pano_id": "HOaPdh4nyThvnNv6b7KeGw", "heading": 186.45522, "description": "A.Adnan Saygun Cd."}]}, "HOaPdh4nyThvnNv6b7KeGw": {"lat": 39.9300405709425, "lng": 32.86003640073977, "links": [{"pano_id": "VMSomiyM_eXxFm6ekGbNiQ", "heading": 6.4552155, "description": "A.Adnan Saygun Cd."}, {"pano_id": "qMXxCiQdXLAflLMzETcCqg", "heading": 189.01422, "description": "A.Adnan Saygun Cd."}]}, "MJ4Em8Oy6Ax7Zfa8TddBGQ": {"lat": 39.93217185086089, "lng": 32.85990216874843, "links": [{"pano_id": "qpMTWtHQZP5QJVtsUIqCtQ", "heading": 176.96625, "description": "A.Adnan Saygun Cd."}, {"pano_id": "XIeIptUcvkC5-UCGN31wHg", "heading": 356.9254, "description": "A.Adnan Saygun Cd."}]}, "e6GFZ8FaUHaKpLptwuSUjA": {"lat": 39.9313972046569, "lng": 32.85804897458912, "links": [{"pano_id": "DYmZLNERGqfYCyfIScOTXg", "heading": 184.18404, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "BT7-ANBMHeM7f5FRtHzFDA", "heading": 4.1797476, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "XIeIptUcvkC5-UCGN31wHg": {"lat": 39.93226029437914, "lng": 32.85989597342143, "links": [{"pano_id": "GZaDgjEQj7XvNjoDfDUhjA", "heading": 356.9186, "description": "A.Adnan Saygun Cd."}, {"pano_id": "MJ4Em8Oy6Ax7Zfa8TddBGQ", "heading": 176.9254, "description": "A.Adnan Saygun Cd."}, {"pano_id": "7HlX-6UvDwZEDbEnZX_WzQ", "heading": 353.1, "distance": 15.57, "virtual": true}, {"pano_id": "zXvhmB5yOi3QcAx6N7HsdQ", "heading": 357.64, "distance": 14.45, "virtual": true}]}, "qMXxCiQdXLAflLMzETcCqg": {"lat": 39.92994823451291, "lng": 32.86001729850576, "links": [{"pano_id": "Doe2zik7MmOCajcqrPHmEQ", "heading": 192.47717, "description": "A.Adnan Saygun Cd."}, {"pano_id": "HOaPdh4nyThvnNv6b7KeGw", "heading": 9.014223, "description": "A.Adnan Saygun Cd."}]}, "BT7-ANBMHeM7f5FRtHzFDA": {"lat": 39.93155791734301, "lng": 32.85806429109404, "links": [{"pano_id": "e6GFZ8FaUHaKpLptwuSUjA", "heading": 184.17975, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "O6P9e9hbs3VDlE2321ekxQ", "heading": 4.7700715, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "GZaDgjEQj7XvNjoDfDUhjA": {"lat": 39.93234486546822, "lng": 32.85989003623271, "links": [{"pano_id": "7HlX-6UvDwZEDbEnZX_WzQ", "heading": 347.2943, "description": ""}, {"pano_id": "XIeIptUcvkC5-UCGN31wHg", "heading": 176.91861, "description": "A.Adnan Saygun Cd."}, {"pano_id": "zXvhmB5yOi3QcAx6N7HsdQ", "heading": 358.99756, "description": "A.Adnan Saygun Cd."}, {"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 336.78, "distance": 16.75, "virtual": true}, {"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 359.49, "distance": 14.95, "virtual": true}]}, "Doe2zik7MmOCajcqrPHmEQ": {"lat": 39.92986175910574, "lng": 32.85999234513154, "links": [{"pano_id": "qMXxCiQdXLAflLMzETcCqg", "heading": 12.477179, "description": "A.Adnan Saygun Cd."}, {"pano_id": "DMpE8TW30moTZTcr9lloHQ", "heading": 195.22902, "description": "A.Adnan Saygun Cd."}]}, "O6P9e9hbs3VDlE2321ekxQ": {"lat": 39.93164726830958, "lng": 32.85807401449202, "links": [{"pano_id": "r8V7JH-N1Z-2wn8BgFeS3g", "heading": 5.0591393, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "BT7-ANBMHeM7f5FRtHzFDA", "heading": 184.77007, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "7HlX-6UvDwZEDbEnZX_WzQ": {"lat": 39.93239929710325, "lng": 32.85987403163527, "links": [{"pano_id": "GZaDgjEQj7XvNjoDfDUhjA", "heading": 167.29433, "description": "A.Adnan Saygun Cd."}, {"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 330.7051, "description": ""}, {"pano_id": "XIeIptUcvkC5-UCGN31wHg", "heading": 173.1, "distance": 15.57, "virtual": true}, {"pano_id": "zXvhmB5yOi3QcAx6N7HsdQ", "heading": 128.65, "distance": 1.63, "virtual": true}, {"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 7.89, "distance": 8.98, "virtual": true}]}, "DMpE8TW30moTZTcr9lloHQ": {"lat": 39.92977547461975, "lng": 32.85996171270509, "links": [{"pano_id": "QkKh8cQ6W512D5TCnHW49A", "heading": 195.47505, "description": "A.Adnan Saygun Cd."}, {"pano_id": "Doe2zik7MmOCajcqrPHmEQ", "heading": 15.229013, "description": "A.Adnan Saygun Cd."}]}, "r8V7JH-N1Z-2wn8BgFeS3g": {"lat": 39.93173894266151, "lng": 32.85808459836663, "links": [{"pano_id": "ejmOAX6xMzzWK3W8FwyZJg", "heading": 5.0814624, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "O6P9e9hbs3VDlE2321ekxQ", "heading": 185.05914, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "zXvhmB5yOi3QcAx6N7HsdQ": {"lat": 39.93239011512149, "lng": 32.85988900367811, "links": [{"pano_id": "GZaDgjEQj7XvNjoDfDUhjA", "heading": 178.99756, "description": "A.Adnan Saygun Cd."}, {"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 359.7456, "description": "A.Adnan Saygun Cd."}, {"pano_id": "XIeIptUcvkC5-UCGN31wHg", "heading": 177.64, "distance": 14.45, "virtual": true}, {"pano_id": "7HlX-6UvDwZEDbEnZX_WzQ", "heading": 308.65, "distance": 1.63, "virtual": true}, {"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 327.83, "distance": 12.24, "virtual": true}]}, "qMjawpwOOh90GxZEViv8oA": {"lat": 39.93248326368996, "lng": 32.85981259460862, "links": [{"pano_id": "-ejCC93s7zZf8CqHW4AR3Q", "heading": 343.3418, "description": ""}, {"pano_id": "7HlX-6UvDwZEDbEnZX_WzQ", "heading": 150.7051, "description": ""}, {"pano_id": "GZaDgjEQj7XvNjoDfDUhjA", "heading": 156.78, "distance": 16.75, "virtual": true}, {"pano_id": "zXvhmB5yOi3QcAx6N7HsdQ", "heading": 147.83, "distance": 12.24, "virtual": true}, {"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 93.92, "distance": 6.49, "virtual": true}, {"pano_id": "IKVZ39IOkQcqmJdWkM1uGQ", "heading": 34.71, "distance": 11.3, "virtual": true}]}, "4s6u3AqdqOrsrafm9r4hLQ": {"lat": 39.93247927963999, "lng": 32.85988848740081, "links": [{"pano_id": "IKVZ39IOkQcqmJdWkM1uGQ", "heading": 359.78403, "description": "A.Adnan Saygun Cd."}, {"pano_id": "zXvhmB5yOi3QcAx6N7HsdQ", "heading": 179.74562, "description": "A.Adnan Saygun Cd."}, {"pano_id": "GZaDgjEQj7XvNjoDfDUhjA", "heading": 179.49, "distance": 14.95, "virtual": true}, {"pano_id": "7HlX-6UvDwZEDbEnZX_WzQ", "heading": 187.89, "distance": 8.98, "virtual": true}, {"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 273.92, "distance": 6.49, "virtual": true}, {"pano_id": "-ejCC93s7zZf8CqHW4AR3Q", "heading": 317.6, "distance": 13.98, "virtual": true}]}, "ejmOAX6xMzzWK3W8FwyZJg": {"lat": 39.9318346642024, "lng": 32.85809569852663, "links": [{"pano_id": "DJ97WffHEFLLVYrJUEYgGA", "heading": 5.021891, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "r8V7JH-N1Z-2wn8BgFeS3g", "heading": 185.08147, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "QkKh8cQ6W512D5TCnHW49A": {"lat": 39.92969229752777, "lng": 32.85993168259262, "links": [{"pano_id": "O7M9QLkmlpbQBFfi4fdc5Q", "heading": 196.08786, "description": "A.Adnan Saygun Cd."}, {"pano_id": "DMpE8TW30moTZTcr9lloHQ", "heading": 15.475056, "description": "A.Adnan Saygun Cd."}]}, "DJ97WffHEFLLVYrJUEYgGA": {"lat": 39.9319292743988, "lng": 32.85810654054217, "links": [{"pano_id": "Lrz6IWT3LYo5KrzVbu44sg", "heading": 5.0592036, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "ejmOAX6xMzzWK3W8FwyZJg", "heading": 185.0219, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "IKVZ39IOkQcqmJdWkM1uGQ": {"lat": 39.93256680231912, "lng": 32.85988805716972, "links": [{"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 179.78403, "description": "A.Adnan Saygun Cd."}, {"pano_id": "fWr4_Mj8kSx6pdahn-TNDQ", "heading": 354.95612, "description": "A.Adnan Saygun Cd."}, {"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 214.71, "distance": 11.3, "virtual": true}, {"pano_id": "-ejCC93s7zZf8CqHW4AR3Q", "heading": 273.61, "distance": 9.41, "virtual": true}, {"pano_id": "AKi7MMpfgIB8QEAr3aU8lQ", "heading": 315.0, "distance": 15.48, "virtual": true}]}, "O7M9QLkmlpbQBFfi4fdc5Q": {"lat": 39.92961405285661, "lng": 32.85990225479462, "links": [{"pano_id": "Cjm_-Cu9ruMiJCByaYn3ZA", "heading": 196.12752, "description": "A.Adnan Saygun Cd."}, {"pano_id": "QkKh8cQ6W512D5TCnHW49A", "heading": 16.087862, "description": "A.Adnan Saygun Cd."}]}, "-ejCC93s7zZf8CqHW4AR3Q": {"lat": 39.93257212852527, "lng": 32.859777917951, "links": [{"pano_id": "qMjawpwOOh90GxZEViv8oA", "heading": 163.3418, "description": ""}, {"pano_id": "AKi7MMpfgIB8QEAr3aU8lQ", "heading": 351.45688, "description": ""}, {"pano_id": "4s6u3AqdqOrsrafm9r4hLQ", "heading": 137.6, "distance": 13.98, "virtual": true}, {"pano_id": "IKVZ39IOkQcqmJdWkM1uGQ", "heading": 93.61, "distance": 9.41, "virtual": true}, {"pano_id": "fWr4_Mj8kSx6pdahn-TNDQ", "heading": 43.63, "distance": 12.39, "virtual": true}]}, "fWr4_Mj8kSx6pdahn-TNDQ": {"lat": 39.93265277179304, "lng": 32.8598781618542, "links": [{"pano_id": "IKVZ39IOkQcqmJdWkM1uGQ", "heading": 174.9561, "description": "A.Adnan Saygun Cd."}, {"pano_id": "-ejCC93s7zZf8CqHW4AR3Q", "heading": 223.63, "distance": 12.39, "virtual": true}, {"pano_id": "AKi7MMpfgIB8QEAr3aU8lQ", "heading": 277.82, "distance": 10.2, "virtual": true}]}, "Lrz6IWT3LYo5KrzVbu44sg": {"lat": 39.93202243778276, "lng": 32.85811729650884, "links": [{"pano_id": "90IQVSlMSUtLQpGQ2gbrZQ", "heading": 5.0431595, "description": "Ankara Hastane Acil Giri\u015fi"}, {"pano_id": "DJ97WffHEFLLVYrJUEYgGA", "heading": 185.0592, "description": "Ankara Hastane Acil Giri\u015fi"}]}, "AKi7MMpfgIB8QEAr3aU8lQ": {"lat": 39.93266524374576, "lng": 32.85975967613129, "links": [{"pano_id": "-ejCC93s7zZf8CqHW4AR3Q", "heading": 171.45688, "description": ""}, {"pano_id": "IKVZ39IOkQcqmJdWkM1uGQ", "heading": 135.0, "distance": 15.48, "virtual": true}, {"pano_id": "fWr4_Mj8kSx6pdahn-TNDQ", "heading": 97.82, "distance": 10.2, "virtual": true}]}, "Cjm_-Cu9ruMiJCByaYn3ZA": {"lat": 39.92953213172148, "lng": 32.85987136420211, "links": [{"pano_id": "O7M9QLkmlpbQBFfi4fdc5Q", "heading": 16.127522, "description": "A.Adnan Saygun Cd."}]}, "90IQVSlMSUtLQpGQ2gbrZQ": {"lat": 39.93212935735194, "lng": 32.85812960133329, "links": [{"pano_id": "Lrz6IWT3LYo5KrzVbu44sg", "heading": 185.04317, "description": "Ankara Hastane Acil Giri\u015fi"}]}};
+        const targetPanos = ["sEg5BuqDYKJnZNJKm6NdTQ"];
+        const spawnPoints = ["Cjm_-Cu9ruMiJCByaYn3ZA", "fWr4_Mj8kSx6pdahn-TNDQ", "Lrz6IWT3LYo5KrzVbu44sg"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

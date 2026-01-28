@@ -1,0 +1,116 @@
+{
+  "task_id": "nav_0993_target_20260125_0329_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260125_032839",
+  "spawn_point": "s4C1uyCU4eVa2x6kbWYMuw",
+  "spawn_heading": 204.9,
+  "description": "Navigate to KFC. The provided text describes a zigzagging path with multiple turns, but the visual evidence shows a continuous straight walk through a parking lot lane. The route starts near Taco Cabana and proceeds straight past a strip mall and a large pylon sign directly towards the KFC. The destination is the red building on the left at the end of the path.",
+  "ground_truth": {
+    "target_name": "KFC",
+    "target_pano_id": "8f-IllScn9ZO5kOgQz8LXw",
+    "optimal_distance_meters": 174,
+    "route_description": "left→right→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "8f-IllScn9ZO5kOgQz8LXw"
+  ],
+  "max_steps": 36,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "s4C1uyCU4eVa2x6kbWYMuw",
+      "heading": 204.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "fD1aQcrnlzwH12hh2TxmUg",
+      "heading": 204.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "eKZMpjPSZ9ELyfqPKE3BRg",
+      "heading": 213.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "VmyCZjgCUsWiGIjw2kJrbg",
+      "heading": 188.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "By5JU1sN79fdObkEkeD2QQ",
+      "heading": 188.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "aN56wG5uaK8A_p7uNvjTWQ",
+      "heading": 188.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "GWqoBiXA4rK36-_PCmL5aQ",
+      "heading": 187.5
+    },
+    {
+      "step_index": 7,
+      "pano_id": "a9H1ZuwBWz6f7kMlaDcobw",
+      "heading": 188.8
+    },
+    {
+      "step_index": 8,
+      "pano_id": "JUJqY19tJXe4zNcksfOeNA",
+      "heading": 291.5
+    },
+    {
+      "step_index": 9,
+      "pano_id": "AGtGwTacsKh5_Z82AdyUIw",
+      "heading": 279.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "L0F6tBOaxEAWYE3xMcKaoQ",
+      "heading": 279.4
+    },
+    {
+      "step_index": 11,
+      "pano_id": "W4I-EntcOhWRudeQkn-RWQ",
+      "heading": 279.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "9y2TSM_GDYyWuZpQFCCCQg",
+      "heading": 279.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "SbKb6jy7po976urWr1fGEQ",
+      "heading": 279.4
+    },
+    {
+      "step_index": 14,
+      "pano_id": "4LxLA9oWFuJCI9GgmTq8Iw",
+      "heading": 200.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "YQ6N5lKihdPBwNGN-iZeLQ",
+      "heading": 188.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "yJtNMOIXwIN2HspBTWqm7g",
+      "heading": 188.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "8f-IllScn9ZO5kOgQz8LXw",
+      "heading": 188.8
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight along the parking lane past Taco Cabana and the strip mall -> Continue straight past the pylon sign towards the KFC -> Destination will be on the left",
+  "agent_concise_description": "The provided text describes a zigzagging path with multiple turns, but the visual evidence shows a continuous straight walk through a parking lot lane. The route starts near Taco Cabana and proceeds straight past a strip mall and a large pylon sign directly towards the KFC. The destination is the red building on the left at the end of the path."
+}

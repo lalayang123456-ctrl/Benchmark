@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260125_031931</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260125_031931</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>7</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"bLFKdEPdLncoUudFpmxZAQ": {"lat": 3.153026735259883, "lng": 101.7071269273249, "links": [{"pano_id": "NNUR6JvywmnLII319rOsIQ", "heading": 211.6513, "description": "Jalan P. Ramlee"}, {"pano_id": "TgD1IkGUjq3_0wfM9A0rzQ", "heading": 32.75356, "description": "Jalan P. Ramlee"}]}, "TgD1IkGUjq3_0wfM9A0rzQ": {"lat": 3.153109254575469, "lng": 101.7071800932657, "links": [{"pano_id": "bLFKdEPdLncoUudFpmxZAQ", "heading": 212.75356, "description": "Jalan P. Ramlee"}, {"pano_id": "x66mSCpXEP4Pi4hSWEcuTQ", "heading": 22.403484, "description": "Jalan P. Ramlee"}]}, "NNUR6JvywmnLII319rOsIQ": {"lat": 3.152948217507788, "lng": 101.7070784525201, "links": [{"pano_id": "bLFKdEPdLncoUudFpmxZAQ", "heading": 31.65131, "description": "Jalan P. Ramlee"}, {"pano_id": "U90wFgF2_ewdkrGxGi6uRw", "heading": 210.31345, "description": "Jalan P. Ramlee"}]}, "x66mSCpXEP4Pi4hSWEcuTQ": {"lat": 3.153202677968506, "lng": 101.7072186646516, "links": [{"pano_id": "TgD1IkGUjq3_0wfM9A0rzQ", "heading": 202.40349, "description": "Jalan P. Ramlee"}, {"pano_id": "TYYAQ1Oe5YVp8RfsHMLpWQ", "heading": 30.617846, "description": "Jalan P. Ramlee"}]}, "U90wFgF2_ewdkrGxGi6uRw": {"lat": 3.152867806802458, "lng": 101.7070313676954, "links": [{"pano_id": "CgulZs9wOtbuVr_9cbavPQ", "heading": 208.52997, "description": "Jalan P. Ramlee"}, {"pano_id": "NNUR6JvywmnLII319rOsIQ", "heading": 30.313452, "description": "Jalan P. Ramlee"}]}, "CgulZs9wOtbuVr_9cbavPQ": {"lat": 3.152786911069353, "lng": 101.706987323423, "links": [{"pano_id": "ldgHnnUgqEhJCQ9XHp41kw", "heading": 206.7831, "description": "Jalan P. Ramlee"}, {"pano_id": "U90wFgF2_ewdkrGxGi6uRw", "heading": 28.529972, "description": "Jalan P. Ramlee"}]}, "TYYAQ1Oe5YVp8RfsHMLpWQ": {"lat": 3.153278159877088, "lng": 101.7072634040022, "links": [{"pano_id": "93VtLOdF6DfftTcM3OhdEA", "heading": 37.35714, "description": "Jalan P. Ramlee"}, {"pano_id": "x66mSCpXEP4Pi4hSWEcuTQ", "heading": 210.61784, "description": "Jalan P. Ramlee"}]}, "93VtLOdF6DfftTcM3OhdEA": {"lat": 3.153351336714425, "lng": 101.7073193499356, "links": [{"pano_id": "bqrgzYF7iDTLNqtb8t-Y6Q", "heading": 28.605234, "description": "Jalan P. Ramlee"}, {"pano_id": "TYYAQ1Oe5YVp8RfsHMLpWQ", "heading": 217.35713, "description": "Jalan P. Ramlee"}]}, "ldgHnnUgqEhJCQ9XHp41kw": {"lat": 3.152705457201472, "lng": 101.7069461459545, "links": [{"pano_id": "CgulZs9wOtbuVr_9cbavPQ", "heading": 26.783092, "description": "Jalan P. Ramlee"}, {"pano_id": "fAqyn3RZGXOcTxSwfJPI9g", "heading": 206.29938, "description": "Jalan P. Ramlee"}]}, "bqrgzYF7iDTLNqtb8t-Y6Q": {"lat": 3.153428798839593, "lng": 101.707361656896, "links": [{"pano_id": "0rKRhpvgMRqnE7EPeZjnOg", "heading": 29.360613, "description": "Jalan P. Ramlee"}, {"pano_id": "93VtLOdF6DfftTcM3OhdEA", "heading": 208.60524, "description": "Jalan P. Ramlee"}]}, "fAqyn3RZGXOcTxSwfJPI9g": {"lat": 3.152623844373859, "lng": 101.7069057503524, "links": [{"pano_id": "ldgHnnUgqEhJCQ9XHp41kw", "heading": 26.299376, "description": "Jalan P. Ramlee"}, {"pano_id": "EoVdMC0CDmviq1FR0KiQNQ", "heading": 205.97464, "description": "Jalan P. Ramlee"}]}, "EoVdMC0CDmviq1FR0KiQNQ": {"lat": 3.152542299831994, "lng": 101.7068659628714, "links": [{"pano_id": "fAqyn3RZGXOcTxSwfJPI9g", "heading": 25.974644, "description": "Jalan P. Ramlee"}]}, "0rKRhpvgMRqnE7EPeZjnOg": {"lat": 3.153509901932441, "lng": 101.7074073519073, "links": [{"pano_id": "bqrgzYF7iDTLNqtb8t-Y6Q", "heading": 209.36061, "description": "Jalan P. Ramlee"}, {"pano_id": "iDu6HmcDlf0SP_D5RYey7A", "heading": 34.304928, "description": "Jalan P. Ramlee"}]}, "iDu6HmcDlf0SP_D5RYey7A": {"lat": 3.153591267859467, "lng": 101.7074629504272, "links": [{"pano_id": "VeTahWM8nafI1yzhrzi0dA", "heading": 75.83483, "description": ""}, {"pano_id": "0rKRhpvgMRqnE7EPeZjnOg", "heading": 214.30493, "description": "Jalan P. Ramlee"}, {"pano_id": "zr4x480lc82_gCJMyIDAQg", "heading": 29.404972, "description": "Jalan P. Ramlee"}]}, "ODRIP_-SPELgp-QAkJ9t4A": {"lat": 3.152480385176149, "lng": 101.7068366000677, "links": [{"pano_id": "26r_01IvDHU0fUrc2vDDbg", "heading": 206.52467, "description": "Jalan P. Ramlee"}, {"pano_id": "EoVdMC0CDmviq1FR0KiQNQ", "heading": 25.3389, "description": "Jalan P. Ramlee"}, {"pano_id": "fAqyn3RZGXOcTxSwfJPI9g", "heading": 25.7, "distance": 17.7, "virtual": true}]}, "zr4x480lc82_gCJMyIDAQg": {"lat": 3.153711317319364, "lng": 101.7075307111635, "links": [{"pano_id": "r6jqGVfoF1R8jRLLg0yTWQ", "heading": 30.523687, "description": "Jalan P. Ramlee"}, {"pano_id": "iDu6HmcDlf0SP_D5RYey7A", "heading": 209.40497, "description": "Jalan P. Ramlee"}, {"pano_id": "VeTahWM8nafI1yzhrzi0dA", "heading": 160.55, "distance": 11.15, "virtual": true}]}, "VeTahWM8nafI1yzhrzi0dA": {"lat": 3.153616772969827, "lng": 101.7075641571842, "links": [{"pano_id": "ekIssdo_OYSH35Zp2ciyCA", "heading": 95.78031, "description": ""}, {"pano_id": "iDu6HmcDlf0SP_D5RYey7A", "heading": 255.83482, "description": "Jalan P. Ramlee"}, {"pano_id": "zr4x480lc82_gCJMyIDAQg", "heading": 340.55, "distance": 11.15, "virtual": true}]}, "r6jqGVfoF1R8jRLLg0yTWQ": {"lat": 3.153791202530977, "lng": 101.7075778830868, "links": [{"pano_id": "zr4x480lc82_gCJMyIDAQg", "heading": 210.52368, "description": "Jalan P. Ramlee"}, {"pano_id": "np2HNB_AtKO2IKFeIwpDjQ", "heading": 105.98, "distance": 16.58, "virtual": true}, {"pano_id": "tvoYHAzT3BiCXQ0_ty9NVQ", "heading": 73.15, "distance": 9.24, "virtual": true}]}, "ekIssdo_OYSH35Zp2ciyCA": {"lat": 3.153605349222524, "lng": 101.7076771787519, "links": [{"pano_id": "N9Dm_U_VLYgXpekny77lPA", "heading": 122.320366, "description": ""}, {"pano_id": "VeTahWM8nafI1yzhrzi0dA", "heading": 275.7803, "description": ""}, {"pano_id": "JgzIsBbnXX9Bei152PpCrQ", "heading": 53.47, "distance": 14.93, "virtual": true}, {"pano_id": "np2HNB_AtKO2IKFeIwpDjQ", "heading": 16.99, "distance": 16.84, "virtual": true}]}, "N9Dm_U_VLYgXpekny77lPA": {"lat": 3.153540427614065, "lng": 101.7077799494307, "links": [{"pano_id": "ekIssdo_OYSH35Zp2ciyCA", "heading": 302.32037, "description": ""}, {"pano_id": "rMiJ4f6rdY5fZlkYs_vJGg", "heading": 108.363754, "description": ""}, {"pano_id": "6uRXjn7fhwjia49db_bbtA", "heading": 90.4, "distance": 11.55, "virtual": true}, {"pano_id": "_xlZ6yOE3dlCs8KwQiSIOw", "heading": 37.38, "distance": 10.98, "virtual": true}, {"pano_id": "JgzIsBbnXX9Bei152PpCrQ", "heading": 2.09, "distance": 16.12, "virtual": true}]}, "LMen-BciZLGlQY3jKTwH9Q": {"lat": 3.153856916504701, "lng": 101.7076166283657, "links": [{"pano_id": "09K1ZILiAgObg8pgJ6dlIw", "heading": 324.79355, "description": "Jln Sultan Ismail"}, {"pano_id": "tvoYHAzT3BiCXQ0_ty9NVQ", "heading": 135.52829, "description": "Jln Sultan Ismail"}, {"pano_id": "r6jqGVfoF1R8jRLLg0yTWQ", "heading": 210.48582, "description": "Jalan P. Ramlee"}, {"pano_id": "ZrWxb7kpu1TZHZW2sl8VOA", "heading": 39.535763, "description": "Jalan P. Ramlee"}, {"pano_id": "np2HNB_AtKO2IKFeIwpDjQ", "heading": 135.56, "distance": 16.63, "virtual": true}]}, "rMiJ4f6rdY5fZlkYs_vJGg": {"lat": 3.153513677881519, "lng": 101.7078606544558, "links": [{"pano_id": "N9Dm_U_VLYgXpekny77lPA", "heading": 288.36377, "description": ""}, {"pano_id": "76pCTIDVQFoa7wxtO0HkeA", "heading": 120.22697, "description": "Jln Sultan Ismail"}, {"pano_id": "6uRXjn7fhwjia49db_bbtA", "heading": 41.78, "distance": 3.88, "virtual": true}, {"pano_id": "_xlZ6yOE3dlCs8KwQiSIOw", "heading": 348.9, "distance": 11.92, "virtual": true}]}, "76pCTIDVQFoa7wxtO0HkeA": {"lat": 3.153471477448307, "lng": 101.7079331934714, "links": [{"pano_id": "6uRXjn7fhwjia49db_bbtA", "heading": 324.2095, "description": "Jln Sultan Ismail"}, {"pano_id": "HjQVHEkH8QiBb7mo9cdlcQ", "heading": 126.24628, "description": "Jln Sultan Ismail"}, {"pano_id": "rMiJ4f6rdY5fZlkYs_vJGg", "heading": 300.22696, "description": ""}]}, "HjQVHEkH8QiBb7mo9cdlcQ": {"lat": 3.153416406002663, "lng": 101.7080084256057, "links": [{"pano_id": "yIq8PSTLvITt4XTUKEH4ig", "heading": 120.25549, "description": "Jln Sultan Ismail"}, {"pano_id": "76pCTIDVQFoa7wxtO0HkeA", "heading": 306.24628, "description": "Jln Sultan Ismail"}]}, "6uRXjn7fhwjia49db_bbtA": {"lat": 3.153539694473106, "lng": 101.7078839364337, "links": [{"pano_id": "_xlZ6yOE3dlCs8KwQiSIOw", "heading": 331.0041, "description": "Jln Sultan Ismail"}, {"pano_id": "76pCTIDVQFoa7wxtO0HkeA", "heading": 144.20952, "description": "Jln Sultan Ismail"}, {"pano_id": "N9Dm_U_VLYgXpekny77lPA", "heading": 270.4, "distance": 11.55, "virtual": true}, {"pano_id": "rMiJ4f6rdY5fZlkYs_vJGg", "heading": 221.78, "distance": 3.88, "virtual": true}]}, "_xlZ6yOE3dlCs8KwQiSIOw": {"lat": 3.1536188895903, "lng": 101.7078399786737, "links": [{"pano_id": "6uRXjn7fhwjia49db_bbtA", "heading": 151.00409, "description": "Jln Sultan Ismail"}, {"pano_id": "JgzIsBbnXX9Bei152PpCrQ", "heading": 320.54666, "description": "Jln Sultan Ismail"}, {"pano_id": "N9Dm_U_VLYgXpekny77lPA", "heading": 217.38, "distance": 10.98, "virtual": true}, {"pano_id": "rMiJ4f6rdY5fZlkYs_vJGg", "heading": 168.9, "distance": 11.92, "virtual": true}]}, "yIq8PSTLvITt4XTUKEH4ig": {"lat": 3.153371526117384, "lng": 101.7080854821321, "links": [{"pano_id": "HI5kRXyht8kRQr6oQN6ugA", "heading": 116.87067, "description": "Jln Sultan Ismail"}, {"pano_id": "HjQVHEkH8QiBb7mo9cdlcQ", "heading": 300.2555, "description": "Jln Sultan Ismail"}]}, "HI5kRXyht8kRQr6oQN6ugA": {"lat": 3.153327355596837, "lng": 101.7081727897648, "links": [{"pano_id": "yIq8PSTLvITt4XTUKEH4ig", "heading": 296.87067, "description": "Jln Sultan Ismail"}, {"pano_id": "LA6telp4VxEOkyaVxlOhkw", "heading": 110.398445, "description": "Jln Sultan Ismail"}]}, "JgzIsBbnXX9Bei152PpCrQ": {"lat": 3.153685291903967, "lng": 101.7077852486823, "links": [{"pano_id": "_xlZ6yOE3dlCs8KwQiSIOw", "heading": 140.54665, "description": "Jln Sultan Ismail"}, {"pano_id": "np2HNB_AtKO2IKFeIwpDjQ", "heading": 315.52832, "description": "Jln Sultan Ismail"}, {"pano_id": "ekIssdo_OYSH35Zp2ciyCA", "heading": 233.47, "distance": 14.93, "virtual": true}, {"pano_id": "N9Dm_U_VLYgXpekny77lPA", "heading": 182.09, "distance": 16.12, "virtual": true}]}, "LA6telp4VxEOkyaVxlOhkw": {"lat": 3.15329706692896, "lng": 101.708254363828, "links": [{"pano_id": "HI5kRXyht8kRQr6oQN6ugA", "heading": 290.39844, "description": "Jln Sultan Ismail"}, {"pano_id": "j6G5Kl2YYTeRoS3qC9WymA", "heading": 118.71122, "description": "Jln Sultan Ismail"}]}, "np2HNB_AtKO2IKFeIwpDjQ": {"lat": 3.153750145184518, "lng": 101.7077214839349, "links": [{"pano_id": "tvoYHAzT3BiCXQ0_ty9NVQ", "heading": 315.58365, "description": "Jln Sultan Ismail"}, {"pano_id": "JgzIsBbnXX9Bei152PpCrQ", "heading": 135.5283, "description": "Jln Sultan Ismail"}, {"pano_id": "r6jqGVfoF1R8jRLLg0yTWQ", "heading": 285.98, "distance": 16.58, "virtual": true}, {"pano_id": "ekIssdo_OYSH35Zp2ciyCA", "heading": 196.99, "distance": 16.84, "virtual": true}]}, "j6G5Kl2YYTeRoS3qC9WymA": {"lat": 3.153253356007181, "lng": 101.7083342873599, "links": [{"pano_id": "2GCNL-comMB0pye_QYyidQ", "heading": 118.69537, "description": "Jln Sultan Ismail"}, {"pano_id": "LA6telp4VxEOkyaVxlOhkw", "heading": 298.7112, "description": "Jln Sultan Ismail"}]}, "tvoYHAzT3BiCXQ0_ty9NVQ": {"lat": 3.153815300917754, "lng": 101.7076575454808, "links": [{"pano_id": "np2HNB_AtKO2IKFeIwpDjQ", "heading": 135.58366, "description": "Jln Sultan Ismail"}, {"pano_id": "r6jqGVfoF1R8jRLLg0yTWQ", "heading": 253.15, "distance": 9.24, "virtual": true}]}, "2GCNL-comMB0pye_QYyidQ": {"lat": 3.153209721220195, "lng": 101.7084141240795, "links": [{"pano_id": "j6G5Kl2YYTeRoS3qC9WymA", "heading": 298.69537, "description": "Jln Sultan Ismail"}, {"pano_id": "cvtS5RQdSz_GMB3jKz9YLw", "heading": 114.547455, "description": "Jln Sultan Ismail"}]}, "cvtS5RQdSz_GMB3jKz9YLw": {"lat": 3.153171292330767, "lng": 101.7084983914126, "links": [{"pano_id": "2GCNL-comMB0pye_QYyidQ", "heading": 294.54745, "description": "Jln Sultan Ismail"}, {"pano_id": "o1CdjdQkb77F9dk9yoHF-Q", "heading": 114.10177, "description": "Jln Sultan Ismail"}]}, "o1CdjdQkb77F9dk9yoHF-Q": {"lat": 3.153133690459446, "lng": 101.7085825719402, "links": [{"pano_id": "cvtS5RQdSz_GMB3jKz9YLw", "heading": 294.10178, "description": "Jln Sultan Ismail"}, {"pano_id": "naIwIPnYornqPXC1F35jGw", "heading": 111.40026, "description": "Jln Sultan Ismail"}]}, "naIwIPnYornqPXC1F35jGw": {"lat": 3.153100511986067, "lng": 101.7086673606518, "links": [{"pano_id": "fVrHkjbkU4TChIDwzyVslw", "heading": 111.361565, "description": "Jln Sultan Ismail"}, {"pano_id": "o1CdjdQkb77F9dk9yoHF-Q", "heading": 291.40027, "description": "Jln Sultan Ismail"}]}, "fVrHkjbkU4TChIDwzyVslw": {"lat": 3.15306733156883, "lng": 101.7087523231801, "links": [{"pano_id": "acCLjcj3bR9-tE9cfSR5dw", "heading": 112.89501, "description": "Jln Sultan Ismail"}, {"pano_id": "naIwIPnYornqPXC1F35jGw", "heading": 291.36157, "description": "Jln Sultan Ismail"}]}, "acCLjcj3bR9-tE9cfSR5dw": {"lat": 3.15303260397463, "lng": 101.708834679562, "links": [{"pano_id": "fVrHkjbkU4TChIDwzyVslw", "heading": 292.89502, "description": "Jln Sultan Ismail"}, {"pano_id": "rmeIJIWcPieXV6KWzC-zjA", "heading": 113.973976, "description": "Jln Sultan Ismail"}]}, "rmeIJIWcPieXV6KWzC-zjA": {"lat": 3.152995998198019, "lng": 101.7089171228829, "links": [{"pano_id": "acCLjcj3bR9-tE9cfSR5dw", "heading": 293.97397, "description": "Jln Sultan Ismail"}, {"pano_id": "CJRq2BN1jQWZrorlikOvcw", "heading": 117.361725, "description": "Jln Sultan Ismail"}]}, "CJRq2BN1jQWZrorlikOvcw": {"lat": 3.152953308264924, "lng": 101.7089997400171, "links": [{"pano_id": "J9lJZgt3JCf1KQK3vtUkdQ", "heading": 117.506615, "description": "Jln Sultan Ismail"}, {"pano_id": "rmeIJIWcPieXV6KWzC-zjA", "heading": 297.36172, "description": "Jln Sultan Ismail"}]}, "J9lJZgt3JCf1KQK3vtUkdQ": {"lat": 3.152909856618842, "lng": 101.7090833128315, "links": [{"pano_id": "CJRq2BN1jQWZrorlikOvcw", "heading": 297.50662, "description": "Jln Sultan Ismail"}, {"pano_id": "vV_Yn8DY45aY4yP0vL-7pQ", "heading": 123.60281, "description": "Jln Sultan Ismail"}]}, "vV_Yn8DY45aY4yP0vL-7pQ": {"lat": 3.152857752061738, "lng": 101.7091618470134, "links": [{"pano_id": "wlx6O3aW9UE_YuJHY053jg", "heading": 127.13041, "description": "Jln Sultan Ismail"}, {"pano_id": "J9lJZgt3JCf1KQK3vtUkdQ", "heading": 303.6028, "description": "Jln Sultan Ismail"}]}, "wlx6O3aW9UE_YuJHY053jg": {"lat": 3.152801336925164, "lng": 101.709236471916, "links": [{"pano_id": "vV_Yn8DY45aY4yP0vL-7pQ", "heading": 307.1304, "description": "Jln Sultan Ismail"}, {"pano_id": "PwIBIAwh9txUlfM_HL3aNw", "heading": 128.31456, "description": "Jln Sultan Ismail"}]}, "PwIBIAwh9txUlfM_HL3aNw": {"lat": 3.152745338849249, "lng": 101.7093074481534, "links": [{"pano_id": "wlx6O3aW9UE_YuJHY053jg", "heading": 308.31458, "description": "Jln Sultan Ismail"}, {"pano_id": "47mcdio9ZHS7rAkMGE-lCQ", "heading": 136.69319, "description": "Jln Sultan Ismail"}]}, "47mcdio9ZHS7rAkMGE-lCQ": {"lat": 3.15267861906654, "lng": 101.7093704320032, "links": [{"pano_id": "RLzAFCltKdCZQQZkcO8WFQ", "heading": 136.70682, "description": "Jln Sultan Ismail"}, {"pano_id": "PwIBIAwh9txUlfM_HL3aNw", "heading": 316.69318, "description": "Jln Sultan Ismail"}]}, "RLzAFCltKdCZQQZkcO8WFQ": {"lat": 3.152612051555499, "lng": 101.7094332421423, "links": [{"pano_id": "ffxnlltW07jV27XgGZFhqA", "heading": 138.54265, "description": "Jln Sultan Ismail"}, {"pano_id": "47mcdio9ZHS7rAkMGE-lCQ", "heading": 316.70682, "description": "Jln Sultan Ismail"}]}, "ffxnlltW07jV27XgGZFhqA": {"lat": 3.15254037123216, "lng": 101.7094966604402, "links": [{"pano_id": "Iw8cUxJCcFCEexUbddoSug", "heading": 139.96722, "description": "Jln Sultan Ismail"}, {"pano_id": "RLzAFCltKdCZQQZkcO8WFQ", "heading": 318.54266, "description": "Jln Sultan Ismail"}]}, "Iw8cUxJCcFCEexUbddoSug": {"lat": 3.152473048190586, "lng": 101.709553302569, "links": [{"pano_id": "AwOzBd8ygKIjLBLE7TKsPw", "heading": 139.94225, "description": "Jln Sultan Ismail"}, {"pano_id": "ffxnlltW07jV27XgGZFhqA", "heading": 319.96722, "description": "Jln Sultan Ismail"}]}, "AwOzBd8ygKIjLBLE7TKsPw": {"lat": 3.152401554884213, "lng": 101.7096135065833, "links": [{"pano_id": "Iw8cUxJCcFCEexUbddoSug", "heading": 319.94226, "description": "Jln Sultan Ismail"}, {"pano_id": "t788ghl_-ZPmRz_7c_KVjw", "heading": 141.974, "description": "Jln Sultan Ismail"}]}, "t788ghl_-ZPmRz_7c_KVjw": {"lat": 3.152330564637587, "lng": 101.709669106281, "links": [{"pano_id": "AwOzBd8ygKIjLBLE7TKsPw", "heading": 321.974, "description": "Jln Sultan Ismail"}, {"pano_id": "KwFWwUKyemaVs0E-V6tddg", "heading": 142.23448, "description": "Jln Sultan Ismail"}]}, "KwFWwUKyemaVs0E-V6tddg": {"lat": 3.152259353210948, "lng": 101.70972435851, "links": [{"pano_id": "t788ghl_-ZPmRz_7c_KVjw", "heading": 322.2345, "description": "Jln Sultan Ismail"}, {"pano_id": "nAG4dSqxVM1_7W2089lWKg", "heading": 141.68394, "description": "Jln Sultan Ismail"}]}, "nAG4dSqxVM1_7W2089lWKg": {"lat": 3.152188659618756, "lng": 101.7097803057655, "links": [{"pano_id": "KwFWwUKyemaVs0E-V6tddg", "heading": 321.68396, "description": "Jln Sultan Ismail"}, {"pano_id": "Y4SAz_ho5awNVttcRA3PKw", "heading": 145.85464, "description": "Jln Sultan Ismail"}]}, "Y4SAz_ho5awNVttcRA3PKw": {"lat": 3.152114349145756, "lng": 101.7098307799457, "links": [{"pano_id": "uoCNQ7UV0ARwtS_4yJknFQ", "heading": 148.66148, "description": "Jln Sultan Ismail"}, {"pano_id": "nAG4dSqxVM1_7W2089lWKg", "heading": 325.85464, "description": "Jln Sultan Ismail"}]}, "uoCNQ7UV0ARwtS_4yJknFQ": {"lat": 3.152036997792192, "lng": 101.7098779529108, "links": [{"pano_id": "7aZ-aL0rCVWz-kUNwUV6mw", "heading": 149.40096, "description": "Jln Sultan Ismail"}, {"pano_id": "Y4SAz_ho5awNVttcRA3PKw", "heading": 328.6615, "description": "Jln Sultan Ismail"}]}, "7aZ-aL0rCVWz-kUNwUV6mw": {"lat": 3.151958377021967, "lng": 101.7099245177739, "links": [{"pano_id": "uoCNQ7UV0ARwtS_4yJknFQ", "heading": 329.40097, "description": "Jln Sultan Ismail"}, {"pano_id": "jUF4rAY3aEvBtMYiyr97vg", "heading": 152.7078, "description": "Jln Sultan Ismail"}]}, "jUF4rAY3aEvBtMYiyr97vg": {"lat": 3.151874990366577, "lng": 101.7099676076657, "links": [{"pano_id": "7aZ-aL0rCVWz-kUNwUV6mw", "heading": 332.7078, "description": "Jln Sultan Ismail"}, {"pano_id": "lQ2898XiaXs2USzU2jCVng", "heading": 153.45735, "description": "Jln Sultan Ismail"}]}, "lQ2898XiaXs2USzU2jCVng": {"lat": 3.151794413733046, "lng": 101.7100079175807, "links": [{"pano_id": "wOXn9pRgz0Dbnje7qkrHsA", "heading": 154.66078, "description": "Jln Sultan Ismail"}, {"pano_id": "jUF4rAY3aEvBtMYiyr97vg", "heading": 333.45737, "description": "Jln Sultan Ismail"}]}, "wOXn9pRgz0Dbnje7qkrHsA": {"lat": 3.151708501143483, "lng": 101.7100486618856, "links": [{"pano_id": "HXq26A9e8_OvuB_4wuvwPA", "heading": 154.04764, "description": "Jln Sultan Ismail"}, {"pano_id": "lQ2898XiaXs2USzU2jCVng", "heading": 334.66077, "description": "Jln Sultan Ismail"}]}, "HXq26A9e8_OvuB_4wuvwPA": {"lat": 3.151627408121841, "lng": 101.7100881899578, "links": [{"pano_id": "wOXn9pRgz0Dbnje7qkrHsA", "heading": 334.04764, "description": "Jln Sultan Ismail"}, {"pano_id": "7NEOdq1O5_7Lh-js5gOlUA", "heading": 157.3063, "description": "Jln Sultan Ismail"}]}, "7NEOdq1O5_7Lh-js5gOlUA": {"lat": 3.151542153900428, "lng": 101.710123895548, "links": [{"pano_id": "HXq26A9e8_OvuB_4wuvwPA", "heading": 337.3063, "description": "Jln Sultan Ismail"}, {"pano_id": "Eg8daISORLUKImSxzCAkfA", "heading": 157.25636, "description": "Jln Sultan Ismail"}]}, "Eg8daISORLUKImSxzCAkfA": {"lat": 3.151457728767325, "lng": 101.7101593405255, "links": [{"pano_id": "7NEOdq1O5_7Lh-js5gOlUA", "heading": 337.25635, "description": "Jln Sultan Ismail"}, {"pano_id": "xZEEA6XU-XumGRlgA53Cuw", "heading": 158.18985, "description": "Jln Sultan Ismail"}]}, "xZEEA6XU-XumGRlgA53Cuw": {"lat": 3.151375358809597, "lng": 101.7101923530155, "links": [{"pano_id": "mzV51IeGa5k73GoEYKulsA", "heading": 159.42819, "description": "Jln Sultan Ismail"}, {"pano_id": "Eg8daISORLUKImSxzCAkfA", "heading": 338.18985, "description": "Jln Sultan Ismail"}, {"pano_id": "Uij1ugznreLU6xqQmRxvpw", "heading": 159.39, "distance": 9.34, "virtual": true}, {"pano_id": "CiKKbojNJloV1wtEKQaMvg", "heading": 159.4, "distance": 17.06, "virtual": true}]}, "mzV51IeGa5k73GoEYKulsA": {"lat": 3.151304172934958, "lng": 101.710219110515, "links": [{"pano_id": "Uij1ugznreLU6xqQmRxvpw", "heading": 159.02306, "description": "Jln Sultan Ismail"}, {"pano_id": "xZEEA6XU-XumGRlgA53Cuw", "heading": 339.4282, "description": "Jln Sultan Ismail"}, {"pano_id": "CiKKbojNJloV1wtEKQaMvg", "heading": 159.38, "distance": 8.6, "virtual": true}]}, "Uij1ugznreLU6xqQmRxvpw": {"lat": 3.151296706782993, "lng": 101.7102219773904, "links": [{"pano_id": "mzV51IeGa5k73GoEYKulsA", "heading": 339.02307, "description": "Jln Sultan Ismail"}, {"pano_id": "CiKKbojNJloV1wtEKQaMvg", "heading": 159.42278, "description": "Jln Sultan Ismail"}, {"pano_id": "xZEEA6XU-XumGRlgA53Cuw", "heading": 339.39, "distance": 9.34, "virtual": true}]}, "CiKKbojNJloV1wtEKQaMvg": {"lat": 3.151231779871002, "lng": 101.7102463892716, "links": [{"pano_id": "Uij1ugznreLU6xqQmRxvpw", "heading": 339.4228, "description": "Jln Sultan Ismail"}, {"pano_id": "QDxKHhLMRaVqfsry0kkk2w", "heading": 159.37234, "description": "Jln Sultan Ismail"}, {"pano_id": "xZEEA6XU-XumGRlgA53Cuw", "heading": 339.4, "distance": 17.06, "virtual": true}, {"pano_id": "mzV51IeGa5k73GoEYKulsA", "heading": 339.38, "distance": 8.6, "virtual": true}]}, "QDxKHhLMRaVqfsry0kkk2w": {"lat": 3.151145134404608, "lng": 101.710279054289, "links": [{"pano_id": "3B508Q8MzNSot3d_Q2rHZg", "heading": 159.57227, "description": "Jln Sultan Ismail"}, {"pano_id": "CiKKbojNJloV1wtEKQaMvg", "heading": 339.37234, "description": "Jln Sultan Ismail"}]}, "3B508Q8MzNSot3d_Q2rHZg": {"lat": 3.151061056856295, "lng": 101.7103104161902, "links": [{"pano_id": "g1ykWNgmlsIOqvZGvgLoqA", "heading": 161.64694, "description": "Jln Sultan Ismail"}, {"pano_id": "QDxKHhLMRaVqfsry0kkk2w", "heading": 339.57227, "description": "Jln Sultan Ismail"}]}, "g1ykWNgmlsIOqvZGvgLoqA": {"lat": 3.150971893414402, "lng": 101.7103400405987, "links": [{"pano_id": "3B508Q8MzNSot3d_Q2rHZg", "heading": 341.64694, "description": "Jln Sultan Ismail"}, {"pano_id": "Y9DLZphXsjtfITbDIHC4XQ", "heading": 164.56462, "description": "Jln Sultan Ismail"}]}, "Y9DLZphXsjtfITbDIHC4XQ": {"lat": 3.150885498461983, "lng": 101.7103639312568, "links": [{"pano_id": "g1ykWNgmlsIOqvZGvgLoqA", "heading": 344.5646, "description": "Jln Sultan Ismail"}, {"pano_id": "CGycQps2xHGnl5OwNZyzLw", "heading": 165.2663, "description": "Jln Sultan Ismail"}]}, "CGycQps2xHGnl5OwNZyzLw": {"lat": 3.15079346832391, "lng": 101.710388169421, "links": [{"pano_id": "Y9DLZphXsjtfITbDIHC4XQ", "heading": 345.2663, "description": "Jln Sultan Ismail"}, {"pano_id": "wodyI1AsTsqTSFUMAweSwQ", "heading": 165.25346, "description": "Jln Sultan Ismail"}]}, "wodyI1AsTsqTSFUMAweSwQ": {"lat": 3.150705806167915, "lng": 101.7104112782137, "links": [{"pano_id": "CGycQps2xHGnl5OwNZyzLw", "heading": 345.25345, "description": "Jln Sultan Ismail"}]}};
+        const targetPanos = ["fAqyn3RZGXOcTxSwfJPI9g", "bLFKdEPdLncoUudFpmxZAQ", "CiKKbojNJloV1wtEKQaMvg", "j6G5Kl2YYTeRoS3qC9WymA"];
+        const spawnPoints = ["Iw8cUxJCcFCEexUbddoSug", "ffxnlltW07jV27XgGZFhqA", "CiKKbojNJloV1wtEKQaMvg", "HI5kRXyht8kRQr6oQN6ugA", "JgzIsBbnXX9Bei152PpCrQ", "PwIBIAwh9txUlfM_HL3aNw", "tvoYHAzT3BiCXQ0_ty9NVQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

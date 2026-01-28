@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_transit_20260124_112018</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_transit_20260124_112018</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"TfMZDQjBGz5Ajx6Y3R55rA": {"lat": 43.64170442378619, "lng": -79.37719767145306, "links": [{"pano_id": "HyqXCuQTOc-HrnUy8GlHIg", "heading": 334.06552, "description": "Bay St."}, {"pano_id": "qpd-9DkQLU_7EzVp0QGrBw", "heading": 154.09541, "description": "Bay St."}]}, "HyqXCuQTOc-HrnUy8GlHIg": {"lat": 43.64178650340347, "lng": -79.37725283031024, "links": [{"pano_id": "TfMZDQjBGz5Ajx6Y3R55rA", "heading": 154.06552, "description": "Bay St."}, {"pano_id": "lgQCNgb93T7TkNHbiZDGKg", "heading": 333.08633, "description": "Bay St."}]}, "qpd-9DkQLU_7EzVp0QGrBw": {"lat": 43.64162428335813, "lng": -79.37714388723981, "links": [{"pano_id": "LFY3OX5lG4JSMx2AEqj6TQ", "heading": 154.03238, "description": "Bay St."}, {"pano_id": "TfMZDQjBGz5Ajx6Y3R55rA", "heading": 334.0954, "description": "Bay St."}]}, "LFY3OX5lG4JSMx2AEqj6TQ": {"lat": 43.64154513257379, "lng": -79.37709061849942, "links": [{"pano_id": "nDpyYEYUdnT2fPejfNZ14w", "heading": 154.16011, "description": "Bay St."}, {"pano_id": "qpd-9DkQLU_7EzVp0QGrBw", "heading": 334.03238, "description": "Bay St."}]}, "lgQCNgb93T7TkNHbiZDGKg": {"lat": 43.64186525949064, "lng": -79.37730807505174, "links": [{"pano_id": "ceBIFyJUIxkRlo6FIOC3EQ", "heading": 332.8704, "description": "Bay St."}, {"pano_id": "HyqXCuQTOc-HrnUy8GlHIg", "heading": 153.08633, "description": "Bay St."}]}, "ceBIFyJUIxkRlo6FIOC3EQ": {"lat": 43.6419443775596, "lng": -79.37736409301414, "links": [{"pano_id": "lgQCNgb93T7TkNHbiZDGKg", "heading": 152.87039, "description": "Bay St."}, {"pano_id": "dbyYXE5I1LyLkGRAOFe2fA", "heading": 338.4247, "description": "Bay St."}]}, "nDpyYEYUdnT2fPejfNZ14w": {"lat": 43.64146848429408, "lng": -79.37703932582852, "links": [{"pano_id": "LFY3OX5lG4JSMx2AEqj6TQ", "heading": 334.16013, "description": "Bay St."}, {"pano_id": "qwnDksOngqXm2EqgRHMQRA", "heading": 154.16672, "description": "Bay St."}]}, "dbyYXE5I1LyLkGRAOFe2fA": {"lat": 43.64202566801175, "lng": -79.37740851214122, "links": [{"pano_id": "ceBIFyJUIxkRlo6FIOC3EQ", "heading": 158.42471, "description": "Bay St."}, {"pano_id": "AgeZm_gutpeFAIWUwHwYUQ", "heading": 354.98788, "description": "Harbour St"}, {"pano_id": "cWHbFqgoTYasbBpzWyoAZA", "heading": 305.17, "distance": 12.85, "virtual": true}, {"pano_id": "5ceZqKlJskcHbKsdP_vzcQ", "heading": 28.2, "distance": 17.64, "virtual": true}]}, "qwnDksOngqXm2EqgRHMQRA": {"lat": 43.64136394468321, "lng": -79.37696938904219, "links": [{"pano_id": "nDpyYEYUdnT2fPejfNZ14w", "heading": 334.16672, "description": "Bay St."}, {"pano_id": "1PSg8zJiY_xPX32Eru25RA", "heading": 154.14407, "description": "Bay St."}]}, "AgeZm_gutpeFAIWUwHwYUQ": {"lat": 43.64213129978752, "lng": -79.37742131378124, "links": [{"pano_id": "cWHbFqgoTYasbBpzWyoAZA", "heading": 245.34885, "description": "Harbour St"}, {"pano_id": "5ceZqKlJskcHbKsdP_vzcQ", "heading": 67.89733, "description": "Harbour St"}, {"pano_id": "dbyYXE5I1LyLkGRAOFe2fA", "heading": 174.98788, "description": "Bay St."}, {"pano_id": "4AWdz9EAUdt_1AWpFxqHbQ", "heading": 326.24942, "description": "Bay St."}]}, "1PSg8zJiY_xPX32Eru25RA": {"lat": 43.64127554732449, "lng": -79.3769101918931, "links": [{"pano_id": "STt5OCZZJb0G1OkZ6sKX_g", "heading": 157.88731, "description": "Martin Goodman Trl"}, {"pano_id": "qwnDksOngqXm2EqgRHMQRA", "heading": 334.14407, "description": "Bay St."}, {"pano_id": "rYAPb9c9Jy-FFm2Fy-SPxg", "heading": 178.6577, "description": "Queens Quay W"}, {"pano_id": "L2QoH2O3UVhpIuVLK22zsg", "heading": 125.64, "distance": 11.52, "virtual": true}, {"pano_id": "ae32gWNp7xSgtRci77d_3g", "heading": 213.64, "distance": 17.81, "virtual": true}]}, "cWHbFqgoTYasbBpzWyoAZA": {"lat": 43.6420922093507, "lng": -79.37753902005286, "links": [{"pano_id": "bIXPHRGX0XN0ETAhcFXa6Q", "heading": 243.9487, "description": "Harbour St"}, {"pano_id": "AgeZm_gutpeFAIWUwHwYUQ", "heading": 65.34884, "description": "Harbour St"}, {"pano_id": "dbyYXE5I1LyLkGRAOFe2fA", "heading": 125.17, "distance": 12.85, "virtual": true}, {"pano_id": "4AWdz9EAUdt_1AWpFxqHbQ", "heading": 9.26, "distance": 15.09, "virtual": true}]}, "STt5OCZZJb0G1OkZ6sKX_g": {"lat": 43.64101968937236, "lng": -79.37676653769618, "links": [{"pano_id": "Lz2ugero_GSc6Ww3bN5qLQ", "heading": 245.63153, "description": ""}, {"pano_id": "L2QoH2O3UVhpIuVLK22zsg", "heading": 354.22482, "description": "Queens Quay W"}, {"pano_id": "AtRyNhaMQcoTbnI5LpujLA", "heading": 60.28414, "description": "Waterfront Trl"}, {"pano_id": "1PSg8zJiY_xPX32Eru25RA", "heading": 337.8873, "description": "Bay St."}]}, "4AWdz9EAUdt_1AWpFxqHbQ": {"lat": 43.64222611723745, "lng": -79.37750886320482, "links": [{"pano_id": "AgeZm_gutpeFAIWUwHwYUQ", "heading": 146.24942, "description": "Harbour St"}, {"pano_id": "tFCg04l_DK9PYtzA8dApdg", "heading": 343.28644, "description": "Bay St."}, {"pano_id": "cWHbFqgoTYasbBpzWyoAZA", "heading": 189.26, "distance": 15.09, "virtual": true}, {"pano_id": "5ceZqKlJskcHbKsdP_vzcQ", "heading": 112.32, "distance": 17.74, "virtual": true}]}, "5ceZqKlJskcHbKsdP_vzcQ": {"lat": 43.64216551364048, "lng": -79.37730489611728, "links": [{"pano_id": "35q9iTxYfzXVCreL5Z31og", "heading": 67.86036, "description": "Harbour St"}, {"pano_id": "AgeZm_gutpeFAIWUwHwYUQ", "heading": 247.89734, "description": "Harbour St"}, {"pano_id": "dbyYXE5I1LyLkGRAOFe2fA", "heading": 208.2, "distance": 17.64, "virtual": true}, {"pano_id": "4AWdz9EAUdt_1AWpFxqHbQ", "heading": 292.32, "distance": 17.74, "virtual": true}]}, "rYAPb9c9Jy-FFm2Fy-SPxg": {"lat": 43.64118002101068, "lng": -79.37690709886249, "links": [{"pano_id": "1PSg8zJiY_xPX32Eru25RA", "heading": 358.6577, "description": "Bay St."}, {"pano_id": "ae32gWNp7xSgtRci77d_3g", "heading": 247.41579, "description": "Queens Quay W"}, {"pano_id": "L2QoH2O3UVhpIuVLK22zsg", "heading": 66.78, "distance": 9.92, "virtual": true}]}, "Lz2ugero_GSc6Ww3bN5qLQ": {"lat": 43.64098217580091, "lng": -79.3768809799333, "links": [{"pano_id": "STt5OCZZJb0G1OkZ6sKX_g", "heading": 65.63154, "description": "Martin Goodman Trl"}, {"pano_id": "D7pfaCmccbdXY4pNuubt6A", "heading": 255.14967, "description": ""}]}, "35q9iTxYfzXVCreL5Z31og": {"lat": 43.64219875369501, "lng": -79.37719200091448, "links": [{"pano_id": "5ceZqKlJskcHbKsdP_vzcQ", "heading": 247.86037, "description": "Harbour St"}, {"pano_id": "YLeBFWCtepjZO9b7y97k8w", "heading": 67.658195, "description": "Harbour St"}]}, "AtRyNhaMQcoTbnI5LpujLA": {"lat": 43.64106969166663, "lng": -79.37664547965035, "links": [{"pano_id": "STt5OCZZJb0G1OkZ6sKX_g", "heading": 240.28415, "description": "Martin Goodman Trl"}, {"pano_id": "M_Y4aRppG4XQI6RfqEqMyQ", "heading": 354.72708, "description": ""}]}, "L2QoH2O3UVhpIuVLK22zsg": {"lat": 43.64121518470578, "lng": -79.37679385950439, "links": [{"pano_id": "ID2QfPccFb7BIX_RiYdlQw", "heading": 66.017395, "description": "Queens Quay W"}, {"pano_id": "STt5OCZZJb0G1OkZ6sKX_g", "heading": 174.22481, "description": "Martin Goodman Trl"}, {"pano_id": "M_Y4aRppG4XQI6RfqEqMyQ", "heading": 118.57083, "description": ""}, {"pano_id": "1PSg8zJiY_xPX32Eru25RA", "heading": 305.64, "distance": 11.52, "virtual": true}, {"pano_id": "rYAPb9c9Jy-FFm2Fy-SPxg", "heading": 246.78, "distance": 9.92, "virtual": true}]}, "bIXPHRGX0XN0ETAhcFXa6Q": {"lat": 43.64205224156363, "lng": -79.37765200074953, "links": [{"pano_id": "cWHbFqgoTYasbBpzWyoAZA", "heading": 63.948692, "description": "Harbour St"}, {"pano_id": "QJKt_nwX7HKaYaLqTLy4Cw", "heading": 244.11844, "description": "Harbour St"}]}, "ae32gWNp7xSgtRci77d_3g": {"lat": 43.64114218570242, "lng": -79.37703279610622, "links": [{"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 212.96074, "description": "Martin Goodman Trl"}, {"pano_id": "rYAPb9c9Jy-FFm2Fy-SPxg", "heading": 67.41579, "description": "Queens Quay W"}, {"pano_id": "-calFO1NeFE5H1YjH4F2Pg", "heading": 246.52078, "description": "Queens Quay W"}, {"pano_id": "1PSg8zJiY_xPX32Eru25RA", "heading": 33.64, "distance": 17.81, "virtual": true}]}, "tFCg04l_DK9PYtzA8dApdg": {"lat": 43.64232881988411, "lng": -79.37755147800716, "links": [{"pano_id": "dt1R5n9ZMp2NJQIjHqHEVg", "heading": 342.39917, "description": "Bay St."}, {"pano_id": "4AWdz9EAUdt_1AWpFxqHbQ", "heading": 163.28645, "description": "Bay St."}, {"pano_id": "ST_rvzvfUM0Rw1SrxgJD9w", "heading": 338.94, "distance": 17.65, "virtual": true}]}, "YLeBFWCtepjZO9b7y97k8w": {"lat": 43.64223279019641, "lng": -79.37707755906162, "links": [{"pano_id": "35q9iTxYfzXVCreL5Z31og", "heading": 247.65819, "description": "Harbour St"}, {"pano_id": "0xu-o8XWmoSlK-AYUXjZ1g", "heading": 69.250175, "description": "Harbour St"}]}, "QJKt_nwX7HKaYaLqTLy4Cw": {"lat": 43.64201296562011, "lng": -79.377763864391, "links": [{"pano_id": "iyRwXlDUjMQsYNwqLNBH5A", "heading": 244.13942, "description": "Harbour St"}, {"pano_id": "bIXPHRGX0XN0ETAhcFXa6Q", "heading": 64.11843, "description": "Harbour St"}]}, "oro3RTZVp_lfeSa2xodThw": {"lat": 43.64099960162361, "lng": -79.37716055519424, "links": [{"pano_id": "RwlGU3WVSD-mPc6rV3Vx5Q", "heading": 211.93839, "description": "Martin Goodman Trl"}, {"pano_id": "ae32gWNp7xSgtRci77d_3g", "heading": 32.960743, "description": "Queens Quay W"}, {"pano_id": "D7pfaCmccbdXY4pNuubt6A", "heading": 110.64, "distance": 13.16, "virtual": true}, {"pano_id": "d2JLpvwDt8sXVTWcJQKNfw", "heading": 155.96, "distance": 7.74, "virtual": true}, {"pano_id": "-calFO1NeFE5H1YjH4F2Pg", "heading": 347.58, "distance": 10.64, "virtual": true}, {"pano_id": "TbwrULLhMGLlgdk4-d-SUA", "heading": 299.89, "distance": 12.93, "virtual": true}]}, "M_Y4aRppG4XQI6RfqEqMyQ": {"lat": 43.64116131549481, "lng": -79.37665716446507, "links": [{"pano_id": "L2QoH2O3UVhpIuVLK22zsg", "heading": 298.57083, "description": "Queens Quay W"}, {"pano_id": "AtRyNhaMQcoTbnI5LpujLA", "heading": 174.72707, "description": "Waterfront Trl"}, {"pano_id": "ID2QfPccFb7BIX_RiYdlQw", "heading": 348.45, "distance": 10.18, "virtual": true}]}, "ID2QfPccFb7BIX_RiYdlQw": {"lat": 43.64125103225907, "lng": -79.37668251019784, "links": [{"pano_id": "L2QoH2O3UVhpIuVLK22zsg", "heading": 246.0174, "description": "Queens Quay W"}, {"pano_id": "-o3rW2hBPaI7K7hvTAVX1g", "heading": 64.65917, "description": "Queens Quay W"}, {"pano_id": "M_Y4aRppG4XQI6RfqEqMyQ", "heading": 168.45, "distance": 10.18, "virtual": true}]}, "D7pfaCmccbdXY4pNuubt6A": {"lat": 43.64095789161079, "lng": -79.37700753638674, "links": [{"pano_id": "Lz2ugero_GSc6Ww3bN5qLQ", "heading": 75.14968, "description": ""}, {"pano_id": "d2JLpvwDt8sXVTWcJQKNfw", "heading": 255.14311, "description": ""}, {"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 290.64, "distance": 13.16, "virtual": true}]}, "dt1R5n9ZMp2NJQIjHqHEVg": {"lat": 43.64240094418298, "lng": -79.37758309542848, "links": [{"pano_id": "tFCg04l_DK9PYtzA8dApdg", "heading": 162.39917, "description": "Bay St."}, {"pano_id": "ST_rvzvfUM0Rw1SrxgJD9w", "heading": 335.80548, "description": "Bay St."}]}, "ST_rvzvfUM0Rw1SrxgJD9w": {"lat": 43.64247691493281, "lng": -79.3776302637897, "links": [{"pano_id": "dt1R5n9ZMp2NJQIjHqHEVg", "heading": 155.80547, "description": "Bay St."}, {"pano_id": "KruIelrCP3tzjCKDLUzj3Q", "heading": 348.24353, "description": "Bay St."}, {"pano_id": "tFCg04l_DK9PYtzA8dApdg", "heading": 158.94, "distance": 17.65, "virtual": true}]}, "d2JLpvwDt8sXVTWcJQKNfw": {"lat": 43.64093603728725, "lng": -79.37712137690487, "links": [{"pano_id": "RwlGU3WVSD-mPc6rV3Vx5Q", "heading": 250.72794, "description": "Martin Goodman Trl"}, {"pano_id": "D7pfaCmccbdXY4pNuubt6A", "heading": 75.143105, "description": ""}, {"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 335.96, "distance": 7.74, "virtual": true}]}, "iyRwXlDUjMQsYNwqLNBH5A": {"lat": 43.64197261123486, "lng": -79.37787890681224, "links": [{"pano_id": "QJKt_nwX7HKaYaLqTLy4Cw", "heading": 64.13943, "description": "Harbour St"}, {"pano_id": "1l7HALrRcQLaYn78l1ablA", "heading": 244.12375, "description": "Harbour St"}]}, "0xu-o8XWmoSlK-AYUXjZ1g": {"lat": 43.64226463774904, "lng": -79.37696139871802, "links": [{"pano_id": "q2RiT9n8I0ig7W3d0fm7AA", "heading": 71.657265, "description": "Harbour St"}, {"pano_id": "YLeBFWCtepjZO9b7y97k8w", "heading": 249.25018, "description": "Harbour St"}]}, "-o3rW2hBPaI7K7hvTAVX1g": {"lat": 43.64130176590043, "lng": -79.37653447383691, "links": [{"pano_id": "ID2QfPccFb7BIX_RiYdlQw", "heading": 244.65916, "description": "Queens Quay W"}, {"pano_id": "dNb_SyNU1EeU4XuhnIVgxA", "heading": 63.996204, "description": "Queens Quay W"}]}, "-calFO1NeFE5H1YjH4F2Pg": {"lat": 43.64109308469635, "lng": -79.37718899381055, "links": [{"pano_id": "ae32gWNp7xSgtRci77d_3g", "heading": 66.520775, "description": "Queens Quay W"}, {"pano_id": "TbwrULLhMGLlgdk4-d-SUA", "heading": 246.12636, "description": "Queens Quay W"}, {"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 167.58, "distance": 10.64, "virtual": true}]}, "RwlGU3WVSD-mPc6rV3Vx5Q": {"lat": 43.640905644927, "lng": -79.3772414892395, "links": [{"pano_id": "d2JLpvwDt8sXVTWcJQKNfw", "heading": 70.727936, "description": ""}, {"pano_id": "S-RMY2tgupqP3tazP_Mi6A", "heading": 239.14642, "description": "Martin Goodman Trl"}, {"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 31.93838, "description": "Martin Goodman Trl"}, {"pano_id": "TbwrULLhMGLlgdk4-d-SUA", "heading": 344.45, "distance": 17.53, "virtual": true}]}, "S-RMY2tgupqP3tazP_Mi6A": {"lat": 43.6408598098665, "lng": -79.37734751101347, "links": [{"pano_id": "RwlGU3WVSD-mPc6rV3Vx5Q", "heading": 59.146416, "description": "Martin Goodman Trl"}, {"pano_id": "ATHfZSgBV7NCVNEZ3ntQkQ", "heading": 247.65665, "description": "Martin Goodman Trl"}]}, "q2RiT9n8I0ig7W3d0fm7AA": {"lat": 43.64229193065382, "lng": -79.37684764392087, "links": [{"pano_id": "HhJ0waF-YC9i57S-3MlUtg", "heading": 71.66428, "description": "Harbour St"}, {"pano_id": "0xu-o8XWmoSlK-AYUXjZ1g", "heading": 251.65727, "description": "Harbour St"}, {"pano_id": "AZ8veyn95mFjt0LExj4jWA", "heading": 24.22, "distance": 15.42, "virtual": true}]}, "TbwrULLhMGLlgdk4-d-SUA": {"lat": 43.64105755825559, "lng": -79.3772999129225, "links": [{"pano_id": "rd2wXh6P5OpLmGvpSY1RKw", "heading": 249.90952, "description": "Queens Quay W"}, {"pano_id": "-calFO1NeFE5H1YjH4F2Pg", "heading": 66.12636, "description": "Queens Quay W"}, {"pano_id": "oro3RTZVp_lfeSa2xodThw", "heading": 119.89, "distance": 12.93, "virtual": true}, {"pano_id": "RwlGU3WVSD-mPc6rV3Vx5Q", "heading": 164.45, "distance": 17.53, "virtual": true}]}, "1l7HALrRcQLaYn78l1ablA": {"lat": 43.64193265095452, "lng": -79.37799274625945, "links": [{"pano_id": "iyRwXlDUjMQsYNwqLNBH5A", "heading": 64.12374, "description": "Harbour St"}, {"pano_id": "O9TjmujPAs9PQrK6jxObOw", "heading": 244.08287, "description": "Harbour St"}]}, "KruIelrCP3tzjCKDLUzj3Q": {"lat": 43.64256235642791, "lng": -79.3776548360048, "links": [{"pano_id": "aJYFTQi_VoI-77RY1yWyqA", "heading": 342.21866, "description": "Bay St."}, {"pano_id": "ST_rvzvfUM0Rw1SrxgJD9w", "heading": 168.24353, "description": "Bay St."}]}, "dNb_SyNU1EeU4XuhnIVgxA": {"lat": 43.64134280327001, "lng": -79.37641822689433, "links": [{"pano_id": "-o3rW2hBPaI7K7hvTAVX1g", "heading": 243.9962, "description": "Queens Quay W"}, {"pano_id": "Me7bF-81OvoyswHKoSyuBw", "heading": 64.72626, "description": "Queens Quay W"}]}, "Me7bF-81OvoyswHKoSyuBw": {"lat": 43.64138912689029, "lng": -79.376282648236, "links": [{"pano_id": "dNb_SyNU1EeU4XuhnIVgxA", "heading": 244.72626, "description": "Queens Quay W"}, {"pano_id": "Uu8q39PcHK3HJqNi5zC8nA", "heading": 65.39451, "description": "Queens Quay W"}]}, "aJYFTQi_VoI-77RY1yWyqA": {"lat": 43.64266103497926, "lng": -79.37769856765817, "links": [{"pano_id": "KWuwDvyuawYldiihYpikxw", "heading": 340.20444, "description": "Bay St."}, {"pano_id": "KruIelrCP3tzjCKDLUzj3Q", "heading": 162.21864, "description": "Bay St."}]}, "rd2wXh6P5OpLmGvpSY1RKw": {"lat": 43.64102733469869, "lng": -79.3774140967495, "links": [{"pano_id": "QXYqCopk19NbxqeoBt5Ynw", "heading": 245.50539, "description": "Queens Quay W"}, {"pano_id": "TbwrULLhMGLlgdk4-d-SUA", "heading": 69.909515, "description": "Queens Quay W"}]}, "O9TjmujPAs9PQrK6jxObOw": {"lat": 43.6418926180681, "lng": -79.37810658556674, "links": [{"pano_id": "1l7HALrRcQLaYn78l1ablA", "heading": 64.08287, "description": "Harbour St"}, {"pano_id": "qslPAPdM76ZHX9mUOWowjw", "heading": 244.15771, "description": "Harbour St"}]}, "ATHfZSgBV7NCVNEZ3ntQkQ": {"lat": 43.64082681785032, "lng": -79.37745842993559, "links": [{"pano_id": "S-RMY2tgupqP3tazP_Mi6A", "heading": 67.656654, "description": "Martin Goodman Trl"}, {"pano_id": "gw_BxOL5sR1JfrKDV9-wKw", "heading": 246.06291, "description": "Martin Goodman Trl"}]}, "HhJ0waF-YC9i57S-3MlUtg": {"lat": 43.64231849119447, "lng": -79.37673689610271, "links": [{"pano_id": "q2RiT9n8I0ig7W3d0fm7AA", "heading": 251.66429, "description": "Harbour St"}, {"pano_id": "1ghNI29LjGrOSkRW6D1nCQ", "heading": 68.21428, "description": "Harbour St"}, {"pano_id": "AZ8veyn95mFjt0LExj4jWA", "heading": 346.9, "distance": 11.41, "virtual": true}]}, "KWuwDvyuawYldiihYpikxw": {"lat": 43.64274360362492, "lng": -79.37773963587182, "links": [{"pano_id": "AIPT203SS6aK6-8KcLOmSA", "heading": 23.055853, "description": ""}, {"pano_id": "aJYFTQi_VoI-77RY1yWyqA", "heading": 160.20444, "description": "Bay St."}, {"pano_id": "y2CH7iuQ-9rvR1E0JbxYIQ", "heading": 343.93756, "description": "Bay St."}]}, "qslPAPdM76ZHX9mUOWowjw": {"lat": 43.64185289882702, "lng": -79.3782199092363, "links": [{"pano_id": "-zuvtK3ILi8Xh_MFdABQ8w", "heading": 244.095, "description": "Harbour St"}, {"pano_id": "O9TjmujPAs9PQrK6jxObOw", "heading": 64.157715, "description": "Harbour St"}]}, "gw_BxOL5sR1JfrKDV9-wKw": {"lat": 43.64079132301666, "lng": -79.37756891914037, "links": [{"pano_id": "5oUlit5BPRt0FLZMBKVc4Q", "heading": 245.36087, "description": "Martin Goodman Trl"}, {"pano_id": "ATHfZSgBV7NCVNEZ3ntQkQ", "heading": 66.06291, "description": "Martin Goodman Trl"}]}, "1ghNI29LjGrOSkRW6D1nCQ": {"lat": 43.64235136829181, "lng": -79.37662322694763, "links": [{"pano_id": "AZ8veyn95mFjt0LExj4jWA", "heading": 302.4284, "description": ""}, {"pano_id": "UqumMixMyikytKJvo-l6_w", "heading": 65.548225, "description": "Harbour St"}, {"pano_id": "HhJ0waF-YC9i57S-3MlUtg", "heading": 248.21428, "description": "Harbour St"}]}, "Uu8q39PcHK3HJqNi5zC8nA": {"lat": 43.64142554502773, "lng": -79.37617275892438, "links": [{"pano_id": "8lQ8hgZ_Mw7Y5Lv4afqyKQ", "heading": 65.35445, "description": "Queens Quay W"}, {"pano_id": "Me7bF-81OvoyswHKoSyuBw", "heading": 245.3945, "description": "Queens Quay W"}]}, "QXYqCopk19NbxqeoBt5Ynw": {"lat": 43.64098988469604, "lng": -79.37752767901715, "links": [{"pano_id": "d3FsAeJml6nKtsFrSpiodQ", "heading": 245.51225, "description": "Queens Quay W"}, {"pano_id": "rd2wXh6P5OpLmGvpSY1RKw", "heading": 65.50539, "description": "Queens Quay W"}]}, "d3FsAeJml6nKtsFrSpiodQ": {"lat": 43.640950237712, "lng": -79.37764796265857, "links": [{"pano_id": "155NxvWoIYcRmFRy89a-6Q", "heading": 245.43976, "description": "Queens Quay W"}, {"pano_id": "QXYqCopk19NbxqeoBt5Ynw", "heading": 65.51225, "description": "Queens Quay W"}]}, "UqumMixMyikytKJvo-l6_w": {"lat": 43.64238868707664, "lng": -79.37650981540673, "links": [{"pano_id": "HRiPFpA09ZwuDdr-VG9hbQ", "heading": 65.51122, "description": "Harbour St"}, {"pano_id": "1ghNI29LjGrOSkRW6D1nCQ", "heading": 245.54822, "description": "Harbour St"}]}, "5oUlit5BPRt0FLZMBKVc4Q": {"lat": 43.64075336562468, "lng": -79.37768327446936, "links": [{"pano_id": "gw_BxOL5sR1JfrKDV9-wKw", "heading": 65.36087, "description": "Martin Goodman Trl"}, {"pano_id": "EQ7M51EyvsXhdo6Af3dE0A", "heading": 245.32074, "description": "Martin Goodman Trl"}]}, "qT3N7XnM82i2msYAVNpCSg": {"lat": 43.64227006108099, "lng": -79.37653455975477, "links": [{"pano_id": "AJKLNXOhucMTALY9RwRgpg", "heading": 153.48117, "description": ""}, {"pano_id": "1ghNI29LjGrOSkRW6D1nCQ", "heading": 321.7206, "description": "Harbour St"}, {"pano_id": "HhJ0waF-YC9i57S-3MlUtg", "heading": 288.3, "distance": 17.15, "virtual": true}, {"pano_id": "UqumMixMyikytKJvo-l6_w", "heading": 8.58, "distance": 13.34, "virtual": true}]}, "y2CH7iuQ-9rvR1E0JbxYIQ": {"lat": 43.64283537759997, "lng": -79.37777615048164, "links": [{"pano_id": "KWuwDvyuawYldiihYpikxw", "heading": 163.93756, "description": "Bay St."}, {"pano_id": "Vj3iJwKNtxDxvanxyjBJjw", "heading": 342.5496, "description": "Bay St."}, {"pano_id": "AIPT203SS6aK6-8KcLOmSA", "heading": 59.38, "distance": 11.31, "virtual": true}]}, "AIPT203SS6aK6-8KcLOmSA": {"lat": 43.64288719752548, "lng": -79.37765517967208, "links": [{"pano_id": "KWuwDvyuawYldiihYpikxw", "heading": 203.05585, "description": "Bay St."}, {"pano_id": "U5fOnN4nv7Pwitt0rQ_BHw", "heading": 16.340445, "description": ""}, {"pano_id": "y2CH7iuQ-9rvR1E0JbxYIQ", "heading": 239.38, "distance": 11.31, "virtual": true}]}, "AZ8veyn95mFjt0LExj4jWA": {"lat": 43.64241840137579, "lng": -79.37676902930797, "links": [{"pano_id": "Ha1Hx3v4nqOCH7xl--Bd3w", "heading": 330.52316, "description": ""}, {"pano_id": "1ghNI29LjGrOSkRW6D1nCQ", "heading": 122.42841, "description": "Harbour St"}, {"pano_id": "q2RiT9n8I0ig7W3d0fm7AA", "heading": 204.22, "distance": 15.42, "virtual": true}, {"pano_id": "HhJ0waF-YC9i57S-3MlUtg", "heading": 166.9, "distance": 11.41, "virtual": true}]}, "8lQ8hgZ_Mw7Y5Lv4afqyKQ": {"lat": 43.64146525396998, "lng": -79.37605316071388, "links": [{"pano_id": "yVPdVj0-54S5OQ_f_ZcT-Q", "heading": 64.85109, "description": "Queens Quay W"}, {"pano_id": "Uu8q39PcHK3HJqNi5zC8nA", "heading": 245.35445, "description": "Queens Quay W"}]}, "Vj3iJwKNtxDxvanxyjBJjw": {"lat": 43.6430414721883, "lng": -79.37786567565232, "links": [{"pano_id": "y2CH7iuQ-9rvR1E0JbxYIQ", "heading": 162.54959, "description": "Bay St."}]}, "-zuvtK3ILi8Xh_MFdABQ8w": {"lat": 43.64181309893435, "lng": -79.378333146851, "links": [{"pano_id": "qslPAPdM76ZHX9mUOWowjw", "heading": 64.095, "description": "Harbour St"}]}, "U5fOnN4nv7Pwitt0rQ_BHw": {"lat": 43.64316754473563, "lng": -79.37754159756078, "links": [{"pano_id": "AIPT203SS6aK6-8KcLOmSA", "heading": 196.34044, "description": ""}]}, "HRiPFpA09ZwuDdr-VG9hbQ": {"lat": 43.64242754252309, "lng": -79.37639193599131, "links": [{"pano_id": "UqumMixMyikytKJvo-l6_w", "heading": 245.51122, "description": "Harbour St"}]}, "yVPdVj0-54S5OQ_f_ZcT-Q": {"lat": 43.6415032891454, "lng": -79.37594120908811, "links": [{"pano_id": "8lQ8hgZ_Mw7Y5Lv4afqyKQ", "heading": 244.85109, "description": "Queens Quay W"}]}, "Ha1Hx3v4nqOCH7xl--Bd3w": {"lat": 43.64249528995008, "lng": -79.37682908572317, "links": [{"pano_id": "AZ8veyn95mFjt0LExj4jWA", "heading": 150.52315, "description": ""}]}, "EQ7M51EyvsXhdo6Af3dE0A": {"lat": 43.64071516664094, "lng": -79.3777981451573, "links": [{"pano_id": "5oUlit5BPRt0FLZMBKVc4Q", "heading": 65.32073, "description": "Martin Goodman Trl"}]}, "155NxvWoIYcRmFRy89a-6Q": {"lat": 43.64090909379457, "lng": -79.37777237014623, "links": [{"pano_id": "d3FsAeJml6nKtsFrSpiodQ", "heading": 65.43975, "description": "Queens Quay W"}]}};
+        const targetPanos = ["TfMZDQjBGz5Ajx6Y3R55rA"];
+        const spawnPoints = ["AIPT203SS6aK6-8KcLOmSA", "EQ7M51EyvsXhdo6Af3dE0A", "yVPdVj0-54S5OQ_f_ZcT-Q"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "task_id": "nav_0256_target_20260124_1206_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_120531",
+  "spawn_point": "LVzwg3H7g74qUNMv8zJhqw",
+  "spawn_heading": 283.1,
+  "description": "Proceed straight along the avenue, crossing the intersection. The destination 'Biblioteca' is visible on the right, marked by a blue sign on the long station structure with metal grating. The path continues straight and ends alongside this structure.",
+  "ground_truth": {
+    "target_name": "Biblioteca Municipal",
+    "target_pano_id": "8e9KVm4vGg_r0CsUJ1OFFw",
+    "optimal_distance_meters": 103,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "8e9KVm4vGg_r0CsUJ1OFFw"
+  ],
+  "max_steps": 24,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "LVzwg3H7g74qUNMv8zJhqw",
+      "heading": 283.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "GZd3jbpcUAjSYbSIg4_D4Q",
+      "heading": 283.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "LfEzlSFcVa5DgPjX16CS-A",
+      "heading": 283.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "b63yQ10VnvL8hdFgsAqeZQ",
+      "heading": 283.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "c2pcJHkijqAF7j6fD6qVzg",
+      "heading": 280.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "WDF_AaoLx-Q0kTCtYQlNxQ",
+      "heading": 279.9
+    },
+    {
+      "step_index": 6,
+      "pano_id": "-tY5jMBKg8S3hwRHQHdabg",
+      "heading": 358.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "YWYgKW1ezB7CuN6bi49rPQ",
+      "heading": 15.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "SW07R1HTG0R3rZ416if8NA",
+      "heading": 15.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "S8ZdOl-BbK16BJcv8KZeCg",
+      "heading": 15.4
+    },
+    {
+      "step_index": 10,
+      "pano_id": "jDwdnboMI1UOGkaXxj0y0A",
+      "heading": 15.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "8e9KVm4vGg_r0CsUJ1OFFw",
+      "heading": 15.5
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 100m -> Stop",
+  "agent_concise_description": "Proceed straight along the avenue, crossing the intersection. The destination 'Biblioteca' is visible on the right, marked by a blue sign on the long station structure with metal grating. The path continues straight and ends alongside this structure."
+}

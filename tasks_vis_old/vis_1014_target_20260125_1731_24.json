@@ -1,0 +1,31 @@
+{
+  "task_id": "nav_1014_target_20260125_0330_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260125_033012",
+  "spawn_point": "l66J2z1hVFWaPiVnuleaOQ",
+  "spawn_heading": 0.0,
+  "description": "Navigate to Alfurat Market Halal أسواق الفرات للحلال. The visual evidence consists of a single static image showing a view from a parking lot towards a commercial strip containing 'Blissful Knead'. The complex series of turns and the specific path described in the text are not visible in the provided image. The destination sign 'Alfurat Market Halal' is not clearly visible.",
+  "ground_truth": {
+    "target_name": "Alfurat Market Halal أسواق الفرات للحلال",
+    "target_pano_id": "l66J2z1hVFWaPiVnuleaOQ",
+    "optimal_distance_meters": 283,
+    "route_description": "right→right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "l66J2z1hVFWaPiVnuleaOQ"
+  ],
+  "max_steps": 2,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "l66J2z1hVFWaPiVnuleaOQ",
+      "heading": 0.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head towards the commercial plaza parking lot.",
+  "agent_concise_description": "The visual evidence consists of a single static image showing a view from a parking lot towards a commercial strip containing 'Blissful Knead'. The complex series of turns and the specific path described in the text are not visible in the provided image. The destination sign 'Alfurat Market Halal' is not clearly visible."
+}

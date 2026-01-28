@@ -1,0 +1,86 @@
+{
+  "task_id": "nav_0351_target_20260124_1258_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260124_125753",
+  "spawn_point": "YNmaXWiGLPnDYGCxjibY-w",
+  "spawn_heading": 311.8,
+  "description": "Head straight along the road, passing a Pague Menos pharmacy on the right. Continue forward to find the destination, Versão Brasileira, on the left side in a white building, situated directly across from a Domino's Pizza.",
+  "ground_truth": {
+    "target_name": "Versão Brasileira",
+    "target_pano_id": "aRQt7DVR1PnJKJGDk0c1pQ",
+    "optimal_distance_meters": 108,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "aRQt7DVR1PnJKJGDk0c1pQ"
+  ],
+  "max_steps": 24,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "YNmaXWiGLPnDYGCxjibY-w",
+      "heading": 311.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "HPVnEBNw1FOeLR5BwMcqZg",
+      "heading": 311.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "IfO_T-btz0oK7nNbuBsKfA",
+      "heading": 311.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "9Pkaxw-SdDYyLHEiKRQQbg",
+      "heading": 311.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "epN9swFV_ts10-Vxpw9J-A",
+      "heading": 311.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "fxpno411H4XTBJhcaG6RPg",
+      "heading": 310.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "aGZ_-NRB-10qPumUc7571Q",
+      "heading": 310.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "77c3iW6SEg0MHPE9TpEylQ",
+      "heading": 310.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "UU7X_Cf5yC_fvL3nkGpvAA",
+      "heading": 310.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "slCeIGOZEMZ9LxJABKfHKQ",
+      "heading": 310.3
+    },
+    {
+      "step_index": 10,
+      "pano_id": "_3pdd9CYjM3dB_aYJ9HRrw",
+      "heading": 310.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "aRQt7DVR1PnJKJGDk0c1pQ",
+      "heading": 287.4
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 108m",
+  "agent_concise_description": "Head straight along the road, passing a Pague Menos pharmacy on the right. Continue forward to find the destination, Versão Brasileira, on the left side in a white building, situated directly across from a Domino's Pizza."
+}

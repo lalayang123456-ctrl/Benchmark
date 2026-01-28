@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_transit_20260124_024036</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_transit_20260124_024036</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"y-4JNm7Zu7h_kDWrMLvwAg": {"lat": 33.75448058489713, "lng": -84.38542163522769, "links": [{"pano_id": "RcFyVNv5PK3885FKsrLNLg", "heading": 92.054016, "description": "Edgewood Ave SE"}, {"pano_id": "4BsKmTodJB8fnnCqQZeHfQ", "heading": 271.99777, "description": "Edgewood Ave SE"}]}, "4BsKmTodJB8fnnCqQZeHfQ": {"lat": 33.75448373839175, "lng": -84.38553036932478, "links": [{"pano_id": "P0NvCp8GxnwsNlRZ9KvQhA", "heading": 271.5182, "description": "Edgewood Ave SE"}, {"pano_id": "y-4JNm7Zu7h_kDWrMLvwAg", "heading": 91.99779, "description": "Edgewood Ave SE"}]}, "RcFyVNv5PK3885FKsrLNLg": {"lat": 33.75447733538902, "lng": -84.38531266036698, "links": [{"pano_id": "y-4JNm7Zu7h_kDWrMLvwAg", "heading": 272.05402, "description": "Edgewood Ave SE"}, {"pano_id": "mqyjH1sJcly6ldu0ddLetQ", "heading": 91.70551, "description": "Edgewood Ave NE"}]}, "mqyjH1sJcly6ldu0ddLetQ": {"lat": 33.75447458596538, "lng": -84.38520160042287, "links": [{"pano_id": "RcFyVNv5PK3885FKsrLNLg", "heading": 271.7055, "description": "Edgewood Ave SE"}, {"pano_id": "LLMOPS5eO08CbEmWAPWucw", "heading": 91.27329, "description": "Edgewood Ave NE"}]}, "P0NvCp8GxnwsNlRZ9KvQhA": {"lat": 33.75448614150232, "lng": -84.38563942396978, "links": [{"pano_id": "89-FJj1xxnln2wRlNeGWLg", "heading": 271.2789, "description": "Edgewood Ave SE"}, {"pano_id": "4BsKmTodJB8fnnCqQZeHfQ", "heading": 91.518196, "description": "Edgewood Ave SE"}, {"pano_id": "Y8oHN0gVceQhr1TTSJZUeg", "heading": 270.97, "distance": 16.76, "virtual": true}]}, "89-FJj1xxnln2wRlNeGWLg": {"lat": 33.75448802131582, "lng": -84.38574070027174, "links": [{"pano_id": "Y8oHN0gVceQhr1TTSJZUeg", "heading": 270.56815, "description": "Edgewood Ave NE"}, {"pano_id": "P0NvCp8GxnwsNlRZ9KvQhA", "heading": 91.27889, "description": "Edgewood Ave SE"}, {"pano_id": "dbXmmX5R6O7ePkb_tf_-sg", "heading": 270.32, "distance": 16.76, "virtual": true}]}, "LLMOPS5eO08CbEmWAPWucw": {"lat": 33.75447254542947, "lng": -84.38509118177261, "links": [{"pano_id": "eQbbJ964cVEaWq5sC04LHw", "heading": 89.713745, "description": "Edgewood Ave NE"}, {"pano_id": "mqyjH1sJcly6ldu0ddLetQ", "heading": 271.2733, "description": "Edgewood Ave NE"}]}, "Y8oHN0gVceQhr1TTSJZUeg": {"lat": 33.75448868110848, "lng": -84.38582072687012, "links": [{"pano_id": "89-FJj1xxnln2wRlNeGWLg", "heading": 90.568146, "description": "Edgewood Ave SE"}, {"pano_id": "dbXmmX5R6O7ePkb_tf_-sg", "heading": 270.12247, "description": "Edgewood Ave NE"}, {"pano_id": "P0NvCp8GxnwsNlRZ9KvQhA", "heading": 90.97, "distance": 16.76, "virtual": true}]}, "eQbbJ964cVEaWq5sC04LHw": {"lat": 33.75447301541992, "lng": -84.38497803652115, "links": [{"pano_id": "LLMOPS5eO08CbEmWAPWucw", "heading": 269.71375, "description": "Edgewood Ave NE"}, {"pano_id": "y_bh1oTeSRawVsS2kVhUiA", "heading": 90.056, "description": "Edgewood Ave NE"}]}, "dbXmmX5R6O7ePkb_tf_-sg": {"lat": 33.75448886110184, "lng": -84.38592200286026, "links": [{"pano_id": "Y8oHN0gVceQhr1TTSJZUeg", "heading": 90.122475, "description": "Edgewood Ave NE"}, {"pano_id": "b_ajNWyYFgRZzRPvb9pQCg", "heading": 269.09628, "description": "Edgewood Ave NE"}, {"pano_id": "89-FJj1xxnln2wRlNeGWLg", "heading": 90.32, "distance": 16.76, "virtual": true}]}, "y_bh1oTeSRawVsS2kVhUiA": {"lat": 33.75447292562388, "lng": -84.38486753726349, "links": [{"pano_id": "eQbbJ964cVEaWq5sC04LHw", "heading": 270.056, "description": "Edgewood Ave NE"}, {"pano_id": "oLaYNDqez9h86wtfJQQxcQ", "heading": 91.629616, "description": "Edgewood Ave NE"}]}, "oLaYNDqez9h86wtfJQQxcQ": {"lat": 33.75447024738482, "lng": -84.38475431139398, "links": [{"pano_id": "tqOYBh9VYGpqALBhVQeB3A", "heading": 90.592445, "description": "Edgewood Ave NE"}, {"pano_id": "y_bh1oTeSRawVsS2kVhUiA", "heading": 271.6296, "description": "Edgewood Ave NE"}, {"pano_id": "Y1THaCKe8MSNBYO8fGqWig", "heading": 134.83789, "description": ""}]}, "b_ajNWyYFgRZzRPvb9pQCg": {"lat": 33.75448728044626, "lng": -84.38604252346715, "links": [{"pano_id": "qM7RzteSi-TKUtpkcmvd3g", "heading": 268.71396, "description": "Edgewood Ave NE"}, {"pano_id": "dbXmmX5R6O7ePkb_tf_-sg", "heading": 89.09627, "description": "Edgewood Ave NE"}]}, "qM7RzteSi-TKUtpkcmvd3g": {"lat": 33.75448512669177, "lng": -84.38615791189424, "links": [{"pano_id": "uDqStLS6S2iXTjomC7pqyQ", "heading": 268.85443, "description": "Edgewood Ave NE"}, {"pano_id": "b_ajNWyYFgRZzRPvb9pQCg", "heading": 88.71394, "description": "Edgewood Ave NE"}, {"pano_id": "L2AFil_P6jRvWrSTQrbj0g", "heading": 208.61278, "description": ""}]}, "Y1THaCKe8MSNBYO8fGqWig": {"lat": 33.7543728606071, "lng": -84.38463651456074, "links": [{"pano_id": "oLaYNDqez9h86wtfJQQxcQ", "heading": 314.8379, "description": "Edgewood Ave NE"}, {"pano_id": "tqOYBh9VYGpqALBhVQeB3A", "heading": 358.81, "distance": 10.72, "virtual": true}, {"pano_id": "hcCs1C3l8XXu6Dx9EnbOjw", "heading": 40.58, "distance": 17.98, "virtual": true}, {"pano_id": "YnXtjfERC_aAiQuxNqXHGg", "heading": 115.39, "distance": 16.34, "virtual": true}, {"pano_id": "RHUvhJUxB7DiMkCb96-9Zg", "heading": 151.31, "distance": 16.36, "virtual": true}]}, "tqOYBh9VYGpqALBhVQeB3A": {"lat": 33.75446925532645, "lng": -84.38463892021659, "links": [{"pano_id": "hcCs1C3l8XXu6Dx9EnbOjw", "heading": 76.14758, "description": ""}, {"pano_id": "oLaYNDqez9h86wtfJQQxcQ", "heading": 270.59244, "description": "Edgewood Ave NE"}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 89.56694, "description": "Edgewood Ave SE"}, {"pano_id": "Y1THaCKe8MSNBYO8fGqWig", "heading": 178.81, "distance": 10.72, "virtual": true}]}, "hcCs1C3l8XXu6Dx9EnbOjw": {"lat": 33.75449569187125, "lng": -84.38450997692394, "links": [{"pano_id": "tqOYBh9VYGpqALBhVQeB3A", "heading": 256.14758, "description": "Edgewood Ave NE"}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 41.62431, "description": ""}, {"pano_id": "Y1THaCKe8MSNBYO8fGqWig", "heading": 220.58, "distance": 17.98, "virtual": true}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 110.74, "distance": 7.89, "virtual": true}, {"pano_id": "qsSKgfxRb9N-M5xopqRcqw", "heading": 142.55, "distance": 17.06, "virtual": true}]}, "QiZZxGseO8Esf1AUXIigCQ": {"lat": 33.75447056705727, "lng": -84.38443018911077, "links": [{"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 108.53031, "description": "Courtland St SE"}, {"pano_id": "tqOYBh9VYGpqALBhVQeB3A", "heading": 269.56693, "description": "Edgewood Ave NE"}, {"pano_id": "hcCs1C3l8XXu6Dx9EnbOjw", "heading": 290.74, "distance": 7.89, "virtual": true}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 359.54, "distance": 11.0, "virtual": true}, {"pano_id": "9y5jDd5UAp0qyPQLuvRf1w", "heading": 89.27, "distance": 17.55, "virtual": true}, {"pano_id": "qsSKgfxRb9N-M5xopqRcqw", "heading": 164.43, "distance": 11.16, "virtual": true}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 62.87, "distance": 14.63, "virtual": true}]}, "uDqStLS6S2iXTjomC7pqyQ": {"lat": 33.75448323628513, "lng": -84.38627161618288, "links": [{"pano_id": "miOb0AXTFw09zZq5-KHDdQ", "heading": 268.7808, "description": "Edgewood Ave NE"}, {"pano_id": "qM7RzteSi-TKUtpkcmvd3g", "heading": 88.85444, "description": "Edgewood Ave NE"}, {"pano_id": "L2AFil_P6jRvWrSTQrbj0g", "heading": 150.85, "distance": 10.79, "virtual": true}, {"pano_id": "bJdjcmDRgZoKXv7WgMJVQA", "heading": 305.36, "distance": 13.13, "virtual": true}, {"pano_id": "b6mw-rC0dnBJtsVZQP6scQ", "heading": 341.85, "distance": 17.33, "virtual": true}]}, "L2AFil_P6jRvWrSTQrbj0g": {"lat": 33.75439847626825, "lng": -84.38621476406601, "links": [{"pano_id": "Vu3fB7kQf1ly6COuHMFv8w", "heading": 205.7861, "description": ""}, {"pano_id": "qM7RzteSi-TKUtpkcmvd3g", "heading": 28.612772, "description": "Edgewood Ave NE"}, {"pano_id": "uDqStLS6S2iXTjomC7pqyQ", "heading": 330.85, "distance": 10.79, "virtual": true}]}, "3OSJ7wxApte73nf-cqAd5A": {"lat": 33.75456944557161, "lng": -84.3844311513765, "links": [{"pano_id": "hcCs1C3l8XXu6Dx9EnbOjw", "heading": 221.62431, "description": ""}, {"pano_id": "aNwHNNgb4G4GkI-D9RKbKw", "heading": 33.16203, "description": ""}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 179.54, "distance": 11.0, "virtual": true}, {"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 143.94, "distance": 17.95, "virtual": true}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 108.26, "distance": 13.8, "virtual": true}, {"pano_id": "896WYqsKlr5RX7Vw8ZrUKg", "heading": 53.38, "distance": 16.66, "virtual": true}]}, "Vu3fB7kQf1ly6COuHMFv8w": {"lat": 33.75429001050607, "lng": -84.38627779052797, "links": [{"pano_id": "s84oy5NHtxICqhYuJ0Kjlg", "heading": 188.25479, "description": "Gilmer St SE"}, {"pano_id": "L2AFil_P6jRvWrSTQrbj0g", "heading": 25.786097, "description": ""}, {"pano_id": "awexHd37IZaM4MwQ0yL62Q", "heading": 253.6, "distance": 9.68, "virtual": true}, {"pano_id": "chhNjAA94C0zis1HuVKsCQ", "heading": 283.65, "distance": 17.77, "virtual": true}]}, "miOb0AXTFw09zZq5-KHDdQ": {"lat": 33.75448125837708, "lng": -84.38638339578435, "links": [{"pano_id": "bJdjcmDRgZoKXv7WgMJVQA", "heading": 357.28494, "description": "Peachtree Center Ave NE"}, {"pano_id": "D1zARM6Nf86iIBEVxWwJhA", "heading": 280.17892, "description": "Edgewood Ave SE"}, {"pano_id": "uDqStLS6S2iXTjomC7pqyQ", "heading": 88.78079, "description": "Edgewood Ave NE"}, {"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 237.57567, "description": "Peachtree Center Ave SE"}, {"pano_id": "b6mw-rC0dnBJtsVZQP6scQ", "heading": 16.49, "distance": 17.4, "virtual": true}]}, "oi2-0XVLr2AjQJJZFQ98Kw": {"lat": 33.75443899062048, "lng": -84.38431688221145, "links": [{"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 14.024645, "description": "Courtland St NE"}, {"pano_id": "qsSKgfxRb9N-M5xopqRcqw", "heading": 225.9504, "description": "Courtland St SE"}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 288.5303, "description": "Edgewood Ave SE"}, {"pano_id": "9y5jDd5UAp0qyPQLuvRf1w", "heading": 62.16993, "description": "Edgewood Ave SE"}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 323.94, "distance": 17.95, "virtual": true}, {"pano_id": "Ay7KquVBlK9fQ8wVHuP6zg", "heading": 76.58, "distance": 15.3, "virtual": true}]}, "s84oy5NHtxICqhYuJ0Kjlg": {"lat": 33.75420223858582, "lng": -84.3862931061084, "links": [{"pano_id": "awexHd37IZaM4MwQ0yL62Q", "heading": 311.74606, "description": "Gilmer St SE"}, {"pano_id": "jbSq3qfC1xTRnr0abEii7A", "heading": 132.61871, "description": "Gilmer St SE"}, {"pano_id": "Vu3fB7kQf1ly6COuHMFv8w", "heading": 8.2547865, "description": ""}]}, "9y5jDd5UAp0qyPQLuvRf1w": {"lat": 33.75447256808049, "lng": -84.38424038188865, "links": [{"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 242.16994, "description": "Courtland St SE"}, {"pano_id": "Ay7KquVBlK9fQ8wVHuP6zg", "heading": 91.328575, "description": "Edgewood Ave SE"}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 269.27, "distance": 17.55, "virtual": true}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 324.91, "distance": 7.88, "virtual": true}, {"pano_id": "evFQt7Rx5wJNNMqFtuFgqQ", "heading": 91.32, "distance": 17.93, "virtual": true}]}, "aNwHNNgb4G4GkI-D9RKbKw": {"lat": 33.7546398473045, "lng": -84.38437582107164, "links": [{"pano_id": "3-xz8QMB9HkW346QkPaDRA", "heading": 34.425186, "description": "Courtland St NE"}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 213.16203, "description": ""}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 146.67, "distance": 14.55, "virtual": true}, {"pano_id": "896WYqsKlr5RX7Vw8ZrUKg", "heading": 75.67, "distance": 8.52, "virtual": true}]}, "qsSKgfxRb9N-M5xopqRcqw": {"lat": 33.75437391485929, "lng": -84.38439779282211, "links": [{"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 45.95039, "description": "Courtland St SE"}, {"pano_id": "YnXtjfERC_aAiQuxNqXHGg", "heading": 225.74286, "description": "Courtland St SE"}, {"pano_id": "hcCs1C3l8XXu6Dx9EnbOjw", "heading": 322.55, "distance": 17.06, "virtual": true}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 344.43, "distance": 11.16, "virtual": true}]}, "bJdjcmDRgZoKXv7WgMJVQA": {"lat": 33.75455155126276, "lng": -84.3863874050918, "links": [{"pano_id": "b6mw-rC0dnBJtsVZQP6scQ", "heading": 30.905655, "description": "Peachtree Center Ave NE"}, {"pano_id": "miOb0AXTFw09zZq5-KHDdQ", "heading": 177.28494, "description": "Edgewood Ave NE"}, {"pano_id": "uDqStLS6S2iXTjomC7pqyQ", "heading": 125.36, "distance": 13.13, "virtual": true}, {"pano_id": "D1zARM6Nf86iIBEVxWwJhA", "heading": 239.45, "distance": 11.69, "virtual": true}, {"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 215.01, "distance": 17.71, "virtual": true}]}, "D1zARM6Nf86iIBEVxWwJhA": {"lat": 33.754498112543, "lng": -84.38649629777761, "links": [{"pano_id": "miOb0AXTFw09zZq5-KHDdQ", "heading": 100.17892, "description": "Edgewood Ave NE"}, {"pano_id": "bSxdMEHYrrYhGT96KJfiHA", "heading": 270.8204, "description": "Edgewood Ave SE"}, {"pano_id": "bJdjcmDRgZoKXv7WgMJVQA", "heading": 59.45, "distance": 11.69, "virtual": true}, {"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 180.64, "distance": 8.57, "virtual": true}, {"pano_id": "4FMXjH1rho7xCoGkerwUJA", "heading": 204.91, "distance": 16.88, "virtual": true}]}, "UVXqSyAFxNhjP_wE3qPEWw": {"lat": 33.75453054229239, "lng": -84.38428937738985, "links": [{"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 194.02464, "description": "Courtland St SE"}, {"pano_id": "896WYqsKlr5RX7Vw8ZrUKg", "heading": 1.0719188, "description": "Courtland St NE"}, {"pano_id": "QiZZxGseO8Esf1AUXIigCQ", "heading": 242.87, "distance": 14.63, "virtual": true}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 288.26, "distance": 13.8, "virtual": true}, {"pano_id": "9y5jDd5UAp0qyPQLuvRf1w", "heading": 144.91, "distance": 7.88, "virtual": true}, {"pano_id": "aNwHNNgb4G4GkI-D9RKbKw", "heading": 326.67, "distance": 14.55, "virtual": true}, {"pano_id": "Ay7KquVBlK9fQ8wVHuP6zg", "heading": 118.23, "distance": 14.01, "virtual": true}]}, "oczljzVoPhkp_u6Wih5nuQ": {"lat": 33.75442108039331, "lng": -84.38649734019558, "links": [{"pano_id": "miOb0AXTFw09zZq5-KHDdQ", "heading": 57.575672, "description": "Edgewood Ave NE"}, {"pano_id": "4FMXjH1rho7xCoGkerwUJA", "heading": 226.12807, "description": "Peachtree Center Ave SE"}, {"pano_id": "chhNjAA94C0zis1HuVKsCQ", "heading": 163.71785, "description": "Gilmer St SE"}, {"pano_id": "bJdjcmDRgZoKXv7WgMJVQA", "heading": 35.01, "distance": 17.71, "virtual": true}, {"pano_id": "D1zARM6Nf86iIBEVxWwJhA", "heading": 0.64, "distance": 8.57, "virtual": true}, {"pano_id": "bSxdMEHYrrYhGT96KJfiHA", "heading": 310.44, "distance": 13.43, "virtual": true}]}, "awexHd37IZaM4MwQ0yL62Q": {"lat": 33.75426542358558, "lng": -84.38637826387043, "links": [{"pano_id": "s84oy5NHtxICqhYuJ0Kjlg", "heading": 131.74606, "description": "Gilmer St SE"}, {"pano_id": "chhNjAA94C0zis1HuVKsCQ", "heading": 310.97363, "description": "Gilmer St SE"}, {"pano_id": "Vu3fB7kQf1ly6COuHMFv8w", "heading": 73.6, "distance": 9.68, "virtual": true}]}, "4FMXjH1rho7xCoGkerwUJA": {"lat": 33.75436044756238, "lng": -84.38657319609936, "links": [{"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 46.12807, "description": "Peachtree Center Ave SE"}, {"pano_id": "X2Uzm80H_fbEzCygiJccyQ", "heading": 215.13876, "description": "Peachtree Center Ave SE"}, {"pano_id": "D1zARM6Nf86iIBEVxWwJhA", "heading": 24.91, "distance": 16.88, "virtual": true}, {"pano_id": "chhNjAA94C0zis1HuVKsCQ", "heading": 109.91, "distance": 10.68, "virtual": true}, {"pano_id": "bSxdMEHYrrYhGT96KJfiHA", "heading": 348.27, "distance": 15.79, "virtual": true}]}, "jbSq3qfC1xTRnr0abEii7A": {"lat": 33.75413764154732, "lng": -84.38620866990071, "links": [{"pano_id": "BiDrmAQRdBSQNnT4pM74nQ", "heading": 132.74158, "description": "Gilmer St SE"}, {"pano_id": "s84oy5NHtxICqhYuJ0Kjlg", "heading": 312.6187, "description": "Gilmer St SE"}]}, "3-xz8QMB9HkW346QkPaDRA": {"lat": 33.75475084242972, "lng": -84.38428432548244, "links": [{"pano_id": "896WYqsKlr5RX7Vw8ZrUKg", "heading": 181.12067, "description": "Courtland St NE"}, {"pano_id": "sAC3-3Uk8YXoLQPztgN-fw", "heading": 1.5043206, "description": "Courtland St NE"}, {"pano_id": "aNwHNNgb4G4GkI-D9RKbKw", "heading": 214.42519, "description": ""}]}, "chhNjAA94C0zis1HuVKsCQ": {"lat": 33.75432772465048, "lng": -84.38646454411389, "links": [{"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 343.71786, "description": "Peachtree Center Ave SE"}, {"pano_id": "awexHd37IZaM4MwQ0yL62Q", "heading": 130.97363, "description": "Gilmer St SE"}, {"pano_id": "Vu3fB7kQf1ly6COuHMFv8w", "heading": 103.65, "distance": 17.77, "virtual": true}, {"pano_id": "4FMXjH1rho7xCoGkerwUJA", "heading": 289.91, "distance": 10.68, "virtual": true}, {"pano_id": "X2Uzm80H_fbEzCygiJccyQ", "heading": 251.96, "distance": 17.2, "virtual": true}]}, "Ay7KquVBlK9fQ8wVHuP6zg": {"lat": 33.75447093832542, "lng": -84.38415586254852, "links": [{"pano_id": "evFQt7Rx5wJNNMqFtuFgqQ", "heading": 91.309746, "description": "Edgewood Ave NE"}, {"pano_id": "9y5jDd5UAp0qyPQLuvRf1w", "heading": 271.32858, "description": "Edgewood Ave SE"}, {"pano_id": "oi2-0XVLr2AjQJJZFQ98Kw", "heading": 256.58, "distance": 15.3, "virtual": true}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 298.23, "distance": 14.01, "virtual": true}]}, "YnXtjfERC_aAiQuxNqXHGg": {"lat": 33.75430985998378, "lng": -84.38447685898043, "links": [{"pano_id": "RHUvhJUxB7DiMkCb96-9Zg", "heading": 223.2577, "description": "Courtland St SE"}, {"pano_id": "qsSKgfxRb9N-M5xopqRcqw", "heading": 45.74286, "description": "Courtland St SE"}, {"pano_id": "Y1THaCKe8MSNBYO8fGqWig", "heading": 295.39, "distance": 16.34, "virtual": true}, {"pano_id": "URbLOJtMZPGz5SU9vuFptw", "heading": 193.27, "distance": 14.53, "virtual": true}]}, "b6mw-rC0dnBJtsVZQP6scQ": {"lat": 33.75463129255185, "lng": -84.38632999178314, "links": [{"pano_id": "bJdjcmDRgZoKXv7WgMJVQA", "heading": 210.90565, "description": "Peachtree Center Ave NE"}, {"pano_id": "2twhrKBI4uCIhBIlI_kB7w", "heading": 35.64763, "description": "Peachtree Center Ave NE"}, {"pano_id": "uDqStLS6S2iXTjomC7pqyQ", "heading": 161.85, "distance": 17.33, "virtual": true}, {"pano_id": "miOb0AXTFw09zZq5-KHDdQ", "heading": 196.49, "distance": 17.4, "virtual": true}, {"pano_id": "eiMtCgDODn08FV2mgX9lnQ", "heading": 34.96, "distance": 17.98, "virtual": true}]}, "bSxdMEHYrrYhGT96KJfiHA": {"lat": 33.75449944146158, "lng": -84.38660791658087, "links": [{"pano_id": "D1zARM6Nf86iIBEVxWwJhA", "heading": 90.82041, "description": "Edgewood Ave SE"}, {"pano_id": "zXELgIjcjQ7K7pst_7SOcA", "heading": 270.94635, "description": "Edgewood Ave SE"}, {"pano_id": "oczljzVoPhkp_u6Wih5nuQ", "heading": 130.44, "distance": 13.43, "virtual": true}, {"pano_id": "4FMXjH1rho7xCoGkerwUJA", "heading": 168.27, "distance": 15.79, "virtual": true}]}, "sAC3-3Uk8YXoLQPztgN-fw": {"lat": 33.75484223730958, "lng": -84.38428143867803, "links": [{"pano_id": "3-xz8QMB9HkW346QkPaDRA", "heading": 181.50432, "description": "Courtland St NE"}, {"pano_id": "a5MQ-fCtWhlyOiYlgMRFPA", "heading": 359.4212, "description": "Courtland St NE"}]}, "2twhrKBI4uCIhBIlI_kB7w": {"lat": 33.75470677498224, "lng": -84.38626488053298, "links": [{"pano_id": "eiMtCgDODn08FV2mgX9lnQ", "heading": 34.040283, "description": "Peachtree Center Ave NE"}, {"pano_id": "b6mw-rC0dnBJtsVZQP6scQ", "heading": 215.64763, "description": "Peachtree Center Ave NE"}, {"pano_id": "UPhQp0kUhiOdWgLh8PP5AA", "heading": 32.75, "distance": 15.35, "virtual": true}]}, "896WYqsKlr5RX7Vw8ZrUKg": {"lat": 33.75465881979935, "lng": -84.38428649058568, "links": [{"pano_id": "3-xz8QMB9HkW346QkPaDRA", "heading": 1.1206597, "description": "Courtland St NE"}, {"pano_id": "UVXqSyAFxNhjP_wE3qPEWw", "heading": 181.07191, "description": "Courtland St NE"}, {"pano_id": "3OSJ7wxApte73nf-cqAd5A", "heading": 233.38, "distance": 16.66, "virtual": true}, {"pano_id": "aNwHNNgb4G4GkI-D9RKbKw", "heading": 255.67, "distance": 8.52, "virtual": true}]}, "BiDrmAQRdBSQNnT4pM74nQ": {"lat": 33.75407387480328, "lng": -84.38612567692904, "links": [{"pano_id": "UCvsjgXS2QyfYAJ_cY22mw", "heading": 132.7469, "description": "Gilmer St SE"}, {"pano_id": "jbSq3qfC1xTRnr0abEii7A", "heading": 312.74158, "description": "Gilmer St SE"}]}, "RHUvhJUxB7DiMkCb96-9Zg": {"lat": 33.75424382366966, "lng": -84.38455159484589, "links": [{"pano_id": "URbLOJtMZPGz5SU9vuFptw", "heading": 152.28056, "description": "Auditorium Pl SE"}, {"pano_id": "YnXtjfERC_aAiQuxNqXHGg", "heading": 43.257706, "description": "Courtland St SE"}, {"pano_id": "RtJ6EGcJMcwucwxIDbJMuw", "heading": 222.14679, "description": "Courtland St SE"}, {"pano_id": "Y1THaCKe8MSNBYO8fGqWig", "heading": 331.31, "distance": 16.36, "virtual": true}, {"pano_id": "7vcyRnTRliwk5uWl5GtbRw", "heading": 140.01, "distance": 17.58, "virtual": true}]}, "evFQt7Rx5wJNNMqFtuFgqQ": {"lat": 33.75446885912987, "lng": -84.38404648439892, "links": [{"pano_id": "Ay7KquVBlK9fQ8wVHuP6zg", "heading": 271.30975, "description": "Edgewood Ave SE"}, {"pano_id": "DG1TCpFyHJXajYWdfGprSA", "heading": 92.44597, "description": "Edgewood Ave NE"}, {"pano_id": "9y5jDd5UAp0qyPQLuvRf1w", "heading": 271.32, "distance": 17.93, "virtual": true}]}, "DG1TCpFyHJXajYWdfGprSA": {"lat": 33.75446490047962, "lng": -84.3839350211196, "links": [{"pano_id": "evFQt7Rx5wJNNMqFtuFgqQ", "heading": 272.44595, "description": "Edgewood Ave NE"}, {"pano_id": "USy__jR05LuYSZM0ditbwg", "heading": 90.0611, "description": "Edgewood Ave NE"}]}, "eiMtCgDODn08FV2mgX9lnQ": {"lat": 33.75476381829386, "lng": -84.38621853282582, "links": [{"pano_id": "UPhQp0kUhiOdWgLh8PP5AA", "heading": 31.466356, "description": "Peachtree Center Ave NE"}, {"pano_id": "2twhrKBI4uCIhBIlI_kB7w", "heading": 214.04028, "description": "Peachtree Center Ave NE"}, {"pano_id": "b6mw-rC0dnBJtsVZQP6scQ", "heading": 214.96, "distance": 17.98, "virtual": true}, {"pano_id": "tUzWUcdIhQE5kh2fx3w4iw", "heading": 26.19, "distance": 16.98, "virtual": true}]}, "URbLOJtMZPGz5SU9vuFptw": {"lat": 33.75418266499226, "lng": -84.38451294390586, "links": [{"pano_id": "7vcyRnTRliwk5uWl5GtbRw", "heading": 130.80139, "description": "Auditorium Pl SE"}, {"pano_id": "RHUvhJUxB7DiMkCb96-9Zg", "heading": 332.28055, "description": "Courtland St SE"}, {"pano_id": "YnXtjfERC_aAiQuxNqXHGg", "heading": 13.27, "distance": 14.53, "virtual": true}, {"pano_id": "RtJ6EGcJMcwucwxIDbJMuw", "heading": 266.0, "distance": 10.41, "virtual": true}]}, "UCvsjgXS2QyfYAJ_cY22mw": {"lat": 33.75401065063694, "lng": -84.38604340551993, "links": [{"pano_id": "BiDrmAQRdBSQNnT4pM74nQ", "heading": 312.7469, "description": "Gilmer St SE"}, {"pano_id": "Z0QTe9VVYXm-o3fNqlC1CQ", "heading": 128.52718, "description": "Gilmer St SE"}]}, "X2Uzm80H_fbEzCygiJccyQ": {"lat": 33.75427983766288, "lng": -84.38664143425491, "links": [{"pano_id": "V1vmiW6Pr5J3Qvqcp49e9A", "heading": 215.12321, "description": "Peachtree Center Ave SE"}, {"pano_id": "4FMXjH1rho7xCoGkerwUJA", "heading": 35.13876, "description": "Peachtree Center Ave SE"}, {"pano_id": "chhNjAA94C0zis1HuVKsCQ", "heading": 71.96, "distance": 17.2, "virtual": true}]}, "a5MQ-fCtWhlyOiYlgMRFPA": {"lat": 33.75492803179242, "lng": -84.38428248113519, "links": [{"pano_id": "sAC3-3Uk8YXoLQPztgN-fw", "heading": 179.4212, "description": "Courtland St NE"}, {"pano_id": "dtWqNSJz0Bqkqxo4OKXhWw", "heading": 0.7276663, "description": "Courtland St NE"}]}, "RtJ6EGcJMcwucwxIDbJMuw": {"lat": 33.75417612522148, "lng": -84.38462528816541, "links": [{"pano_id": "RHUvhJUxB7DiMkCb96-9Zg", "heading": 42.146793, "description": "Courtland St SE"}, {"pano_id": "r8U-NP4tE7LK2G__aEJ8xg", "heading": 221.08554, "description": "Courtland St SE"}, {"pano_id": "URbLOJtMZPGz5SU9vuFptw", "heading": 85.99, "distance": 10.41, "virtual": true}]}, "zXELgIjcjQ7K7pst_7SOcA": {"lat": 33.75450095240137, "lng": -84.38671793145866, "links": [{"pano_id": "bSxdMEHYrrYhGT96KJfiHA", "heading": 90.94636, "description": "Edgewood Ave SE"}, {"pano_id": "eRlRPsXecIaIuHbeR36zHQ", "heading": 260.0427, "description": "Edgewood Ave NE"}]}, "7vcyRnTRliwk5uWl5GtbRw": {"lat": 33.75412269587466, "lng": -84.38442938722265, "links": [{"pano_id": "URbLOJtMZPGz5SU9vuFptw", "heading": 310.8014, "description": "Auditorium Pl SE"}, {"pano_id": "t_7u62oiRQRV7s2KyYfiUQ", "heading": 130.98077, "description": "Auditorium Pl SE"}, {"pano_id": "RHUvhJUxB7DiMkCb96-9Zg", "heading": 320.01, "distance": 17.58, "virtual": true}]}, "UPhQp0kUhiOdWgLh8PP5AA": {"lat": 33.75482286224459, "lng": -84.38617507179391, "links": [{"pano_id": "eiMtCgDODn08FV2mgX9lnQ", "heading": 211.46635, "description": "Peachtree Center Ave NE"}, {"pano_id": "tUzWUcdIhQE5kh2fx3w4iw", "heading": 21.842772, "description": "Peachtree Center Ave NE"}, {"pano_id": "2twhrKBI4uCIhBIlI_kB7w", "heading": 212.75, "distance": 15.35, "virtual": true}]}, "V1vmiW6Pr5J3Qvqcp49e9A": {"lat": 33.75420790089946, "lng": -84.38670229524584, "links": [{"pano_id": "X2Uzm80H_fbEzCygiJccyQ", "heading": 35.123215, "description": "Peachtree Center Ave SE"}, {"pano_id": "fAT7YlfxZ4ILlbHnGRPEKg", "heading": 214.24088, "description": "Peachtree Center Ave SE"}]}, "Z0QTe9VVYXm-o3fNqlC1CQ": {"lat": 33.75392789400417, "lng": -84.38591839445505, "links": [{"pano_id": "UCvsjgXS2QyfYAJ_cY22mw", "heading": 308.5272, "description": "Gilmer St SE"}, {"pano_id": "ye4GCnEfuAvyT2BLtEVngg", "heading": 130.7076, "description": "Gilmer St SE"}]}, "USy__jR05LuYSZM0ditbwg": {"lat": 33.75446480236583, "lng": -84.38382435952569, "links": [{"pano_id": "9wrTMFTzF9BnP9Sx6h1t3w", "heading": 89.81578, "description": "Edgewood Ave NE"}, {"pano_id": "DG1TCpFyHJXajYWdfGprSA", "heading": 270.0611, "description": "Edgewood Ave NE"}]}, "eRlRPsXecIaIuHbeR36zHQ": {"lat": 33.75448481227649, "lng": -84.38682850742971, "links": [{"pano_id": "I2ygiYLwuDSa0CHJ2ul6_g", "heading": 271.46622, "description": "Edgewood Ave NE"}, {"pano_id": "zXELgIjcjQ7K7pst_7SOcA", "heading": 80.042694, "description": "Edgewood Ave SE"}]}, "dtWqNSJz0Bqkqxo4OKXhWw": {"lat": 33.75501202091862, "lng": -84.38428119811098, "links": [{"pano_id": "26UYlTFMuAdHO-3O9e-oxw", "heading": 0.7240896, "description": "Courtland St NE"}, {"pano_id": "a5MQ-fCtWhlyOiYlgMRFPA", "heading": 180.72766, "description": "Courtland St NE"}]}, "r8U-NP4tE7LK2G__aEJ8xg": {"lat": 33.75410814743127, "lng": -84.38469657573933, "links": [{"pano_id": "RtJ6EGcJMcwucwxIDbJMuw", "heading": 41.085533, "description": "Courtland St SE"}]}, "9wrTMFTzF9BnP9Sx6h1t3w": {"lat": 33.75446509991178, "lng": -84.38371305620556, "links": [{"pano_id": "USy__jR05LuYSZM0ditbwg", "heading": 269.81577, "description": "Edgewood Ave NE"}]}, "t_7u62oiRQRV7s2KyYfiUQ": {"lat": 33.75406066642561, "lng": -84.384343504942, "links": [{"pano_id": "7vcyRnTRliwk5uWl5GtbRw", "heading": 310.98077, "description": "Auditorium Pl SE"}]}, "tUzWUcdIhQE5kh2fx3w4iw": {"lat": 33.75490086808772, "lng": -84.38613746434375, "links": [{"pano_id": "UPhQp0kUhiOdWgLh8PP5AA", "heading": 201.84277, "description": "Peachtree Center Ave NE"}, {"pano_id": "eiMtCgDODn08FV2mgX9lnQ", "heading": 206.19, "distance": 16.98, "virtual": true}]}, "26UYlTFMuAdHO-3O9e-oxw": {"lat": 33.7551017001268, "lng": -84.38427983489774, "links": [{"pano_id": "dtWqNSJz0Bqkqxo4OKXhWw", "heading": 180.72409, "description": "Courtland St NE"}]}, "ye4GCnEfuAvyT2BLtEVngg": {"lat": 33.75387145125615, "lng": -84.3858394906059, "links": [{"pano_id": "Z0QTe9VVYXm-o3fNqlC1CQ", "heading": 310.70758, "description": "Gilmer St SE"}]}, "fAT7YlfxZ4ILlbHnGRPEKg": {"lat": 33.75413522227895, "lng": -84.38676179301807, "links": [{"pano_id": "V1vmiW6Pr5J3Qvqcp49e9A", "heading": 34.24088, "description": "Peachtree Center Ave SE"}]}, "I2ygiYLwuDSa0CHJ2ul6_g": {"lat": 33.75448713642014, "lng": -84.38693772004137, "links": [{"pano_id": "eRlRPsXecIaIuHbeR36zHQ", "heading": 91.4662, "description": "Edgewood Ave NE"}]}};
+        const targetPanos = ["Ay7KquVBlK9fQ8wVHuP6zg", "y-4JNm7Zu7h_kDWrMLvwAg", "RcFyVNv5PK3885FKsrLNLg", "qM7RzteSi-TKUtpkcmvd3g"];
+        const spawnPoints = ["I2ygiYLwuDSa0CHJ2ul6_g", "t_7u62oiRQRV7s2KyYfiUQ", "26UYlTFMuAdHO-3O9e-oxw", "3-xz8QMB9HkW346QkPaDRA", "USy__jR05LuYSZM0ditbwg"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

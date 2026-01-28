@@ -1,0 +1,1062 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0042_target_20260124_0242_12",
+  "timestamp": "20260125_023531",
+  "success": true,
+  "done_reason": "stopped",
+  "total_steps": 28,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023531_nav_0042_target_20260124_0242_12_20260125023532",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Already facing south (181°); move forward to begin the first 79m leg toward Hurt Park",
+        "agent_vlm_duration_seconds": 5.859,
+        "agent_total_duration_seconds": 5.859
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 180.72409
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue south on first leg; 69m remaining of the 79m segment",
+        "agent_vlm_duration_seconds": 4.349,
+        "agent_total_duration_seconds": 4.349
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.3,
+          "heading": 180.72766
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 0.7240896
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue south; approximately 60m remaining on first 79m leg",
+        "agent_vlm_duration_seconds": 3.409,
+        "agent_total_duration_seconds": 3.409
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 179.4212
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.3,
+          "heading": 0.7276663
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue south; approximately 50m remaining on first 79m leg",
+        "agent_vlm_duration_seconds": 3.112,
+        "agent_total_duration_seconds": 3.113
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 181.50432
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 359.4212
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue straight south; approximately 40m remaining on first 79m leg; avoid premature right turn",
+        "agent_vlm_duration_seconds": 3.966,
+        "agent_total_duration_seconds": 3.966
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 181.12067
+        },
+        {
+          "id": 2,
+          "direction": "front-right 33°",
+          "distance": 15.0,
+          "heading": 214.42519
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 1.5043206
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue straight south; approximately 30m remaining on first 79m leg",
+        "agent_vlm_duration_seconds": 4.59,
+        "agent_total_duration_seconds": 4.59
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 14.3,
+          "heading": 181.07191
+        },
+        {
+          "id": 2,
+          "direction": "front-right 52°",
+          "distance": 16.7,
+          "heading": 233.38
+        },
+        {
+          "id": 3,
+          "direction": "front-right 75°",
+          "distance": 8.5,
+          "heading": 255.67
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 1.1206597
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue mostly south with minimal deviation; approximately 15.5m remaining on first 79m leg",
+        "agent_vlm_duration_seconds": 4.74,
+        "agent_total_duration_seconds": 4.74
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 13°",
+          "distance": 10.5,
+          "heading": 194.02464
+        },
+        {
+          "id": 2,
+          "direction": "front-right 62°",
+          "distance": 14.6,
+          "heading": 242.87
+        },
+        {
+          "id": 3,
+          "direction": "right-back 17°",
+          "distance": 13.8,
+          "heading": 288.26
+        },
+        {
+          "id": 4,
+          "direction": "right-back 56°",
+          "distance": 14.5,
+          "heading": 326.67
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.3,
+          "heading": 1.0719188
+        },
+        {
+          "id": 6,
+          "direction": "front-left 63°",
+          "distance": 14.0,
+          "heading": 118.23
+        },
+        {
+          "id": 7,
+          "direction": "front-left 36°",
+          "distance": 7.9,
+          "heading": 144.91
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Completed first leg (~74m south); transition to second leg by turning right (east) for 16m",
+        "agent_vlm_duration_seconds": 5.557,
+        "agent_total_duration_seconds": 5.557
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 32°",
+          "distance": 10.4,
+          "heading": 225.9504
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.0,
+          "heading": 288.5303
+        },
+        {
+          "id": 3,
+          "direction": "right-back 40°",
+          "distance": 17.9,
+          "heading": 323.94
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 14.024645
+        },
+        {
+          "id": 5,
+          "direction": "left-back 42°",
+          "distance": 8.0,
+          "heading": 62.16993
+        },
+        {
+          "id": 6,
+          "direction": "left-back 27°",
+          "distance": 15.3,
+          "heading": 76.58
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "rotation",
+        "heading": 90.0,
+        "pitch": 0.0,
+        "reason": "Current heading 289° is incorrect for second leg; rotate to face east (90°) to properly execute 'Turn right for 16m'",
+        "agent_vlm_duration_seconds": 7.213,
+        "agent_total_duration_seconds": 7.214
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.9,
+          "heading": 290.74
+        },
+        {
+          "id": 2,
+          "direction": "front-right 71°",
+          "distance": 11.0,
+          "heading": 359.54
+        },
+        {
+          "id": 3,
+          "direction": "right-back 44°",
+          "distance": 14.6,
+          "heading": 62.87
+        },
+        {
+          "id": 4,
+          "direction": "right-back 71°",
+          "distance": 17.5,
+          "heading": 89.27
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 11.0,
+          "heading": 108.53031
+        },
+        {
+          "id": 6,
+          "direction": "left-back 34°",
+          "distance": 11.2,
+          "heading": 164.43
+        },
+        {
+          "id": 7,
+          "direction": "front-left 19°",
+          "distance": 19.3,
+          "heading": 269.56693
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue east to complete second leg; approximately 5m remaining of 16m eastward segment",
+        "agent_vlm_duration_seconds": 5.225,
+        "agent_total_duration_seconds": 5.225
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 17.5,
+          "heading": 89.27
+        },
+        {
+          "id": 2,
+          "direction": "front-right 19°",
+          "distance": 11.0,
+          "heading": 108.53031
+        },
+        {
+          "id": 3,
+          "direction": "front-right 74°",
+          "distance": 11.2,
+          "heading": 164.43
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 19.3,
+          "heading": 269.56693
+        },
+        {
+          "id": 5,
+          "direction": "left-back 69°",
+          "distance": 7.9,
+          "heading": 290.74
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 11.0,
+          "heading": 359.54
+        },
+        {
+          "id": 7,
+          "direction": "front-left 27°",
+          "distance": 14.6,
+          "heading": 62.87
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "rotation",
+        "heading": 0.0,
+        "pitch": 0.0,
+        "reason": "Completed second leg (16m east); rotate to face north (0°) to begin third leg 'Turn left for 9m'",
+        "agent_vlm_duration_seconds": 6.246,
+        "agent_total_duration_seconds": 6.246
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 91.328575
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 91.32
+        },
+        {
+          "id": 3,
+          "direction": "right-back 63°",
+          "distance": 8.0,
+          "heading": 242.16994
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.5,
+          "heading": 269.27
+        },
+        {
+          "id": 5,
+          "direction": "left-back 34°",
+          "distance": 7.9,
+          "heading": 324.91
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "No direct north move available; use front-left 35° (7.9m) as closest approximation to north for third leg",
+        "agent_vlm_duration_seconds": 7.136,
+        "agent_total_duration_seconds": 7.136
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 7.8,
+          "heading": 91.328575
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 17.9,
+          "heading": 91.32
+        },
+        {
+          "id": 3,
+          "direction": "left-back 28°",
+          "distance": 8.0,
+          "heading": 242.16994
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 17.5,
+          "heading": 269.27
+        },
+        {
+          "id": 5,
+          "direction": "front-left 35°",
+          "distance": 7.9,
+          "heading": 324.91
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Complete third leg by turning toward north; approximately 1.1m remaining of 9m northward segment",
+        "agent_vlm_duration_seconds": 6.677,
+        "agent_total_duration_seconds": 6.677
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 14.5,
+          "heading": 326.67
+        },
+        {
+          "id": 2,
+          "direction": "front-right 36°",
+          "distance": 14.3,
+          "heading": 1.0719188
+        },
+        {
+          "id": 3,
+          "direction": "right-back 63°",
+          "distance": 14.0,
+          "heading": 118.23
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.9,
+          "heading": 144.91
+        },
+        {
+          "id": 5,
+          "direction": "left-back 41°",
+          "distance": 10.5,
+          "heading": 194.02464
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 14.6,
+          "heading": 242.87
+        },
+        {
+          "id": 7,
+          "direction": "front-left 37°",
+          "distance": 13.8,
+          "heading": 288.26
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "rotation",
+        "heading": 90.0,
+        "pitch": 0.0,
+        "reason": "Completed third leg (9m north); rotate to face east (90°) to begin fourth leg 'Turn right for 80m'",
+        "agent_vlm_duration_seconds": 5.241,
+        "agent_total_duration_seconds": 5.241
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 1.1206597
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 14.3,
+          "heading": 181.07191
+        },
+        {
+          "id": 3,
+          "direction": "left-back 38°",
+          "distance": 16.7,
+          "heading": 233.38
+        },
+        {
+          "id": 4,
+          "direction": "left-back 15°",
+          "distance": 8.5,
+          "heading": 255.67
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "rotation",
+        "heading": 45.0,
+        "pitch": 0.0,
+        "reason": "No direct east move available; rotate to find a heading with forward movement option for fourth leg",
+        "agent_vlm_duration_seconds": 10.382,
+        "agent_total_duration_seconds": 10.382
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 14.3,
+          "heading": 181.07191
+        },
+        {
+          "id": 2,
+          "direction": "right-back 53°",
+          "distance": 16.7,
+          "heading": 233.38
+        },
+        {
+          "id": 3,
+          "direction": "right-back 76°",
+          "distance": 8.5,
+          "heading": 255.67
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 1.1206597
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 180.0,
+        "pitch": 0.0,
+        "reason": "No forward move at 45°NE; rotate to heading 180° (south) to find available forward movement",
+        "agent_vlm_duration_seconds": 6.308,
+        "agent_total_duration_seconds": 6.308
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 46°",
+          "distance": 14.3,
+          "heading": 181.07191
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.7,
+          "heading": 233.38
+        },
+        {
+          "id": 3,
+          "direction": "left-back 59°",
+          "distance": 8.5,
+          "heading": 255.67
+        },
+        {
+          "id": 4,
+          "direction": "front-left 44°",
+          "distance": 10.2,
+          "heading": 1.1206597
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue south; front move available at this heading; progress toward fourth leg destination",
+        "agent_vlm_duration_seconds": 5.855,
+        "agent_total_duration_seconds": 5.855
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 14.3,
+          "heading": 181.07191
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 16.7,
+          "heading": 233.38
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 8.5,
+          "heading": 255.67
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 1.1206597
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue south with minimal deviation; progress on fourth leg southward segment",
+        "agent_vlm_duration_seconds": 4.633,
+        "agent_total_duration_seconds": 4.633
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 13°",
+          "distance": 10.5,
+          "heading": 194.02464
+        },
+        {
+          "id": 2,
+          "direction": "front-right 62°",
+          "distance": 14.6,
+          "heading": 242.87
+        },
+        {
+          "id": 3,
+          "direction": "right-back 17°",
+          "distance": 13.8,
+          "heading": 288.26
+        },
+        {
+          "id": 4,
+          "direction": "right-back 56°",
+          "distance": 14.5,
+          "heading": 326.67
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.3,
+          "heading": 1.0719188
+        },
+        {
+          "id": 6,
+          "direction": "front-left 63°",
+          "distance": 14.0,
+          "heading": 118.23
+        },
+        {
+          "id": 7,
+          "direction": "front-left 36°",
+          "distance": 7.9,
+          "heading": 144.91
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue southeast; approximately 55m remaining on fourth leg segment",
+        "agent_vlm_duration_seconds": 5.824,
+        "agent_total_duration_seconds": 5.824
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 32°",
+          "distance": 10.4,
+          "heading": 225.9504
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.0,
+          "heading": 288.5303
+        },
+        {
+          "id": 3,
+          "direction": "right-back 40°",
+          "distance": 17.9,
+          "heading": 323.94
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 14.024645
+        },
+        {
+          "id": 5,
+          "direction": "left-back 42°",
+          "distance": 8.0,
+          "heading": 62.16993
+        },
+        {
+          "id": 6,
+          "direction": "left-back 27°",
+          "distance": 15.3,
+          "heading": 76.58
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue southwest; approximately 45m remaining on fourth leg segment",
+        "agent_vlm_duration_seconds": 5.113,
+        "agent_total_duration_seconds": 5.113
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 225.74286
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 17.1,
+          "heading": 322.55
+        },
+        {
+          "id": 3,
+          "direction": "right-back 28°",
+          "distance": 11.2,
+          "heading": 344.43
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 45.95039
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue southwest; approximately 35m remaining on fourth leg segment",
+        "agent_vlm_duration_seconds": 5.898,
+        "agent_total_duration_seconds": 5.898
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 223.2577
+        },
+        {
+          "id": 2,
+          "direction": "front-right 70°",
+          "distance": 16.3,
+          "heading": 295.39
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 45.74286
+        },
+        {
+          "id": 4,
+          "direction": "front-left 32°",
+          "distance": 14.5,
+          "heading": 193.27
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue southwest; approximately 25m remaining on fourth leg segment",
+        "agent_vlm_duration_seconds": 4.703,
+        "agent_total_duration_seconds": 4.703
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 222.14679
+        },
+        {
+          "id": 2,
+          "direction": "right-back 18°",
+          "distance": 16.4,
+          "heading": 331.31
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 43.257706
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 17.6,
+          "heading": 140.01
+        },
+        {
+          "id": 5,
+          "direction": "front-left 71°",
+          "distance": 7.7,
+          "heading": 152.28056
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue southwest; approximately 15m remaining on fourth leg segment",
+        "agent_vlm_duration_seconds": 4.161,
+        "agent_total_duration_seconds": 4.161
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 221.08554
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 42.146793
+        },
+        {
+          "id": 3,
+          "direction": "left-back 46°",
+          "distance": 10.4,
+          "heading": 85.99
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 311.0,
+        "pitch": 0.0,
+        "reason": "Reached turning point after ~75.7m; rotate to face right (northwest ~311°) for final leg",
+        "agent_vlm_duration_seconds": 7.762,
+        "agent_total_duration_seconds": 7.762
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 41.085533
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Execute final turn right; destination should be on the right for remaining 12m",
+        "agent_vlm_duration_seconds": 6.284,
+        "agent_total_duration_seconds": 6.284
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 41.085533
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward on final approach; destination should be visible on the right within 12m",
+        "agent_vlm_duration_seconds": 6.277,
+        "agent_total_duration_seconds": 6.277
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 42.146793
+        },
+        {
+          "id": 2,
+          "direction": "front-right 45°",
+          "distance": 10.4,
+          "heading": 85.99
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 221.08554
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "rotation",
+        "heading": 132.0,
+        "pitch": 0.0,
+        "reason": "Look right to locate Hurt Park; destination should be visible at heading ~132°",
+        "agent_vlm_duration_seconds": 5.803,
+        "agent_total_duration_seconds": 5.803
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 43.257706
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 17.6,
+          "heading": 140.01
+        },
+        {
+          "id": 3,
+          "direction": "right-back 20°",
+          "distance": 7.7,
+          "heading": 152.28056
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 222.14679
+        },
+        {
+          "id": 5,
+          "direction": "front-left 71°",
+          "distance": 16.4,
+          "heading": 331.31
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "stop",
+        "answer": "Hurt Park",
+        "reason": "Reached final destination; looking southeast where Hurt Park should be visible on the right",
+        "agent_vlm_duration_seconds": 6.761,
+        "agent_total_duration_seconds": 6.761
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 140.01
+        },
+        {
+          "id": 2,
+          "direction": "front-right 20°",
+          "distance": 7.7,
+          "heading": 152.28056
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.2,
+          "heading": 222.14679
+        },
+        {
+          "id": 4,
+          "direction": "left-back 71°",
+          "distance": 16.4,
+          "heading": 331.31
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 43.257706
+        }
+      ]
+    }
+  ]
+}

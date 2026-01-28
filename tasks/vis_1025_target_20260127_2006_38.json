@@ -1,0 +1,106 @@
+{
+  "task_id": "nav_1025_target_20260125_0332_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_033221",
+  "spawn_point": "GZn0Y1dRykLE2RW_vWROQA",
+  "spawn_heading": 39.9,
+  "description": "Head straight along the main road with the green bike lane, passing the large BNI building and digital billboard on the left. Continue past the orange 'wondr' sign and stop at the blue bus stop sign located on the left sidewalk.",
+  "ground_truth": {
+    "target_name": "Perintis Kemerdekaan",
+    "target_pano_id": "_Nocdr2ozdOv_oYm_wwdTA",
+    "optimal_distance_meters": 132,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "_Nocdr2ozdOv_oYm_wwdTA"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "GZn0Y1dRykLE2RW_vWROQA",
+      "heading": 39.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Zd7V9BGcsbxWHcZ2DstnRg",
+      "heading": 39.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "eQXnlCfXvdXASR_9bfwx5g",
+      "heading": 61.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "JaWCorHtT51CfHoi-GZuXA",
+      "heading": 68.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "HtlTWh-tPfGhyt_8JJvofA",
+      "heading": 68.9
+    },
+    {
+      "step_index": 5,
+      "pano_id": "bqmA8ZfQIADGybAJUqi2Eg",
+      "heading": 71.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "kKvfI8jAGL3KlFcECl3bIQ",
+      "heading": 74.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "4_M5Q1IauyJiawejGhgCCw",
+      "heading": 70.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Dlum6y9eU3XRiNYb6T2hhQ",
+      "heading": 71.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "9fbatalzectqhW7SvEn3yA",
+      "heading": 70.7
+    },
+    {
+      "step_index": 10,
+      "pano_id": "iKJ0RblgjAfrdg2wFqK2OQ",
+      "heading": 63.9
+    },
+    {
+      "step_index": 11,
+      "pano_id": "dbK19-wQk0yJJfUr-umIUQ",
+      "heading": 63.4
+    },
+    {
+      "step_index": 12,
+      "pano_id": "B-cSgiGdUhZBDBKpcVgwBw",
+      "heading": 63.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "-pzP9WqZFIcIxzSXinnsMQ",
+      "heading": 65.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "WwVQkccIanaKSpf9C4mbeQ",
+      "heading": 65.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "_Nocdr2ozdOv_oYm_wwdTA",
+      "heading": 66.8
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [130m] -> Stop",
+  "agent_concise_description": "Head straight along the main road with the green bike lane, passing the large BNI building and digital billboard on the left. Continue past the orange 'wondr' sign and stop at the blue bus stop sign located on the left sidewalk."
+}

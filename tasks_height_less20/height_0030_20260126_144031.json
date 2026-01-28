@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0030_20260126_144031",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your South (approx. 167\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "XbfhsS8Ve3jXCBjPVqpMww",
+  "spawn_heading": 167.13162386609702,
+  "target_building": {
+    "lat": 25.7678557,
+    "lng": -80.20224689999999,
+    "height": 16.44,
+    "floors": 4,
+    "ground_elevation": 3.809659957885742,
+    "roof_elevation": 20.245861,
+    "name": "buildings/ChIJjefHR4622YgRwXLcJ8XLr9s",
+    "date": "2021-02-27"
+  },
+  "geofence_id": "list_height_0030_20260126_144031",
+  "ground_truth": {
+    "height_meters": 16.44
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T14:40:31.074057",
+    "bearing_deg": 167.13162386609702,
+    "city": "Miami, USA"
+  }
+}

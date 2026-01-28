@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0143_20260127_141627",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your North-East (approx. 50\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "HlZZSGB-Uv_tdwxHI0gYrw",
+  "spawn_heading": 50.912624754329954,
+  "target_building": {
+    "lat": 37.7691234,
+    "lng": -122.40445099999998,
+    "height": 26.38,
+    "floors": 7,
+    "ground_elevation": 3.077769041061401,
+    "roof_elevation": 29.461897,
+    "name": "buildings/ChIJz4AIqS1-j4ARamTR36dw2aM",
+    "date": "2022-04-05"
+  },
+  "geofence_id": "list_height_0143_20260127_141627",
+  "ground_truth": {
+    "height_meters": 26.38
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T14:16:27.872556",
+    "bearing_deg": 50.912624754329954,
+    "city": "San Francisco, USA"
+  }
+}

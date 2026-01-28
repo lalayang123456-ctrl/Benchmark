@@ -1,0 +1,151 @@
+{
+  "task_id": "nav_1040_target_20260125_0333_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260125_033254",
+  "spawn_point": "vsmVt8Cu-CMRD8v0hWTNJw",
+  "spawn_heading": 344.1,
+  "description": "Navigate to Corner Bakery Cafe. Walk forward to the intersection and turn left to follow the street with the tram tracks. Proceed straight along the red brick sidewalk for two blocks, passing the Dallas Holocaust and Human Rights Museum on your left. The route ends at the Corner Bakery Cafe on the left corner.",
+  "ground_truth": {
+    "target_name": "Corner Bakery Cafe",
+    "target_pano_id": "UhvwamwH6TQ5Do1h1gDF7g",
+    "optimal_distance_meters": 244,
+    "route_description": "left→straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "UhvwamwH6TQ5Do1h1gDF7g"
+  ],
+  "max_steps": 50,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "vsmVt8Cu-CMRD8v0hWTNJw",
+      "heading": 344.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "-VgfIeOJqUrWohLSJkQ4Hg",
+      "heading": 344.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "2zy_GwpBTJm4-t8GXB2F0A",
+      "heading": 345.3
+    },
+    {
+      "step_index": 3,
+      "pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ",
+      "heading": 345.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "XZfbeuoGUSrpQ6NmXfKo8w",
+      "heading": 7.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "SIC50zdEclWtDQVTPnylTQ",
+      "heading": 347.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "an7HblSce-qLWN_E_2N7Lg",
+      "heading": 347.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "lmPVm3U5ldupVjI_2iEalQ",
+      "heading": 348.9
+    },
+    {
+      "step_index": 8,
+      "pano_id": "9KL20VbOOglCANb1xUXnKA",
+      "heading": 349.5
+    },
+    {
+      "step_index": 9,
+      "pano_id": "wR2yl8Hx3DTXa9sbe4Csng",
+      "heading": 348.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "twUuK9IJ7RTD9JEj08v6LA",
+      "heading": 112.4
+    },
+    {
+      "step_index": 11,
+      "pano_id": "oJKeN5UmBtbrvzt5lhzxtQ",
+      "heading": 82.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "07XuaeH1R53Mlh4inmxUrA",
+      "heading": 77.4
+    },
+    {
+      "step_index": 13,
+      "pano_id": "cjR44fzaq_VMUs9iP26OeA",
+      "heading": 75.7
+    },
+    {
+      "step_index": 14,
+      "pano_id": "SlXQekqT4dFfSWYUKcgJDA",
+      "heading": 74.8
+    },
+    {
+      "step_index": 15,
+      "pano_id": "ljtb0oGFSWqUwgStprT42Q",
+      "heading": 74.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "VYpNNYDdcIhqPpiD01WNwQ",
+      "heading": 74.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "XDm7LerlcB-WVXisWsXQSw",
+      "heading": 98.3
+    },
+    {
+      "step_index": 18,
+      "pano_id": "wO1yZXpd6ckB_8fafuCuKg",
+      "heading": 56.2
+    },
+    {
+      "step_index": 19,
+      "pano_id": "gDypawqT7rTUf30J9c7CeA",
+      "heading": 80.6
+    },
+    {
+      "step_index": 20,
+      "pano_id": "nUUfkx1wjtpKifVunQDXVg",
+      "heading": 75.9
+    },
+    {
+      "step_index": 21,
+      "pano_id": "sSs-v4ozweoDsYhn-Mq8hg",
+      "heading": 75.9
+    },
+    {
+      "step_index": 22,
+      "pano_id": "UGWpDe8B_Zfjwijfb7DrVQ",
+      "heading": 76.1
+    },
+    {
+      "step_index": 23,
+      "pano_id": "RQNkVkIimKDA70f0JI8R-w",
+      "heading": 76.8
+    },
+    {
+      "step_index": 24,
+      "pano_id": "UhvwamwH6TQ5Do1h1gDF7g",
+      "heading": 76.7
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [7m] -> Turn Left [94m] -> Continue Straight [143m]",
+  "agent_concise_description": "Walk forward to the intersection and turn left to follow the street with the tram tracks. Proceed straight along the red brick sidewalk for two blocks, passing the Dallas Holocaust and Human Rights Museum on your left. The route ends at the Corner Bakery Cafe on the left corner."
+}

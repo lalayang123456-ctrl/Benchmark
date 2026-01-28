@@ -1,0 +1,121 @@
+{
+  "task_id": "nav_1130_target_20260125_0345_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260125_034537",
+  "spawn_point": "P0OwQ4WJESypC2uOXF73jA",
+  "spawn_heading": 107.7,
+  "description": "Navigate to Hanoi Library. The route proceeds straight along a wide, tree-lined street, crossing an intersection with a Samsung store on the corner. The path continues forward along the main road, passing large white buildings on the left, without making any turns.",
+  "ground_truth": {
+    "target_name": "Hanoi Library",
+    "target_pano_id": "OxE9s-DT0uKGvVtfPXyBnA",
+    "optimal_distance_meters": 170,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "OxE9s-DT0uKGvVtfPXyBnA"
+  ],
+  "max_steps": 38,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "P0OwQ4WJESypC2uOXF73jA",
+      "heading": 107.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "C7WAJl-YxKq_EvAfa7FTKA",
+      "heading": 107.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "5QJwdpOZUWM0fMUKD5T4hA",
+      "heading": 107.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "pzwP3ocYPrZwgWKJUodq5g",
+      "heading": 107.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "xcHIXAriQ753gelk1mHPcA",
+      "heading": 107.7
+    },
+    {
+      "step_index": 5,
+      "pano_id": "k1OLtAbM9-D76OEpF8kdCA",
+      "heading": 107.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "6S8jnZiHgZjmnhtJEHdhyw",
+      "heading": 106.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "it8TGC5LV08NNU3n0XJ1UQ",
+      "heading": 105.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "9VodhdDozvHCc6IZLEpoqA",
+      "heading": 101.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "mX21yZ-1WUHaEHBrWCC56w",
+      "heading": 103.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Vh0vpJcE4PU5uR9wqugKFQ",
+      "heading": 101.0
+    },
+    {
+      "step_index": 11,
+      "pano_id": "HGlL5PVPfdR02U-7cX8Ezw",
+      "heading": 101.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "Pwi-OB8s5sKPo2Jaxn567w",
+      "heading": 104.7
+    },
+    {
+      "step_index": 13,
+      "pano_id": "FMwkPrKmY8K4DF3384JkSg",
+      "heading": 110.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "RpcBkvm2auDnDmo2FnCOeQ",
+      "heading": 109.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "tL7JuuJe5tjcMqphqFYOLw",
+      "heading": 81.5
+    },
+    {
+      "step_index": 16,
+      "pano_id": "JTEu-V58kyi6F7FTop5vrw",
+      "heading": 145.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "9xVroQGCN8G9dIU0_lqqaQ",
+      "heading": 109.2
+    },
+    {
+      "step_index": 18,
+      "pano_id": "OxE9s-DT0uKGvVtfPXyBnA",
+      "heading": 109.2
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [170m]",
+  "agent_concise_description": "The route proceeds straight along a wide, tree-lined street, crossing an intersection with a Samsung store on the corner. The path continues forward along the main road, passing large white buildings on the left, without making any turns."
+}

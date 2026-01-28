@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_service_20260124_103337</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_service_20260124_103337</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>2</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"rGLhpbsZc0P3Bu7eYQlojg": {"lat": 26.46295807299429, "lng": 80.33076462909602, "links": [{"pano_id": "UwxqAGnyJSsQvw2e6HTSBg", "heading": 91.90637, "description": "Kalpi Rd"}]}, "UwxqAGnyJSsQvw2e6HTSBg": {"lat": 26.4629550845608, "lng": 80.33086492148965, "links": [{"pano_id": "rGLhpbsZc0P3Bu7eYQlojg", "heading": 271.90637, "description": "Kalpi Rd"}, {"pano_id": "_FH9Y6besRI6P-Lu0dNlQA", "heading": 92.59615, "description": "Railway Rd"}]}, "_FH9Y6besRI6P-Lu0dNlQA": {"lat": 26.46295135163609, "lng": 80.33095688440994, "links": [{"pano_id": "AVMZlYZkXenwT-1CZ5lsxw", "heading": 93.63461, "description": "Railway Rd"}, {"pano_id": "UwxqAGnyJSsQvw2e6HTSBg", "heading": 272.59616, "description": "Kalpi Rd"}]}, "AVMZlYZkXenwT-1CZ5lsxw": {"lat": 26.46294538264049, "lng": 80.33106185120637, "links": [{"pano_id": "FWEeMCFaqn4bR48gt50_SA", "heading": 93.59688, "description": "Railway Rd"}, {"pano_id": "_FH9Y6besRI6P-Lu0dNlQA", "heading": 273.6346, "description": "Railway Rd"}, {"pano_id": "dCrFoAZcL30pUleBAZ6d9Q", "heading": 93.65, "distance": 16.22, "virtual": true}]}, "FWEeMCFaqn4bR48gt50_SA": {"lat": 26.4629409010792, "lng": 80.33114148989493, "links": [{"pano_id": "dCrFoAZcL30pUleBAZ6d9Q", "heading": 93.691444, "description": "Railway Rd"}, {"pano_id": "AVMZlYZkXenwT-1CZ5lsxw", "heading": 273.5969, "description": "Railway Rd"}]}, "dCrFoAZcL30pUleBAZ6d9Q": {"lat": 26.46293610992357, "lng": 80.3312244432407, "links": [{"pano_id": "FWEeMCFaqn4bR48gt50_SA", "heading": 273.69144, "description": "Railway Rd"}, {"pano_id": "JBCv8OlGR0KVT8_F41e3pw", "heading": 93.629524, "description": "Railway Rd"}, {"pano_id": "AVMZlYZkXenwT-1CZ5lsxw", "heading": 273.65, "distance": 16.22, "virtual": true}]}, "JBCv8OlGR0KVT8_F41e3pw": {"lat": 26.46293022654472, "lng": 80.33132804981489, "links": [{"pano_id": "dCrFoAZcL30pUleBAZ6d9Q", "heading": 273.62952, "description": "Railway Rd"}, {"pano_id": "v6MDyOD-qEfHJhKPCgbI5g", "heading": 93.52825, "description": "Kalpi Rd"}]}, "v6MDyOD-qEfHJhKPCgbI5g": {"lat": 26.46292503318398, "lng": 80.33142213705274, "links": [{"pano_id": "pTOaMu5zFVJSX1WhnDzDPw", "heading": 93.73861, "description": "Railway Rd"}, {"pano_id": "JBCv8OlGR0KVT8_F41e3pw", "heading": 273.52826, "description": "Railway Rd"}]}, "pTOaMu5zFVJSX1WhnDzDPw": {"lat": 26.46291954922751, "lng": 80.33151588421404, "links": [{"pano_id": "CuqXdTgNnOyQBuT0Es7Gsg", "heading": 96.20358, "description": "Kalpi Rd"}, {"pano_id": "v6MDyOD-qEfHJhKPCgbI5g", "heading": 273.73862, "description": "Kalpi Rd"}, {"pano_id": "3nzkJyLoTM0mbeIo5ZZaFg", "heading": 96.23, "distance": 13.25, "virtual": true}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 78.5, "distance": 17.14, "virtual": true}]}, "CuqXdTgNnOyQBuT0Es7Gsg": {"lat": 26.46290968244749, "lng": 80.33161728061818, "links": [{"pano_id": "3nzkJyLoTM0mbeIo5ZZaFg", "heading": 96.32001, "description": "Kalpi Rd"}, {"pano_id": "pTOaMu5zFVJSX1WhnDzDPw", "heading": 276.20358, "description": "Railway Rd"}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 56.0391, "description": ""}, {"pano_id": "9LTb5ZGD_TbT8TlBjWsGng", "heading": 97.46, "distance": 10.97, "virtual": true}]}, "3nzkJyLoTM0mbeIo5ZZaFg": {"lat": 26.46290661501036, "lng": 80.33164821797115, "links": [{"pano_id": "9LTb5ZGD_TbT8TlBjWsGng", "heading": 97.903336, "description": "Kalpi Rd"}, {"pano_id": "CuqXdTgNnOyQBuT0Es7Gsg", "heading": 276.32, "description": "Kalpi Rd"}, {"pano_id": "pTOaMu5zFVJSX1WhnDzDPw", "heading": 276.23, "distance": 13.25, "virtual": true}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 36.72, "distance": 6.06, "virtual": true}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 97.94, "distance": 17.84, "virtual": true}]}, "9hq79ebiuQdYefDDRfjneg": {"lat": 26.46295026935705, "lng": 80.33168459484416, "links": [{"pano_id": "WRB8R3jl5l1hwT6pYmRP2A", "heading": 37.696968, "description": ""}, {"pano_id": "CuqXdTgNnOyQBuT0Es7Gsg", "heading": 236.0391, "description": "Kalpi Rd"}, {"pano_id": "pTOaMu5zFVJSX1WhnDzDPw", "heading": 258.5, "distance": 17.14, "virtual": true}, {"pano_id": "3nzkJyLoTM0mbeIo5ZZaFg", "heading": 216.72, "distance": 6.06, "virtual": true}, {"pano_id": "9LTb5ZGD_TbT8TlBjWsGng", "heading": 144.86, "distance": 7.26, "virtual": true}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 117.53, "distance": 15.84, "virtual": true}]}, "WRB8R3jl5l1hwT6pYmRP2A": {"lat": 26.46303700931295, "lng": 80.33175947335805, "links": [{"pano_id": "CQqPqwXvZ7WcoPB1nYHvZQ", "heading": 37.656174, "description": ""}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 217.69696, "description": ""}, {"pano_id": "9LTb5ZGD_TbT8TlBjWsGng", "heading": 191.87, "distance": 15.92, "virtual": true}, {"pano_id": "Ew3piUId-JlAx0lkWUw9Sw", "heading": 37.0, "distance": 14.73, "virtual": true}]}, "9LTb5ZGD_TbT8TlBjWsGng": {"lat": 26.46289687636919, "lng": 80.33172658121542, "links": [{"pano_id": "3nzkJyLoTM0mbeIo5ZZaFg", "heading": 277.90335, "description": "Kalpi Rd"}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 97.97542, "description": "Kalpi Rd"}, {"pano_id": "CuqXdTgNnOyQBuT0Es7Gsg", "heading": 277.46, "distance": 10.97, "virtual": true}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 324.86, "distance": 7.26, "virtual": true}, {"pano_id": "WRB8R3jl5l1hwT6pYmRP2A", "heading": 11.87, "distance": 15.92, "virtual": true}]}, "0pKxImdpP1jue6S0fJiHXg": {"lat": 26.46288444670191, "lng": 80.33182568256738, "links": [{"pano_id": "9LTb5ZGD_TbT8TlBjWsGng", "heading": 277.97543, "description": "Kalpi Rd"}, {"pano_id": "h8lG3_hl0Lfx1Gtuxh8MXw", "heading": 97.944664, "description": "Kalpi Rd"}, {"pano_id": "3nzkJyLoTM0mbeIo5ZZaFg", "heading": 277.94, "distance": 17.84, "virtual": true}, {"pano_id": "9hq79ebiuQdYefDDRfjneg", "heading": 297.53, "distance": 15.84, "virtual": true}, {"pano_id": "kCYfec-Gv2YufLjdDHrKKQ", "heading": 97.94, "distance": 16.4, "virtual": true}, {"pano_id": "YxmzZIN69IdLW8LA1Vv71w", "heading": 97.93, "distance": 15.99, "virtual": true}]}, "CQqPqwXvZ7WcoPB1nYHvZQ": {"lat": 26.46308946511182, "lng": 80.33180468940908, "links": [{"pano_id": "WRB8R3jl5l1hwT6pYmRP2A", "heading": 217.65617, "description": ""}, {"pano_id": "Ew3piUId-JlAx0lkWUw9Sw", "heading": 36.352974, "description": ""}, {"pano_id": "Br9Z0UOzAvrSsgMl1lHplQ", "heading": 36.36, "distance": 17.33, "virtual": true}]}, "h8lG3_hl0Lfx1Gtuxh8MXw": {"lat": 26.4628679350305, "lng": 80.33195784585261, "links": [{"pano_id": "kCYfec-Gv2YufLjdDHrKKQ", "heading": 97.92094, "description": "Kalpi Rd"}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 277.94467, "description": "Kalpi Rd"}, {"pano_id": "YxmzZIN69IdLW8LA1Vv71w", "heading": 97.88, "distance": 2.71, "virtual": true}, {"pano_id": "2ATpRL5dp__ZgjoxZBb-Kg", "heading": 98.62, "distance": 12.52, "virtual": true}]}, "Ew3piUId-JlAx0lkWUw9Sw": {"lat": 26.46314280899673, "lng": 80.33184854555567, "links": [{"pano_id": "Br9Z0UOzAvrSsgMl1lHplQ", "heading": 36.362514, "description": ""}, {"pano_id": "CQqPqwXvZ7WcoPB1nYHvZQ", "heading": 216.35297, "description": ""}, {"pano_id": "WRB8R3jl5l1hwT6pYmRP2A", "heading": 217.0, "distance": 14.73, "virtual": true}]}, "kCYfec-Gv2YufLjdDHrKKQ": {"lat": 26.46286407102995, "lng": 80.33198886807276, "links": [{"pano_id": "YxmzZIN69IdLW8LA1Vv71w", "heading": 278.1801, "description": ""}, {"pano_id": "2ATpRL5dp__ZgjoxZBb-Kg", "heading": 98.84534, "description": "Railway Rd"}, {"pano_id": "h8lG3_hl0Lfx1Gtuxh8MXw", "heading": 277.92093, "description": "Kalpi Rd"}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 277.94, "distance": 16.4, "virtual": true}]}, "Br9Z0UOzAvrSsgMl1lHplQ": {"lat": 26.46321494272306, "lng": 80.33190787030678, "links": [{"pano_id": "Ew3piUId-JlAx0lkWUw9Sw", "heading": 216.36252, "description": ""}, {"pano_id": "w2KfxsRVqkY7akwgroiwGA", "heading": 36.33839, "description": ""}, {"pano_id": "CQqPqwXvZ7WcoPB1nYHvZQ", "heading": 216.36, "distance": 17.33, "virtual": true}]}, "YxmzZIN69IdLW8LA1Vv71w": {"lat": 26.46286459602386, "lng": 80.33198478843899, "links": [{"pano_id": "kCYfec-Gv2YufLjdDHrKKQ", "heading": 98.180115, "description": "Kalpi Rd"}, {"pano_id": "0pKxImdpP1jue6S0fJiHXg", "heading": 277.93, "distance": 15.99, "virtual": true}, {"pano_id": "h8lG3_hl0Lfx1Gtuxh8MXw", "heading": 277.88, "distance": 2.71, "virtual": true}, {"pano_id": "2ATpRL5dp__ZgjoxZBb-Kg", "heading": 98.82, "distance": 9.81, "virtual": true}]}, "2ATpRL5dp__ZgjoxZBb-Kg": {"lat": 26.46285107008606, "lng": 80.33208218964144, "links": [{"pano_id": "kCYfec-Gv2YufLjdDHrKKQ", "heading": 278.84534, "description": "Kalpi Rd"}, {"pano_id": "vV3ZtGpzG2XoM5i-3TCrzQ", "heading": 98.790245, "description": "Kalpi Rd"}, {"pano_id": "h8lG3_hl0Lfx1Gtuxh8MXw", "heading": 278.62, "distance": 12.52, "virtual": true}, {"pano_id": "YxmzZIN69IdLW8LA1Vv71w", "heading": 278.82, "distance": 9.81, "virtual": true}]}, "w2KfxsRVqkY7akwgroiwGA": {"lat": 26.46328745029975, "lng": 80.33196744999321, "links": [{"pano_id": "Br9Z0UOzAvrSsgMl1lHplQ", "heading": 216.3384, "description": ""}, {"pano_id": "VKczejNoJ4i2OcSZjbd5hg", "heading": 34.852978, "description": ""}]}, "VKczejNoJ4i2OcSZjbd5hg": {"lat": 26.46336349450517, "lng": 80.33202660467583, "links": [{"pano_id": "jvmAS1ieOIE836KoCOCyMQ", "heading": 33.772858, "description": ""}, {"pano_id": "w2KfxsRVqkY7akwgroiwGA", "heading": 214.85298, "description": ""}]}, "vV3ZtGpzG2XoM5i-3TCrzQ": {"lat": 26.46283713958172, "lng": 80.33218282043379, "links": [{"pano_id": "tcVPQHyz1GvMfnfU0AnEuA", "heading": 98.75667, "description": "Railway Rd"}, {"pano_id": "2ATpRL5dp__ZgjoxZBb-Kg", "heading": 278.79025, "description": "Railway Rd"}]}, "tcVPQHyz1GvMfnfU0AnEuA": {"lat": 26.46282328657555, "lng": 80.33228328112169, "links": [{"pano_id": "vV3ZtGpzG2XoM5i-3TCrzQ", "heading": 278.75668, "description": "Kalpi Rd"}, {"pano_id": "5ZDB35qhuAE9WJ0NmvSt6w", "heading": 98.843376, "description": "Kalpi Rd"}, {"pano_id": "flAz-_ZFPTUKcP61ep-FaQ", "heading": 99.28, "distance": 11.96, "virtual": true}, {"pano_id": "NlZNhkVzPCFRBZEQcfxp-Q", "heading": 98.84, "distance": 9.27, "virtual": true}, {"pano_id": "Xt1r6POVnvJI2fvU5TFtIQ", "heading": 152.22, "distance": 12.05, "virtual": true}]}, "jvmAS1ieOIE836KoCOCyMQ": {"lat": 26.46343824374369, "lng": 80.33208244461827, "links": [{"pano_id": "95f7iNa5EApzg2rsOAn3Gw", "heading": 33.736244, "description": ""}, {"pano_id": "VKczejNoJ4i2OcSZjbd5hg", "heading": 213.77286, "description": ""}]}, "95f7iNa5EApzg2rsOAn3Gw": {"lat": 26.46351514710741, "lng": 80.33213981438355, "links": [{"pano_id": "jvmAS1ieOIE836KoCOCyMQ", "heading": 213.73624, "description": ""}, {"pano_id": "rmsr4NrAA8JjhSb1h8lriQ", "heading": 33.765083, "description": ""}]}, "5ZDB35qhuAE9WJ0NmvSt6w": {"lat": 26.46281046616911, "lng": 80.33237532748426, "links": [{"pano_id": "tcVPQHyz1GvMfnfU0AnEuA", "heading": 278.84338, "description": "Railway Rd"}, {"pano_id": "flAz-_ZFPTUKcP61ep-FaQ", "heading": 100.796074, "description": "Railway Rd"}, {"pano_id": "NlZNhkVzPCFRBZEQcfxp-Q", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "11W1Gas-nuHROWuIQQ1LJg", "heading": 100.93, "distance": 14.52, "virtual": true}, {"pano_id": "Xt1r6POVnvJI2fvU5TFtIQ", "heading": 200.99, "distance": 9.9, "virtual": true}]}, "rmsr4NrAA8JjhSb1h8lriQ": {"lat": 26.46359139758781, "lng": 80.33219675914893, "links": [{"pano_id": "95f7iNa5EApzg2rsOAn3Gw", "heading": 213.76508, "description": ""}, {"pano_id": "uXUZ67GL3lRSqLHC-82pbg", "heading": 33.77339, "description": ""}]}, "flAz-_ZFPTUKcP61ep-FaQ": {"lat": 26.46280593938008, "lng": 80.33240184497723, "links": [{"pano_id": "5ZDB35qhuAE9WJ0NmvSt6w", "heading": 280.79608, "description": "Kalpi Rd"}, {"pano_id": "11W1Gas-nuHROWuIQQ1LJg", "heading": 100.96371, "description": "Railway Rd"}, {"pano_id": "NlZNhkVzPCFRBZEQcfxp-Q", "heading": 280.79608, "description": ""}, {"pano_id": "tcVPQHyz1GvMfnfU0AnEuA", "heading": 279.28, "distance": 11.96, "virtual": true}, {"pano_id": "Xt1r6POVnvJI2fvU5TFtIQ", "heading": 215.3, "distance": 10.7, "virtual": true}]}, "NlZNhkVzPCFRBZEQcfxp-Q": {"lat": 26.46281046616911, "lng": 80.33237532748426, "links": [{"pano_id": "Xt1r6POVnvJI2fvU5TFtIQ", "heading": 200.99089, "description": ""}, {"pano_id": "flAz-_ZFPTUKcP61ep-FaQ", "heading": 100.796074, "description": "Railway Rd"}, {"pano_id": "tcVPQHyz1GvMfnfU0AnEuA", "heading": 278.84, "distance": 9.27, "virtual": true}, {"pano_id": "5ZDB35qhuAE9WJ0NmvSt6w", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "11W1Gas-nuHROWuIQQ1LJg", "heading": 100.93, "distance": 14.52, "virtual": true}]}, "11W1Gas-nuHROWuIQQ1LJg": {"lat": 26.46278570168882, "lng": 80.33251853884542, "links": [{"pano_id": "h8TXIPR8LUskwPPCTSLJ1w", "heading": 100.88966, "description": "Railway Rd"}, {"pano_id": "flAz-_ZFPTUKcP61ep-FaQ", "heading": 280.9637, "description": "Railway Rd"}, {"pano_id": "5ZDB35qhuAE9WJ0NmvSt6w", "heading": 280.93, "distance": 14.52, "virtual": true}, {"pano_id": "NlZNhkVzPCFRBZEQcfxp-Q", "heading": 280.93, "distance": 14.52, "virtual": true}]}, "uXUZ67GL3lRSqLHC-82pbg": {"lat": 26.46366830666148, "lng": 80.33225421382838, "links": [{"pano_id": "rmsr4NrAA8JjhSb1h8lriQ", "heading": 213.77339, "description": ""}, {"pano_id": "iyhDWzqHKhTrr7fGLi7TsA", "heading": 33.7317, "description": ""}]}, "h8TXIPR8LUskwPPCTSLJ1w": {"lat": 26.46276844378048, "lng": 80.33261874415739, "links": [{"pano_id": "T04FUCf2MNIMhKiYnFG8wA", "heading": 100.9478, "description": "Railway Rd"}, {"pano_id": "11W1Gas-nuHROWuIQQ1LJg", "heading": 280.88965, "description": "Railway Rd"}]}, "Xt1r6POVnvJI2fvU5TFtIQ": {"lat": 26.46272737541978, "lng": 80.33233971583792, "links": [{"pano_id": "NlZNhkVzPCFRBZEQcfxp-Q", "heading": 20.990896, "description": ""}, {"pano_id": "Cs3jotOGrgwbveMSTQUSLg", "heading": 200.9803, "description": ""}, {"pano_id": "tcVPQHyz1GvMfnfU0AnEuA", "heading": 332.22, "distance": 12.05, "virtual": true}, {"pano_id": "5ZDB35qhuAE9WJ0NmvSt6w", "heading": 20.99, "distance": 9.9, "virtual": true}, {"pano_id": "flAz-_ZFPTUKcP61ep-FaQ", "heading": 35.3, "distance": 10.7, "virtual": true}]}, "iyhDWzqHKhTrr7fGLi7TsA": {"lat": 26.4637456787224, "lng": 80.33231192344475, "links": [{"pano_id": "uXUZ67GL3lRSqLHC-82pbg", "heading": 213.7317, "description": ""}, {"pano_id": "e6U44JuLQDiPmjz8MlOqrw", "heading": 33.789448, "description": ""}]}, "e6U44JuLQDiPmjz8MlOqrw": {"lat": 26.46382174505108, "lng": 80.33236878310169, "links": [{"pano_id": "bJqg_oLGc37kHHJsIfdNZw", "heading": 32.3225, "description": ""}, {"pano_id": "iyhDWzqHKhTrr7fGLi7TsA", "heading": 213.78944, "description": ""}, {"pano_id": "z0oFMwA-X1PQzZMzMugT1Q", "heading": 33.95, "distance": 15.14, "virtual": true}]}, "T04FUCf2MNIMhKiYnFG8wA": {"lat": 26.46275141527408, "lng": 80.33271707953413, "links": [{"pano_id": "QWmOEz9DttaZZNvF4JANAA", "heading": 100.44994, "description": "Railway Rd"}, {"pano_id": "h8TXIPR8LUskwPPCTSLJ1w", "heading": 280.94778, "description": "Railway Rd"}]}, "Cs3jotOGrgwbveMSTQUSLg": {"lat": 26.4626436433436, "lng": 80.33230384920036, "links": [{"pano_id": "8iug-kyc3LBpvyzQ-1mNYg", "heading": 200.9836, "description": ""}, {"pano_id": "Xt1r6POVnvJI2fvU5TFtIQ", "heading": 20.980299, "description": ""}]}, "8iug-kyc3LBpvyzQ-1mNYg": {"lat": 26.46255972718631, "lng": 80.33226789755543, "links": [{"pano_id": "Cs3jotOGrgwbveMSTQUSLg", "heading": 20.983593, "description": ""}, {"pano_id": "1EOxnim5TxjDWZFypouleg", "heading": 201.66566, "description": ""}]}, "QWmOEz9DttaZZNvF4JANAA": {"lat": 26.46273461770342, "lng": 80.33281881445724, "links": [{"pano_id": "T04FUCf2MNIMhKiYnFG8wA", "heading": 280.44995, "description": "Railway Rd"}, {"pano_id": "xDcAA38KA_bOd10yjaPvZA", "heading": 99.626236, "description": "Railway Rd"}]}, "bJqg_oLGc37kHHJsIfdNZw": {"lat": 26.46392708558549, "lng": 80.33244323604731, "links": [{"pano_id": "e6U44JuLQDiPmjz8MlOqrw", "heading": 212.3225, "description": ""}, {"pano_id": "PJUe8PlqnE2WwkMjI5xOhg", "heading": 38.6014, "description": ""}, {"pano_id": "z0oFMwA-X1PQzZMzMugT1Q", "heading": 51.02, "distance": 1.34, "virtual": true}]}, "xDcAA38KA_bOd10yjaPvZA": {"lat": 26.46271977706682, "lng": 80.3329165546602, "links": [{"pano_id": "-q95a_jWeyKpuWZbHnGjrw", "heading": 99.6861, "description": "Railway Rd"}, {"pano_id": "QWmOEz9DttaZZNvF4JANAA", "heading": 279.62625, "description": "Railway Rd"}]}, "PJUe8PlqnE2WwkMjI5xOhg": {"lat": 26.46399208462355, "lng": 80.33250120050963, "links": [{"pano_id": "5sfUc6QnplyG-sn2davleQ", "heading": 36.476093, "description": ""}, {"pano_id": "z0oFMwA-X1PQzZMzMugT1Q", "heading": 216.52568, "description": ""}, {"pano_id": "8AdLgvQBM-QPPp9uNkcBXw", "heading": 36.49, "distance": 17.52, "virtual": true}]}, "1EOxnim5TxjDWZFypouleg": {"lat": 26.46247526134032, "lng": 80.33223041603691, "links": [{"pano_id": "8iug-kyc3LBpvyzQ-1mNYg", "heading": 21.66567, "description": ""}, {"pano_id": "UAc2PpdqEswcQwKMMc-8KA", "heading": 202.86722, "description": ""}]}, "5sfUc6QnplyG-sn2davleQ": {"lat": 26.46406433022312, "lng": 80.33256086476783, "links": [{"pano_id": "8AdLgvQBM-QPPp9uNkcBXw", "heading": 36.497356, "description": ""}, {"pano_id": "PJUe8PlqnE2WwkMjI5xOhg", "heading": 216.47609, "description": ""}, {"pano_id": "z0oFMwA-X1PQzZMzMugT1Q", "heading": 216.5, "distance": 17.94, "virtual": true}, {"pano_id": "hnFHvx_xSQkFUJPVbGtH-Q", "heading": 36.51, "distance": 14.83, "virtual": true}]}, "z0oFMwA-X1PQzZMzMugT1Q": {"lat": 26.46393465969151, "lng": 80.33245369005154, "links": [{"pano_id": "bJqg_oLGc37kHHJsIfdNZw", "heading": 216.29149, "description": ""}, {"pano_id": "PJUe8PlqnE2WwkMjI5xOhg", "heading": 36.525684, "description": ""}, {"pano_id": "e6U44JuLQDiPmjz8MlOqrw", "heading": 213.95, "distance": 15.14, "virtual": true}, {"pano_id": "bJqg_oLGc37kHHJsIfdNZw", "heading": 231.02, "distance": 1.34, "virtual": true}, {"pano_id": "5sfUc6QnplyG-sn2davleQ", "heading": 36.5, "distance": 17.94, "virtual": true}]}, "UAc2PpdqEswcQwKMMc-8KA": {"lat": 26.46239136995548, "lng": 80.33219089468979, "links": [{"pano_id": "n6Nf79RNsV3Lm4GIf5ni2A", "heading": 205.08286, "description": ""}, {"pano_id": "1EOxnim5TxjDWZFypouleg", "heading": 22.867222, "description": ""}]}, "-q95a_jWeyKpuWZbHnGjrw": {"lat": 26.46270441382268, "lng": 80.33301709946356, "links": [{"pano_id": "xDcAA38KA_bOd10yjaPvZA", "heading": 279.6861, "description": "Railway Rd"}, {"pano_id": "SidJXFCx5gr_R2MK4LLaqA", "heading": 99.63007, "description": "Railway Rd"}]}, "n6Nf79RNsV3Lm4GIf5ni2A": {"lat": 26.46230846657036, "lng": 80.33214754867484, "links": [{"pano_id": "THOqmWAlh-COWFMxpWRnaw", "heading": 205.91185, "description": ""}, {"pano_id": "UAc2PpdqEswcQwKMMc-8KA", "heading": 25.082857, "description": ""}]}, "8AdLgvQBM-QPPp9uNkcBXw": {"lat": 26.46411872940238, "lng": 80.3326058254131, "links": [{"pano_id": "5sfUc6QnplyG-sn2davleQ", "heading": 216.49736, "description": ""}, {"pano_id": "hnFHvx_xSQkFUJPVbGtH-Q", "heading": 36.52819, "description": ""}, {"pano_id": "PJUe8PlqnE2WwkMjI5xOhg", "heading": 216.49, "distance": 17.52, "virtual": true}, {"pano_id": "nRs_Q2GB-Up4cjtx7ZnlMg", "heading": 36.52, "distance": 17.32, "virtual": true}, {"pano_id": "nXVeFteWD0SnT44QOmTqdg", "heading": 35.52, "distance": 17.14, "virtual": true}]}, "SidJXFCx5gr_R2MK4LLaqA": {"lat": 26.46268938645257, "lng": 80.33311602931344, "links": [{"pano_id": "jiv1BqVAjoFpgI7Rbi0VQQ", "heading": 98.26049, "description": "Railway Rd"}, {"pano_id": "-q95a_jWeyKpuWZbHnGjrw", "heading": 279.63007, "description": "Railway Rd"}]}, "THOqmWAlh-COWFMxpWRnaw": {"lat": 26.46222655773657, "lng": 80.33210309773827, "links": [{"pano_id": "kIfP3ecAOupIJYGVA_sA_w", "heading": 207.55751, "description": ""}, {"pano_id": "n6Nf79RNsV3Lm4GIf5ni2A", "heading": 25.911846, "description": ""}]}, "jiv1BqVAjoFpgI7Rbi0VQQ": {"lat": 26.46267627460821, "lng": 80.333216913843, "links": [{"pano_id": "6mG0zCg6m4OGuud76VUcZw", "heading": 94.71895, "description": "Railway Rd"}, {"pano_id": "SidJXFCx5gr_R2MK4LLaqA", "heading": 278.2605, "description": "Railway Rd"}, {"pano_id": "8uzqIdHj1YJVXjgM6ohsMA", "heading": 94.73, "distance": 9.15, "virtual": true}]}, "hnFHvx_xSQkFUJPVbGtH-Q": {"lat": 26.4641715265722, "lng": 80.33264951115883, "links": [{"pano_id": "nRs_Q2GB-Up4cjtx7ZnlMg", "heading": 36.515816, "description": ""}, {"pano_id": "8AdLgvQBM-QPPp9uNkcBXw", "heading": 216.52818, "description": ""}, {"pano_id": "5sfUc6QnplyG-sn2davleQ", "heading": 216.51, "distance": 14.83, "virtual": true}, {"pano_id": "nXVeFteWD0SnT44QOmTqdg", "heading": 34.78, "distance": 9.83, "virtual": true}]}, "6mG0zCg6m4OGuud76VUcZw": {"lat": 26.46266884447433, "lng": 80.33331745828751, "links": [{"pano_id": "jiv1BqVAjoFpgI7Rbi0VQQ", "heading": 274.71896, "description": "Railway Rd"}, {"pano_id": "ySJcSk8i2g8uIjRBr2-fOA", "heading": 94.740906, "description": "Railway Rd"}, {"pano_id": "8uzqIdHj1YJVXjgM6ohsMA", "heading": 274.59, "distance": 0.89, "virtual": true}, {"pano_id": "S21siegNN4dhRIAwFHy97w", "heading": 95.81, "distance": 13.79, "virtual": true}]}, "kIfP3ecAOupIJYGVA_sA_w": {"lat": 26.46214636484168, "lng": 80.33205635198615, "links": [{"pano_id": "NW6IrgBzgGPH5GaNYAQJVQ", "heading": 209.6674, "description": ""}, {"pano_id": "THOqmWAlh-COWFMxpWRnaw", "heading": 27.557508, "description": ""}]}, "nRs_Q2GB-Up4cjtx7ZnlMg": {"lat": 26.46424387278011, "lng": 80.33270934529517, "links": [{"pano_id": "hnFHvx_xSQkFUJPVbGtH-Q", "heading": 216.51582, "description": ""}, {"pano_id": "L9EMKU48P_qT3ZG8zeC-Iw", "heading": 36.46993, "description": ""}, {"pano_id": "8AdLgvQBM-QPPp9uNkcBXw", "heading": 216.52, "distance": 17.32, "virtual": true}, {"pano_id": "nXVeFteWD0SnT44QOmTqdg", "heading": 275.46, "distance": 0.35, "virtual": true}]}, "L9EMKU48P_qT3ZG8zeC-Iw": {"lat": 26.46431641378504, "lng": 80.33276679962471, "links": [{"pano_id": "nXVeFteWD0SnT44QOmTqdg", "heading": 217.0578, "description": ""}, {"pano_id": "JGHtOdG95iQdFGHjamJUmA", "heading": 37.748714, "description": ""}]}, "ySJcSk8i2g8uIjRBr2-fOA": {"lat": 26.46266190967297, "lng": 80.3334108633739, "links": [{"pano_id": "kiqyDJCumyp2KT6DM_gg2g", "heading": 10.352535, "description": ""}, {"pano_id": "8uzqIdHj1YJVXjgM6ohsMA", "heading": 274.72784, "description": "Railway Rd"}, {"pano_id": "S21siegNN4dhRIAwFHy97w", "heading": 98.04738, "description": "Kalpi Rd"}, {"pano_id": "Nzw-W4fu0mp423gc5hxn2Q", "heading": 98.13, "distance": 14.6, "virtual": true}]}, "NW6IrgBzgGPH5GaNYAQJVQ": {"lat": 26.46206782434939, "lng": 80.33200637649882, "links": [{"pano_id": "kIfP3ecAOupIJYGVA_sA_w", "heading": 29.667412, "description": ""}, {"pano_id": "iYlv4PNziyjKJmjfksYnRQ", "heading": 211.24113, "description": ""}]}, "iYlv4PNziyjKJmjfksYnRQ": {"lat": 26.46198905278606, "lng": 80.33195300128568, "links": [{"pano_id": "NW6IrgBzgGPH5GaNYAQJVQ", "heading": 31.241137, "description": ""}]}, "8uzqIdHj1YJVXjgM6ohsMA": {"lat": 26.46266948602381, "lng": 80.33330853422925, "links": [{"pano_id": "ySJcSk8i2g8uIjRBr2-fOA", "heading": 94.72785, "description": "Railway Rd"}, {"pano_id": "jiv1BqVAjoFpgI7Rbi0VQQ", "heading": 274.73, "distance": 9.15, "virtual": true}, {"pano_id": "6mG0zCg6m4OGuud76VUcZw", "heading": 94.59, "distance": 0.89, "virtual": true}, {"pano_id": "S21siegNN4dhRIAwFHy97w", "heading": 95.74, "distance": 14.68, "virtual": true}]}, "JGHtOdG95iQdFGHjamJUmA": {"lat": 26.46438166524405, "lng": 80.3328232340167, "links": [{"pano_id": "L9EMKU48P_qT3ZG8zeC-Iw", "heading": 217.74872, "description": ""}, {"pano_id": "oa7_S2srH_XUudhLQRx3vw", "heading": 36.177605, "description": ""}]}, "nXVeFteWD0SnT44QOmTqdg": {"lat": 26.46424417079989, "lng": 80.33270586063783, "links": [{"pano_id": "L9EMKU48P_qT3ZG8zeC-Iw", "heading": 37.057796, "description": ""}, {"pano_id": "8AdLgvQBM-QPPp9uNkcBXw", "heading": 215.52, "distance": 17.14, "virtual": true}, {"pano_id": "hnFHvx_xSQkFUJPVbGtH-Q", "heading": 214.78, "distance": 9.83, "virtual": true}, {"pano_id": "nRs_Q2GB-Up4cjtx7ZnlMg", "heading": 95.46, "distance": 0.35, "virtual": true}]}, "kiqyDJCumyp2KT6DM_gg2g": {"lat": 26.46279144201839, "lng": 80.33343729554967, "links": [{"pano_id": "ySJcSk8i2g8uIjRBr2-fOA", "heading": 190.35254, "description": "Railway Rd"}, {"pano_id": "S21siegNN4dhRIAwFHy97w", "heading": 173.19, "distance": 15.14, "virtual": true}]}, "S21siegNN4dhRIAwFHy97w": {"lat": 26.46265628357455, "lng": 80.33345531361971, "links": [{"pano_id": "Nzw-W4fu0mp423gc5hxn2Q", "heading": 98.17067, "description": "Railway Rd"}, {"pano_id": "ySJcSk8i2g8uIjRBr2-fOA", "heading": 278.0474, "description": "Railway Rd"}, {"pano_id": "6mG0zCg6m4OGuud76VUcZw", "heading": 275.81, "distance": 13.79, "virtual": true}, {"pano_id": "8uzqIdHj1YJVXjgM6ohsMA", "heading": 275.74, "distance": 14.68, "virtual": true}, {"pano_id": "kiqyDJCumyp2KT6DM_gg2g", "heading": 353.19, "distance": 15.14, "virtual": true}]}, "oa7_S2srH_XUudhLQRx3vw": {"lat": 26.46446802071213, "lng": 80.33289377695347, "links": [{"pano_id": "JGHtOdG95iQdFGHjamJUmA", "heading": 216.17761, "description": ""}]}, "Nzw-W4fu0mp423gc5hxn2Q": {"lat": 26.46264333816262, "lng": 80.33355602776096, "links": [{"pano_id": "S21siegNN4dhRIAwFHy97w", "heading": 278.1707, "description": "Kalpi Rd"}, {"pano_id": "ySJcSk8i2g8uIjRBr2-fOA", "heading": 278.13, "distance": 14.6, "virtual": true}]}};
+        const targetPanos = ["rGLhpbsZc0P3Bu7eYQlojg"];
+        const spawnPoints = ["iyhDWzqHKhTrr7fGLi7TsA", "iYlv4PNziyjKJmjfksYnRQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

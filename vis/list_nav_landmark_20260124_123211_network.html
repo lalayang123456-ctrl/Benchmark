@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_landmark_20260124_123211</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_landmark_20260124_123211</h3>
+        <div>Total Panos: <strong>74</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"wN3cYTXWzb6yo1_R0l-nOQ": {"lat": 42.35119936305475, "lng": -71.05978761261832, "links": [{"pano_id": "BxKo3-GV_1KCn0wZiko0-Q", "heading": 243.41125, "description": "Hudson St"}, {"pano_id": "DieTPY31zM7KxiytTciUwQ", "heading": 285.04785, "description": "Beach St"}, {"pano_id": "QRIoy3-J0XMMxBZR4HaN_w", "heading": 105.14931, "description": "Beach St"}, {"pano_id": "VRslgaXwFcVR0e7wR748ow", "heading": 101.86, "distance": 9.73, "virtual": true}, {"pano_id": "FXewEjDFxfFAhX1hVJEhRA", "heading": 56.79, "distance": 14.11, "virtual": true}]}, "BxKo3-GV_1KCn0wZiko0-Q": {"lat": 42.35115760350825, "lng": -71.05990050772837, "links": [{"pano_id": "6oDAM8e8ijkE2TQD0KMBIw", "heading": 197.19197, "description": "Hudson St"}, {"pano_id": "wN3cYTXWzb6yo1_R0l-nOQ", "heading": 63.41126, "description": "Beach St"}, {"pano_id": "DieTPY31zM7KxiytTciUwQ", "heading": 325.09, "distance": 10.71, "virtual": true}]}, "DieTPY31zM7KxiytTciUwQ": {"lat": 42.35123662104898, "lng": -71.05997513636636, "links": [{"pano_id": "lZ-_ApPLYry6oT2QOQWPhg", "heading": 287.41708, "description": "Beach St"}, {"pano_id": "wN3cYTXWzb6yo1_R0l-nOQ", "heading": 105.04787, "description": "Beach St"}, {"pano_id": "BxKo3-GV_1KCn0wZiko0-Q", "heading": 145.09, "distance": 10.71, "virtual": true}, {"pano_id": "6oDAM8e8ijkE2TQD0KMBIw", "heading": 169.13, "distance": 17.97, "virtual": true}]}, "QRIoy3-J0XMMxBZR4HaN_w": {"lat": 42.35113188643455, "lng": -71.05945037796383, "links": [{"pano_id": "wN3cYTXWzb6yo1_R0l-nOQ", "heading": 285.14932, "description": "Beach St"}, {"pano_id": "UaFcGj60Imzr_SI7JXQN6A", "heading": 187.65346, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "gAnk_wQRRknmyVyf53wssQ", "heading": 107.723564, "description": "Beach St"}, {"pano_id": "E7yBufT2wbWkGOgmHr0Xhg", "heading": 30.249702, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "VRslgaXwFcVR0e7wR748ow", "heading": 286.83264, "description": ""}]}, "lZ-_ApPLYry6oT2QOQWPhg": {"lat": 42.35126197468848, "lng": -71.06008449495351, "links": [{"pano_id": "dRBmaAt_r6bt_ngJnAhwiw", "heading": 286.2322, "description": "Beach St"}, {"pano_id": "DieTPY31zM7KxiytTciUwQ", "heading": 107.417076, "description": "Beach St"}]}, "E7yBufT2wbWkGOgmHr0Xhg": {"lat": 42.35178987482476, "lng": -71.05893115030874, "links": [{"pano_id": "gAnk_wQRRknmyVyf53wssQ", "heading": 189.54591, "description": "Beach St"}, {"pano_id": "QQ21KxJESEVVjYFHfikdfg", "heading": 36.586998, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "UaFcGj60Imzr_SI7JXQN6A", "heading": 202.95735, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "QRIoy3-J0XMMxBZR4HaN_w", "heading": 210.2497, "description": "Beach St"}]}, "gAnk_wQRRknmyVyf53wssQ": {"lat": 42.35104906523805, "lng": -71.0590997225448, "links": [{"pano_id": "QRIoy3-J0XMMxBZR4HaN_w", "heading": 287.72357, "description": "Beach St"}, {"pano_id": "Ak-7_fZm6JS6bLpSAnVWWQ", "heading": 108.0207, "description": "Beach St"}, {"pano_id": "E7yBufT2wbWkGOgmHr0Xhg", "heading": 9.545917, "description": "John F Fitzgerald Surface Rd"}]}, "6oDAM8e8ijkE2TQD0KMBIw": {"lat": 42.35107789622678, "lng": -71.059933877522, "links": [{"pano_id": "BxKo3-GV_1KCn0wZiko0-Q", "heading": 17.191975, "description": "Hudson St"}, {"pano_id": "MKgtzF1aiByEQbgj_2hEkQ", "heading": 198.86731, "description": "Hudson St"}, {"pano_id": "DieTPY31zM7KxiytTciUwQ", "heading": 349.13, "distance": 17.97, "virtual": true}]}, "VRslgaXwFcVR0e7wR748ow": {"lat": 42.3511813764592, "lng": -71.05967172507542, "links": [{"pano_id": "QRIoy3-J0XMMxBZR4HaN_w", "heading": 106.83263, "description": "Beach St"}, {"pano_id": "FXewEjDFxfFAhX1hVJEhRA", "heading": 13.192235, "description": ""}, {"pano_id": "wN3cYTXWzb6yo1_R0l-nOQ", "heading": 281.86, "distance": 9.73, "virtual": true}]}, "UaFcGj60Imzr_SI7JXQN6A": {"lat": 42.35076883208768, "lng": -71.05951639219069, "links": [{"pano_id": "QRIoy3-J0XMMxBZR4HaN_w", "heading": 7.653465, "description": "Beach St"}, {"pano_id": "D5xgjpX_-46KeMHVOuNm5g", "heading": 196.94829, "description": "Surface Rd"}, {"pano_id": "E7yBufT2wbWkGOgmHr0Xhg", "heading": 22.95736, "description": "John F Fitzgerald Surface Rd"}]}, "QQ21KxJESEVVjYFHfikdfg": {"lat": 42.35186778382018, "lng": -71.05885289431976, "links": [{"pano_id": "ytc0hPKKBcsS3SbTOxj43A", "heading": 40.49445, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "E7yBufT2wbWkGOgmHr0Xhg", "heading": 216.58699, "description": "John F Fitzgerald Surface Rd"}]}, "dRBmaAt_r6bt_ngJnAhwiw": {"lat": 42.35128661618524, "lng": -71.0601990221988, "links": [{"pano_id": "WZooI9xjP-nBdnA1ySgw5Q", "heading": 286.37442, "description": "Beach St"}, {"pano_id": "lZ-_ApPLYry6oT2QOQWPhg", "heading": 106.23222, "description": "Beach St"}]}, "MKgtzF1aiByEQbgj_2hEkQ": {"lat": 42.35099141688214, "lng": -71.05997386686353, "links": [{"pano_id": "LLLRj-9MYGy9kq_LFpyKHA", "heading": 199.05681, "description": "Hudson St"}, {"pano_id": "6oDAM8e8ijkE2TQD0KMBIw", "heading": 18.867306, "description": "Hudson St"}]}, "Ak-7_fZm6JS6bLpSAnVWWQ": {"lat": 42.35101097864261, "lng": -71.0589413063572, "links": [{"pano_id": "gAnk_wQRRknmyVyf53wssQ", "heading": 288.0207, "description": "Beach St"}, {"pano_id": "Zq7kksSGJ52xPJiEBRwbig", "heading": 108.033745, "description": "Beach St"}]}, "FXewEjDFxfFAhX1hVJEhRA": {"lat": 42.35126885917194, "lng": -71.05964397734901, "links": [{"pano_id": "x2sOkkR6w8Sc1osDYVT0-g", "heading": 11.301545, "description": ""}, {"pano_id": "VRslgaXwFcVR0e7wR748ow", "heading": 193.19223, "description": ""}, {"pano_id": "wN3cYTXWzb6yo1_R0l-nOQ", "heading": 236.79, "distance": 14.11, "virtual": true}, {"pano_id": "yxsdBDsVbxUDEhWYP6AbUw", "heading": 10.45, "distance": 17.82, "virtual": true}]}, "D5xgjpX_-46KeMHVOuNm5g": {"lat": 42.35068504813179, "lng": -71.0595509408409, "links": [{"pano_id": "XR_7BobYGHbG6Affc1N8ZQ", "heading": 196.99573, "description": "Surface Rd"}, {"pano_id": "UaFcGj60Imzr_SI7JXQN6A", "heading": 16.948286, "description": "John F Fitzgerald Surface Rd"}]}, "Zq7kksSGJ52xPJiEBRwbig": {"lat": 42.35098396792523, "lng": -71.05882904573613, "links": [{"pano_id": "Ak-7_fZm6JS6bLpSAnVWWQ", "heading": 288.03375, "description": "Beach St"}, {"pano_id": "BTST-V4EdSgp96Ly1l0mMA", "heading": 108.043945, "description": "Beach St"}]}, "8AWq-GOiGBdNXgl2NS2rqA": {"lat": 42.35138980271693, "lng": -71.06031581637957, "links": [{"pano_id": "dRBmaAt_r6bt_ngJnAhwiw", "heading": 140.08797, "description": "Beach St"}, {"pano_id": "sy05KzsUuTHGRy_fFnMtXA", "heading": 347.0856, "description": "Oxford St"}, {"pano_id": "WZooI9xjP-nBdnA1ySgw5Q", "heading": 180.35, "distance": 8.64, "virtual": true}, {"pano_id": "icrBSYeSNWW3lagJZbFhnQ", "heading": 243.08, "distance": 11.99, "virtual": true}]}, "x2sOkkR6w8Sc1osDYVT0-g": {"lat": 42.35134162498906, "lng": -71.05962430003862, "links": [{"pano_id": "yxsdBDsVbxUDEhWYP6AbUw", "heading": 9.722535, "description": ""}, {"pano_id": "FXewEjDFxfFAhX1hVJEhRA", "heading": 191.30154, "description": ""}]}, "XR_7BobYGHbG6Affc1N8ZQ": {"lat": 42.3505688431954, "lng": -71.05959900063817, "links": [{"pano_id": "BhbsUhXfaD77f7n6GauXYQ", "heading": 196.9783, "description": "Surface Rd"}, {"pano_id": "D5xgjpX_-46KeMHVOuNm5g", "heading": 16.995722, "description": "Surface Rd"}]}, "LLLRj-9MYGy9kq_LFpyKHA": {"lat": 42.35090896716921, "lng": -71.06001240534088, "links": [{"pano_id": "TbsRqdI7sj0KujebeQh7AQ", "heading": 197.9036, "description": "Hudson St"}, {"pano_id": "MKgtzF1aiByEQbgj_2hEkQ", "heading": 19.056807, "description": "Hudson St"}]}, "WZooI9xjP-nBdnA1ySgw5Q": {"lat": 42.35131211580083, "lng": -71.06031645113046, "links": [{"pano_id": "dRBmaAt_r6bt_ngJnAhwiw", "heading": 106.37442, "description": "Beach St"}, {"pano_id": "icrBSYeSNWW3lagJZbFhnQ", "heading": 286.78494, "description": "Beach St"}]}, "ytc0hPKKBcsS3SbTOxj43A": {"lat": 42.35193880675082, "lng": -71.05877082979613, "links": [{"pano_id": "QQ21KxJESEVVjYFHfikdfg", "heading": 220.49445, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "BS7AGYNL6_c9PYVXVZSjJg", "heading": 41.849842, "description": "John F Fitzgerald Surface Rd"}]}, "yxsdBDsVbxUDEhWYP6AbUw": {"lat": 42.35142649858835, "lng": -71.0596046227273, "links": [{"pano_id": "x2sOkkR6w8Sc1osDYVT0-g", "heading": 189.72253, "description": ""}, {"pano_id": "4-zl1nGuvaU6BCwqT8P26w", "heading": 9.769087, "description": ""}, {"pano_id": "FXewEjDFxfFAhX1hVJEhRA", "heading": 190.45, "distance": 17.82, "virtual": true}]}, "BhbsUhXfaD77f7n6GauXYQ": {"lat": 42.35048324067419, "lng": -71.05963436539106, "links": [{"pano_id": "XR_7BobYGHbG6Affc1N8ZQ", "heading": 16.978302, "description": "Surface Rd"}, {"pano_id": "eWDB-gk3SGt-LACymwu1FQ", "heading": 196.96144, "description": "Surface Rd"}]}, "BS7AGYNL6_c9PYVXVZSjJg": {"lat": 42.35200794006837, "lng": -71.05868704235397, "links": [{"pano_id": "ytc0hPKKBcsS3SbTOxj43A", "heading": 221.84984, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "apud5g_ZLzmVwafdJXiQkQ", "heading": 46.40706, "description": "John F Fitzgerald Surface Rd"}]}, "icrBSYeSNWW3lagJZbFhnQ": {"lat": 42.35134098071759, "lng": -71.06044594029174, "links": [{"pano_id": "dLhO1y8IeB3psBOAdsJPww", "heading": 285.74295, "description": "Beach St"}, {"pano_id": "WZooI9xjP-nBdnA1ySgw5Q", "heading": 106.78494, "description": "Beach St"}, {"pano_id": "dYVxY4TLJkOLwiR3DD8Aww", "heading": 228.21547, "description": "Tyler St"}]}, "TbsRqdI7sj0KujebeQh7AQ": {"lat": 42.35082848170056, "lng": -71.06004758870057, "links": [{"pano_id": "LLLRj-9MYGy9kq_LFpyKHA", "heading": 17.903595, "description": "Hudson St"}, {"pano_id": "H6qSQmnPZ-jQcYGS4Jep6A", "heading": 196.47757, "description": "Hudson St"}]}, "BTST-V4EdSgp96Ly1l0mMA": {"lat": 42.35095724648906, "lng": -71.05871805459105, "links": [{"pano_id": "Zq7kksSGJ52xPJiEBRwbig", "heading": 288.04395, "description": "Beach St"}]}, "dYVxY4TLJkOLwiR3DD8Aww": {"lat": 42.35126846004921, "lng": -71.06055575214646, "links": [{"pano_id": "icrBSYeSNWW3lagJZbFhnQ", "heading": 48.215473, "description": "Beach St"}, {"pano_id": "QspfI9KU6ljpMVteWGV0Kg", "heading": 196.27286, "description": "Tyler St"}, {"pano_id": "dLhO1y8IeB3psBOAdsJPww", "heading": 354.01, "distance": 10.99, "virtual": true}, {"pano_id": "MjD97Mp0z4tQT9ATFzKjZg", "heading": 321.24, "distance": 17.11, "virtual": true}]}, "eWDB-gk3SGt-LACymwu1FQ": {"lat": 42.35039776749424, "lng": -71.05966963946207, "links": [{"pano_id": "QsJMWbyL0r8bVW3wJR--zQ", "heading": 195.24065, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "BhbsUhXfaD77f7n6GauXYQ", "heading": 16.961443, "description": "Surface Rd"}]}, "H6qSQmnPZ-jQcYGS4Jep6A": {"lat": 42.35074148130273, "lng": -71.06008240934224, "links": [{"pano_id": "TbsRqdI7sj0KujebeQh7AQ", "heading": 16.47757, "description": "Hudson St"}, {"pano_id": "Zu7CY8OE22FjopWkkHsizg", "heading": 195.54997, "description": "Hudson St"}]}, "apud5g_ZLzmVwafdJXiQkQ": {"lat": 42.35207263372133, "lng": -71.0585950937776, "links": [{"pano_id": "BS7AGYNL6_c9PYVXVZSjJg", "heading": 226.40706, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "G89cZvCG68upiRjNfh1OqA", "heading": 47.163395, "description": "John F Fitzgerald Surface Rd"}]}, "dLhO1y8IeB3psBOAdsJPww": {"lat": 42.35136676692073, "lng": -71.06056971665767, "links": [{"pano_id": "icrBSYeSNWW3lagJZbFhnQ", "heading": 105.742935, "description": "Beach St"}, {"pano_id": "MjD97Mp0z4tQT9ATFzKjZg", "heading": 284.15662, "description": "Beach St"}, {"pano_id": "dYVxY4TLJkOLwiR3DD8Aww", "heading": 174.01, "distance": 10.99, "virtual": true}]}, "k1bPuoDZwFzdUW3Zd-owLQ": {"lat": 42.35093693901118, "lng": -71.05863399510089, "links": [{"pano_id": "1Q71hIrfSQm703ko5wKRHA", "heading": 119.43484, "description": "Lincoln St"}, {"pano_id": "BTST-V4EdSgp96Ly1l0mMA", "heading": 288.1022, "description": "Beach St"}, {"pano_id": "Zq7kksSGJ52xPJiEBRwbig", "heading": 288.07, "distance": 16.86, "virtual": true}]}, "4-zl1nGuvaU6BCwqT8P26w": {"lat": 42.35153081004302, "lng": -71.05958032079312, "links": [{"pano_id": "yxsdBDsVbxUDEhWYP6AbUw", "heading": 189.76909, "description": ""}]}, "Zu7CY8OE22FjopWkkHsizg": {"lat": 42.35065285528839, "lng": -71.06011577912108, "links": [{"pano_id": "ULwZHgM3K0fAldfK-diy1w", "heading": 195.37042, "description": "Hudson St"}, {"pano_id": "H6qSQmnPZ-jQcYGS4Jep6A", "heading": 15.54998, "description": "Hudson St"}]}, "QsJMWbyL0r8bVW3wJR--zQ": {"lat": 42.35030971126658, "lng": -71.05970210248616, "links": [{"pano_id": "HQczWfIAxPKsotBQb8AiOg", "heading": 194.84634, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "eWDB-gk3SGt-LACymwu1FQ", "heading": 15.240654, "description": "Surface Rd"}]}, "QspfI9KU6ljpMVteWGV0Kg": {"lat": 42.35115550951544, "lng": -71.06060036603772, "links": [{"pano_id": "V5J5ZuA_HHUCvFHD8JpfAg", "heading": 196.24567, "description": "Tyler St"}, {"pano_id": "dYVxY4TLJkOLwiR3DD8Aww", "heading": 16.272856, "description": "Tyler St"}]}, "MjD97Mp0z4tQT9ATFzKjZg": {"lat": 42.35138847055863, "lng": -71.06068614801826, "links": [{"pano_id": "dLhO1y8IeB3psBOAdsJPww", "heading": 104.1566, "description": "Beach St"}, {"pano_id": "dYVxY4TLJkOLwiR3DD8Aww", "heading": 141.24, "distance": 17.11, "virtual": true}]}, "G89cZvCG68upiRjNfh1OqA": {"lat": 42.35213501705714, "lng": -71.05850405197161, "links": [{"pano_id": "B9yZIM99bNeiMbzq0M-27g", "heading": 55.20596, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "apud5g_ZLzmVwafdJXiQkQ", "heading": 227.16339, "description": "John F Fitzgerald Surface Rd"}]}, "B9yZIM99bNeiMbzq0M-27g": {"lat": 42.35218609915037, "lng": -71.05840457698717, "links": [{"pano_id": "G89cZvCG68upiRjNfh1OqA", "heading": 235.20596, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "YaM2HyWIAXnkgSpfTJ012Q", "heading": 55.949944, "description": "John F Fitzgerald Surface Rd"}]}, "HQczWfIAxPKsotBQb8AiOg": {"lat": 42.35022274304159, "lng": -71.0597332960041, "links": [{"pano_id": "vsynUOCz-eAjtay9vU-9_A", "heading": 188.8725, "description": "Kneeland St"}, {"pano_id": "QsJMWbyL0r8bVW3wJR--zQ", "heading": 14.846345, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "IlwckvBnvxoAUAkkAevn4A", "heading": 244.12, "distance": 12.5, "virtual": true}, {"pano_id": "axc6WU6skesumvYXBEQKGw", "heading": 146.27, "distance": 14.71, "virtual": true}]}, "V5J5ZuA_HHUCvFHD8JpfAg": {"lat": 42.35107202665213, "lng": -71.06063328238122, "links": [{"pano_id": "dZ5VTS_aUWrNXVeHUIvWyg", "heading": 196.25484, "description": "Tyler St"}, {"pano_id": "QspfI9KU6ljpMVteWGV0Kg", "heading": 16.245663, "description": "Tyler St"}]}, "ULwZHgM3K0fAldfK-diy1w": {"lat": 42.35056314153679, "lng": -71.06014914889718, "links": [{"pano_id": "Zu7CY8OE22FjopWkkHsizg", "heading": 15.37043, "description": "Hudson St"}, {"pano_id": "olG0ROlmh87ZlXcmyh5bcw", "heading": 195.34218, "description": "Hudson St"}]}, "YaM2HyWIAXnkgSpfTJ012Q": {"lat": 42.35226005181399, "lng": -71.05825649795469, "links": [{"pano_id": "OFw6WAK8TEFjLmNmcNUygg", "heading": 58.770542, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "B9yZIM99bNeiMbzq0M-27g", "heading": 235.94994, "description": "John F Fitzgerald Surface Rd"}]}, "vsynUOCz-eAjtay9vU-9_A": {"lat": 42.35013988818825, "lng": -71.05975079701749, "links": [{"pano_id": "HQczWfIAxPKsotBQb8AiOg", "heading": 8.872493, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "axc6WU6skesumvYXBEQKGw", "heading": 107.44631, "description": "Kneeland St"}, {"pano_id": "IlwckvBnvxoAUAkkAevn4A", "heading": 290.97006, "description": "Kneeland St"}, {"pano_id": "tiRSIMjitF6OsLZFQb2hUQ", "heading": 200.07344, "description": "Albany St"}]}, "olG0ROlmh87ZlXcmyh5bcw": {"lat": 42.35048180335404, "lng": -71.06017934491507, "links": [{"pano_id": "99i-YnsGpctGXAAHkHRdCA", "heading": 195.3801, "description": "Hudson St"}, {"pano_id": "ULwZHgM3K0fAldfK-diy1w", "heading": 15.342181, "description": "Hudson St"}]}, "dZ5VTS_aUWrNXVeHUIvWyg": {"lat": 42.35098698449065, "lng": -71.06066683347241, "links": [{"pano_id": "DeDwDhoqBivYbffiFiDbWg", "heading": 196.25572, "description": "Tyler St"}, {"pano_id": "V5J5ZuA_HHUCvFHD8JpfAg", "heading": 16.254831, "description": "Tyler St"}]}, "tiRSIMjitF6OsLZFQb2hUQ": {"lat": 42.35004067318793, "lng": -71.05979985425826, "links": [{"pano_id": "vsynUOCz-eAjtay9vU-9_A", "heading": 20.073435, "description": "Kneeland St"}, {"pano_id": "zNZ8kQkoiuQQbXYIjINkbQ", "heading": 195.39075, "description": "Albany St"}, {"pano_id": "IlwckvBnvxoAUAkkAevn4A", "heading": 338.67, "distance": 15.88, "virtual": true}, {"pano_id": "axc6WU6skesumvYXBEQKGw", "heading": 59.56, "distance": 15.82, "virtual": true}]}, "IlwckvBnvxoAUAkkAevn4A": {"lat": 42.35017368916188, "lng": -71.05987013033234, "links": [{"pano_id": "kyCOBGkFmIgvOruyBJhtIA", "heading": 291.30658, "description": "Kneeland St"}, {"pano_id": "vsynUOCz-eAjtay9vU-9_A", "heading": 110.970055, "description": "Kneeland St"}, {"pano_id": "HQczWfIAxPKsotBQb8AiOg", "heading": 64.12, "distance": 12.5, "virtual": true}, {"pano_id": "tiRSIMjitF6OsLZFQb2hUQ", "heading": 158.67, "distance": 15.88, "virtual": true}]}, "OFw6WAK8TEFjLmNmcNUygg": {"lat": 42.35230718478615, "lng": -71.05815131012201, "links": [{"pano_id": "YaM2HyWIAXnkgSpfTJ012Q", "heading": 238.77054, "description": "John F Fitzgerald Surface Rd"}]}, "DeDwDhoqBivYbffiFiDbWg": {"lat": 42.35090010849947, "lng": -71.06070110998978, "links": [{"pano_id": "dZ5VTS_aUWrNXVeHUIvWyg", "heading": 16.255722, "description": "Tyler St"}, {"pano_id": "RlZPvXH3ghpGN4CxiMjTsQ", "heading": 196.30362, "description": "Tyler St"}]}, "axc6WU6skesumvYXBEQKGw": {"lat": 42.35011274072181, "lng": -71.05963391199683, "links": [{"pano_id": "lTBder_vl4b0gj1WVH-A5A", "heading": 107.48424, "description": "Kneeland St"}, {"pano_id": "vsynUOCz-eAjtay9vU-9_A", "heading": 287.44632, "description": "Kneeland St"}, {"pano_id": "HQczWfIAxPKsotBQb8AiOg", "heading": 326.27, "distance": 14.71, "virtual": true}, {"pano_id": "tiRSIMjitF6OsLZFQb2hUQ", "heading": 239.56, "distance": 15.82, "virtual": true}]}, "99i-YnsGpctGXAAHkHRdCA": {"lat": 42.35039604660758, "lng": -71.06021126382646, "links": [{"pano_id": "olG0ROlmh87ZlXcmyh5bcw", "heading": 15.380098, "description": "Hudson St"}, {"pano_id": "FkrP9U177dKgWOK0ZpCpbg", "heading": 184.97624, "description": "Kneeland St"}, {"pano_id": "QWI1frw0ZgErMx2M5p4tdw", "heading": 224.44, "distance": 14.25, "virtual": true}]}, "YUva741sDuxtC6dPqyj_Vg": {"lat": 42.3523701746952, "lng": -71.05806806662842, "links": [{"pano_id": "qPYO51modFi-E2sO-C5VRA", "heading": 149.61194, "description": "Lincoln St"}, {"pano_id": "gRxP0Rp0sBIavlk5cky6qw", "heading": 84.43108, "description": ""}, {"pano_id": "n_Sx6NY7G6tC4F_yi7cFsA", "heading": 275.74115, "description": "Essex St"}, {"pano_id": "OwcjwBYgLzBAMv8Ad1cF2w", "heading": 68.91082, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "cPQ8L901B0Q1-PwGh0AuSg", "heading": 115.0589, "description": "Essex St"}, {"pano_id": "VaQpRJhaLyoSgg_afbiUbQ", "heading": 55.866863, "description": "Lincoln St"}, {"pano_id": "OFw6WAK8TEFjLmNmcNUygg", "heading": 224.32281, "description": "John F Fitzgerald Surface Rd"}]}, "zNZ8kQkoiuQQbXYIjINkbQ": {"lat": 42.34995376081579, "lng": -71.05983222659324, "links": [{"pano_id": "tiRSIMjitF6OsLZFQb2hUQ", "heading": 15.390753, "description": "Albany St"}, {"pano_id": "Iu_MOea2MPJZ4RQfgijJkg", "heading": 195.35432, "description": "Albany St"}]}, "FkrP9U177dKgWOK0ZpCpbg": {"lat": 42.35027443993296, "lng": -71.06022559106428, "links": [{"pano_id": "SPT5NUKj80v2_MuLmtb32A", "heading": 209.66257, "description": "Hudson St"}, {"pano_id": "QWI1frw0ZgErMx2M5p4tdw", "heading": 290.83136, "description": "Kneeland St"}, {"pano_id": "q8XgTPKTUasEPOiTx5a3ug", "heading": 110.33937, "description": "Kneeland St"}, {"pano_id": "99i-YnsGpctGXAAHkHRdCA", "heading": 4.9762416, "description": "Hudson St"}, {"pano_id": "rzfvyTNKBYlS9Kpz5JvRkg", "heading": 291.03, "distance": 16.85, "virtual": true}]}, "RlZPvXH3ghpGN4CxiMjTsQ": {"lat": 42.35080754481141, "lng": -71.06073774414803, "links": [{"pano_id": "w-03u4_3h-DLjDhsFnTYLQ", "heading": 196.29453, "description": "Tyler St"}, {"pano_id": "DeDwDhoqBivYbffiFiDbWg", "heading": 16.303621, "description": "Tyler St"}]}, "lTBder_vl4b0gj1WVH-A5A": {"lat": 42.35008331387371, "lng": -71.05950750566078, "links": [{"pano_id": "J-tToVVEEv-ZljvarXhBtg", "heading": 107.44639, "description": "Kneeland St"}, {"pano_id": "axc6WU6skesumvYXBEQKGw", "heading": 287.48425, "description": "Kneeland St"}]}, "kyCOBGkFmIgvOruyBJhtIA": {"lat": 42.35020573318862, "lng": -71.05998130252296, "links": [{"pano_id": "IlwckvBnvxoAUAkkAevn4A", "heading": 111.30657, "description": "Kneeland St"}, {"pano_id": "q8XgTPKTUasEPOiTx5a3ug", "heading": 291.3348, "description": "Kneeland St"}]}, "IJBxMaNtiCtW2-pybCHxJQ": {"lat": 42.35210835115629, "lng": -71.05830682488232, "links": [{"pano_id": "OFw6WAK8TEFjLmNmcNUygg", "heading": 30.028408, "description": "John F Fitzgerald Surface Rd"}, {"pano_id": "bN3oVh_l92cdj8vI07UfCA", "heading": 200.6753, "description": ""}, {"pano_id": "G89cZvCG68upiRjNfh1OqA", "heading": 280.37, "distance": 16.48, "virtual": true}, {"pano_id": "B9yZIM99bNeiMbzq0M-27g", "heading": 317.1, "distance": 11.8, "virtual": true}, {"pano_id": "YaM2HyWIAXnkgSpfTJ012Q", "heading": 13.78, "distance": 17.37, "virtual": true}]}, "q8XgTPKTUasEPOiTx5a3ug": {"lat": 42.35024072926262, "lng": -71.06010254002437, "links": [{"pano_id": "kyCOBGkFmIgvOruyBJhtIA", "heading": 111.33479, "description": "Kneeland St"}, {"pano_id": "FkrP9U177dKgWOK0ZpCpbg", "heading": 290.33936, "description": "Kneeland St"}, {"pano_id": "SPT5NUKj80v2_MuLmtb32A", "heading": 250.01, "distance": 16.44, "virtual": true}]}, "SPT5NUKj80v2_MuLmtb32A": {"lat": 42.35019018905323, "lng": -71.06029051702181, "links": [{"pano_id": "zh_S5OuKL0JY-BOg4xy42Q", "heading": 196.5819, "description": "Hudson St"}, {"pano_id": "FkrP9U177dKgWOK0ZpCpbg", "heading": 29.662567, "description": "Kneeland St"}, {"pano_id": "q8XgTPKTUasEPOiTx5a3ug", "heading": 70.01, "distance": 16.44, "virtual": true}, {"pano_id": "QWI1frw0ZgErMx2M5p4tdw", "heading": 344.76, "distance": 13.18, "virtual": true}]}, "QWI1frw0ZgErMx2M5p4tdw": {"lat": 42.3503045538621, "lng": -71.0603326826172, "links": [{"pano_id": "rzfvyTNKBYlS9Kpz5JvRkg", "heading": 291.28345, "description": "Kneeland St"}, {"pano_id": "FkrP9U177dKgWOK0ZpCpbg", "heading": 110.83136, "description": "Kneeland St"}, {"pano_id": "99i-YnsGpctGXAAHkHRdCA", "heading": 44.44, "distance": 14.25, "virtual": true}, {"pano_id": "SPT5NUKj80v2_MuLmtb32A", "heading": 164.76, "distance": 13.18, "virtual": true}]}, "Iu_MOea2MPJZ4RQfgijJkg": {"lat": 42.34986199479508, "lng": -71.05986632182282, "links": [{"pano_id": "F8_6mErt8cL7KoHjdR1ibw", "heading": 197.60867, "description": "Albany St"}, {"pano_id": "zNZ8kQkoiuQQbXYIjINkbQ", "heading": 15.35433, "description": "Albany St"}]}, "J-tToVVEEv-ZljvarXhBtg": {"lat": 42.35005644002922, "lng": -71.05939179939647, "links": [{"pano_id": "lTBder_vl4b0gj1WVH-A5A", "heading": 287.44638, "description": "Kneeland St"}, {"pano_id": "TqkLqgWGngWsblZ3qTbk-g", "heading": 107.47358, "description": "Kneeland St"}]}, "w-03u4_3h-DLjDhsFnTYLQ": {"lat": 42.35071538496162, "lng": -71.06077419694579, "links": [{"pano_id": "utc7Q3LIB-ejuYTqtT8Viw", "heading": 196.3084, "description": "Tyler St"}, {"pano_id": "RlZPvXH3ghpGN4CxiMjTsQ", "heading": 16.29453, "description": "Tyler St"}]}, "TqkLqgWGngWsblZ3qTbk-g": {"lat": 42.35002941608287, "lng": -71.05927563970485, "links": [{"pano_id": "Tbv4cGrm1v_6GBXG3eWOhg", "heading": 107.09401, "description": "Kneeland St"}, {"pano_id": "J-tToVVEEv-ZljvarXhBtg", "heading": 287.47357, "description": "Kneeland St"}]}, "utc7Q3LIB-ejuYTqtT8Viw": {"lat": 42.35063796679058, "lng": -71.06080484631056, "links": [{"pano_id": "w-03u4_3h-DLjDhsFnTYLQ", "heading": 16.308393, "description": "Tyler St"}]}, "F8_6mErt8cL7KoHjdR1ibw": {"lat": 42.34977310086444, "lng": -71.05990449759514, "links": [{"pano_id": "Iu_MOea2MPJZ4RQfgijJkg", "heading": 17.608679, "description": "Albany St"}]}, "rzfvyTNKBYlS9Kpz5JvRkg": {"lat": 42.35032880617683, "lng": -71.0604169231163, "links": [{"pano_id": "QWI1frw0ZgErMx2M5p4tdw", "heading": 111.283455, "description": "Kneeland St"}, {"pano_id": "FkrP9U177dKgWOK0ZpCpbg", "heading": 111.03, "distance": 16.85, "virtual": true}]}, "zh_S5OuKL0JY-BOg4xy42Q": {"lat": 42.35009881539067, "lng": -71.06032733257416, "links": [{"pano_id": "SPT5NUKj80v2_MuLmtb32A", "heading": 16.581894, "description": "Hudson St"}]}, "Tbv4cGrm1v_6GBXG3eWOhg": {"lat": 42.34999699805923, "lng": -71.05913300172467, "links": [{"pano_id": "TqkLqgWGngWsblZ3qTbk-g", "heading": 287.094, "description": "Kneeland St"}]}};
+        const targetPanos = ["MKgtzF1aiByEQbgj_2hEkQ", "wN3cYTXWzb6yo1_R0l-nOQ"];
+        const spawnPoints = ["F8_6mErt8cL7KoHjdR1ibw", "G89cZvCG68upiRjNfh1OqA", "utc7Q3LIB-ejuYTqtT8Viw", "apud5g_ZLzmVwafdJXiQkQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

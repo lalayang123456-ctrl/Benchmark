@@ -1,0 +1,118 @@
+{
+  "task_id": "nav_0710_target_20260124_1558_15",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_mcdonalds_20260124_155528",
+  "spawn_point": "S1d49p0WH0tJ7ZFAiXAh_Q",
+  "spawn_heading": 347.7,
+  "description": "Navigate to Hamburg. Head north for 73m. Turn left for 16m. Turn right for 100m. Total distance: approximately 189 m.",
+  "ground_truth": {
+    "target_name": "Hamburg",
+    "target_pano_id": "UrrmO_cccGuwHTfTNTYtOQ",
+    "optimal_distance_meters": 189,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "UrrmO_cccGuwHTfTNTYtOQ"
+  ],
+  "max_steps": 38,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "S1d49p0WH0tJ7ZFAiXAh_Q",
+      "heading": 347.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Ft1WiW31JjNbenAq7ODabg",
+      "heading": 347.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "tgCCg08ce6BLvTVZDTDC6w",
+      "heading": 347.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "QG4W962LGHstawHaw2hxoQ",
+      "heading": 347.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "eEuq-cK9bEeGbEsqfGTJ5w",
+      "heading": 348.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "bMUawc2BlX9vGl2kESCeFg",
+      "heading": 353.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "-Eju5FWTFuGxs9j9ny6ugw",
+      "heading": 3.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "5gACEOTZ20po9zymQxEtAg",
+      "heading": 26.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "0TR9DRYM-hEG8AeGdlwSOA",
+      "heading": 289.6
+    },
+    {
+      "step_index": 9,
+      "pano_id": "vfoU0za70J6IEU189yBlOA",
+      "heading": 78.8
+    },
+    {
+      "step_index": 10,
+      "pano_id": "pnZibX0IF4EQYhOp3CCF8Q",
+      "heading": 80.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "NOjizeHuPKn8AyN75YteHA",
+      "heading": 84.4
+    },
+    {
+      "step_index": 12,
+      "pano_id": "D2BLV25XFbnkclfAmItoDw",
+      "heading": 85.0
+    },
+    {
+      "step_index": 13,
+      "pano_id": "A1BPpJcxwGc9_uhLmdFI8w",
+      "heading": 86.6
+    },
+    {
+      "step_index": 14,
+      "pano_id": "2PvtlrsOsFTG1oqbK3yf0A",
+      "heading": 86.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "LRDq40J7r8ibdrTwi4kLrA",
+      "heading": 86.6
+    },
+    {
+      "step_index": 16,
+      "pano_id": "DhccUPyHFkc9jpdKgJWO5Q",
+      "heading": 84.0
+    },
+    {
+      "step_index": 17,
+      "pano_id": "TqaGZNHptlVjH2eVKc3eOw",
+      "heading": 84.8
+    },
+    {
+      "step_index": 18,
+      "pano_id": "UrrmO_cccGuwHTfTNTYtOQ",
+      "heading": 87.3
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

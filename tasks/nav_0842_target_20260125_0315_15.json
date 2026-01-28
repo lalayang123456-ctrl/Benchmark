@@ -1,0 +1,38 @@
+{
+  "task_id": "nav_0842_target_20260125_0315_15",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260125_031453",
+  "spawn_point": "x_X9Q2pF6KDYo49j47zNGg",
+  "spawn_heading": 317.4,
+  "description": "Navigate to Passeig de Gràcia. Head northwest for 21m. Total distance: approximately 21 m.",
+  "ground_truth": {
+    "target_name": "Passeig de Gràcia",
+    "target_pano_id": "lZ1_rROnb9NqPFTzvlx2gA",
+    "optimal_distance_meters": 21,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "lZ1_rROnb9NqPFTzvlx2gA"
+  ],
+  "max_steps": 6,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "x_X9Q2pF6KDYo49j47zNGg",
+      "heading": 317.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "sFRAlrRjOkRLVAa85nXP0g",
+      "heading": 317.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "lZ1_rROnb9NqPFTzvlx2gA",
+      "heading": 317.3
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

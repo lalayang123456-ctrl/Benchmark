@@ -1,0 +1,86 @@
+{
+  "task_id": "nav_1113_target_20260125_0342_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260125_034111",
+  "spawn_point": "QyY7Dhb3Rfl0ode9uvDiXw",
+  "spawn_heading": 38.7,
+  "description": "Navigate to Bank Mandiri KCP Jakarta R.S.C.M.. Proceed straight along the main road, keeping the large RSCM hospital complex and the green bike lane on your left. Continue past the line of parked blue auto-rickshaws. The destination will be on the left side of the road.",
+  "ground_truth": {
+    "target_name": "Bank Mandiri KCP Jakarta R.S.C.M.",
+    "target_pano_id": "Q3wTwgkgo757xPXLTQ9QJw",
+    "optimal_distance_meters": 131,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Q3wTwgkgo757xPXLTQ9QJw"
+  ],
+  "max_steps": 24,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "QyY7Dhb3Rfl0ode9uvDiXw",
+      "heading": 38.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "yR681EZpTvFp-LF_agO8fQ",
+      "heading": 38.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "0-VPpYzYx1KNTiiE_Elr2A",
+      "heading": 42.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "VdgE-nU_JPupXvImj3rO6g",
+      "heading": 44.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "pUjQzz3P3sKf779HqRatVg",
+      "heading": 44.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "A_skGekiWaaBKuLLYXmhgA",
+      "heading": 44.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "b5Itioop87EtrwegXkAMGg",
+      "heading": 44.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "yTzw5-LGc5qjI2pMZMiQBA",
+      "heading": 44.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "P6ZcKx03Nb2IWSSic0sI0g",
+      "heading": 43.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "us9zDZ3arphQ0XRQCXTUKw",
+      "heading": 43.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "-ghIDg9vYYM7f57ssmGzwA",
+      "heading": 43.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Q3wTwgkgo757xPXLTQ9QJw",
+      "heading": 43.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [113 m]",
+  "agent_concise_description": "Proceed straight along the main road, keeping the large RSCM hospital complex and the green bike lane on your left. Continue past the line of parked blue auto-rickshaws. The destination will be on the left side of the road."
+}

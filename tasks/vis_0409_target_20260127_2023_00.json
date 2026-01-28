@@ -1,0 +1,61 @@
+{
+  "task_id": "nav_0409_target_20260124_1338_14",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_133749",
+  "spawn_point": "UEB-NhjA8330kRtSpQmp_A",
+  "spawn_heading": 262.6,
+  "description": "Head straight along the road, passing a large red geometric sculpture on the left. Continue forward to arrive alongside the Banco Bradesco building, distinguished by its white facade and a prominent red overhang entrance on the left.",
+  "ground_truth": {
+    "target_name": "Banco Bradesco Ag. 607",
+    "target_pano_id": "haUNL9GcW23m88mfe2LVZA",
+    "optimal_distance_meters": 58,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "haUNL9GcW23m88mfe2LVZA"
+  ],
+  "max_steps": 14,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "UEB-NhjA8330kRtSpQmp_A",
+      "heading": 262.6
+    },
+    {
+      "step_index": 1,
+      "pano_id": "JOvAn56wq4JYzrZmy3reFw",
+      "heading": 262.6
+    },
+    {
+      "step_index": 2,
+      "pano_id": "KHlSFt3x0vlYULk-5_HZPQ",
+      "heading": 262.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "5Vd1Q4yeggfCTuIoADyY9A",
+      "heading": 262.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "C6kRJYkFr4KNYVoxhkpuQg",
+      "heading": 262.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "hR_ATXt7yJmR7rCM0FGZRQ",
+      "heading": 262.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "haUNL9GcW23m88mfe2LVZA",
+      "heading": 262.4
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 58m -> Stop",
+  "agent_concise_description": "Head straight along the road, passing a large red geometric sculpture on the left. Continue forward to arrive alongside the Banco Bradesco building, distinguished by its white facade and a prominent red overhang entrance on the left."
+}

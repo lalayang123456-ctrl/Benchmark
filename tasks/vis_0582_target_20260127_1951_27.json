@@ -1,0 +1,111 @@
+{
+  "task_id": "nav_0582_target_20260124_1504_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260124_150242",
+  "spawn_point": "iW2QXasVECvzQxUrYFjONg",
+  "spawn_heading": 35.2,
+  "description": "Proceed straight along the main road, passing the Juice Centre and Sunlight Guest House on your right. Continue forward past Apex Auto Works until you see the Sheetal Cinema bus stop on the right side.",
+  "ground_truth": {
+    "target_name": "Sheetal Cinema (Kurla-W)",
+    "target_pano_id": "GHkjLK7zZcOi3wA4vvG_MA",
+    "optimal_distance_meters": 163,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "GHkjLK7zZcOi3wA4vvG_MA"
+  ],
+  "max_steps": 34,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "iW2QXasVECvzQxUrYFjONg",
+      "heading": 35.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "nJosm7RCPkBerMzhhQ9PDg",
+      "heading": 35.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "jS6m72UVwUSaEqNbqMtDFg",
+      "heading": 35.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "l2L1OTNG4uEEmmETk20oxg",
+      "heading": 31.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "RucpKdH0--ad3o-KmhG7yA",
+      "heading": 30.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "DX6rS6p54rhm7DgCnZmVNg",
+      "heading": 30.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "mtj_vbWwLOcz8lFERL4ilQ",
+      "heading": 30.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ICGajKDC0FE5xSd6Z0zrqA",
+      "heading": 30.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "NSLa9wpdQ_4UxVDCyMvQHg",
+      "heading": 28.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "QNSUvjta7HYL6OvqEhRUsQ",
+      "heading": 26.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "eVR9rE5fSOi87HP6dZcJUg",
+      "heading": 26.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "wf4YqTwSbbaK1kUbbQm5Dg",
+      "heading": 26.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "pxLOJh1qosdfguE_b2h-Ew",
+      "heading": 12.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "lQFEDy-cjhz8dLwLdIBu3A",
+      "heading": 8.5
+    },
+    {
+      "step_index": 14,
+      "pano_id": "Og_sC8Oz2A9G5-PwnSKG-w",
+      "heading": 24.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "7ctbUBmA3nDIfijY3zZC9g",
+      "heading": 24.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "GHkjLK7zZcOi3wA4vvG_MA",
+      "heading": 24.7
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 160m -> Stop",
+  "agent_concise_description": "Proceed straight along the main road, passing the Juice Centre and Sunlight Guest House on your right. Continue forward past Apex Auto Works until you see the Sheetal Cinema bus stop on the right side."
+}

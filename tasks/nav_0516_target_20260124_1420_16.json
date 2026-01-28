@@ -1,0 +1,103 @@
+{
+  "task_id": "nav_0516_target_20260124_1420_16",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_141848",
+  "spawn_point": "T87uCSwsg3qzmWjIO5wUMg",
+  "spawn_heading": 93.6,
+  "description": "Navigate to Burger King. Head east for 3m. Turn right at Amyskitchen and treats onto Peninsula Resort Way Pass by KFAO CORPORATES SERVICES (on the right in 47m) for 63m. Turn right at DB Express Pass by Travellers Lodge (on the left in 57m) Destination will be on the right for 91m. Total distance: approximately 157 m.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "yEfPotPWVArkiuO6X8a_3w",
+    "optimal_distance_meters": 157,
+    "route_description": "right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "yEfPotPWVArkiuO6X8a_3w"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "T87uCSwsg3qzmWjIO5wUMg",
+      "heading": 93.6
+    },
+    {
+      "step_index": 1,
+      "pano_id": "iNhvSeL0eKKZKAjPvA1z2Q",
+      "heading": 93.6
+    },
+    {
+      "step_index": 2,
+      "pano_id": "0ESxS2ze53afVG72UAQXmA",
+      "heading": 174.8
+    },
+    {
+      "step_index": 3,
+      "pano_id": "ILxGlaZL3kDtbXnAxzY0FA",
+      "heading": 174.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "8koc4Tq5SvjfB8uvaW6jLA",
+      "heading": 177.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "IzZEE5JSVbN3w6EqjxrQcg",
+      "heading": 177.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "6m6MBx62P0TUOSfbLWXZqQ",
+      "heading": 177.7
+    },
+    {
+      "step_index": 7,
+      "pano_id": "6ChFrJIwFsr7lCG6_ysp7w",
+      "heading": 207.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "z41IvhUOUHDAQBdXC1CggQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "jhKN9kPoMR3oXfff2Y66Lg",
+      "heading": 267.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "PlZbdJKGR1HjHLe9TxRISg",
+      "heading": 267.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Opv1cAb4G-M8F4o-OYvaZw",
+      "heading": 267.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "gv6LtK4DztNiP0Qmidk88w",
+      "heading": 267.0
+    },
+    {
+      "step_index": 13,
+      "pano_id": "zGvSVnYd2p9WlmuMUlVLdw",
+      "heading": 267.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "jUFoauvPJhyKXOhzvFNaHQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "yEfPotPWVArkiuO6X8a_3w",
+      "heading": 267.0
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

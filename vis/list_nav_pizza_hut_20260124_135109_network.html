@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_pizza_hut_20260124_135109</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_pizza_hut_20260124_135109</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>9</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"9nNSA_D6ofMCYqjK56QECQ": {"lat": 3.609057377330828, "lng": 98.61135953928232, "links": [{"pano_id": "c6oXWhksU2EA3w0gCWPPlQ", "heading": 89.03858, "description": "Jl. Setia"}, {"pano_id": "W3mwvhQPd_o0ZCkIlROpEQ", "heading": 269.86447, "description": "Jl. Setia"}, {"pano_id": "jbCdBtt3grPCyle56KT-gg", "heading": 269.9, "distance": 15.06, "virtual": true}]}, "W3mwvhQPd_o0ZCkIlROpEQ": {"lat": 3.609057164477189, "lng": 98.61126937145667, "links": [{"pano_id": "9nNSA_D6ofMCYqjK56QECQ", "heading": 89.86448, "description": "Jl. Setia"}, {"pano_id": "jbCdBtt3grPCyle56KT-gg", "heading": 269.96777, "description": "Jl. Setia"}, {"pano_id": "2CLszPaFY2y8QMNjyJdzLw", "heading": 270.42, "distance": 14.96, "virtual": true}]}, "c6oXWhksU2EA3w0gCWPPlQ": {"lat": 3.609058938054734, "lng": 98.61145272679384, "links": [{"pano_id": "f-vJPgewF2ijphlbOCe9Zg", "heading": 89.0304, "description": "Jl. Setia"}, {"pano_id": "9nNSA_D6ofMCYqjK56QECQ", "heading": 269.03857, "description": "Jl. Setia"}]}, "f-vJPgewF2ijphlbOCe9Zg": {"lat": 3.609060503555069, "lng": 98.61154541115555, "links": [{"pano_id": "c6oXWhksU2EA3w0gCWPPlQ", "heading": 269.0304, "description": "Jl. Setia"}, {"pano_id": "ieqCVuWZ9tpAKFd3oiTDuA", "heading": 88.97022, "description": "Jl. Setia"}, {"pano_id": "wgPM2aXeRO8nQpj3r9G0HQ", "heading": 89.87, "distance": 15.18, "virtual": true}, {"pano_id": "DX1yBU943nxus3Jv-Rz7LA", "heading": 57.02, "distance": 12.47, "virtual": true}]}, "jbCdBtt3grPCyle56KT-gg": {"lat": 3.609057138913685, "lng": 98.61122382626066, "links": [{"pano_id": "W3mwvhQPd_o0ZCkIlROpEQ", "heading": 89.96778, "description": "Jl. Setia"}, {"pano_id": "2CLszPaFY2y8QMNjyJdzLw", "heading": 270.64453, "description": "Jl. Setia"}, {"pano_id": "9nNSA_D6ofMCYqjK56QECQ", "heading": 89.9, "distance": 15.06, "virtual": true}]}, "2CLszPaFY2y8QMNjyJdzLw": {"lat": 3.609058140920002, "lng": 98.61113458124098, "links": [{"pano_id": "jbCdBtt3grPCyle56KT-gg", "heading": 90.64455, "description": "Jl. Setia"}, {"pano_id": "ZMyebOzzMHkueJuiK6Ak7w", "heading": 270.7409, "description": "Jl. Setia"}, {"pano_id": "W3mwvhQPd_o0ZCkIlROpEQ", "heading": 90.42, "distance": 14.96, "virtual": true}, {"pano_id": "tpw2sps1ubMYN-62Rkyirg", "heading": 270.81, "distance": 16.6, "virtual": true}]}, "ieqCVuWZ9tpAKFd3oiTDuA": {"lat": 3.609062152704337, "lng": 98.61163734073341, "links": [{"pano_id": "f-vJPgewF2ijphlbOCe9Zg", "heading": 268.9702, "description": "Jl. Setia"}, {"pano_id": "wgPM2aXeRO8nQpj3r9G0HQ", "heading": 91.719795, "description": "Jl. Setia"}, {"pano_id": "xBBZxZ_WPMdBiE7eqFdCNA", "heading": 91.83, "distance": 14.77, "virtual": true}, {"pano_id": "DX1yBU943nxus3Jv-Rz7LA", "heading": 2.26, "distance": 6.61, "virtual": true}]}, "ZMyebOzzMHkueJuiK6Ak7w": {"lat": 3.609059304650984, "lng": 98.61104441368161, "links": [{"pano_id": "tpw2sps1ubMYN-62Rkyirg", "heading": 270.91577, "description": "Jl. Setia"}, {"pano_id": "2CLszPaFY2y8QMNjyJdzLw", "heading": 90.740906, "description": "Jl. Setia"}, {"pano_id": "4fX9WQpGePNhEc4__pkirA", "heading": 273.46, "distance": 14.9, "virtual": true}, {"pano_id": "UOyQUFRu_ELPie_Yk1NPqA", "heading": 273.52, "distance": 15.72, "virtual": true}]}, "wgPM2aXeRO8nQpj3r9G0HQ": {"lat": 3.609060808019336, "lng": 98.61168221515705, "links": [{"pano_id": "ieqCVuWZ9tpAKFd3oiTDuA", "heading": 271.7198, "description": "Jl. Setia"}, {"pano_id": "xBBZxZ_WPMdBiE7eqFdCNA", "heading": 91.89027, "description": "Jl. Setia"}, {"pano_id": "DX1yBU943nxus3Jv-Rz7LA", "heading": 325.05908, "description": ""}, {"pano_id": "f-vJPgewF2ijphlbOCe9Zg", "heading": 269.87, "distance": 15.18, "virtual": true}]}, "xBBZxZ_WPMdBiE7eqFdCNA": {"lat": 3.609057904370783, "lng": 98.6117703704102, "links": [{"pano_id": "lFWPJW_YyU-Eoe5MGrcFHQ", "heading": 91.93179, "description": "Jl. Setia"}, {"pano_id": "wgPM2aXeRO8nQpj3r9G0HQ", "heading": 271.89026, "description": "Jl. Setia"}, {"pano_id": "ieqCVuWZ9tpAKFd3oiTDuA", "heading": 271.83, "distance": 14.77, "virtual": true}, {"pano_id": "DX1yBU943nxus3Jv-Rz7LA", "heading": 296.01, "distance": 16.14, "virtual": true}]}, "tpw2sps1ubMYN-62Rkyirg": {"lat": 3.609060252000071, "lng": 98.61098502896593, "links": [{"pano_id": "4fX9WQpGePNhEc4__pkirA", "heading": 275.47, "description": "Jl. Setia"}, {"pano_id": "ZMyebOzzMHkueJuiK6Ak7w", "heading": 90.915764, "description": "Jl. Setia"}, {"pano_id": "2CLszPaFY2y8QMNjyJdzLw", "heading": 90.81, "distance": 16.6, "virtual": true}, {"pano_id": "UOyQUFRu_ELPie_Yk1NPqA", "heading": 275.4, "distance": 9.14, "virtual": true}]}, "DX1yBU943nxus3Jv-Rz7LA": {"lat": 3.609121553992389, "lng": 98.61163968930072, "links": [{"pano_id": "rNBU5NSUqAXG9nPqsomqNg", "heading": 358.50504, "description": ""}, {"pano_id": "wgPM2aXeRO8nQpj3r9G0HQ", "heading": 145.05907, "description": "Jl. Setia"}, {"pano_id": "f-vJPgewF2ijphlbOCe9Zg", "heading": 237.02, "distance": 12.47, "virtual": true}, {"pano_id": "ieqCVuWZ9tpAKFd3oiTDuA", "heading": 182.26, "distance": 6.61, "virtual": true}, {"pano_id": "xBBZxZ_WPMdBiE7eqFdCNA", "heading": 116.01, "distance": 16.14, "virtual": true}]}, "rNBU5NSUqAXG9nPqsomqNg": {"lat": 3.60925947894343, "lng": 98.61163608257239, "links": [{"pano_id": "DX1yBU943nxus3Jv-Rz7LA", "heading": 178.50504, "description": ""}]}, "4fX9WQpGePNhEc4__pkirA": {"lat": 3.609067386364765, "lng": 98.61091037875342, "links": [{"pano_id": "UOyQUFRu_ELPie_Yk1NPqA", "heading": 274.69946, "description": "Jl. Setia"}, {"pano_id": "tpw2sps1ubMYN-62Rkyirg", "heading": 95.46999, "description": "Jl. Setia"}, {"pano_id": "ZMyebOzzMHkueJuiK6Ak7w", "heading": 93.46, "distance": 14.9, "virtual": true}, {"pano_id": "bf3BONKhgGyCMU6m30-qYg", "heading": 270.98, "distance": 10.17, "virtual": true}]}, "lFWPJW_YyU-Eoe5MGrcFHQ": {"lat": 3.609054812643207, "lng": 98.6118622163819, "links": [{"pano_id": "VzSV0Ih4h3s4RTNo2KDjnQ", "heading": 91.9243, "description": "Jl. Setia"}, {"pano_id": "xBBZxZ_WPMdBiE7eqFdCNA", "heading": 271.9318, "description": "Jl. Setia"}]}, "UOyQUFRu_ELPie_Yk1NPqA": {"lat": 3.609067991933343, "lng": 98.61090299761278, "links": [{"pano_id": "4fX9WQpGePNhEc4__pkirA", "heading": 94.69947, "description": "Jl. Setia"}, {"pano_id": "bf3BONKhgGyCMU6m30-qYg", "heading": 270.6504, "description": "Jl. Setia"}, {"pano_id": "ZMyebOzzMHkueJuiK6Ak7w", "heading": 93.52, "distance": 15.72, "virtual": true}, {"pano_id": "tpw2sps1ubMYN-62Rkyirg", "heading": 95.4, "distance": 9.14, "virtual": true}]}, "VzSV0Ih4h3s4RTNo2KDjnQ": {"lat": 3.60905182292254, "lng": 98.61195137837633, "links": [{"pano_id": "lFWPJW_YyU-Eoe5MGrcFHQ", "heading": 271.9243, "description": "Jl. Setia"}, {"pano_id": "yP3ln16TGYZt7kokD6sbCA", "heading": 91.93395, "description": "Jl. Setia"}, {"pano_id": "yCCV96q5udG2u57u56CIUA", "heading": 93.81, "distance": 10.9, "virtual": true}, {"pano_id": "Nj4iTt7DnEzGF1pWrbhq6w", "heading": 135.81, "distance": 15.37, "virtual": true}]}, "yP3ln16TGYZt7kokD6sbCA": {"lat": 3.609048625968371, "lng": 98.61204624416891, "links": [{"pano_id": "VzSV0Ih4h3s4RTNo2KDjnQ", "heading": 271.93396, "description": "Jl. Setia"}, {"pano_id": "yCCV96q5udG2u57u56CIUA", "heading": 136.97084, "description": "Jl. Cempaka"}, {"pano_id": "Nj4iTt7DnEzGF1pWrbhq6w", "heading": 179.0, "distance": 10.67, "virtual": true}]}, "bf3BONKhgGyCMU6m30-qYg": {"lat": 3.609068946030047, "lng": 98.61081878555892, "links": [{"pano_id": "UOyQUFRu_ELPie_Yk1NPqA", "heading": 90.650406, "description": "Jl. Setia"}, {"pano_id": "DqwXnZq6axD66MtKYg05TA", "heading": 270.64078, "description": "Jl. Setia"}, {"pano_id": "4fX9WQpGePNhEc4__pkirA", "heading": 90.98, "distance": 10.17, "virtual": true}]}, "DqwXnZq6axD66MtKYg05TA": {"lat": 3.609069981507504, "lng": 98.61072601820497, "links": [{"pano_id": "bf3BONKhgGyCMU6m30-qYg", "heading": 90.640785, "description": "Jl. Setia"}, {"pano_id": "RkE7W7rfuhfErAJ0P2rX5A", "heading": 270.59396, "description": "Jl. Setia"}]}, "yCCV96q5udG2u57u56CIUA": {"lat": 3.609045307879551, "lng": 98.61204934764953, "links": [{"pano_id": "yP3ln16TGYZt7kokD6sbCA", "heading": 316.97086, "description": "Jl. Setia"}, {"pano_id": "Nj4iTt7DnEzGF1pWrbhq6w", "heading": 180.88045, "description": "Jl. Cempaka"}, {"pano_id": "VzSV0Ih4h3s4RTNo2KDjnQ", "heading": 273.81, "distance": 10.9, "virtual": true}]}, "Nj4iTt7DnEzGF1pWrbhq6w": {"lat": 3.608952706499967, "lng": 98.61204792172599, "links": [{"pano_id": "yCCV96q5udG2u57u56CIUA", "heading": 0.88045084, "description": "Jl. Cempaka"}, {"pano_id": "4nrE_Rgs6QZnDMwavPWQQw", "heading": 180.67139, "description": "Jl. Cempaka"}, {"pano_id": "VzSV0Ih4h3s4RTNo2KDjnQ", "heading": 315.81, "distance": 15.37, "virtual": true}, {"pano_id": "yP3ln16TGYZt7kokD6sbCA", "heading": 359.0, "distance": 10.67, "virtual": true}, {"pano_id": "wTvNYjYv9g2G7eNBwenTeg", "heading": 180.4, "distance": 17.21, "virtual": true}]}, "RkE7W7rfuhfErAJ0P2rX5A": {"lat": 3.609070930920977, "lng": 98.61063425747956, "links": [{"pano_id": "DqwXnZq6axD66MtKYg05TA", "heading": 90.59397, "description": "Jl. Setia"}, {"pano_id": "9_d-FOgMeLL-PuX6nmDT-A", "heading": 270.64243, "description": "Jl. Setia"}]}, "4nrE_Rgs6QZnDMwavPWQQw": {"lat": 3.608866984309928, "lng": 98.61204691519173, "links": [{"pano_id": "wTvNYjYv9g2G7eNBwenTeg", "heading": 180.06946, "description": "Jl. Cempaka"}, {"pano_id": "Nj4iTt7DnEzGF1pWrbhq6w", "heading": 0.6713917, "description": "Jl. Cempaka"}, {"pano_id": "VMdk74xn5IWzapR4fa49Nw", "heading": 180.22, "distance": 9.69, "virtual": true}]}, "9_d-FOgMeLL-PuX6nmDT-A": {"lat": 3.609071951217257, "lng": 98.6105430839981, "links": [{"pano_id": "RkE7W7rfuhfErAJ0P2rX5A", "heading": 90.642426, "description": "Jl. Setia"}, {"pano_id": "xpD0VQnQ0PVa3MyMyu0t4w", "heading": 270.64243, "description": "Jl. Setia"}]}, "wTvNYjYv9g2G7eNBwenTeg": {"lat": 3.608797925638951, "lng": 98.61204683131388, "links": [{"pano_id": "4nrE_Rgs6QZnDMwavPWQQw", "heading": 0.06945276, "description": "Jl. Cempaka"}, {"pano_id": "VMdk74xn5IWzapR4fa49Nw", "heading": 180.79729, "description": "Jl. Cempaka"}, {"pano_id": "Nj4iTt7DnEzGF1pWrbhq6w", "heading": 0.4, "distance": 17.21, "virtual": true}, {"pano_id": "67pd15mCR9_5f3g-zT_AWQ", "heading": 181.15, "distance": 12.07, "virtual": true}]}, "xpD0VQnQ0PVa3MyMyu0t4w": {"lat": 3.609072971503454, "lng": 98.61045191062577, "links": [{"pano_id": "9_d-FOgMeLL-PuX6nmDT-A", "heading": 90.642426, "description": "Jl. Setia"}, {"pano_id": "I80VKqQc7H-tSZ4xwFLAeA", "heading": 270.59445, "description": "Jl. Setia"}]}, "I80VKqQc7H-tSZ4xwFLAeA": {"lat": 3.609073912109482, "lng": 98.61036107286657, "links": [{"pano_id": "xpD0VQnQ0PVa3MyMyu0t4w", "heading": 90.594444, "description": "Jl. Setia"}, {"pano_id": "zUs52-ayYEVcqtNh-zZlSQ", "heading": 270.64487, "description": "Jl. Setia"}]}, "VMdk74xn5IWzapR4fa49Nw": {"lat": 3.608779879283909, "lng": 98.61204657968032, "links": [{"pano_id": "wTvNYjYv9g2G7eNBwenTeg", "heading": 0.7972814, "description": "Jl. Cempaka"}, {"pano_id": "67pd15mCR9_5f3g-zT_AWQ", "heading": 181.21938, "description": "Jl. Cempaka"}, {"pano_id": "4nrE_Rgs6QZnDMwavPWQQw", "heading": 0.22, "distance": 9.69, "virtual": true}, {"pano_id": "AOBPwtUd27_2Oa8Ux120qQ", "heading": 181.22, "distance": 17.96, "virtual": true}]}, "67pd15mCR9_5f3g-zT_AWQ": {"lat": 3.60868942455773, "lng": 98.61204465048972, "links": [{"pano_id": "AOBPwtUd27_2Oa8Ux120qQ", "heading": 181.21521, "description": "Jl. Cempaka"}, {"pano_id": "VMdk74xn5IWzapR4fa49Nw", "heading": 1.2193797, "description": "Jl. Cempaka"}, {"pano_id": "wTvNYjYv9g2G7eNBwenTeg", "heading": 1.15, "distance": 12.07, "virtual": true}, {"pano_id": "RkLkx2jA00ZRGfoFM0t6EA", "heading": 181.35, "distance": 10.24, "virtual": true}, {"pano_id": "5iZr6KNNpBxI26ooVDs4KQ", "heading": 181.67, "distance": 15.37, "virtual": true}]}, "zUs52-ayYEVcqtNh-zZlSQ": {"lat": 3.609074910832563, "lng": 98.61027216436136, "links": [{"pano_id": "I80VKqQc7H-tSZ4xwFLAeA", "heading": 90.64487, "description": "Jl. Setia"}, {"pano_id": "H7A2WaeF3AxPHlEXhBjpWA", "heading": 270.64267, "description": "Jl. Setia"}]}, "H7A2WaeF3AxPHlEXhBjpWA": {"lat": 3.609075928695152, "lng": 98.61018124294073, "links": [{"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 270.64206, "description": "Jl. Setia"}, {"pano_id": "zUs52-ayYEVcqtNh-zZlSQ", "heading": 90.64267, "description": "Jl. Setia"}, {"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 270.64, "distance": 15.12, "virtual": true}, {"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 246.2, "distance": 16.46, "virtual": true}, {"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 290.14, "distance": 15.34, "virtual": true}]}, "AOBPwtUd27_2Oa8Ux120qQ": {"lat": 3.608618391283753, "lng": 98.61204314068841, "links": [{"pano_id": "67pd15mCR9_5f3g-zT_AWQ", "heading": 1.215216, "description": "Jl. Cempaka"}, {"pano_id": "RkLkx2jA00ZRGfoFM0t6EA", "heading": 181.82439, "description": "Jl. Cempaka"}, {"pano_id": "VMdk74xn5IWzapR4fa49Nw", "heading": 1.22, "distance": 17.96, "virtual": true}, {"pano_id": "5iZr6KNNpBxI26ooVDs4KQ", "heading": 182.14, "distance": 7.47, "virtual": true}, {"pano_id": "EmaT0r7GuEUwLO0cGA4j2Q", "heading": 182.03, "distance": 17.57, "virtual": true}]}, "4WY0OIzvKquvR3pDCtjtiQ": {"lat": 3.609076952132805, "lng": 98.61008973449876, "links": [{"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 270.6443, "description": "Jl. Setia"}, {"pano_id": "H7A2WaeF3AxPHlEXhBjpWA", "heading": 90.642044, "description": "Jl. Setia"}, {"pano_id": "FcnudNZVCD__VLQwPUW9uQ", "heading": 271.3, "distance": 15.46, "virtual": true}, {"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 215.98, "distance": 8.35, "virtual": true}, {"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 320.61, "distance": 6.69, "virtual": true}, {"pano_id": "WAN47Vn084RuGaJe5Cv7OA", "heading": 349.91, "distance": 16.42, "virtual": true}]}, "RkLkx2jA00ZRGfoFM0t6EA": {"lat": 3.608597366362552, "lng": 98.61204246966562, "links": [{"pano_id": "AOBPwtUd27_2Oa8Ux120qQ", "heading": 1.8243861, "description": "Jl. Cempaka"}, {"pano_id": "5iZr6KNNpBxI26ooVDs4KQ", "heading": 182.28778, "description": "Jl. Cempaka"}, {"pano_id": "67pd15mCR9_5f3g-zT_AWQ", "heading": 1.35, "distance": 10.24, "virtual": true}, {"pano_id": "EmaT0r7GuEUwLO0cGA4j2Q", "heading": 182.07, "distance": 15.23, "virtual": true}]}, "3MfpP9fFNlxHnNTEf9beoA": {"lat": 3.609077453874512, "lng": 98.61004502876459, "links": [{"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 7.980122, "description": "Jl. Imam"}, {"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 90.644295, "description": "Jl. Setia"}, {"pano_id": "FcnudNZVCD__VLQwPUW9uQ", "heading": 271.61304, "description": "Jl. Setia"}, {"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 179.53029, "description": "Jl. Puskesmas"}, {"pano_id": "H7A2WaeF3AxPHlEXhBjpWA", "heading": 90.64, "distance": 15.12, "virtual": true}, {"pano_id": "WAN47Vn084RuGaJe5Cv7OA", "heading": 7.37, "distance": 16.25, "virtual": true}, {"pano_id": "rbAVrvfj3axNin6bv8KCXw", "heading": 179.61, "distance": 17.94, "virtual": true}]}, "5iZr6KNNpBxI26ooVDs4KQ": {"lat": 3.608551268032745, "lng": 98.61204062435297, "links": [{"pano_id": "EmaT0r7GuEUwLO0cGA4j2Q", "heading": 181.95479, "description": "Jl. Cempaka"}, {"pano_id": "RkLkx2jA00ZRGfoFM0t6EA", "heading": 2.2877817, "description": "Jl. Cempaka"}, {"pano_id": "67pd15mCR9_5f3g-zT_AWQ", "heading": 1.67, "distance": 15.37, "virtual": true}, {"pano_id": "AOBPwtUd27_2Oa8Ux120qQ", "heading": 2.14, "distance": 7.47, "virtual": true}]}, "FcnudNZVCD__VLQwPUW9uQ": {"lat": 3.609080112868012, "lng": 98.60995041709106, "links": [{"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 91.61303, "description": "Jl. Setia"}, {"pano_id": "TmFxzmj-fqbb0m5mMreWLA", "heading": 271.6553, "description": "Jl. Setia"}, {"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 91.3, "distance": 15.46, "virtual": true}, {"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 123.96, "distance": 12.73, "virtual": true}, {"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 66.76, "distance": 12.21, "virtual": true}]}, "EmaT0r7GuEUwLO0cGA4j2Q": {"lat": 3.608460518982215, "lng": 98.6120375208727, "links": [{"pano_id": "5iZr6KNNpBxI26ooVDs4KQ", "heading": 1.9547855, "description": "Jl. Cempaka"}, {"pano_id": "mMMyRCFEJ0MzjeUKUHfHTA", "heading": 181.21631, "description": "Jl. Cempaka"}, {"pano_id": "AOBPwtUd27_2Oa8Ux120qQ", "heading": 2.03, "distance": 17.57, "virtual": true}, {"pano_id": "RkLkx2jA00ZRGfoFM0t6EA", "heading": 2.07, "distance": 15.23, "virtual": true}]}, "jWQmHLYWbKbQeJDc9yCmUA": {"lat": 3.609016189793573, "lng": 98.61004553201849, "links": [{"pano_id": "rbAVrvfj3axNin6bv8KCXw", "heading": 179.6644, "description": "Jl. Puskesmas"}, {"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 359.53027, "description": "Jl. Setia"}, {"pano_id": "H7A2WaeF3AxPHlEXhBjpWA", "heading": 66.2, "distance": 16.46, "virtual": true}, {"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 35.98, "distance": 8.35, "virtual": true}, {"pano_id": "FcnudNZVCD__VLQwPUW9uQ", "heading": 303.96, "distance": 12.73, "virtual": true}, {"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 3.17, "distance": 11.94, "virtual": true}]}, "ms1qfOLTy1fWEbwsMqSU7g": {"lat": 3.609123432556315, "lng": 98.61005148718985, "links": [{"pano_id": "WAN47Vn084RuGaJe5Cv7OA", "heading": 7.0907617, "description": "Jl. Imam"}, {"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 187.98012, "description": "Jl. Setia"}, {"pano_id": "H7A2WaeF3AxPHlEXhBjpWA", "heading": 110.14, "distance": 15.34, "virtual": true}, {"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 140.61, "distance": 6.69, "virtual": true}, {"pano_id": "FcnudNZVCD__VLQwPUW9uQ", "heading": 246.76, "distance": 12.21, "virtual": true}, {"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 183.17, "distance": 11.94, "virtual": true}]}, "TmFxzmj-fqbb0m5mMreWLA": {"lat": 3.609082737544118, "lng": 98.60985941217906, "links": [{"pano_id": "FcnudNZVCD__VLQwPUW9uQ", "heading": 91.6553, "description": "Jl. Setia"}, {"pano_id": "7L90u69IvMpUt_8bkpkEvw", "heading": 271.62296, "description": "Jl. Setia"}]}, "WAN47Vn084RuGaJe5Cv7OA": {"lat": 3.609222355197272, "lng": 98.61006381691234, "links": [{"pano_id": "i6gjzhLjzUK-lKBpNa39dg", "heading": 7.0403686, "description": "Jl. Imam"}, {"pano_id": "ms1qfOLTy1fWEbwsMqSU7g", "heading": 187.09076, "description": "Jl. Imam"}, {"pano_id": "4WY0OIzvKquvR3pDCtjtiQ", "heading": 169.91, "distance": 16.42, "virtual": true}, {"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 187.37, "distance": 16.25, "virtual": true}]}, "mMMyRCFEJ0MzjeUKUHfHTA": {"lat": 3.6083698354022, "lng": 98.61203559168233, "links": [{"pano_id": "jdMDfY9uBfIe8XBilVhn5g", "heading": 181.2112, "description": "Jl. Cempaka"}, {"pano_id": "EmaT0r7GuEUwLO0cGA4j2Q", "heading": 1.2163036, "description": "Jl. Cempaka"}, {"pano_id": "Vtao9RxVQf9bvN4mE2ut-Q", "heading": 181.24, "distance": 17.71, "virtual": true}]}, "rbAVrvfj3axNin6bv8KCXw": {"lat": 3.608916150468118, "lng": 98.61004611914805, "links": [{"pano_id": "jWQmHLYWbKbQeJDc9yCmUA", "heading": 359.6644, "description": "Jl. Puskesmas"}, {"pano_id": "CewObSlMWYojbKbFjZMUAA", "heading": 173.88522, "description": "Jl. Puskesmas"}, {"pano_id": "3MfpP9fFNlxHnNTEf9beoA", "heading": 359.61, "distance": 17.94, "virtual": true}]}, "CewObSlMWYojbKbFjZMUAA": {"lat": 3.608821603300258, "lng": 98.61005626810241, "links": [{"pano_id": "rbAVrvfj3axNin6bv8KCXw", "heading": 353.88522, "description": "Jl. Puskesmas"}, {"pano_id": "kKETiyVwXss7QpQ30v8DTw", "heading": 176.37228, "description": "Jl. Puskesmas"}]}, "7L90u69IvMpUt_8bkpkEvw": {"lat": 3.609085272966981, "lng": 98.60976974938136, "links": [{"pano_id": "TmFxzmj-fqbb0m5mMreWLA", "heading": 91.622955, "description": "Jl. Setia"}]}, "i6gjzhLjzUK-lKBpNa39dg": {"lat": 3.609313181635366, "lng": 98.61007505625294, "links": [{"pano_id": "6zwlYkLoAzX_38fqW9b80Q", "heading": 6.9774485, "description": "Jl. Imam"}, {"pano_id": "WAN47Vn084RuGaJe5Cv7OA", "heading": 187.04037, "description": "Jl. Imam"}]}, "jdMDfY9uBfIe8XBilVhn5g": {"lat": 3.608278769601891, "lng": 98.61203366249201, "links": [{"pano_id": "mMMyRCFEJ0MzjeUKUHfHTA", "heading": 1.2112001, "description": "Jl. Cempaka"}, {"pano_id": "Vtao9RxVQf9bvN4mE2ut-Q", "heading": 181.26704, "description": "Jl. Cempaka"}, {"pano_id": "wdX3JCmIZ-aIIrQm4HcixA", "heading": 182.01, "distance": 15.15, "virtual": true}]}, "Vtao9RxVQf9bvN4mE2ut-Q": {"lat": 3.60821064303191, "lng": 98.61203215269092, "links": [{"pano_id": "wdX3JCmIZ-aIIrQm4HcixA", "heading": 182.74738, "description": "Jl. Cempaka"}, {"pano_id": "jdMDfY9uBfIe8XBilVhn5g", "heading": 1.2670486, "description": "Jl. Cempaka"}, {"pano_id": "mMMyRCFEJ0MzjeUKUHfHTA", "heading": 1.24, "distance": 17.71, "virtual": true}, {"pano_id": "gn2w5_apgn7zPd2LNnd0Cw", "heading": 182.65, "distance": 11.69, "virtual": true}]}, "6zwlYkLoAzX_38fqW9b80Q": {"lat": 3.609402099449521, "lng": 98.61008596009242, "links": [{"pano_id": "i6gjzhLjzUK-lKBpNa39dg", "heading": 186.97745, "description": "Jl. Imam"}, {"pano_id": "gGF9zxDeEeE_oMEYyB7P5Q", "heading": 5.541856, "description": "Jl. Imam"}, {"pano_id": "Qcyd_OI7t-fagUurAnYeoQ", "heading": 3.76, "distance": 15.18, "virtual": true}]}, "kKETiyVwXss7QpQ30v8DTw": {"lat": 3.608733141161642, "lng": 98.61006188777195, "links": [{"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 182.25061, "description": "Jl. Puskesmas"}, {"pano_id": "CewObSlMWYojbKbFjZMUAA", "heading": 356.37228, "description": "Jl. Puskesmas"}, {"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 182.12, "distance": 10.08, "virtual": true}, {"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 182.21, "distance": 9.42, "virtual": true}, {"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 222.55, "distance": 12.22, "virtual": true}]}, "gGF9zxDeEeE_oMEYyB7P5Q": {"lat": 3.609490962483578, "lng": 98.61009459928941, "links": [{"pano_id": "6zwlYkLoAzX_38fqW9b80Q", "heading": 185.54185, "description": "Jl. Imam"}, {"pano_id": "Qcyd_OI7t-fagUurAnYeoQ", "heading": 0.4052699, "description": "Jl. Imam"}, {"pano_id": "PyVVmPXMgY1n9CKxHK9RJg", "heading": 1.6, "distance": 15.64, "virtual": true}]}, "hxRt8bNqHn3hGcP6ZG7fcQ": {"lat": 3.608656462473053, "lng": 98.61005886824798, "links": [{"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 181.37837, "description": "Jl. Puskesmas"}, {"pano_id": "kKETiyVwXss7QpQ30v8DTw", "heading": 2.250614, "description": "Jl. Puskesmas"}, {"pano_id": "t2MpRPkyMX4d1irU0ZdXfg", "heading": 180.94, "distance": 11.89, "virtual": true}, {"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 181.81, "distance": 0.88, "virtual": true}, {"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 266.56, "distance": 7.94, "virtual": true}, {"pano_id": "4XBgg0RXUEjM86hOGXap2g", "heading": 270.11, "distance": 17.93, "virtual": true}]}, "wdX3JCmIZ-aIIrQm4HcixA": {"lat": 3.608142609786734, "lng": 98.61202888145533, "links": [{"pano_id": "Vtao9RxVQf9bvN4mE2ut-Q", "heading": 2.7473786, "description": "Jl. Cempaka"}, {"pano_id": "gn2w5_apgn7zPd2LNnd0Cw", "heading": 182.46149, "description": "Jl. Cempaka"}, {"pano_id": "jdMDfY9uBfIe8XBilVhn5g", "heading": 2.01, "distance": 15.15, "virtual": true}, {"pano_id": "GZ9r5WWccRRE5BcF9ghVLA", "heading": 181.88, "distance": 14.43, "virtual": true}]}, "gn2w5_apgn7zPd2LNnd0Cw": {"lat": 3.608105610208211, "lng": 98.61202728777651, "links": [{"pano_id": "wdX3JCmIZ-aIIrQm4HcixA", "heading": 2.4614875, "description": "Jl. Cempaka"}, {"pano_id": "GZ9r5WWccRRE5BcF9ghVLA", "heading": 181.6545, "description": "Jl. Cempaka"}, {"pano_id": "Vtao9RxVQf9bvN4mE2ut-Q", "heading": 2.65, "distance": 11.69, "virtual": true}]}, "Qcyd_OI7t-fagUurAnYeoQ": {"lat": 3.609538299934723, "lng": 98.61009493479223, "links": [{"pano_id": "PyVVmPXMgY1n9CKxHK9RJg", "heading": 2.2100658, "description": "Jl. Imam"}, {"pano_id": "gGF9zxDeEeE_oMEYyB7P5Q", "heading": 180.40527, "description": "Jl. Imam"}, {"pano_id": "6zwlYkLoAzX_38fqW9b80Q", "heading": 183.76, "distance": 15.18, "virtual": true}]}, "UODxrveMr_NSRjaC1wHKlQ": {"lat": 3.608642546685346, "lng": 98.61005853274531, "links": [{"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 0.8040734, "description": "Gg. Bunga"}, {"pano_id": "t2MpRPkyMX4d1irU0ZdXfg", "heading": 180.87682, "description": "Jl. Puskesmas"}, {"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 1.3783677, "description": "Jl. Puskesmas"}, {"pano_id": "kKETiyVwXss7QpQ30v8DTw", "heading": 2.12, "distance": 10.08, "virtual": true}, {"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 277.72, "distance": 7.97, "virtual": true}, {"pano_id": "4XBgg0RXUEjM86hOGXap2g", "heading": 275.05, "distance": 17.96, "virtual": true}]}, "GZ9r5WWccRRE5BcF9ghVLA": {"lat": 3.60801286958494, "lng": 98.61202460368592, "links": [{"pano_id": "e6PTkKcqp-NIEVXyMhsB3w", "heading": 182.89877, "description": "Jl. Cempaka"}, {"pano_id": "gn2w5_apgn7zPd2LNnd0Cw", "heading": 1.6545023, "description": "Jl. Cempaka"}, {"pano_id": "wdX3JCmIZ-aIIrQm4HcixA", "heading": 1.88, "distance": 14.43, "virtual": true}]}, "t2MpRPkyMX4d1irU0ZdXfg": {"lat": 3.608549563213997, "lng": 98.61005710685903, "links": [{"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 0.8768109, "description": "Jl. Puskesmas"}, {"pano_id": "9VfdzJT_IdScoV316tCPBg", "heading": 180.79794, "description": "Jl. Puskesmas"}, {"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 0.94, "distance": 11.89, "virtual": true}, {"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 0.87, "distance": 11.0, "virtual": true}, {"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 325.86, "distance": 13.78, "virtual": true}]}, "PyVVmPXMgY1n9CKxHK9RJg": {"lat": 3.609631570412882, "lng": 98.6100985414476, "links": [{"pano_id": "hL-i57BSmjKJaPT8P9VC8g", "heading": 2.3080592, "description": "Jl. Imam"}, {"pano_id": "Qcyd_OI7t-fagUurAnYeoQ", "heading": 182.21007, "description": "Jl. Imam"}, {"pano_id": "gGF9zxDeEeE_oMEYyB7P5Q", "heading": 181.6, "distance": 15.64, "virtual": true}]}, "Moq7M19FsBGUT5BYro9mOg": {"lat": 3.608648511163724, "lng": 98.61005861662098, "links": [{"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 180.80408, "description": "Jl. Puskesmas"}, {"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 272.94803, "description": "Gg. Bunga"}, {"pano_id": "kKETiyVwXss7QpQ30v8DTw", "heading": 2.21, "distance": 9.42, "virtual": true}, {"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 1.81, "distance": 0.88, "virtual": true}, {"pano_id": "t2MpRPkyMX4d1irU0ZdXfg", "heading": 180.87, "distance": 11.0, "virtual": true}, {"pano_id": "4XBgg0RXUEjM86hOGXap2g", "heading": 272.94, "distance": 17.92, "virtual": true}]}, "auhap91TykalivYYLK__wA": {"lat": 3.608011438250471, "lng": 98.61217508065994, "links": [{"pano_id": "W40J7YTeePigwT-lCQhiWA", "heading": 91.40832, "description": "Gg. H. Bachtiar"}, {"pano_id": "GZ9r5WWccRRE5BcF9ghVLA", "heading": 270.54605, "description": "Jl. Cempaka"}]}, "9VfdzJT_IdScoV316tCPBg": {"lat": 3.608459407992056, "lng": 98.61005584872412, "links": [{"pano_id": "t2MpRPkyMX4d1irU0ZdXfg", "heading": 0.7979377, "description": "Jl. Puskesmas"}, {"pano_id": "if0fnmDMe5gc9ei5kfrHUw", "heading": 180.84468, "description": "Jl. Puskesmas"}]}, "hL-i57BSmjKJaPT8P9VC8g": {"lat": 3.609718799978157, "lng": 98.61010206422742, "links": [{"pano_id": "BbYMHlRx7jHuNIFv8tce7Q", "heading": 2.3931491, "description": "Jl. Imam"}, {"pano_id": "PyVVmPXMgY1n9CKxHK9RJg", "heading": 182.30806, "description": "Jl. Imam"}]}, "_gVdB-wCNyzKNn56VxMWYA": {"lat": 3.608652171107854, "lng": 98.60998740621538, "links": [{"pano_id": "4XBgg0RXUEjM86hOGXap2g", "heading": 272.9317, "description": "Gg. Bunga"}, {"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 92.94803, "description": "Gg. Bunga"}, {"pano_id": "kKETiyVwXss7QpQ30v8DTw", "heading": 42.55, "distance": 12.22, "virtual": true}, {"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 86.56, "distance": 7.94, "virtual": true}, {"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 97.72, "distance": 7.97, "virtual": true}, {"pano_id": "t2MpRPkyMX4d1irU0ZdXfg", "heading": 145.86, "distance": 13.78, "virtual": true}]}, "e6PTkKcqp-NIEVXyMhsB3w": {"lat": 3.607928556698751, "lng": 98.61202032591676, "links": [{"pano_id": "GZ9r5WWccRRE5BcF9ghVLA", "heading": 2.8987691, "description": "Jl. Cempaka"}, {"pano_id": "xfpw3ERqTuBhZtN0K6sK8Q", "heading": 182.77281, "description": "Jl. Cempaka"}]}, "BbYMHlRx7jHuNIFv8tce7Q": {"lat": 3.609808933528609, "lng": 98.61010583863455, "links": [{"pano_id": "hL-i57BSmjKJaPT8P9VC8g", "heading": 182.39314, "description": "Jl. Imam"}]}, "4XBgg0RXUEjM86hOGXap2g": {"lat": 3.608656775322012, "lng": 98.60989732388956, "links": [{"pano_id": "_gVdB-wCNyzKNn56VxMWYA", "heading": 92.93171, "description": "Gg. Bunga"}, {"pano_id": "hxRt8bNqHn3hGcP6ZG7fcQ", "heading": 90.11, "distance": 17.93, "virtual": true}, {"pano_id": "UODxrveMr_NSRjaC1wHKlQ", "heading": 95.05, "distance": 17.96, "virtual": true}, {"pano_id": "Moq7M19FsBGUT5BYro9mOg", "heading": 92.94, "distance": 17.92, "virtual": true}]}, "if0fnmDMe5gc9ei5kfrHUw": {"lat": 3.608368565433473, "lng": 98.61005450671355, "links": [{"pano_id": "9VfdzJT_IdScoV316tCPBg", "heading": 0.84468716, "description": "Jl. Puskesmas"}]}, "xfpw3ERqTuBhZtN0K6sK8Q": {"lat": 3.607835222144232, "lng": 98.61201579651438, "links": [{"pano_id": "e6PTkKcqp-NIEVXyMhsB3w", "heading": 2.772811, "description": "Jl. Cempaka"}]}};
+        const targetPanos = ["DqwXnZq6axD66MtKYg05TA", "gn2w5_apgn7zPd2LNnd0Cw", "9nNSA_D6ofMCYqjK56QECQ", "GZ9r5WWccRRE5BcF9ghVLA", "bf3BONKhgGyCMU6m30-qYg", "jdMDfY9uBfIe8XBilVhn5g"];
+        const spawnPoints = ["xfpw3ERqTuBhZtN0K6sK8Q", "EmaT0r7GuEUwLO0cGA4j2Q", "6zwlYkLoAzX_38fqW9b80Q", "9VfdzJT_IdScoV316tCPBg", "i6gjzhLjzUK-lKBpNa39dg", "4XBgg0RXUEjM86hOGXap2g", "BbYMHlRx7jHuNIFv8tce7Q", "if0fnmDMe5gc9ei5kfrHUw", "Moq7M19FsBGUT5BYro9mOg"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

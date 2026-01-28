@@ -1,0 +1,31 @@
+{
+  "task_id": "nav_1014_target_20260125_0330_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260125_033012",
+  "spawn_point": "l66J2z1hVFWaPiVnuleaOQ",
+  "spawn_heading": 0.0,
+  "description": "The navigation path ends in a parking lot facing the street, directly across from a commercial building with 'BLISSFUL KNEAD' signage. The target destination, Alfurat Market Halal, is not visible in the forward view and is likely located behind the camera position.",
+  "ground_truth": {
+    "target_name": "Alfurat Market Halal أسواق الفرات للحلال",
+    "target_pano_id": "l66J2z1hVFWaPiVnuleaOQ",
+    "optimal_distance_meters": 283,
+    "route_description": "right→right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "l66J2z1hVFWaPiVnuleaOQ"
+  ],
+  "max_steps": 2,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "l66J2z1hVFWaPiVnuleaOQ",
+      "heading": 0.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Turn right into parking lot -> Stop",
+  "agent_concise_description": "The navigation path ends in a parking lot facing the street, directly across from a commercial building with 'BLISSFUL KNEAD' signage. The target destination, Alfurat Market Halal, is not visible in the forward view and is likely located behind the camera position."
+}

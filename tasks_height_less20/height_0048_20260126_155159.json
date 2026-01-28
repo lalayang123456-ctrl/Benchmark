@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0048_20260126_155159",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your East (approx. 72\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "gv4WE2PxN7mpoHyvTJ-9mw",
+  "spawn_heading": 72.24487143232403,
+  "target_building": {
+    "lat": 34.6804978,
+    "lng": 135.5046381,
+    "height": 19.53,
+    "floors": 5,
+    "ground_elevation": 5.435117244720459,
+    "roof_elevation": 24.961227,
+    "name": "buildings/ChIJJRmAwxjnAGARsAQHetD16HQ",
+    "date": "2021-04-07"
+  },
+  "geofence_id": "list_height_0048_20260126_155159",
+  "ground_truth": {
+    "height_meters": 19.53
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T15:51:59.771537",
+    "bearing_deg": 72.24487143232403,
+    "city": "Osaka, Japan"
+  }
+}

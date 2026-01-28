@@ -1,0 +1,41 @@
+{
+  "task_id": "nav_0869_target_20260125_0317_21",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260125_031632",
+  "spawn_point": "SBO27GHfMxhbX3vcLB-Pow",
+  "spawn_heading": 44.5,
+  "description": "Head straight along the street, keeping the bike lane on your left. The destination, Droguería San Ignacio, will be on the left side, marked by a prominent green sign just before a building with a tiled roof.",
+  "ground_truth": {
+    "target_name": "Droguería San Ignacio - Sabaneta",
+    "target_pano_id": "uNZPAXSg6TuJGIOQzqXdfw",
+    "optimal_distance_meters": 17,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "uNZPAXSg6TuJGIOQzqXdfw"
+  ],
+  "max_steps": 6,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "SBO27GHfMxhbX3vcLB-Pow",
+      "heading": 44.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "s8k0MspADF6SBmlF2mkOCQ",
+      "heading": 44.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "uNZPAXSg6TuJGIOQzqXdfw",
+      "heading": 44.5
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 17m -> Stop",
+  "agent_concise_description": "Head straight along the street, keeping the bike lane on your left. The destination, Droguería San Ignacio, will be on the left side, marked by a prominent green sign just before a building with a tiled roof."
+}

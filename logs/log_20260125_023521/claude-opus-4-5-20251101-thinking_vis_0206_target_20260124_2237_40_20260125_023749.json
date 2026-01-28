@@ -1,0 +1,1311 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0206_target_20260124_2237_40",
+  "timestamp": "20260125_023749",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023749_vis_0206_target_20260124_2237_40_20260125023749",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "rotation",
+        "heading": 99.1,
+        "pitch": 0.0,
+        "reason": "Rotate left to identify the Taj Mahal Hotel which should be on the left side as I head south, confirming I'm on the correct route before proceeding.",
+        "agent_vlm_duration_seconds": 5.638,
+        "agent_total_duration_seconds": 5.638
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.4,
+          "heading": 189.12273
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "rotation",
+        "heading": 189.1,
+        "pitch": 0.0,
+        "reason": "Rotate right to face south (189°) to see the path ahead and identify the Taj Mahal Hotel before proceeding on the correct route.",
+        "agent_vlm_duration_seconds": 5.583,
+        "agent_total_duration_seconds": 5.583
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.4,
+          "heading": 189.12273
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "rotation",
+        "heading": 99.1,
+        "pitch": 0.0,
+        "reason": "Rotate left to verify the Taj Mahal Hotel is visible on the left side, confirming I'm on the correct route before moving forward south.",
+        "agent_vlm_duration_seconds": 4.292,
+        "agent_total_duration_seconds": 4.292
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.4,
+          "heading": 189.12273
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (10.4m) which will take me south along the correct route toward the Taj Mahal Hotel and the intersection.",
+        "agent_vlm_duration_seconds": 4.735,
+        "agent_total_duration_seconds": 4.735
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.4,
+          "heading": 189.12273
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 99.12272999999999,
+        "pitch": 0.0,
+        "reason": "Rotate left to identify the Taj Mahal Hotel on the left side and scout for the intersection where I need to turn left.",
+        "agent_vlm_duration_seconds": 5.192,
+        "agent_total_duration_seconds": 5.192
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 189.11455
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 9.122725
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (10.0m) to continue heading south along the route toward the intersection and Taj Mahal Hotel.",
+        "agent_vlm_duration_seconds": 4.511,
+        "agent_total_duration_seconds": 4.512
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 189.11455
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.4,
+          "heading": 9.122725
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.1m) to continue heading south and progress toward the intersection and other landmarks on the route.",
+        "agent_vlm_duration_seconds": 4.922,
+        "agent_total_duration_seconds": 4.922
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.13431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 9.114544
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 99.13431,
+        "pitch": 0.0,
+        "reason": "Rotate left to identify the Taj Mahal Hotel and scout for the intersection where I need to turn left.",
+        "agent_vlm_duration_seconds": 4.394,
+        "agent_total_duration_seconds": 4.394
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 12.2,
+          "heading": 189.36996
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 9.134304
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (12.2m) to continue heading south and progress toward the intersection where I need to turn left.",
+        "agent_vlm_duration_seconds": 4.7,
+        "agent_total_duration_seconds": 4.7
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 12.2,
+          "heading": 189.36996
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 9.134304
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.0m) to continue south and progress toward the intersection where I need to turn left.",
+        "agent_vlm_duration_seconds": 4.293,
+        "agent_total_duration_seconds": 4.293
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 189.40932
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 12.2,
+          "heading": 9.369958
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "rotation",
+        "heading": 99.40932000000001,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the intersection where I need to turn left onto the main road.",
+        "agent_vlm_duration_seconds": 4.036,
+        "agent_total_duration_seconds": 4.036
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 189.37491
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 9.409314
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (10.9m) to continue heading south and progress toward the intersection.",
+        "agent_vlm_duration_seconds": 5.408,
+        "agent_total_duration_seconds": 5.408
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.9,
+          "heading": 189.37491
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 9.409314
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "rotation",
+        "heading": 99.37491,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the intersection, which is the critical landmark where I need to turn left onto the main road.",
+        "agent_vlm_duration_seconds": 4.81,
+        "agent_total_duration_seconds": 4.81
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 189.41446
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 9.374913
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (9.5m) to continue heading south and progress toward the intersection.",
+        "agent_vlm_duration_seconds": 4.16,
+        "agent_total_duration_seconds": 4.16
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.5,
+          "heading": 189.41446
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.9,
+          "heading": 9.374913
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "rotation",
+        "heading": 99.41445999999999,
+        "pitch": 0.0,
+        "reason": "Rotate left to confirm the intersection and verify the main road direction before executing the left turn.",
+        "agent_vlm_duration_seconds": 4.969,
+        "agent_total_duration_seconds": 4.969
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 3,
+          "direction": "front-right 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 9.414453
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 16.3,
+          "heading": 160.23
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 189.41446,
+        "pitch": 0.0,
+        "reason": "Rotate right to face south again, so I can execute the left turn onto the main road from my correct heading.",
+        "agent_vlm_duration_seconds": 6.013,
+        "agent_total_duration_seconds": 6.013
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 61°",
+          "distance": 16.3,
+          "heading": 160.23
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 4,
+          "direction": "right-back 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.5,
+          "heading": 9.414453
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move front-left 29° (16.3m) to turn left at the intersection onto the main road as instructed.",
+        "agent_vlm_duration_seconds": 4.71,
+        "agent_total_duration_seconds": 4.71
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 3,
+          "direction": "front-right 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 9.414453
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 16.3,
+          "heading": 160.23
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (9.2m) to continue straight on the main road after the left turn, progressing toward the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 4.822,
+        "agent_total_duration_seconds": 4.822
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.2,
+          "heading": 160.4
+        },
+        {
+          "id": 2,
+          "direction": "front-right 67°",
+          "distance": 9.3,
+          "heading": 227.69
+        },
+        {
+          "id": 3,
+          "direction": "front-right 74°",
+          "distance": 11.4,
+          "heading": 233.8
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 8.8,
+          "heading": 254.0
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 14.1,
+          "heading": 252.62
+        },
+        {
+          "id": 6,
+          "direction": "right-back 35°",
+          "distance": 7.8,
+          "heading": 285.57727
+        },
+        {
+          "id": 7,
+          "direction": "right-back 36°",
+          "distance": 13.0,
+          "heading": 286.41
+        },
+        {
+          "id": 8,
+          "direction": "right-back 57°",
+          "distance": 9.0,
+          "heading": 307.17
+        },
+        {
+          "id": 9,
+          "direction": "back",
+          "distance": 16.3,
+          "heading": 340.23
+        },
+        {
+          "id": 10,
+          "direction": "front-left 55°",
+          "distance": 10.0,
+          "heading": 105.5201
+        },
+        {
+          "id": 11,
+          "direction": "front-left 29°",
+          "distance": 17.5,
+          "heading": 131.16
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "rotation",
+        "heading": 70.4,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut, which should be on the left side of the main road.",
+        "agent_vlm_duration_seconds": 4.442,
+        "agent_total_duration_seconds": 4.442
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 16.2,
+          "heading": 240.82
+        },
+        {
+          "id": 2,
+          "direction": "right-back 28°",
+          "distance": 12.4,
+          "heading": 278.87
+        },
+        {
+          "id": 3,
+          "direction": "right-back 33°",
+          "distance": 10.2,
+          "heading": 283.6036
+        },
+        {
+          "id": 4,
+          "direction": "right-back 34°",
+          "distance": 17.1,
+          "heading": 284.89
+        },
+        {
+          "id": 5,
+          "direction": "right-back 48°",
+          "distance": 13.1,
+          "heading": 298.3
+        },
+        {
+          "id": 6,
+          "direction": "right-back 65°",
+          "distance": 15.1,
+          "heading": 315.33
+        },
+        {
+          "id": 7,
+          "direction": "right-back 74°",
+          "distance": 17.4,
+          "heading": 323.94
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 9.2,
+          "heading": 340.4
+        },
+        {
+          "id": 9,
+          "direction": "left-back 22°",
+          "distance": 8.9,
+          "heading": 47.92
+        },
+        {
+          "id": 10,
+          "direction": "left",
+          "distance": 16.0,
+          "heading": 78.93
+        },
+        {
+          "id": 11,
+          "direction": "front-left 54°",
+          "distance": 10.5,
+          "heading": 106.033936
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (16.0m) to continue along the main road and progress toward finding the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 4.802,
+        "agent_total_duration_seconds": 4.803
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.0,
+          "heading": 78.93
+        },
+        {
+          "id": 2,
+          "direction": "front-right 36°",
+          "distance": 10.5,
+          "heading": 106.033936
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 16.2,
+          "heading": 240.82
+        },
+        {
+          "id": 4,
+          "direction": "left-back 62°",
+          "distance": 12.4,
+          "heading": 278.87
+        },
+        {
+          "id": 5,
+          "direction": "left-back 57°",
+          "distance": 10.2,
+          "heading": 283.6036
+        },
+        {
+          "id": 6,
+          "direction": "left-back 56°",
+          "distance": 17.1,
+          "heading": 284.89
+        },
+        {
+          "id": 7,
+          "direction": "left-back 42°",
+          "distance": 13.1,
+          "heading": 298.3
+        },
+        {
+          "id": 8,
+          "direction": "left-back 25°",
+          "distance": 15.1,
+          "heading": 315.33
+        },
+        {
+          "id": 9,
+          "direction": "left-back 16°",
+          "distance": 17.4,
+          "heading": 323.94
+        },
+        {
+          "id": 10,
+          "direction": "left",
+          "distance": 9.2,
+          "heading": 340.4
+        },
+        {
+          "id": 11,
+          "direction": "front-left 22°",
+          "distance": 8.9,
+          "heading": 47.92
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 348.93,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut on the left side of the road.",
+        "agent_vlm_duration_seconds": 5.407,
+        "agent_total_duration_seconds": 5.407
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 29°",
+          "distance": 10.0,
+          "heading": 108.36949
+        },
+        {
+          "id": 2,
+          "direction": "front-right 76°",
+          "distance": 10.3,
+          "heading": 154.96
+        },
+        {
+          "id": 3,
+          "direction": "right-back 54°",
+          "distance": 8.2,
+          "heading": 223.06
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 258.93
+        },
+        {
+          "id": 5,
+          "direction": "left-back 61°",
+          "distance": 9.6,
+          "heading": 287.45624
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move front-left 61° (9.6m) to continue searching for the 'Just For U' store and Pizza Hut on the main road.",
+        "agent_vlm_duration_seconds": 7.324,
+        "agent_total_duration_seconds": 7.324
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 29°",
+          "distance": 10.0,
+          "heading": 108.36949
+        },
+        {
+          "id": 2,
+          "direction": "right-back 76°",
+          "distance": 10.3,
+          "heading": 154.96
+        },
+        {
+          "id": 3,
+          "direction": "left-back 36°",
+          "distance": 8.2,
+          "heading": 223.06
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 16.0,
+          "heading": 258.93
+        },
+        {
+          "id": 5,
+          "direction": "front-left 61°",
+          "distance": 9.6,
+          "heading": 287.45624
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 197.45623999999998,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut, which should be on the left side.",
+        "agent_vlm_duration_seconds": 4.644,
+        "agent_total_duration_seconds": 4.644
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 285.5201
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.8,
+          "heading": 285.55
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 107.45623
+        },
+        {
+          "id": 4,
+          "direction": "left-back 39°",
+          "distance": 9.5,
+          "heading": 158.21
+        },
+        {
+          "id": 5,
+          "direction": "front-left 60°",
+          "distance": 8.9,
+          "heading": 227.92
+        },
+        {
+          "id": 6,
+          "direction": "front-left 30°",
+          "distance": 16.9,
+          "heading": 257.87
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 6,
+        "reason": "Move front-left 39° (9.5m) to continue searching for the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 7.433,
+        "agent_total_duration_seconds": 7.433
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 30°",
+          "distance": 8.9,
+          "heading": 227.92
+        },
+        {
+          "id": 2,
+          "direction": "front-right 60°",
+          "distance": 16.9,
+          "heading": 257.87
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 285.5201
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 17.8,
+          "heading": 285.55
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.6,
+          "heading": 107.45623
+        },
+        {
+          "id": 6,
+          "direction": "front-left 39°",
+          "distance": 9.5,
+          "heading": 158.21
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 68.21000000000001,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut on the left side.",
+        "agent_vlm_duration_seconds": 4.338,
+        "agent_total_duration_seconds": 4.338
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 38°",
+          "distance": 10.5,
+          "heading": 286.03394
+        },
+        {
+          "id": 2,
+          "direction": "right-back 63°",
+          "distance": 17.5,
+          "heading": 311.16
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 338.21
+        },
+        {
+          "id": 4,
+          "direction": "left-back 25°",
+          "distance": 8.2,
+          "heading": 43.06
+        },
+        {
+          "id": 5,
+          "direction": "front-left 79°",
+          "distance": 15.4,
+          "heading": 79.44
+        },
+        {
+          "id": 6,
+          "direction": "front-left 50°",
+          "distance": 10.5,
+          "heading": 108.41583
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front-right 11° (15.4m) to continue along the main road and progress toward finding the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 4.853,
+        "agent_total_duration_seconds": 4.853
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 11°",
+          "distance": 15.4,
+          "heading": 79.44
+        },
+        {
+          "id": 2,
+          "direction": "front-right 40°",
+          "distance": 10.5,
+          "heading": 108.41583
+        },
+        {
+          "id": 3,
+          "direction": "left-back 52°",
+          "distance": 10.5,
+          "heading": 286.03394
+        },
+        {
+          "id": 4,
+          "direction": "left-back 27°",
+          "distance": 17.5,
+          "heading": 311.16
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.5,
+          "heading": 338.21
+        },
+        {
+          "id": 6,
+          "direction": "front-left 25°",
+          "distance": 8.2,
+          "heading": 43.06
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "rotation",
+        "heading": 349.44,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut on the left side.",
+        "agent_vlm_duration_seconds": 4.603,
+        "agent_total_duration_seconds": 4.603
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 29°",
+          "distance": 10.1,
+          "heading": 108.35916
+        },
+        {
+          "id": 2,
+          "direction": "front-right 75°",
+          "distance": 10.4,
+          "heading": 154.13
+        },
+        {
+          "id": 3,
+          "direction": "right-back 51°",
+          "distance": 8.0,
+          "heading": 220.25
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.4,
+          "heading": 259.44
+        },
+        {
+          "id": 5,
+          "direction": "left-back 61°",
+          "distance": 10.0,
+          "heading": 288.36948
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move front-left 61° (10.0m) to continue searching for the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 5.299,
+        "agent_total_duration_seconds": 5.299
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 29°",
+          "distance": 10.1,
+          "heading": 108.35916
+        },
+        {
+          "id": 2,
+          "direction": "right-back 75°",
+          "distance": 10.4,
+          "heading": 154.13
+        },
+        {
+          "id": 3,
+          "direction": "left-back 39°",
+          "distance": 8.0,
+          "heading": 220.25
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 15.4,
+          "heading": 259.44
+        },
+        {
+          "id": 5,
+          "direction": "front-left 61°",
+          "distance": 10.0,
+          "heading": 288.36948
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 198.36948,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut on the left side.",
+        "agent_vlm_duration_seconds": 7.168,
+        "agent_total_duration_seconds": 7.168
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 287.45624
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 108.36949
+        },
+        {
+          "id": 3,
+          "direction": "left-back 43°",
+          "distance": 10.3,
+          "heading": 154.96
+        },
+        {
+          "id": 4,
+          "direction": "front-left 65°",
+          "distance": 8.2,
+          "heading": 223.06
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 16.0,
+          "heading": 258.93
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move front-left 43° (10.3m) to continue searching for the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 4.695,
+        "agent_total_duration_seconds": 4.695
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 25°",
+          "distance": 8.2,
+          "heading": 223.06
+        },
+        {
+          "id": 2,
+          "direction": "front-right 61°",
+          "distance": 16.0,
+          "heading": 258.93
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 9.6,
+          "heading": 287.45624
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 108.36949
+        },
+        {
+          "id": 5,
+          "direction": "front-left 43°",
+          "distance": 10.3,
+          "heading": 154.96
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "rotation",
+        "heading": 64.96000000000001,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the 'Just For U' store and Pizza Hut on the left side.",
+        "agent_vlm_duration_seconds": 5.323,
+        "agent_total_duration_seconds": 5.323
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 43°",
+          "distance": 10.5,
+          "heading": 288.41583
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 334.96
+        },
+        {
+          "id": 3,
+          "direction": "left-back 25°",
+          "distance": 8.0,
+          "heading": 40.25
+        },
+        {
+          "id": 4,
+          "direction": "front-left 76°",
+          "distance": 15.1,
+          "heading": 78.72
+        },
+        {
+          "id": 5,
+          "direction": "front-left 47°",
+          "distance": 10.3,
+          "heading": 108.41937
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front-right 14° (15.1m) to continue along the main road and progress toward finding the 'Just For U' store and Pizza Hut.",
+        "agent_vlm_duration_seconds": 5.018,
+        "agent_total_duration_seconds": 5.018
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 14°",
+          "distance": 15.1,
+          "heading": 78.72
+        },
+        {
+          "id": 2,
+          "direction": "front-right 43°",
+          "distance": 10.3,
+          "heading": 108.41937
+        },
+        {
+          "id": 3,
+          "direction": "left-back 47°",
+          "distance": 10.5,
+          "heading": 288.41583
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 334.96
+        },
+        {
+          "id": 5,
+          "direction": "front-left 25°",
+          "distance": 8.0,
+          "heading": 40.25
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move front-right 76° (10.4m) to turn right and explore a different direction, breaking the navigation cycle.",
+        "agent_vlm_duration_seconds": 4.705,
+        "agent_total_duration_seconds": 4.705
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 30°",
+          "distance": 10.0,
+          "heading": 108.385376
+        },
+        {
+          "id": 2,
+          "direction": "front-right 76°",
+          "distance": 10.4,
+          "heading": 154.48
+        },
+        {
+          "id": 3,
+          "direction": "right-back 50°",
+          "distance": 8.0,
+          "heading": 219.16
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 258.72
+        },
+        {
+          "id": 5,
+          "direction": "left-back 60°",
+          "distance": 10.1,
+          "heading": 288.35916
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move front-left 46° (10.0m) to continue forward and explore the northeast direction.",
+        "agent_vlm_duration_seconds": 5.675,
+        "agent_total_duration_seconds": 5.675
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 44°",
+          "distance": 10.0,
+          "heading": 288.3748
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 334.48
+        },
+        {
+          "id": 3,
+          "direction": "left-back 26°",
+          "distance": 8.0,
+          "heading": 38.78
+        },
+        {
+          "id": 4,
+          "direction": "front-left 75°",
+          "distance": 15.3,
+          "heading": 79.34
+        },
+        {
+          "id": 5,
+          "direction": "front-left 46°",
+          "distance": 10.0,
+          "heading": 108.39982
+        }
+      ]
+    }
+  ]
+}

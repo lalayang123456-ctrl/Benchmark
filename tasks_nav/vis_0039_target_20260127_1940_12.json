@@ -1,0 +1,76 @@
+{
+  "task_id": "nav_0039_target_20260124_0242_9",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260124_024036",
+  "spawn_point": "26UYlTFMuAdHO-3O9e-oxw",
+  "spawn_heading": 180.7,
+  "description": "Head straight along the street, keeping the large blue wall with 'Welcome to Georgia State' on your left. Continue past the brown brick building until you reach the intersection with Edgewood Ave SE, which is marked by distinctive red brick crosswalks.",
+  "ground_truth": {
+    "target_name": "Edgewood Ave SE @ Courtland St SE",
+    "target_pano_id": "Ay7KquVBlK9fQ8wVHuP6zg",
+    "optimal_distance_meters": 62,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Ay7KquVBlK9fQ8wVHuP6zg"
+  ],
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "26UYlTFMuAdHO-3O9e-oxw",
+      "heading": 180.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "dtWqNSJz0Bqkqxo4OKXhWw",
+      "heading": 180.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "a5MQ-fCtWhlyOiYlgMRFPA",
+      "heading": 180.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "sAC3-3Uk8YXoLQPztgN-fw",
+      "heading": 179.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "3-xz8QMB9HkW346QkPaDRA",
+      "heading": 181.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "896WYqsKlr5RX7Vw8ZrUKg",
+      "heading": 181.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "UVXqSyAFxNhjP_wE3qPEWw",
+      "heading": 181.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "oi2-0XVLr2AjQJJZFQ98Kw",
+      "heading": 194.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "9y5jDd5UAp0qyPQLuvRf1w",
+      "heading": 62.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "Ay7KquVBlK9fQ8wVHuP6zg",
+      "heading": 91.3
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 62m -> Stop",
+  "agent_concise_description": "Head straight along the street, keeping the large blue wall with 'Welcome to Georgia State' on your left. Continue past the brown brick building until you reach the intersection with Edgewood Ave SE, which is marked by distinctive red brick crosswalks."
+}

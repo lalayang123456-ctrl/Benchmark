@@ -1,0 +1,103 @@
+{
+    "poi_categories": {
+        "restaurant": {
+            "keywords": [
+                "McDonald's",
+                "KFC",
+                "Starbucks",
+                "Subway",
+                "Pizza Hut",
+                "Burger King"
+            ],
+            "places_type": "restaurant"
+        },
+        "transit": {
+            "keywords": [
+                "bus stop",
+                "subway station",
+                "train station",
+                "metro station"
+            ],
+            "places_type": [
+                "bus_station",
+                "transit_station",
+                "subway_station"
+            ]
+        },
+        "landmark": {
+            "keywords": [
+                "museum",
+                "church",
+                "park",
+                "library",
+                "monument",
+                "square"
+            ],
+            "places_type": [
+                "museum",
+                "church",
+                "park",
+                "library",
+                "tourist_attraction"
+            ]
+        },
+        "service": {
+            "keywords": [
+                "hospital",
+                "post office",
+                "police station",
+                "bank",
+                "pharmacy"
+            ],
+            "places_type": [
+                "hospital",
+                "post_office",
+                "police",
+                "bank",
+                "pharmacy"
+            ]
+        },
+        "gas_station": {
+            "keywords": [
+                "gas station",
+                "petrol station",
+                "fuel station",
+                "service station"
+            ],
+            "places_type": "gas_station"
+        },
+        "supermarket": {
+            "keywords": [
+                "supermarket",
+                "grocery store",
+                "Tesco",
+                "Aldi",
+                "Lidl",
+                "SPAR"
+            ],
+            "places_type": "supermarket"
+        }
+    },
+    "recommended_secondary_types": [
+        "gas_station",
+        "bank",
+        "pharmacy",
+        "hospital",
+        "bus_station",
+        "transit_station",
+        "church",
+        "parking",
+        "post_office",
+        "supermarket"
+    ],
+    "generation_defaults": {
+        "spawn_distance_min": 100,
+        "spawn_distance_max": 400,
+        "search_radius": 1500,
+        "virtual_link_threshold": 18,
+        "max_distance": 500,
+        "min_panos": 30,
+        "max_panos": 70,
+        "spawn_count": 2
+    }
+}

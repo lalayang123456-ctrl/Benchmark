@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_kfc_20260124_135941</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_kfc_20260124_135941</h3>
+        <div>Total Panos: <strong>58</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"EA_vlTwLJA546X3_HNSuPg": {"lat": -23.59313963534083, "lng": -46.58492171645953, "links": [{"pano_id": "BoSN1BX_ynXKDLisgvZ2ZQ", "heading": 128.04248, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "T43uzCx1bmE5LyljT8muaw", "heading": 303.79965, "description": "Av. Dr. Francisco Mesquita"}]}, "BoSN1BX_ynXKDLisgvZ2ZQ": {"lat": -23.59319654270185, "lng": -46.58484235582952, "links": [{"pano_id": "EA_vlTwLJA546X3_HNSuPg", "heading": 308.04248, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "qkIH31QDKNmqk6H0cuMjUw", "heading": 130.46362, "description": "Av. Dr. Francisco Mesquita"}]}, "T43uzCx1bmE5LyljT8muaw": {"lat": -23.59308792634529, "lng": -46.58500600508937, "links": [{"pano_id": "Q-7Hdh34g2XHVfuOpPl15w", "heading": 269.67245, "description": ""}, {"pano_id": "EA_vlTwLJA546X3_HNSuPg", "heading": 123.799644, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "IkcpgWCA-r-p9g-k-N_nMw", "heading": 299.78534, "description": "Av. Dr. Francisco Mesquita"}]}, "IkcpgWCA-r-p9g-k-N_nMw": {"lat": -23.59304278912012, "lng": -46.58509205907343, "links": [{"pano_id": "n3jyc1NVnpnGXKcTKhISbQ", "heading": 298.1552, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "T43uzCx1bmE5LyljT8muaw", "heading": 119.78534, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Q-7Hdh34g2XHVfuOpPl15w", "heading": 226.3, "distance": 7.38, "virtual": true}, {"pano_id": "ZXnooYrtHwH5qlpGMeiUQg", "heading": 262.71, "distance": 15.24, "virtual": true}]}, "qkIH31QDKNmqk6H0cuMjUw": {"lat": -23.59325673763049, "lng": -46.58476534892584, "links": [{"pano_id": "BoSN1BX_ynXKDLisgvZ2ZQ", "heading": 310.46362, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "WwcCY1m4ab6Jr2nvCabNoQ", "heading": 132.83705, "description": "Av. Dr. Francisco Mesquita"}]}, "Q-7Hdh34g2XHVfuOpPl15w": {"lat": -23.59308865154726, "lng": -46.58514442704087, "links": [{"pano_id": "ZXnooYrtHwH5qlpGMeiUQg", "heading": 287.93204, "description": ""}, {"pano_id": "T43uzCx1bmE5LyljT8muaw", "heading": 89.67245, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "IkcpgWCA-r-p9g-k-N_nMw", "heading": 46.3, "distance": 7.38, "virtual": true}, {"pano_id": "n3jyc1NVnpnGXKcTKhISbQ", "heading": 339.93, "distance": 10.53, "virtual": true}]}, "WwcCY1m4ab6Jr2nvCabNoQ": {"lat": -23.59331948345267, "lng": -46.58469150478634, "links": [{"pano_id": "qkIH31QDKNmqk6H0cuMjUw", "heading": 312.83707, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "P0nb4XKm09gLn00o-83P5g", "heading": 132.83188, "description": "Av. Dr. Francisco Mesquita"}]}, "ZXnooYrtHwH5qlpGMeiUQg": {"lat": -23.59306018678019, "lng": -46.58524041060742, "links": [{"pano_id": "Q-7Hdh34g2XHVfuOpPl15w", "heading": 107.93204, "description": ""}, {"pano_id": "WhZRcdVOUFNxY1dG8v5Ixw", "heading": 290.90054, "description": ""}, {"pano_id": "IkcpgWCA-r-p9g-k-N_nMw", "heading": 82.71, "distance": 15.24, "virtual": true}, {"pano_id": "n3jyc1NVnpnGXKcTKhISbQ", "heading": 42.53, "distance": 9.12, "virtual": true}, {"pano_id": "AqByk8Xc560dS5eRexmeUA", "heading": 345.27, "distance": 11.56, "virtual": true}]}, "n3jyc1NVnpnGXKcTKhISbQ": {"lat": -23.59299971782197, "lng": -46.58517987842089, "links": [{"pano_id": "AqByk8Xc560dS5eRexmeUA", "heading": 296.0689, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "IkcpgWCA-r-p9g-k-N_nMw", "heading": 118.155205, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Q-7Hdh34g2XHVfuOpPl15w", "heading": 159.93, "distance": 10.53, "virtual": true}, {"pano_id": "ZXnooYrtHwH5qlpGMeiUQg", "heading": 222.53, "distance": 9.12, "virtual": true}, {"pano_id": "WhZRcdVOUFNxY1dG8v5Ixw", "heading": 259.06, "distance": 16.08, "virtual": true}]}, "AqByk8Xc560dS5eRexmeUA": {"lat": -23.59295965333025, "lng": -46.58526924248887, "links": [{"pano_id": "n3jyc1NVnpnGXKcTKhISbQ", "heading": 116.0689, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "53WOU5TpJXThv8r_N2PG6A", "heading": 296.80273, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "ZXnooYrtHwH5qlpGMeiUQg", "heading": 165.27, "distance": 11.56, "virtual": true}, {"pano_id": "WhZRcdVOUFNxY1dG8v5Ixw", "heading": 221.66, "distance": 10.05, "virtual": true}, {"pano_id": "HeGlqrsQgOY3mr8i6yG7Gg", "heading": 258.09, "distance": 16.45, "virtual": true}]}, "P0nb4XKm09gLn00o-83P5g": {"lat": -23.59338196784743, "lng": -46.58461795495555, "links": [{"pano_id": "WwcCY1m4ab6Jr2nvCabNoQ", "heading": 312.83188, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "IRqK2--IRiRD95OyMbxAaA", "heading": 135.60132, "description": "Av. Dr. Francisco Mesquita"}]}, "WhZRcdVOUFNxY1dG8v5Ixw": {"lat": -23.59302716320166, "lng": -46.58533477624074, "links": [{"pano_id": "HeGlqrsQgOY3mr8i6yG7Gg", "heading": 293.59833, "description": ""}, {"pano_id": "ZXnooYrtHwH5qlpGMeiUQg", "heading": 110.90054, "description": ""}, {"pano_id": "n3jyc1NVnpnGXKcTKhISbQ", "heading": 79.06, "distance": 16.08, "virtual": true}, {"pano_id": "AqByk8Xc560dS5eRexmeUA", "heading": 41.66, "distance": 10.05, "virtual": true}, {"pano_id": "53WOU5TpJXThv8r_N2PG6A", "heading": 348.66, "distance": 12.35, "virtual": true}]}, "HeGlqrsQgOY3mr8i6yG7Gg": {"lat": -23.59299017993593, "lng": -46.58542715617675, "links": [{"pano_id": "m6YqzbV4BGscru4YEyt5rg", "heading": 295.39685, "description": ""}, {"pano_id": "WhZRcdVOUFNxY1dG8v5Ixw", "heading": 113.598335, "description": ""}, {"pano_id": "AqByk8Xc560dS5eRexmeUA", "heading": 78.09, "distance": 16.45, "virtual": true}, {"pano_id": "53WOU5TpJXThv8r_N2PG6A", "heading": 41.14, "distance": 10.62, "virtual": true}, {"pano_id": "0cKCT9OeYjh6NXkFZOSkyA", "heading": 350.54, "distance": 12.91, "virtual": true}]}, "IRqK2--IRiRD95OyMbxAaA": {"lat": -23.59344818366454, "lng": -46.58454720012096, "links": [{"pano_id": "P0nb4XKm09gLn00o-83P5g", "heading": 315.60132, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "wM4ahtia_6UmtetJ7dZ99g", "heading": 136.44362, "description": "Av. Dr. Francisco Mesquita"}]}, "53WOU5TpJXThv8r_N2PG6A": {"lat": -23.592918280532, "lng": -46.58535860671737, "links": [{"pano_id": "AqByk8Xc560dS5eRexmeUA", "heading": 116.80275, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "0cKCT9OeYjh6NXkFZOSkyA", "heading": 297.4872, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "WhZRcdVOUFNxY1dG8v5Ixw", "heading": 168.66, "distance": 12.35, "virtual": true}, {"pano_id": "HeGlqrsQgOY3mr8i6yG7Gg", "heading": 221.14, "distance": 10.62, "virtual": true}, {"pano_id": "m6YqzbV4BGscru4YEyt5rg", "heading": 257.38, "distance": 16.59, "virtual": true}]}, "m6YqzbV4BGscru4YEyt5rg": {"lat": -23.59295088298757, "lng": -46.58551747685328, "links": [{"pano_id": "HeGlqrsQgOY3mr8i6yG7Gg", "heading": 115.39684, "description": ""}, {"pano_id": "padLEHDL_91nRVS4UZVGrQ", "heading": 306.00497, "description": ""}, {"pano_id": "53WOU5TpJXThv8r_N2PG6A", "heading": 77.38, "distance": 16.59, "virtual": true}, {"pano_id": "0cKCT9OeYjh6NXkFZOSkyA", "heading": 40.26, "distance": 10.96, "virtual": true}, {"pano_id": "QVxD20OoIw0ummzq4CSvdg", "heading": 352.1, "distance": 13.57, "virtual": true}]}, "0cKCT9OeYjh6NXkFZOSkyA": {"lat": -23.59287567209859, "lng": -46.5854479711064, "links": [{"pano_id": "53WOU5TpJXThv8r_N2PG6A", "heading": 117.48722, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "QVxD20OoIw0ummzq4CSvdg", "heading": 299.58365, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "HeGlqrsQgOY3mr8i6yG7Gg", "heading": 170.54, "distance": 12.91, "virtual": true}, {"pano_id": "m6YqzbV4BGscru4YEyt5rg", "heading": 220.26, "distance": 10.96, "virtual": true}, {"pano_id": "padLEHDL_91nRVS4UZVGrQ", "heading": 260.54, "distance": 15.33, "virtual": true}]}, "wM4ahtia_6UmtetJ7dZ99g": {"lat": -23.59351502965238, "lng": -46.58447784282879, "links": [{"pano_id": "IRqK2--IRiRD95OyMbxAaA", "heading": 316.44363, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "p2Bd3c885qXtc9mqVEBNAw", "heading": 136.35934, "description": "Av. Dr. Francisco Mesquita"}]}, "padLEHDL_91nRVS4UZVGrQ": {"lat": -23.59289832722723, "lng": -46.58559639725291, "links": [{"pano_id": "m6YqzbV4BGscru4YEyt5rg", "heading": 126.00497, "description": ""}, {"pano_id": "XXHYz5LO7A8lEarwSzDcYQ", "heading": 317.93372, "description": ""}, {"pano_id": "0cKCT9OeYjh6NXkFZOSkyA", "heading": 80.54, "distance": 15.33, "virtual": true}, {"pano_id": "QVxD20OoIw0ummzq4CSvdg", "heading": 39.1, "distance": 9.79, "virtual": true}, {"pano_id": "rLxMC_1vNfzODsyNE2PxSw", "heading": 347.86, "distance": 12.97, "virtual": true}]}, "p2Bd3c885qXtc9mqVEBNAw": {"lat": -23.59358139619702, "lng": -46.58440877983118, "links": [{"pano_id": "wM4ahtia_6UmtetJ7dZ99g", "heading": 316.35934, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "j29OxgD8p3ErHVkSiJ_BzA", "heading": 139.90437, "description": "Av. Dr. Francisco Mesquita"}]}, "QVxD20OoIw0ummzq4CSvdg": {"lat": -23.59282998386853, "lng": -46.58553579108211, "links": [{"pano_id": "rLxMC_1vNfzODsyNE2PxSw", "heading": 299.71198, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "0cKCT9OeYjh6NXkFZOSkyA", "heading": 119.58363, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "m6YqzbV4BGscru4YEyt5rg", "heading": 172.1, "distance": 13.57, "virtual": true}, {"pano_id": "padLEHDL_91nRVS4UZVGrQ", "heading": 219.1, "distance": 9.79, "virtual": true}, {"pano_id": "XXHYz5LO7A8lEarwSzDcYQ", "heading": 269.74, "distance": 12.98, "virtual": true}]}, "XXHYz5LO7A8lEarwSzDcYQ": {"lat": -23.59283051321479, "lng": -46.58566318180818, "links": [{"pano_id": "WCe31NVV3lFoeSIcjJOQbA", "heading": 334.0224, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "padLEHDL_91nRVS4UZVGrQ", "heading": 137.93372, "description": ""}, {"pano_id": "QVxD20OoIw0ummzq4CSvdg", "heading": 89.74, "distance": 12.98, "virtual": true}, {"pano_id": "rLxMC_1vNfzODsyNE2PxSw", "heading": 38.42, "distance": 6.56, "virtual": true}, {"pano_id": "KX0xdLFbVUKQWdG7KrZQvQ", "heading": 341.78, "distance": 9.11, "virtual": true}]}, "j29OxgD8p3ErHVkSiJ_BzA": {"lat": -23.59365088300948, "lng": -46.58434493893464, "links": [{"pano_id": "p2Bd3c885qXtc9mqVEBNAw", "heading": 319.90436, "description": "Av. Dr. Francisco Mesquita"}]}, "rLxMC_1vNfzODsyNE2PxSw": {"lat": -23.59278428768714, "lng": -46.58562316990528, "links": [{"pano_id": "QVxD20OoIw0ummzq4CSvdg", "heading": 119.71196, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "KX0xdLFbVUKQWdG7KrZQvQ", "heading": 296.88528, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "padLEHDL_91nRVS4UZVGrQ", "heading": 167.86, "distance": 12.97, "virtual": true}, {"pano_id": "XXHYz5LO7A8lEarwSzDcYQ", "heading": 218.42, "distance": 6.56, "virtual": true}, {"pano_id": "WCe31NVV3lFoeSIcjJOQbA", "heading": 298.16, "distance": 10.1, "virtual": true}]}, "KX0xdLFbVUKQWdG7KrZQvQ": {"lat": -23.59275271095569, "lng": -46.58569113131828, "links": [{"pano_id": "WCe31NVV3lFoeSIcjJOQbA", "heading": 302.3828, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "rLxMC_1vNfzODsyNE2PxSw", "heading": 116.8853, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "XXHYz5LO7A8lEarwSzDcYQ", "heading": 161.78, "distance": 9.11, "virtual": true}, {"pano_id": "Aq4dckIYH-2UEOb8i1TDKg", "heading": 303.28, "distance": 12.53, "virtual": true}]}, "WCe31NVV3lFoeSIcjJOQbA": {"lat": -23.59274142569262, "lng": -46.5857105488819, "links": [{"pano_id": "XXHYz5LO7A8lEarwSzDcYQ", "heading": 154.02238, "description": ""}, {"pano_id": "Aq4dckIYH-2UEOb8i1TDKg", "heading": 303.48517, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "KX0xdLFbVUKQWdG7KrZQvQ", "heading": 122.38283, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "rLxMC_1vNfzODsyNE2PxSw", "heading": 118.16, "distance": 10.1, "virtual": true}]}, "Aq4dckIYH-2UEOb8i1TDKg": {"lat": -23.59269086249215, "lng": -46.58579395623002, "links": [{"pano_id": "WCe31NVV3lFoeSIcjJOQbA", "heading": 123.485176, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Y_KZ1FvLExbYrGLRuuLXWw", "heading": 303.49844, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "KX0xdLFbVUKQWdG7KrZQvQ", "heading": 123.28, "distance": 12.53, "virtual": true}]}, "Y_KZ1FvLExbYrGLRuuLXWw": {"lat": -23.59263982761359, "lng": -46.58587809923436, "links": [{"pano_id": "TIrP6NKGF_SWzRaMxXEWAg", "heading": 303.6061, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Aq4dckIYH-2UEOb8i1TDKg", "heading": 123.49845, "description": "Av. Dr. Francisco Mesquita"}]}, "TIrP6NKGF_SWzRaMxXEWAg": {"lat": -23.59258876315671, "lng": -46.58596194817396, "links": [{"pano_id": "0vLD66ql5iubIphfVWl09Q", "heading": 305.8191, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Y_KZ1FvLExbYrGLRuuLXWw", "heading": 123.606125, "description": "Av. Dr. Francisco Mesquita"}]}, "0vLD66ql5iubIphfVWl09Q": {"lat": -23.59253437534517, "lng": -46.58604417911337, "links": [{"pano_id": "OO1NKwQ_q8Q0Na38FNo9_A", "heading": 311.07837, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "TIrP6NKGF_SWzRaMxXEWAg", "heading": 125.819084, "description": "Av. Dr. Francisco Mesquita"}]}, "OO1NKwQ_q8Q0Na38FNo9_A": {"lat": -23.59247291703033, "lng": -46.58612111444451, "links": [{"pano_id": "Ns0hlod9Lr4uOMdTfB7-wg", "heading": 313.29852, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "0vLD66ql5iubIphfVWl09Q", "heading": 131.07837, "description": "Av. Dr. Francisco Mesquita"}]}, "Ns0hlod9Lr4uOMdTfB7-wg": {"lat": -23.59240775035087, "lng": -46.58619657885239, "links": [{"pano_id": "OO1NKwQ_q8Q0Na38FNo9_A", "heading": 133.29852, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "VJZJg0ItGDT6REuR6nhNFg", "heading": 315.3822, "description": "Av. Dr. Francisco Mesquita"}]}, "VJZJg0ItGDT6REuR6nhNFg": {"lat": -23.59234087518895, "lng": -46.58626858642044, "links": [{"pano_id": "Ns0hlod9Lr4uOMdTfB7-wg", "heading": 135.38219, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "sK8EZ-qSSPRy1jeSbvTMHQ", "heading": 317.44208, "description": "Av. Dr. Francisco Mesquita"}]}, "sK8EZ-qSSPRy1jeSbvTMHQ": {"lat": -23.59227260388892, "lng": -46.58633699002899, "links": [{"pano_id": "VJZJg0ItGDT6REuR6nhNFg", "heading": 137.44208, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "04GXzWnnWoGOi6PmFPhjzg", "heading": 319.04456, "description": "Av. Dr. Francisco Mesquita"}]}, "04GXzWnnWoGOi6PmFPhjzg": {"lat": -23.5922043389381, "lng": -46.58640164255836, "links": [{"pano_id": "sK8EZ-qSSPRy1jeSbvTMHQ", "heading": 139.04456, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "dENwjl6jBWncVjZWHZKVdQ", "heading": 319.78607, "description": "Av. Dr. Francisco Mesquita"}]}, "dENwjl6jBWncVjZWHZKVdQ": {"lat": -23.59213513901346, "lng": -46.58646548609416, "links": [{"pano_id": "04GXzWnnWoGOi6PmFPhjzg", "heading": 139.78606, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "a6HgSds9-e1-kZo_Tc124w", "heading": 319.8499, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "jaz3cNtYdBxh4I62WspTiA", "heading": 319.87, "distance": 12.7, "virtual": true}]}, "a6HgSds9-e1-kZo_Tc124w": {"lat": -23.59206634170281, "lng": -46.58652881484367, "links": [{"pano_id": "jaz3cNtYdBxh4I62WspTiA", "heading": 319.95004, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "dENwjl6jBWncVjZWHZKVdQ", "heading": 139.8499, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Kh2JA_YSwj1DNut4R2KhwA", "heading": 320.84, "distance": 10.05, "virtual": true}]}, "jaz3cNtYdBxh4I62WspTiA": {"lat": -23.59204781827919, "lng": -46.5865458054975, "links": [{"pano_id": "Kh2JA_YSwj1DNut4R2KhwA", "heading": 321.16412, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "a6HgSds9-e1-kZo_Tc124w", "heading": 139.95004, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "dENwjl6jBWncVjZWHZKVdQ", "heading": 139.87, "distance": 12.7, "virtual": true}, {"pano_id": "ULgscmxefklCahep4W8xzw", "heading": 321.19, "distance": 17.46, "virtual": true}]}, "Kh2JA_YSwj1DNut4R2KhwA": {"lat": -23.59199624214878, "lng": -46.58659111393607, "links": [{"pano_id": "jaz3cNtYdBxh4I62WspTiA", "heading": 141.16411, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "ULgscmxefklCahep4W8xzw", "heading": 321.20035, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "a6HgSds9-e1-kZo_Tc124w", "heading": 140.84, "distance": 10.05, "virtual": true}]}, "Ag6iOactd5-CftV40X6npg": {"lat": -23.59215390482469, "lng": -46.58652815287027, "links": [{"pano_id": "jaz3cNtYdBxh4I62WspTiA", "heading": 351.32974, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "2fqpWQ1sZgMEZtwMxt-DHQ", "heading": 149.2869, "description": ""}, {"pano_id": "04GXzWnnWoGOi6PmFPhjzg", "heading": 113.51, "distance": 14.06, "virtual": true}, {"pano_id": "dENwjl6jBWncVjZWHZKVdQ", "heading": 71.9, "distance": 6.72, "virtual": true}, {"pano_id": "a6HgSds9-e1-kZo_Tc124w", "heading": 359.6, "distance": 9.74, "virtual": true}]}, "ULgscmxefklCahep4W8xzw": {"lat": -23.5919254844838, "lng": -46.58665319244812, "links": [{"pano_id": "iah-xe7f5IHlW-WWqJa5Tg", "heading": 321.2534, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "Kh2JA_YSwj1DNut4R2KhwA", "heading": 141.20035, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "jaz3cNtYdBxh4I62WspTiA", "heading": 141.19, "distance": 17.46, "virtual": true}]}, "iah-xe7f5IHlW-WWqJa5Tg": {"lat": -23.59185274451147, "lng": -46.58671688920094, "links": [{"pano_id": "edk7LofHaZlk7WOGBHaAow", "heading": 321.32507, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "ULgscmxefklCahep4W8xzw", "heading": 141.25339, "description": "Av. Dr. Francisco Mesquita"}]}, "edk7LofHaZlk7WOGBHaAow": {"lat": -23.59178040715245, "lng": -46.5867800711645, "links": [{"pano_id": "iah-xe7f5IHlW-WWqJa5Tg", "heading": 141.32507, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "A4PcqZuCJHB9PTk_GzIhHQ", "heading": 321.8632, "description": "Av. Dr. Francisco Mesquita"}]}, "A4PcqZuCJHB9PTk_GzIhHQ": {"lat": -23.5917076907096, "lng": -46.58684237057151, "links": [{"pano_id": "eTNOWiv69LQY-GZm3TATkQ", "heading": 322.76657, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "edk7LofHaZlk7WOGBHaAow", "heading": 141.86319, "description": "Av. Dr. Francisco Mesquita"}]}, "eTNOWiv69LQY-GZm3TATkQ": {"lat": -23.59163460514587, "lng": -46.58690297833395, "links": [{"pano_id": "eoxzh6nlGkACywWMqiMJWg", "heading": 322.81735, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "A4PcqZuCJHB9PTk_GzIhHQ", "heading": 142.76656, "description": "Av. Dr. Francisco Mesquita"}]}, "eoxzh6nlGkACywWMqiMJWg": {"lat": -23.59156120711189, "lng": -46.5869637332767, "links": [{"pano_id": "eTNOWiv69LQY-GZm3TATkQ", "heading": 142.81734, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "EmSrr8XwY6pGQTUEvyxZdQ", "heading": 322.7705, "description": "Av. Dr. Francisco Mesquita"}]}, "EmSrr8XwY6pGQTUEvyxZdQ": {"lat": -23.59148828826888, "lng": -46.58702419408029, "links": [{"pano_id": "eoxzh6nlGkACywWMqiMJWg", "heading": 142.77051, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "C_cdY1aeG7UGYhSj8Ssc1w", "heading": 321.98248, "description": "Av. Dr. Francisco Mesquita"}]}, "C_cdY1aeG7UGYhSj8Ssc1w": {"lat": -23.5914159485234, "lng": -46.58708590536558, "links": [{"pano_id": "vW6hYLLN3AvKSwnv3DjvtA", "heading": 321.09943, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "EmSrr8XwY6pGQTUEvyxZdQ", "heading": 141.9825, "description": "Av. Dr. Francisco Mesquita"}]}, "vW6hYLLN3AvKSwnv3DjvtA": {"lat": -23.59134469271888, "lng": -46.58714864647663, "links": [{"pano_id": "NAxif9-NivZsGPw_OXrLbw", "heading": 321.21307, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "C_cdY1aeG7UGYhSj8Ssc1w", "heading": 141.09941, "description": "Av. Dr. Francisco Mesquita"}]}, "NAxif9-NivZsGPw_OXrLbw": {"lat": -23.59127297908567, "lng": -46.58721153477403, "links": [{"pano_id": "0A1W_ybWwc1tDQ1RdO-IQg", "heading": 321.72073, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "vW6hYLLN3AvKSwnv3DjvtA", "heading": 141.21307, "description": "Av. Dr. Francisco Mesquita"}]}, "0A1W_ybWwc1tDQ1RdO-IQg": {"lat": -23.59120029110715, "lng": -46.58727412893611, "links": [{"pano_id": "NAxif9-NivZsGPw_OXrLbw", "heading": 141.72075, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "V0xit2iQnobNFSDD57y3ug", "heading": 322.03778, "description": "Av. Dr. Francisco Mesquita"}]}, "V0xit2iQnobNFSDD57y3ug": {"lat": -23.59112668371451, "lng": -46.58733679673071, "links": [{"pano_id": "f5jZrmQxCIHQ_Wax1EZ2xg", "heading": 322.0607, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "0A1W_ybWwc1tDQ1RdO-IQg", "heading": 142.03777, "description": "Av. Dr. Francisco Mesquita"}]}, "f5jZrmQxCIHQ_Wax1EZ2xg": {"lat": -23.59105266953188, "lng": -46.58739975881982, "links": [{"pano_id": "VUJCM0q4Fx6lzJAOy9iZjQ", "heading": 322.00397, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "V0xit2iQnobNFSDD57y3ug", "heading": 142.06071, "description": "Av. Dr. Francisco Mesquita"}]}, "VUJCM0q4Fx6lzJAOy9iZjQ": {"lat": -23.59097863357562, "lng": -46.58746286809655, "links": [{"pano_id": "f5jZrmQxCIHQ_Wax1EZ2xg", "heading": 142.00398, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "9AEthsULrWLSXjA5xkBFDg", "heading": 322.16208, "description": "Av. Dr. Francisco Mesquita"}]}, "9AEthsULrWLSXjA5xkBFDg": {"lat": -23.5909057369855, "lng": -46.58752465348, "links": [{"pano_id": "VUJCM0q4Fx6lzJAOy9iZjQ", "heading": 142.16206, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "PUOWm4_X824qrxTMdoDgmQ", "heading": 322.47726, "description": "Av. Dr. Francisco Mesquita"}]}, "PUOWm4_X824qrxTMdoDgmQ": {"lat": -23.5908327087659, "lng": -46.58758585050684, "links": [{"pano_id": "9AEthsULrWLSXjA5xkBFDg", "heading": 142.47726, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "iEIxfcFe8RJ7eb3FdqvTAA", "heading": 322.267, "description": "Av. Dr. Francisco Mesquita"}]}, "iEIxfcFe8RJ7eb3FdqvTAA": {"lat": -23.59075918722085, "lng": -46.58764793026002, "links": [{"pano_id": "bYIZ9JazXjVm6hW9xt5ECQ", "heading": 322.05484, "description": "Av. Dr. Francisco Mesquita"}, {"pano_id": "PUOWm4_X824qrxTMdoDgmQ", "heading": 142.26701, "description": "Av. Dr. Francisco Mesquita"}]}, "bYIZ9JazXjVm6hW9xt5ECQ": {"lat": -23.59068579314537, "lng": -46.58771037786239, "links": [{"pano_id": "iEIxfcFe8RJ7eb3FdqvTAA", "heading": 142.05484, "description": "Av. Dr. Francisco Mesquita"}]}};
+        const targetPanos = ["EA_vlTwLJA546X3_HNSuPg"];
+        const spawnPoints = ["jaz3cNtYdBxh4I62WspTiA", "NAxif9-NivZsGPw_OXrLbw", "bYIZ9JazXjVm6hW9xt5ECQ", "Aq4dckIYH-2UEOb8i1TDKg", "A4PcqZuCJHB9PTk_GzIhHQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

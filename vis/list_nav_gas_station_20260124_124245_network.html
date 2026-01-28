@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_gas_station_20260124_124245</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_gas_station_20260124_124245</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"F12YKJWH-4Vlourepyp6gQ": {"lat": 41.86698853572507, "lng": -87.62496687676605, "links": [{"pano_id": "d44dD5iHDHuJHiL5ZuDXFA", "heading": 359.33786, "description": ""}, {"pano_id": "F7X0uu3ecM0p57kX2iJBAA", "heading": 179.31006, "description": ""}]}, "d44dD5iHDHuJHiL5ZuDXFA": {"lat": 41.86707588974827, "lng": -87.62496823243397, "links": [{"pano_id": "F12YKJWH-4Vlourepyp6gQ", "heading": 179.33786, "description": ""}, {"pano_id": "T2_V6sU2AodYAuKCPT6UbQ", "heading": 359.33554, "description": ""}]}, "F7X0uu3ecM0p57kX2iJBAA": {"lat": 41.86690004393349, "lng": -87.6249654457832, "links": [{"pano_id": "F12YKJWH-4Vlourepyp6gQ", "heading": 359.31006, "description": ""}, {"pano_id": "ZLzCBpPnmACUmTWsvkbDRA", "heading": 179.3344, "description": ""}]}, "ZLzCBpPnmACUmTWsvkbDRA": {"lat": 41.86681314405725, "lng": -87.62496409011523, "links": [{"pano_id": "F7X0uu3ecM0p57kX2iJBAA", "heading": 359.33438, "description": ""}, {"pano_id": "0YfXK8hIktuzOjY7RRLjhw", "heading": 179.32564, "description": ""}]}, "T2_V6sU2AodYAuKCPT6UbQ": {"lat": 41.8671629406787, "lng": -87.62496958810182, "links": [{"pano_id": "d44dD5iHDHuJHiL5ZuDXFA", "heading": 179.33556, "description": ""}, {"pano_id": "gSBp4WBZ5IGl45x93MEE_w", "heading": 0.2198642, "description": ""}]}, "0YfXK8hIktuzOjY7RRLjhw": {"lat": 41.86672260703752, "lng": -87.6249626591323, "links": [{"pano_id": "mzY3Yj2oBqBaOLKHgkxP7w", "heading": 180.03587, "description": ""}, {"pano_id": "ZLzCBpPnmACUmTWsvkbDRA", "heading": 359.32565, "description": ""}]}, "gSBp4WBZ5IGl45x93MEE_w": {"lat": 41.86725063584861, "lng": -87.62496913621254, "links": [{"pano_id": "T2_V6sU2AodYAuKCPT6UbQ", "heading": 180.21986, "description": ""}, {"pano_id": "T8uDp6QjXyctrxuIrvgWPw", "heading": 0.87932205, "description": ""}, {"pano_id": "riDulHyhuCLzR0vfckZWsQ", "heading": 27.65, "distance": 17.27, "virtual": true}, {"pano_id": "B2Zv1fv2Tq-BeVkijwYF2g", "heading": 335.47, "distance": 16.79, "virtual": true}]}, "mzY3Yj2oBqBaOLKHgkxP7w": {"lat": 41.86663300978174, "lng": -87.6249627344472, "links": [{"pano_id": "0YfXK8hIktuzOjY7RRLjhw", "heading": 0.03586658, "description": ""}, {"pano_id": "VOJm61vlmzzhzbAfD1L8lg", "heading": 180.63527, "description": ""}]}, "T8uDp6QjXyctrxuIrvgWPw": {"lat": 41.86734564638307, "lng": -87.62496717802559, "links": [{"pano_id": "riDulHyhuCLzR0vfckZWsQ", "heading": 58.91031, "description": "Roosevelt Rd"}, {"pano_id": "gSBp4WBZ5IGl45x93MEE_w", "heading": 180.87932, "description": ""}, {"pano_id": "B2Zv1fv2Tq-BeVkijwYF2g", "heading": 303.44, "distance": 8.55, "virtual": true}, {"pano_id": "IYkjdXE2OFskDKIXyWzTcg", "heading": 286.38, "distance": 17.97, "virtual": true}]}, "VOJm61vlmzzhzbAfD1L8lg": {"lat": 41.86650149186546, "lng": -87.62496469263434, "links": [{"pano_id": "x5dAflc2K0lc2rQgw0AtWA", "heading": 176.7744, "description": ""}, {"pano_id": "mzY3Yj2oBqBaOLKHgkxP7w", "heading": 0.6352667, "description": ""}]}, "riDulHyhuCLzR0vfckZWsQ": {"lat": 41.86738822543523, "lng": -87.6248723564877, "links": [{"pano_id": "T8uDp6QjXyctrxuIrvgWPw", "heading": 238.91031, "description": ""}, {"pano_id": "bf3u2DUXbr3WAFP8WzVnMA", "heading": 89.33046, "description": "Roosevelt Rd"}, {"pano_id": "B2Zv1fv2Tq-BeVkijwYF2g", "heading": 269.91174, "description": "Roosevelt Rd"}, {"pano_id": "gSBp4WBZ5IGl45x93MEE_w", "heading": 207.65, "distance": 17.27, "virtual": true}]}, "x5dAflc2K0lc2rQgw0AtWA": {"lat": 41.86640993212038, "lng": -87.62495776366407, "links": [{"pano_id": "EUfQ9TSTmdqjw3MDz7DLJg", "heading": 175.66104, "description": ""}, {"pano_id": "VOJm61vlmzzhzbAfD1L8lg", "heading": 356.7744, "description": ""}]}, "bf3u2DUXbr3WAFP8WzVnMA": {"lat": 41.86738934950932, "lng": -87.62474319101045, "links": [{"pano_id": "riDulHyhuCLzR0vfckZWsQ", "heading": 269.33047, "description": "Roosevelt Rd"}, {"pano_id": "Bp6jP7auOC-eVOEitD4rwA", "heading": 88.81998, "description": "Roosevelt Rd"}, {"pano_id": "VnOahCP8Io_vaaNJSBs4eQ", "heading": 35.46, "distance": 15.01, "virtual": true}]}, "B2Zv1fv2Tq-BeVkijwYF2g": {"lat": 41.86738801785743, "lng": -87.62505333817222, "links": [{"pano_id": "IYkjdXE2OFskDKIXyWzTcg", "heading": 272.01468, "description": "Roosevelt Rd"}, {"pano_id": "riDulHyhuCLzR0vfckZWsQ", "heading": 89.91175, "description": "Roosevelt Rd"}, {"pano_id": "gSBp4WBZ5IGl45x93MEE_w", "heading": 155.47, "distance": 16.79, "virtual": true}, {"pano_id": "T8uDp6QjXyctrxuIrvgWPw", "heading": 123.44, "distance": 8.55, "virtual": true}]}, "IYkjdXE2OFskDKIXyWzTcg": {"lat": 41.86739121601206, "lng": -87.62517542320681, "links": [{"pano_id": "B2Zv1fv2Tq-BeVkijwYF2g", "heading": 92.01467, "description": "Roosevelt Rd"}, {"pano_id": "17A0SsZB0n-Lz7wXPT-qHQ", "heading": 272.35583, "description": "Roosevelt Rd"}, {"pano_id": "_aRFsgNOdMEcQj3FOV3fsg", "heading": 272.4315, "description": "Roosevelt Rd"}, {"pano_id": "T8uDp6QjXyctrxuIrvgWPw", "heading": 106.38, "distance": 17.97, "virtual": true}]}, "Bp6jP7auOC-eVOEitD4rwA": {"lat": 41.86739135277909, "lng": -87.62461259417435, "links": [{"pano_id": "bf3u2DUXbr3WAFP8WzVnMA", "heading": 268.81998, "description": "Roosevelt Rd"}, {"pano_id": "IW4jBMVJxwv38terLLaJEQ", "heading": 88.80233, "description": "Roosevelt Rd"}, {"pano_id": "W36ZrCoFQHjGQYBtJoIDKA", "heading": 41.38, "distance": 16.31, "virtual": true}, {"pano_id": "VnOahCP8Io_vaaNJSBs4eQ", "heading": 350.04, "distance": 12.18, "virtual": true}]}, "EUfQ9TSTmdqjw3MDz7DLJg": {"lat": 41.86632196578017, "lng": -87.62494880119009, "links": [{"pano_id": "UVYQxJ-m-JgJAj_qHvJhig", "heading": 175.69131, "description": ""}, {"pano_id": "x5dAflc2K0lc2rQgw0AtWA", "heading": 355.66104, "description": ""}]}, "17A0SsZB0n-Lz7wXPT-qHQ": {"lat": 41.86739491935688, "lng": -87.62529630288591, "links": [{"pano_id": "IYkjdXE2OFskDKIXyWzTcg", "heading": 92.35582, "description": "Roosevelt Rd"}, {"pano_id": "_aRFsgNOdMEcQj3FOV3fsg", "heading": 272.50363, "description": "Roosevelt Rd"}]}, "IW4jBMVJxwv38terLLaJEQ": {"lat": 41.86739321013607, "lng": -87.62449329431635, "links": [{"pano_id": "Bp6jP7auOC-eVOEitD4rwA", "heading": 268.80234, "description": "Roosevelt Rd"}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 88.81496, "description": "Roosevelt Rd"}, {"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 40.22, "distance": 15.98, "virtual": true}, {"pano_id": "W36ZrCoFQHjGQYBtJoIDKA", "heading": 4.3, "distance": 12.07, "virtual": true}, {"pano_id": "VnOahCP8Io_vaaNJSBs4eQ", "heading": 314.54, "distance": 16.82, "virtual": true}]}, "_aRFsgNOdMEcQj3FOV3fsg": {"lat": 41.86739904659314, "lng": -87.62542305674813, "links": [{"pano_id": "IYkjdXE2OFskDKIXyWzTcg", "heading": 92.43147, "description": "Roosevelt Rd"}, {"pano_id": "17A0SsZB0n-Lz7wXPT-qHQ", "heading": 92.50362, "description": "Roosevelt Rd"}, {"pano_id": "4KSYLsIfaFI5NoKwAG3iGA", "heading": 271.11633, "description": "Roosevelt Rd"}, {"pano_id": "JIMuvo7PkuCxvzp4YvNFQA", "heading": 310.3, "distance": 15.45, "virtual": true}]}, "UVYQxJ-m-JgJAj_qHvJhig": {"lat": 41.86623263443771, "lng": -87.62493976339942, "links": [{"pano_id": "EUfQ9TSTmdqjw3MDz7DLJg", "heading": 355.6913, "description": ""}, {"pano_id": "VtwjvPzITB7ieEPLzTkSkg", "heading": 176.7366, "description": ""}]}, "4KSYLsIfaFI5NoKwAG3iGA": {"lat": 41.86740084878022, "lng": -87.62554724958537, "links": [{"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 270.90042, "description": "Roosevelt Rd"}, {"pano_id": "_aRFsgNOdMEcQj3FOV3fsg", "heading": 91.11633, "description": "Roosevelt Rd"}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 311.76, "distance": 15.33, "virtual": true}, {"pano_id": "JIMuvo7PkuCxvzp4YvNFQA", "heading": 351.28, "distance": 9.91, "virtual": true}]}, "mLIqene689K2aPcs8tQStQ": {"lat": 41.86739512100145, "lng": -87.6243692492475, "links": [{"pano_id": "IW4jBMVJxwv38terLLaJEQ", "heading": 268.81494, "description": "Roosevelt Rd"}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 91.075424, "description": "Michigan Ave"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 53.59, "distance": 16.31, "virtual": true}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 121.4, "distance": 15.61, "virtual": true}, {"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 0.24, "distance": 11.99, "virtual": true}, {"pano_id": "W36ZrCoFQHjGQYBtJoIDKA", "heading": 321.61, "distance": 15.08, "virtual": true}]}, "VtwjvPzITB7ieEPLzTkSkg": {"lat": 41.866143120754, "lng": -87.62493290974031, "links": [{"pano_id": "UVYQxJ-m-JgJAj_qHvJhig", "heading": 356.7366, "description": ""}, {"pano_id": "Pps_kX6gp7MEIW-7fJmbVg", "heading": 180.24962, "description": ""}]}, "Pps_kX6gp7MEIW-7fJmbVg": {"lat": 41.86605300167864, "lng": -87.62493343694489, "links": [{"pano_id": "AZh_SdKCmv-T6vH9Ldof9Q", "heading": 181.10521, "description": ""}, {"pano_id": "VtwjvPzITB7ieEPLzTkSkg", "heading": 0.24961318, "description": ""}]}, "bNUJeO-LUIU9HMwbGIxAmQ": {"lat": 41.86739288893735, "lng": -87.6242095793252, "links": [{"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 89.2672, "description": "Roosevelt Rd"}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 179.2297, "description": "Michigan Ave"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 359.46033, "description": "Michigan Ave"}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 271.0754, "description": "Roosevelt Rd"}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 49.92, "distance": 15.18, "virtual": true}, {"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 312.9, "distance": 17.98, "virtual": true}, {"pano_id": "2br2dYcCxwQFe2vizukJOQ", "heading": 179.25, "distance": 15.28, "virtual": true}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 133.37, "distance": 15.69, "virtual": true}]}, "sLR3jOWlXC0iuPdvo_X_Fw": {"lat": 41.86740234198086, "lng": -87.62567483120267, "links": [{"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 272.063, "description": "S Wabash Ave"}, {"pano_id": "MD1haENTm_Km16rrhVIdhQ", "heading": 226.17805, "description": "S Wabash Ave"}, {"pano_id": "4KSYLsIfaFI5NoKwAG3iGA", "heading": 90.90041, "description": "Roosevelt Rd"}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 266.4729, "description": "E Roosevelt Rd"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 294.30557, "description": "E Roosevelt Rd"}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 311.14, "distance": 14.58, "virtual": true}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 355.03, "distance": 10.08, "virtual": true}, {"pano_id": "JIMuvo7PkuCxvzp4YvNFQA", "heading": 43.26, "distance": 13.22, "virtual": true}]}, "AZh_SdKCmv-T6vH9Ldof9Q": {"lat": 41.86595996742126, "lng": -87.62493584702291, "links": [{"pano_id": "7P3kIgS7XrCDTjB95Xn8eg", "heading": 181.06868, "description": ""}, {"pano_id": "Pps_kX6gp7MEIW-7fJmbVg", "heading": 1.1052048, "description": ""}]}, "oMMbfl2okyfBD0OF72v0lg": {"lat": 41.86748512061151, "lng": -87.62592095577233, "links": [{"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 114.30558, "description": "Roosevelt Rd"}, {"pano_id": "XocKoFLOMgulLci_o7x9NA", "heading": 269.81192, "description": "E Roosevelt Rd"}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 125.91, "distance": 15.2, "virtual": true}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 155.07, "distance": 11.21, "virtual": true}, {"pano_id": "RCud51bUCmn5ZfP4Hn07-g", "heading": 209.15, "distance": 11.69, "virtual": true}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 27.96, "distance": 10.56, "virtual": true}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 87.63, "distance": 9.41, "virtual": true}]}, "s7ZONhatKjnkGNfrQ-W9qg": {"lat": 41.86739422901918, "lng": -87.624068888573, "links": [{"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 269.26718, "description": "Michigan Ave"}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 88.387985, "description": "E Roosevelt Rd"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 309.8, "distance": 15.28, "virtual": true}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 235.16, "distance": 14.06, "virtual": true}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 359.81, "distance": 9.63, "virtual": true}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 33.75, "distance": 16.82, "virtual": true}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 181.28, "distance": 10.93, "virtual": true}]}, "FNbfNQuTn8s1DD-e-OlTCw": {"lat": 41.86740495620531, "lng": -87.62577228705061, "links": [{"pano_id": "DrL-N1SOPcNBofd4t52dPg", "heading": 188.453, "description": "S Wabash Ave"}, {"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 92.06297, "description": "Roosevelt Rd"}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 342.61548, "description": ""}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 260.59937, "description": "E Roosevelt Rd"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 305.91, "distance": 15.2, "virtual": true}, {"pano_id": "MD1haENTm_Km16rrhVIdhQ", "heading": 198.18, "distance": 12.35, "virtual": true}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 36.42, "distance": 12.12, "virtual": true}]}, "7qeXvxJc2hCF6Pu6lBMZjw": {"lat": 41.86748220680236, "lng": -87.62421070906717, "links": [{"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 179.46033, "description": "Michigan Ave"}, {"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 280.00632, "description": "Roosevelt Rd"}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 90.76258, "description": "Michigan Ave"}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 233.59, "distance": 16.31, "virtual": true}, {"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 129.8, "distance": 15.28, "virtual": true}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 179.36, "distance": 17.82, "virtual": true}, {"pano_id": "u9TBgSOM2dOcauWVaUeAfg", "heading": 359.93, "distance": 9.53, "virtual": true}]}, "5X6pYZwHmuhOJ6PhQJzCXw": {"lat": 41.86732197208539, "lng": -87.62420829895092, "links": [{"pano_id": "2br2dYcCxwQFe2vizukJOQ", "heading": 179.2754, "description": "Michigan Ave"}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 359.2297, "description": "Michigan Ave"}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 301.4, "distance": 15.61, "virtual": true}, {"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 55.16, "distance": 14.06, "virtual": true}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 359.36, "distance": 17.82, "virtual": true}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 104.34, "distance": 11.66, "virtual": true}]}, "ktrwQEnfjL_D_hq8qk8m8g": {"lat": 41.8673936650389, "lng": -87.6258638682454, "links": [{"pano_id": "MD1haENTm_Km16rrhVIdhQ", "heading": 160.4093, "description": "S Wabash Ave"}, {"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 86.47291, "description": "Roosevelt Rd"}, {"pano_id": "RCud51bUCmn5ZfP4Hn07-g", "heading": 269.77957, "description": "E Roosevelt Rd"}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 80.599365, "description": "S Wabash Ave"}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 0.65969414, "description": "S Wabash Ave"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 335.07, "distance": 11.21, "virtual": true}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 23.87, "distance": 11.54, "virtual": true}, {"pano_id": "XocKoFLOMgulLci_o7x9NA", "heading": 305.43, "distance": 17.49, "virtual": true}]}, "MD1haENTm_Km16rrhVIdhQ": {"lat": 41.86729942808932, "lng": -87.62581883080576, "links": [{"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 46.17805, "description": "Roosevelt Rd"}, {"pano_id": "DrL-N1SOPcNBofd4t52dPg", "heading": 179.23189, "description": "S Wabash Ave"}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 340.4093, "description": "E Roosevelt Rd"}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 18.18, "distance": 12.35, "virtual": true}, {"pano_id": "RCud51bUCmn5ZfP4Hn07-g", "heading": 306.42, "distance": 17.58, "virtual": true}]}, "XulignrZpp8zp4WB6ybj6w": {"lat": 41.8673967103217, "lng": -87.62395049109489, "links": [{"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 268.388, "description": "Roosevelt Rd"}, {"pano_id": "ZUKOGmGMQuuXEP0qFdi_Nw", "heading": 88.815056, "description": "E Roosevelt Rd"}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 313.55, "distance": 13.57, "virtual": true}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 358.07, "distance": 13.71, "virtual": true}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 221.89, "distance": 15.05, "virtual": true}]}, "QTA3cWnzkWnrCoeOCfxfLw": {"lat": 41.86748080479671, "lng": -87.62406926515483, "links": [{"pano_id": "u9TBgSOM2dOcauWVaUeAfg", "heading": 309.57062, "description": "S Michigan Ave"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 270.76257, "description": "Michigan Ave"}, {"pano_id": "9-OweDdDFrAK72QomicobQ", "heading": 1.1643575, "description": "Michigan Ave"}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 65.0781, "description": "E Roosevelt Rd"}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 180.59116, "description": "Michigan Ave"}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 229.92, "distance": 15.18, "virtual": true}, {"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 179.81, "distance": 9.63, "virtual": true}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 133.55, "distance": 13.57, "virtual": true}]}, "YlfgKZd84I2OOFa06g39XQ": {"lat": 41.86750295883097, "lng": -87.62436864672053, "links": [{"pano_id": "W36ZrCoFQHjGQYBtJoIDKA", "heading": 268.97336, "description": "Roosevelt Rd"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 100.006325, "description": "Michigan Ave"}, {"pano_id": "IW4jBMVJxwv38terLLaJEQ", "heading": 220.22, "distance": 15.98, "virtual": true}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 180.24, "distance": 11.99, "virtual": true}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 132.9, "distance": 17.98, "virtual": true}, {"pano_id": "u9TBgSOM2dOcauWVaUeAfg", "heading": 61.05, "distance": 14.93, "virtual": true}]}, "RCud51bUCmn5ZfP4Hn07-g": {"lat": 41.86739330447345, "lng": -87.62598971677544, "links": [{"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 89.779564, "description": "E Roosevelt Rd"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 29.15, "distance": 11.69, "virtual": true}, {"pano_id": "MD1haENTm_Km16rrhVIdhQ", "heading": 126.42, "distance": 17.58, "virtual": true}, {"pano_id": "XocKoFLOMgulLci_o7x9NA", "heading": 339.38, "distance": 10.87, "virtual": true}]}, "2br2dYcCxwQFe2vizukJOQ": {"lat": 41.86725545103941, "lng": -87.6242071692089, "links": [{"pano_id": "bZYdYuQYeP6SQp2P81a4xg", "heading": 179.9668, "description": "Michigan Ave"}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 359.2754, "description": "Michigan Ave"}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 359.25, "distance": 15.28, "virtual": true}, {"pano_id": "pCdbgcA_sGhPtMNJU4fKRw", "heading": 68.09, "distance": 12.08, "virtual": true}]}, "cuJnIqRBrIhl7jsYscyqrQ": {"lat": 41.86756901732164, "lng": -87.62586115696267, "links": [{"pano_id": "dpQdZT_LmYSKElK0C7RpLQ", "heading": 357.00995, "description": "S Wabash Ave"}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 153.55656, "description": ""}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 180.6597, "description": "E Roosevelt Rd"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 207.96, "distance": 10.56, "virtual": true}, {"pano_id": "XocKoFLOMgulLci_o7x9NA", "heading": 237.11, "distance": 17.24, "virtual": true}, {"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 52.86, "distance": 8.89, "virtual": true}, {"pano_id": "0LJrIBZausPO57bT6C3GXQ", "heading": 25.17, "distance": 16.3, "virtual": true}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 120.25, "distance": 16.85, "virtual": true}]}, "7P3kIgS7XrCDTjB95Xn8eg": {"lat": 41.86586375193314, "lng": -87.62493825710081, "links": [{"pano_id": "egExUSsDEKijAuYb3rg9PA", "heading": 188.11298, "description": "E 13th St"}, {"pano_id": "AZh_SdKCmv-T6vH9Ldof9Q", "heading": 1.0686729, "description": ""}]}, "ZKMBEvvOMhZ7y4QQqFBwFA": {"lat": 41.8674886136419, "lng": -87.62580745846867, "links": [{"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 333.55658, "description": "S Wabash Ave"}, {"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 10.468453, "description": "S Wabash Ave"}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 87.434616, "description": "Roosevelt Rd"}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 162.61548, "description": "S Wabash Ave"}, {"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 131.14, "distance": 14.58, "virtual": true}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 267.63, "distance": 9.41, "virtual": true}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 203.87, "distance": 11.54, "virtual": true}]}, "u9TBgSOM2dOcauWVaUeAfg": {"lat": 41.86756794467405, "lng": -87.62421085969945, "links": [{"pano_id": "Uhno99R-i2wR3b89Sojs_A", "heading": 0.068327926, "description": "S Michigan Ave"}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 129.57063, "description": "Michigan Ave"}, {"pano_id": "7qeXvxJc2hCF6Pu6lBMZjw", "heading": 179.93, "distance": 9.53, "virtual": true}, {"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 241.05, "distance": 14.93, "virtual": true}, {"pano_id": "9-OweDdDFrAK72QomicobQ", "heading": 69.77, "distance": 12.8, "virtual": true}]}, "XocKoFLOMgulLci_o7x9NA": {"lat": 41.8674848394759, "lng": -87.62603595905671, "links": [{"pano_id": "3omCJ1TEf-rWmspbugMp0A", "heading": 269.4932, "description": "E Roosevelt Rd"}, {"pano_id": "oMMbfl2okyfBD0OF72v0lg", "heading": 89.81192, "description": "E Roosevelt Rd"}, {"pano_id": "ktrwQEnfjL_D_hq8qk8m8g", "heading": 125.43, "distance": 17.49, "virtual": true}, {"pano_id": "RCud51bUCmn5ZfP4Hn07-g", "heading": 159.38, "distance": 10.87, "virtual": true}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 57.11, "distance": 17.24, "virtual": true}]}, "FhBDVy93xudmHitOG-5EJQ": {"lat": 41.86761731515176, "lng": -87.62577552553348, "links": [{"pano_id": "0LJrIBZausPO57bT6C3GXQ", "heading": 359.04834, "description": "S Wabash Ave"}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 190.46846, "description": ""}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 232.86, "distance": 8.89, "virtual": true}, {"pano_id": "dpQdZT_LmYSKElK0C7RpLQ", "heading": 300.82, "distance": 8.86, "virtual": true}, {"pano_id": "BHt4t9zI8WswUKm4IprM4g", "heading": 331.04, "distance": 16.58, "virtual": true}, {"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 151.69, "distance": 15.74, "virtual": true}]}, "DrL-N1SOPcNBofd4t52dPg": {"lat": 41.86718229387308, "lng": -87.62581672202823, "links": [{"pano_id": "fz8ROXlFVqwPiRwIdHJf3A", "heading": 179.64883, "description": "S Wabash Ave"}, {"pano_id": "MD1haENTm_Km16rrhVIdhQ", "heading": 359.2319, "description": "S Wabash Ave"}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 8.453, "description": "S Wabash Ave"}]}, "ZUKOGmGMQuuXEP0qFdi_Nw": {"lat": 41.86739855608158, "lng": -87.62383066229178, "links": [{"pano_id": "jl96R02_fD0ugUEI_3gh_g", "heading": 89.31517, "description": "E Roosevelt Rd"}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 268.81506, "description": "E Roosevelt Rd"}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 322.44, "distance": 17.03, "virtual": true}]}, "dpQdZT_LmYSKElK0C7RpLQ": {"lat": 41.86765813752893, "lng": -87.62586740797539, "links": [{"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 177.00996, "description": "S Wabash Ave"}, {"pano_id": "BHt4t9zI8WswUKm4IprM4g", "heading": 357.59918, "description": "S Wabash Ave"}, {"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 120.82, "distance": 8.86, "virtual": true}, {"pano_id": "0LJrIBZausPO57bT6C3GXQ", "heading": 56.96, "distance": 8.89, "virtual": true}]}, "9-OweDdDFrAK72QomicobQ": {"lat": 41.86760774495993, "lng": -87.62406580060195, "links": [{"pano_id": "_PTHpkaWQQCZQCL8HqLjzw", "heading": 1.6779717, "description": "Michigan Ave"}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 181.16435, "description": "Michigan Ave"}, {"pano_id": "u9TBgSOM2dOcauWVaUeAfg", "heading": 249.77, "distance": 12.8, "virtual": true}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 137.04, "distance": 13.33, "virtual": true}, {"pano_id": "Uhno99R-i2wR3b89Sojs_A", "heading": 296.7, "distance": 13.43, "virtual": true}]}, "bG6a-x_Ana3vB42ZtgUffQ": {"lat": 41.86751997445293, "lng": -87.62395606451994, "links": [{"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 245.0781, "description": "Michigan Ave"}, {"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 213.75, "distance": 16.82, "virtual": true}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 178.07, "distance": 13.71, "virtual": true}, {"pano_id": "ZUKOGmGMQuuXEP0qFdi_Nw", "heading": 142.44, "distance": 17.03, "virtual": true}, {"pano_id": "9-OweDdDFrAK72QomicobQ", "heading": 317.04, "distance": 13.33, "virtual": true}]}, "bZYdYuQYeP6SQp2P81a4xg": {"lat": 41.8671586564879, "lng": -87.62420709389276, "links": [{"pano_id": "2br2dYcCxwQFe2vizukJOQ", "heading": 359.9668, "description": "Michigan Ave"}, {"pano_id": "yoxB3xdMqbLjsi3i1kGLhA", "heading": 180, "description": "S Michigan Ave"}]}, "BHt4t9zI8WswUKm4IprM4g": {"lat": 41.86774776291895, "lng": -87.625872453973, "links": [{"pano_id": "dpQdZT_LmYSKElK0C7RpLQ", "heading": 177.59918, "description": "S Wabash Ave"}, {"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 151.04, "distance": 16.58, "virtual": true}, {"pano_id": "0LJrIBZausPO57bT6C3GXQ", "heading": 123.04, "distance": 9.39, "virtual": true}]}, "pCdbgcA_sGhPtMNJU4fKRw": {"lat": 41.86729598209379, "lng": -87.62407182591112, "links": [{"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 0.5911485, "description": "Michigan Ave"}, {"pano_id": "bNUJeO-LUIU9HMwbGIxAmQ", "heading": 313.37, "distance": 15.69, "virtual": true}, {"pano_id": "s7ZONhatKjnkGNfrQ-W9qg", "heading": 1.28, "distance": 10.93, "virtual": true}, {"pano_id": "5X6pYZwHmuhOJ6PhQJzCXw", "heading": 284.34, "distance": 11.66, "virtual": true}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 41.89, "distance": 15.05, "virtual": true}, {"pano_id": "2br2dYcCxwQFe2vizukJOQ", "heading": 248.09, "distance": 12.08, "virtual": true}]}, "W36ZrCoFQHjGQYBtJoIDKA": {"lat": 41.86750144113159, "lng": -87.6244823735436, "links": [{"pano_id": "YlfgKZd84I2OOFa06g39XQ", "heading": 88.97335, "description": "Roosevelt Rd"}, {"pano_id": "VnOahCP8Io_vaaNJSBs4eQ", "heading": 268.92883, "description": "Roosevelt Rd"}, {"pano_id": "Bp6jP7auOC-eVOEitD4rwA", "heading": 221.38, "distance": 16.31, "virtual": true}, {"pano_id": "IW4jBMVJxwv38terLLaJEQ", "heading": 184.3, "distance": 12.07, "virtual": true}, {"pano_id": "mLIqene689K2aPcs8tQStQ", "heading": 141.61, "distance": 15.08, "virtual": true}]}, "_PTHpkaWQQCZQCL8HqLjzw": {"lat": 41.86770347490688, "lng": -87.62406203478334, "links": [{"pano_id": "9-OweDdDFrAK72QomicobQ", "heading": 181.67798, "description": "Michigan Ave"}, {"pano_id": "dv56ssa0GDwaeCkCtCt6Lw", "heading": 1.4418597, "description": "Michigan Ave"}, {"pano_id": "Uhno99R-i2wR3b89Sojs_A", "heading": 249.47, "distance": 13.15, "virtual": true}, {"pano_id": "EgkvBs0u8rmSwFkhmoXoQg", "heading": 292.75, "distance": 13.34, "virtual": true}]}, "Uhno99R-i2wR3b89Sojs_A": {"lat": 41.86766200729397, "lng": -87.62421070906717, "links": [{"pano_id": "u9TBgSOM2dOcauWVaUeAfg", "heading": 180.06833, "description": "S Michigan Ave"}, {"pano_id": "EgkvBs0u8rmSwFkhmoXoQg", "heading": 0.07315819, "description": "S Michigan Ave"}, {"pano_id": "9-OweDdDFrAK72QomicobQ", "heading": 116.7, "distance": 13.43, "virtual": true}, {"pano_id": "_PTHpkaWQQCZQCL8HqLjzw", "heading": 69.47, "distance": 13.15, "virtual": true}]}, "egExUSsDEKijAuYb3rg9PA": {"lat": 41.86578151999752, "lng": -87.62495399791892, "links": [{"pano_id": "7P3kIgS7XrCDTjB95Xn8eg", "heading": 8.112978, "description": ""}]}, "0LJrIBZausPO57bT6C3GXQ": {"lat": 41.86770172529458, "lng": -87.62577740837227, "links": [{"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 179.04836, "description": "S Wabash Ave"}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 205.17, "distance": 16.3, "virtual": true}, {"pano_id": "dpQdZT_LmYSKElK0C7RpLQ", "heading": 236.96, "distance": 8.89, "virtual": true}, {"pano_id": "BHt4t9zI8WswUKm4IprM4g", "heading": 303.04, "distance": 9.39, "virtual": true}]}, "3omCJ1TEf-rWmspbugMp0A": {"lat": 41.86748370191804, "lng": -87.62620865172283, "links": [{"pano_id": "XocKoFLOMgulLci_o7x9NA", "heading": 89.4932, "description": "E Roosevelt Rd"}]}, "PY4VCG9hWL-DgOMt2QuKkg": {"lat": 41.86749268699526, "lng": -87.62568537512206, "links": [{"pano_id": "JIMuvo7PkuCxvzp4YvNFQA", "heading": 92.40986, "description": "Roosevelt Rd"}, {"pano_id": "ZKMBEvvOMhZ7y4QQqFBwFA", "heading": 267.43463, "description": ""}, {"pano_id": "4KSYLsIfaFI5NoKwAG3iGA", "heading": 131.76, "distance": 15.33, "virtual": true}, {"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 175.03, "distance": 10.08, "virtual": true}, {"pano_id": "FNbfNQuTn8s1DD-e-OlTCw", "heading": 216.42, "distance": 12.12, "virtual": true}, {"pano_id": "cuJnIqRBrIhl7jsYscyqrQ", "heading": 300.25, "distance": 16.85, "virtual": true}, {"pano_id": "FhBDVy93xudmHitOG-5EJQ", "heading": 331.69, "distance": 15.74, "virtual": true}]}, "T3Zf-45gH7sy35iXNteTWg": {"lat": 41.86751165730755, "lng": -87.62386493140329, "links": [{"pano_id": "ej8CGFg2qYeb6QZ1SzTUgA", "heading": 80.873535, "description": "E Roosevelt Rd"}, {"pano_id": "bG6a-x_Ana3vB42ZtgUffQ", "heading": 276.9869, "description": "E Roosevelt Rd"}, {"pano_id": "XulignrZpp8zp4WB6ybj6w", "heading": 209.0, "distance": 14.61, "virtual": true}, {"pano_id": "QTA3cWnzkWnrCoeOCfxfLw", "heading": 258.54, "distance": 17.26, "virtual": true}, {"pano_id": "ZUKOGmGMQuuXEP0qFdi_Nw", "heading": 167.28, "distance": 12.89, "virtual": true}]}, "dv56ssa0GDwaeCkCtCt6Lw": {"lat": 41.86779929129323, "lng": -87.62405879617907, "links": [{"pano_id": "_PTHpkaWQQCZQCL8HqLjzw", "heading": 181.44186, "description": "Michigan Ave"}, {"pano_id": "b147qJrR5QnQZB5YqSWsNg", "heading": 0.99124503, "description": "Michigan Ave"}, {"pano_id": "EgkvBs0u8rmSwFkhmoXoQg", "heading": 246.38, "distance": 13.72, "virtual": true}]}, "EgkvBs0u8rmSwFkhmoXoQg": {"lat": 41.86774985930759, "lng": -87.62421055843491, "links": [{"pano_id": "Uhno99R-i2wR3b89Sojs_A", "heading": 180.07315, "description": "S Michigan Ave"}, {"pano_id": "_PTHpkaWQQCZQCL8HqLjzw", "heading": 112.75, "distance": 13.34, "virtual": true}, {"pano_id": "dv56ssa0GDwaeCkCtCt6Lw", "heading": 66.38, "distance": 13.72, "virtual": true}]}, "fz8ROXlFVqwPiRwIdHJf3A": {"lat": 41.86709078681898, "lng": -87.62581596889338, "links": [{"pano_id": "-YKsSIfIcJgjjJ2VoHzYyw", "heading": 179.64243, "description": "S Wabash Ave"}, {"pano_id": "DrL-N1SOPcNBofd4t52dPg", "heading": 359.64883, "description": "S Wabash Ave"}]}, "VnOahCP8Io_vaaNJSBs4eQ": {"lat": 41.86749927346795, "lng": -87.62463805079567, "links": [{"pano_id": "W36ZrCoFQHjGQYBtJoIDKA", "heading": 88.92882, "description": "Roosevelt Rd"}, {"pano_id": "bf3u2DUXbr3WAFP8WzVnMA", "heading": 215.46, "distance": 15.01, "virtual": true}, {"pano_id": "Bp6jP7auOC-eVOEitD4rwA", "heading": 170.04, "distance": 12.18, "virtual": true}, {"pano_id": "IW4jBMVJxwv38terLLaJEQ", "heading": 134.54, "distance": 16.82, "virtual": true}]}, "b147qJrR5QnQZB5YqSWsNg": {"lat": 41.86789005643452, "lng": -87.62405668732035, "links": [{"pano_id": "dv56ssa0GDwaeCkCtCt6Lw", "heading": 180.99124, "description": "Michigan Ave"}]}, "yoxB3xdMqbLjsi3i1kGLhA": {"lat": 41.86706761940959, "lng": -87.62420709389276, "links": [{"pano_id": "bZYdYuQYeP6SQp2P81a4xg", "heading": -0.56462264, "description": "Michigan Ave"}]}, "JIMuvo7PkuCxvzp4YvNFQA": {"lat": 41.86748892696948, "lng": -87.6255654002386, "links": [{"pano_id": "PY4VCG9hWL-DgOMt2QuKkg", "heading": 272.40985, "description": "Roosevelt Rd"}, {"pano_id": "_aRFsgNOdMEcQj3FOV3fsg", "heading": 130.29, "distance": 15.45, "virtual": true}, {"pano_id": "4KSYLsIfaFI5NoKwAG3iGA", "heading": 171.28, "distance": 9.91, "virtual": true}, {"pano_id": "sLR3jOWlXC0iuPdvo_X_Fw", "heading": 223.26, "distance": 13.22, "virtual": true}]}, "-YKsSIfIcJgjjJ2VoHzYyw": {"lat": 41.86699193145064, "lng": -87.62581514044503, "links": [{"pano_id": "fz8ROXlFVqwPiRwIdHJf3A", "heading": 359.64243, "description": "S Wabash Ave"}]}, "jl96R02_fD0ugUEI_3gh_g": {"lat": 41.86739974340675, "lng": -87.62369727612082, "links": [{"pano_id": "ZUKOGmGMQuuXEP0qFdi_Nw", "heading": 269.31516, "description": "E Roosevelt Rd"}]}};
+        const targetPanos = ["bZYdYuQYeP6SQp2P81a4xg", "dpQdZT_LmYSKElK0C7RpLQ", "F12YKJWH-4Vlourepyp6gQ", "-YKsSIfIcJgjjJ2VoHzYyw"];
+        const spawnPoints = ["egExUSsDEKijAuYb3rg9PA", "BHt4t9zI8WswUKm4IprM4g", "jl96R02_fD0ugUEI_3gh_g", "dv56ssa0GDwaeCkCtCt6Lw", "3omCJ1TEf-rWmspbugMp0A", "XocKoFLOMgulLci_o7x9NA"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_landmark_20260125_034241</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_landmark_20260125_034241</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"l-2KIOCZjGJD-DCnur3Nvg": {"lat": 22.58102757292814, "lng": 88.36565715166732, "links": [{"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 100.55197, "description": "Rajendra Deb Ln"}, {"pano_id": "kNSsQ9DAuMLQRg6vrEk01Q", "heading": 280.6284, "description": "Rajendra Deb Ln"}, {"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 100.33, "distance": 14.41, "virtual": true}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 100.68, "distance": 14.64, "virtual": true}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 103.55, "distance": 14.28, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 74.23, "distance": 17.69, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 134.74, "distance": 15.38, "virtual": true}]}, "kNSsQ9DAuMLQRg6vrEk01Q": {"lat": 22.58104406491476, "lng": 88.36556197159082, "links": [{"pano_id": "Nf8g0ZG7xzYV9d2XdyE8nA", "heading": 280.57724, "description": "Rajendra Deb Ln"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 100.62839, "description": "Rajendra Deb Ln"}]}, "wfFozCRCRjUvrlPL6Xu0gA": {"lat": 22.58101108762525, "lng": 88.36575299816286, "links": [{"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 99.83044, "description": "Bidhan Sarani Rd"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 280.55197, "description": "Rajendra Deb Ln"}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 100.95, "distance": 4.63, "virtual": true}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 110.53, "distance": 4.31, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 47.24, "distance": 9.78, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 173.11, "distance": 9.06, "virtual": true}, {"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 104.55, "distance": 14.56, "virtual": true}]}, "Nf8g0ZG7xzYV9d2XdyE8nA": {"lat": 22.58106055234537, "lng": 88.36546634688266, "links": [{"pano_id": "kNSsQ9DAuMLQRg6vrEk01Q", "heading": 100.57723, "description": "Rajendra Deb Ln"}, {"pano_id": "MgdT5qfdRaoKYzo9JyrFOw", "heading": 280.61798, "description": "Rajendra Deb Ln"}]}, "TQSdJ_7UDy8n6Fnmgt9DYA": {"lat": 22.5810043327437, "lng": 88.36579521795822, "links": [{"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 279.83044, "description": "Rajendra Deb Ln"}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 201.28201, "description": "Bidhan Sarani Rd"}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 21.0492, "description": "Bidhan Sarani Rd"}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 121.22454, "description": "Bechu Chatterjee St"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 280.33, "distance": 14.41, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 201.5, "distance": 8.86, "virtual": true}, {"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 106.58, "distance": 10.18, "virtual": true}]}, "tDPqezdWV0xiBKHnmOZf-A": {"lat": 22.58100317188168, "lng": 88.36579729191202, "links": [{"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 106.22035, "description": "Bechu Chatterjee St"}, {"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 301.22455, "description": "Bidhan Sarani Rd"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 280.68, "distance": 14.64, "virtual": true}, {"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 280.95, "distance": 4.63, "virtual": true}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 218.86, "distance": 0.81, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 19.29, "distance": 7.97, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 203.09, "distance": 8.82, "virtual": true}]}, "MgdT5qfdRaoKYzo9JyrFOw": {"lat": 22.58107738687121, "lng": 88.36536909241168, "links": [{"pano_id": "wltaCY1GY4-Qbv8Z-n7_cQ", "heading": 280.60364, "description": "Rajendra Deb Ln"}, {"pano_id": "Nf8g0ZG7xzYV9d2XdyE8nA", "heading": 100.61797, "description": "Rajendra Deb Ln"}]}, "8K36JP_ij67-MkV8Mevanw": {"lat": 22.58099748521104, "lng": 88.3657923292367, "links": [{"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 201.52127, "description": "Bidhan Sarani Rd"}, {"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 21.282013, "description": "Bidhan Sarani Rd"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 283.55, "distance": 14.28, "virtual": true}, {"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 290.53, "distance": 4.31, "virtual": true}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 38.86, "distance": 0.81, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 21.07, "distance": 8.74, "virtual": true}, {"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 102.04, "distance": 10.28, "virtual": true}, {"pano_id": "raq3VT-7CNdXZGP4QiqKuw", "heading": 201.52, "distance": 17.95, "virtual": true}]}, "tec2J_qQjFGZUSWWKWo7wA": {"lat": 22.58107079603995, "lng": 88.36582292004715, "links": [{"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 201.0492, "description": "Bidhan Sarani Rd"}, {"pano_id": "oz4ESm1CDho_l-Qoxi1_Sw", "heading": 21.035505, "description": "Bidhan Sarani Rd"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 254.23, "distance": 17.69, "virtual": true}, {"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 227.24, "distance": 9.78, "virtual": true}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 199.29, "distance": 7.97, "virtual": true}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 201.07, "distance": 8.74, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 201.29, "distance": 16.78, "virtual": true}, {"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 146.12, "distance": 12.4, "virtual": true}]}, "0D6Aiz2EfIm57LOjrz4Glg": {"lat": 22.58093019321958, "lng": 88.36576359015048, "links": [{"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 21.521273, "description": "Bidhan Sarani Rd"}, {"pano_id": "raq3VT-7CNdXZGP4QiqKuw", "heading": 201.5203, "description": "Bidhan Sarani Rd"}, {"pano_id": "l-2KIOCZjGJD-DCnur3Nvg", "heading": 314.74, "distance": 15.38, "virtual": true}, {"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 353.11, "distance": 9.06, "virtual": true}, {"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 21.5, "distance": 8.86, "virtual": true}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 23.09, "distance": 8.82, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 21.29, "distance": 16.78, "virtual": true}, {"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 67.68, "distance": 14.06, "virtual": true}]}, "wltaCY1GY4-Qbv8Z-n7_cQ": {"lat": 22.58109413417148, "lng": 88.36527220807525, "links": [{"pano_id": "MgdT5qfdRaoKYzo9JyrFOw", "heading": 100.60365, "description": "Rajendra Deb Ln"}, {"pano_id": "jkeYE5DL2zjv3UCwrUzyQg", "heading": 280.5539, "description": "Rajendra Deb Ln"}]}, "oDR8oKSfN_lrNKwths1xBw": {"lat": 22.58097820256424, "lng": 88.36589024938176, "links": [{"pano_id": "653UsMRio-h9QkjZcYVqUQ", "heading": 106.200226, "description": "Bechu Chatterjee St"}, {"pano_id": "tDPqezdWV0xiBKHnmOZf-A", "heading": 286.22037, "description": "Bechu Chatterjee St"}, {"pano_id": "wfFozCRCRjUvrlPL6Xu0gA", "heading": 284.55, "distance": 14.56, "virtual": true}, {"pano_id": "TQSdJ_7UDy8n6Fnmgt9DYA", "heading": 286.58, "distance": 10.18, "virtual": true}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 282.04, "distance": 10.28, "virtual": true}, {"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 326.12, "distance": 12.4, "virtual": true}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 247.68, "distance": 14.06, "virtual": true}]}, "oz4ESm1CDho_l-Qoxi1_Sw": {"lat": 22.5811561572856, "lng": 88.36585847350425, "links": [{"pano_id": "tec2J_qQjFGZUSWWKWo7wA", "heading": 201.0355, "description": "Bidhan Sarani Rd"}, {"pano_id": "MH0cbyi9oGjk8ppfCyMb9w", "heading": 21.083458, "description": "Bidhan Sarani Rd"}]}, "raq3VT-7CNdXZGP4QiqKuw": {"lat": 22.5808472880328, "lng": 88.36572818475511, "links": [{"pano_id": "LlGhIlAH2xYDikgSEbCGqA", "heading": 201.5116, "description": "Bidhan Sarani Rd"}, {"pano_id": "0D6Aiz2EfIm57LOjrz4Glg", "heading": 21.520302, "description": "Bidhan Sarani Rd"}, {"pano_id": "8K36JP_ij67-MkV8Mevanw", "heading": 21.52, "distance": 17.95, "virtual": true}]}, "MH0cbyi9oGjk8ppfCyMb9w": {"lat": 22.58124024127248, "lng": 88.36589358251442, "links": [{"pano_id": "oz4ESm1CDho_l-Qoxi1_Sw", "heading": 201.08347, "description": "Bidhan Sarani Rd"}, {"pano_id": "lnYxQrcmKGBhvhglQxuayw", "heading": 21.035456, "description": "Bidhan Sarani Rd"}]}, "653UsMRio-h9QkjZcYVqUQ": {"lat": 22.58095314677312, "lng": 88.36598365106832, "links": [{"pano_id": "oDR8oKSfN_lrNKwths1xBw", "heading": 286.20023, "description": "Bechu Chatterjee St"}, {"pano_id": "IbuWA4WZEjbWOhIbQQvPiQ", "heading": 106.22819, "description": "Bechu Chatterjee St"}]}, "jkeYE5DL2zjv3UCwrUzyQg": {"lat": 22.5811105335071, "lng": 88.36517687900928, "links": [{"pano_id": "KvMJygIgwJfyHhDDO_Ajvg", "heading": 280.60944, "description": "Rajendra Deb Ln"}, {"pano_id": "wltaCY1GY4-Qbv8Z-n7_cQ", "heading": 100.55389, "description": "Rajendra Deb Ln"}, {"pano_id": "N-7bipR_AS43K5zy7hL4JA", "heading": 304.9, "distance": 17.99, "virtual": true}]}, "lnYxQrcmKGBhvhglQxuayw": {"lat": 22.58132560249398, "lng": 88.36592913591338, "links": [{"pano_id": "Zcc94jFOv6fa45qLdFtiLA", "heading": 21.052586, "description": "Bidhan Sarani Rd"}, {"pano_id": "MH0cbyi9oGjk8ppfCyMb9w", "heading": 201.03546, "description": "Bidhan Sarani Rd"}]}, "LlGhIlAH2xYDikgSEbCGqA": {"lat": 22.5807671221481, "lng": 88.36569396445002, "links": [{"pano_id": "64CMyfYq7t3ilDJR9i6Qwg", "heading": 201.53867, "description": "Bidhan Sarani Rd"}, {"pano_id": "raq3VT-7CNdXZGP4QiqKuw", "heading": 21.511604, "description": "Bidhan Sarani Rd"}]}, "IbuWA4WZEjbWOhIbQQvPiQ": {"lat": 22.58092782643128, "lng": 88.36607786731525, "links": [{"pano_id": "653UsMRio-h9QkjZcYVqUQ", "heading": 286.22818, "description": "Bechu Chatterjee St"}, {"pano_id": "ylvCHRbvMAvKFs0FyzrcdA", "heading": 106.16892, "description": "Bechu Chatterjee St"}]}, "KvMJygIgwJfyHhDDO_Ajvg": {"lat": 22.5811273670981, "lng": 88.3650795498159, "links": [{"pano_id": "N-7bipR_AS43K5zy7hL4JA", "heading": 330.5133, "description": "Rajendra Deb Ln"}, {"pano_id": "jkeYE5DL2zjv3UCwrUzyQg", "heading": 100.609436, "description": "Rajendra Deb Ln"}]}, "N-7bipR_AS43K5zy7hL4JA": {"lat": 22.5812030810935, "lng": 88.36503318134075, "links": [{"pano_id": "KvMJygIgwJfyHhDDO_Ajvg", "heading": 150.5133, "description": "Rajendra Deb Ln"}, {"pano_id": "ppC7mot-jC6mWRCoXFUSjA", "heading": 12.991443, "description": "Rajendra Deb Ln"}, {"pano_id": "jkeYE5DL2zjv3UCwrUzyQg", "heading": 124.9, "distance": 17.99, "virtual": true}]}, "64CMyfYq7t3ilDJR9i6Qwg": {"lat": 22.58068065567971, "lng": 88.36565700352728, "links": [{"pano_id": "LlGhIlAH2xYDikgSEbCGqA", "heading": 21.53867, "description": "Bidhan Sarani Rd"}, {"pano_id": "dFBUnpJkv3_sqkFQH7JWSA", "heading": 201.49477, "description": "Bidhan Sarani Rd"}]}, "ylvCHRbvMAvKFs0FyzrcdA": {"lat": 22.58090224678064, "lng": 88.3661734166012, "links": [{"pano_id": "xhCUqSU49KcI1dui7UPKlg", "heading": 106.238235, "description": "Bechu Chatterjee St"}, {"pano_id": "IbuWA4WZEjbWOhIbQQvPiQ", "heading": 286.1689, "description": "Bechu Chatterjee St"}]}, "Zcc94jFOv6fa45qLdFtiLA": {"lat": 22.58141142050485, "lng": 88.36596491149156, "links": [{"pano_id": "ZHgBa7PYPeatoShjdBf0SQ", "heading": 21.066175, "description": "Bidhan Sarani Rd"}, {"pano_id": "lnYxQrcmKGBhvhglQxuayw", "heading": 201.05258, "description": "Bidhan Sarani Rd"}, {"pano_id": "WT_sip_V2Cg6k8iBABDdfg", "heading": 2.04, "distance": 16.42, "virtual": true}]}, "dFBUnpJkv3_sqkFQH7JWSA": {"lat": 22.58059729440451, "lng": 88.36562144990444, "links": [{"pano_id": "64CMyfYq7t3ilDJR9i6Qwg", "heading": 21.494766, "description": "Bidhan Sarani Rd"}, {"pano_id": "FM3JObCaM-lwx5ct8F7lKQ", "heading": 201.54407, "description": "Bidhan Sarani Rd"}]}, "ZHgBa7PYPeatoShjdBf0SQ": {"lat": 22.58149824301715, "lng": 88.3660011314567, "links": [{"pano_id": "GlN6uGJHEzQ26MhW0penXw", "heading": 21.228754, "description": "Bidhan Sarani Rd"}, {"pano_id": "Zcc94jFOv6fa45qLdFtiLA", "heading": 201.06618, "description": "Bidhan Sarani Rd"}, {"pano_id": "WT_sip_V2Cg6k8iBABDdfg", "heading": 335.13, "distance": 7.45, "virtual": true}, {"pano_id": "4pmuNDJCldNmbcvBqlVfbQ", "heading": 308.31, "distance": 16.46, "virtual": true}]}, "ppC7mot-jC6mWRCoXFUSjA": {"lat": 22.58128993870664, "lng": 88.36505488416358, "links": [{"pano_id": "N-7bipR_AS43K5zy7hL4JA", "heading": 192.99144, "description": "Rajendra Deb Ln"}, {"pano_id": "G9LLuNBBqvoVUvV_zN67Kg", "heading": 7.731488, "description": "Rajendra Deb Ln"}]}, "xhCUqSU49KcI1dui7UPKlg": {"lat": 22.58087631241371, "lng": 88.36626985450347, "links": [{"pano_id": "3cYpoz1A4zhZ_ib0Hw18lQ", "heading": 103.76175, "description": "Bechu Chatterjee St"}, {"pano_id": "ylvCHRbvMAvKFs0FyzrcdA", "heading": 286.23825, "description": "Bechu Chatterjee St"}]}, "FM3JObCaM-lwx5ct8F7lKQ": {"lat": 22.58051466265226, "lng": 88.36558611846276, "links": [{"pano_id": "52h4cbFnMC79oSvBNXd3-Q", "heading": 201.47641, "description": "Bidhan Sarani Rd"}, {"pano_id": "dFBUnpJkv3_sqkFQH7JWSA", "heading": 21.54407, "description": "Bidhan Sarani Rd"}]}, "3cYpoz1A4zhZ_ib0Hw18lQ": {"lat": 22.58085447047121, "lng": 88.36636644032814, "links": [{"pano_id": "xhCUqSU49KcI1dui7UPKlg", "heading": 283.76175, "description": "Bechu Chatterjee St"}, {"pano_id": "gsAC4U4xeGg3L9B6trcsbQ", "heading": 103.44443, "description": "Bechu Chatterjee St"}]}, "G9LLuNBBqvoVUvV_zN67Kg": {"lat": 22.58138162228844, "lng": 88.36506836509243, "links": [{"pano_id": "TPCOB0vg0OShLOmfnjz8FA", "heading": 349.97653, "description": "Rajendra Deb Ln"}, {"pano_id": "ppC7mot-jC6mWRCoXFUSjA", "heading": 187.73149, "description": "Rajendra Deb Ln"}]}, "GlN6uGJHEzQ26MhW0penXw": {"lat": 22.58156461759524, "lng": 88.36602905562177, "links": [{"pano_id": "ZHgBa7PYPeatoShjdBf0SQ", "heading": 201.22876, "description": "Bidhan Sarani Rd"}, {"pano_id": "ebUb3JoaPUFJGvq7Yw_ZCg", "heading": 21.639246, "description": "Bidhan Sarani Rd"}, {"pano_id": "WT_sip_V2Cg6k8iBABDdfg", "heading": 264.08432, "description": "Muktaram Babu St"}, {"pano_id": "4pmuNDJCldNmbcvBqlVfbQ", "heading": 280.13, "distance": 16.03, "virtual": true}]}, "WT_sip_V2Cg6k8iBABDdfg": {"lat": 22.58155902641498, "lng": 88.36597061484187, "links": [{"pano_id": "GlN6uGJHEzQ26MhW0penXw", "heading": 84.08433, "description": "Bidhan Sarani Rd"}, {"pano_id": "4pmuNDJCldNmbcvBqlVfbQ", "heading": 289.38486, "description": "Muktaram Babu St"}, {"pano_id": "Zcc94jFOv6fa45qLdFtiLA", "heading": 182.04, "distance": 16.42, "virtual": true}, {"pano_id": "ZHgBa7PYPeatoShjdBf0SQ", "heading": 155.13, "distance": 7.45, "virtual": true}, {"pano_id": "ebUb3JoaPUFJGvq7Yw_ZCg", "heading": 43.56, "distance": 14.32, "virtual": true}]}, "TPCOB0vg0OShLOmfnjz8FA": {"lat": 22.58146791127129, "lng": 88.36505184725048, "links": [{"pano_id": "G9LLuNBBqvoVUvV_zN67Kg", "heading": 169.97655, "description": "Rajendra Deb Ln"}, {"pano_id": "MNRx5czalSd3H2A4nh3eSQ", "heading": 315.90762, "description": "Rajendra Deb Ln"}]}, "ebUb3JoaPUFJGvq7Yw_ZCg": {"lat": 22.58165236417573, "lng": 88.36606675691947, "links": [{"pano_id": "GlN6uGJHEzQ26MhW0penXw", "heading": 201.63925, "description": "Bidhan Sarani Rd"}, {"pano_id": "QMYl3_z-lMzVKsmxjql4mQ", "heading": 21.660664, "description": "Bidhan Sarani Rd"}, {"pano_id": "WT_sip_V2Cg6k8iBABDdfg", "heading": 223.56, "distance": 14.32, "virtual": true}]}, "52h4cbFnMC79oSvBNXd3-Q": {"lat": 22.58042965821365, "lng": 88.3655498981498, "links": [{"pano_id": "FM3JObCaM-lwx5ct8F7lKQ", "heading": 21.476404, "description": "Bidhan Sarani Rd"}, {"pano_id": "IxnZGgeamt0vbLWOZ1Mu8w", "heading": 201.80997, "description": "Bidhan Sarani Rd"}]}, "gsAC4U4xeGg3L9B6trcsbQ": {"lat": 22.58083308601678, "lng": 88.36646332221149, "links": [{"pano_id": "3cYpoz1A4zhZ_ib0Hw18lQ", "heading": 283.44443, "description": "Bechu Chatterjee St"}, {"pano_id": "RNjmt79ugpXopE6wotMhMQ", "heading": 103.42406, "description": "Bechu Chatterjee St"}]}, "MNRx5czalSd3H2A4nh3eSQ": {"lat": 22.58153186966498, "lng": 88.36498473882317, "links": [{"pano_id": "TPCOB0vg0OShLOmfnjz8FA", "heading": 135.90762, "description": "Rajendra Deb Ln"}, {"pano_id": "InoYzF5hwkW9JQ9AzfI58Q", "heading": 337.79672, "description": "Rajendra Deb Ln"}]}, "QMYl3_z-lMzVKsmxjql4mQ": {"lat": 22.58173691538147, "lng": 88.36610312493775, "links": [{"pano_id": "zeF2KmTT7KB_CyfGmonycA", "heading": 21.637299, "description": "Bidhan Sarani Rd"}, {"pano_id": "ebUb3JoaPUFJGvq7Yw_ZCg", "heading": 201.66066, "description": "Bidhan Sarani Rd"}]}, "RNjmt79ugpXopE6wotMhMQ": {"lat": 22.5808119637485, "lng": 88.36655916691903, "links": [{"pano_id": "Ea3N_4pjPv9c4_kIc_a2pQ", "heading": 103.38912, "description": "Bechu Chatterjee St"}, {"pano_id": "gsAC4U4xeGg3L9B6trcsbQ", "heading": 283.42407, "description": "Bechu Chatterjee St"}]}, "IxnZGgeamt0vbLWOZ1Mu8w": {"lat": 22.5803457431944, "lng": 88.36551352966596, "links": [{"pano_id": "LBKDEaCr_w5xLOvSSmGvPw", "heading": 206.81535, "description": "Bidhan Sarani Rd"}, {"pano_id": "52h4cbFnMC79oSvBNXd3-Q", "heading": 21.809961, "description": "Bidhan Sarani Rd"}]}, "4pmuNDJCldNmbcvBqlVfbQ": {"lat": 22.58158997263552, "lng": 88.36587536138612, "links": [{"pano_id": "WT_sip_V2Cg6k8iBABDdfg", "heading": 109.38486, "description": "Muktaram Babu St"}, {"pano_id": "AIr5-PaOPKblKNngGE7GIg", "heading": 289.32236, "description": "Muktaram Babu St"}, {"pano_id": "ZHgBa7PYPeatoShjdBf0SQ", "heading": 128.31, "distance": 16.46, "virtual": true}, {"pano_id": "GlN6uGJHEzQ26MhW0penXw", "heading": 100.13, "distance": 16.03, "virtual": true}]}, "LBKDEaCr_w5xLOvSSmGvPw": {"lat": 22.58026429048659, "lng": 88.36546893934461, "links": [{"pano_id": "NbDTlpJO6PyDY9oSp--r8A", "heading": 198.8733, "description": "Bidhan Sarani Rd"}, {"pano_id": "IxnZGgeamt0vbLWOZ1Mu8w", "heading": 26.815355, "description": "Bidhan Sarani Rd"}]}, "InoYzF5hwkW9JQ9AzfI58Q": {"lat": 22.58161531605695, "lng": 88.3649478513651, "links": [{"pano_id": "pTa9Dcf2XlRzVGoW7MhigA", "heading": 351.4049, "description": "Rajendra Deb Ln"}, {"pano_id": "MNRx5czalSd3H2A4nh3eSQ", "heading": 157.7967, "description": "Rajendra Deb Ln"}]}, "AIr5-PaOPKblKNngGE7GIg": {"lat": 22.58162073922102, "lng": 88.36578032992983, "links": [{"pano_id": "4pmuNDJCldNmbcvBqlVfbQ", "heading": 109.32237, "description": "Muktaram Babu St"}, {"pano_id": "quGi-5nhvvLciuhvX9yG3A", "heading": 289.33582, "description": "Muktaram Babu St"}]}, "Ea3N_4pjPv9c4_kIc_a2pQ": {"lat": 22.58079119158391, "lng": 88.36665367818446, "links": [{"pano_id": "hTdBnQYYOf17EmbmOcaVvQ", "heading": 102.08135, "description": "Bechu Chatterjee St"}, {"pano_id": "RNjmt79ugpXopE6wotMhMQ", "heading": 283.38913, "description": "Bechu Chatterjee St"}]}, "zeF2KmTT7KB_CyfGmonycA": {"lat": 22.58182018783114, "lng": 88.36613890037188, "links": [{"pano_id": "O3hbRRoVrwONGwDcbwnMrw", "heading": 22.696735, "description": "Bidhan Sarani Rd"}, {"pano_id": "QMYl3_z-lMzVKsmxjql4mQ", "heading": 201.6373, "description": "Bidhan Sarani Rd"}, {"pano_id": "38uS3KgPN7UcNPboUxTzGw", "heading": 21.2, "distance": 12.15, "virtual": true}, {"pano_id": "-m27kcYpwmnVcTLt1AZdgQ", "heading": 22.7, "distance": 8.65, "virtual": true}, {"pano_id": "C8sElboLI5NDuovCfyuNKg", "heading": 64.29, "distance": 11.33, "virtual": true}]}, "NbDTlpJO6PyDY9oSp--r8A": {"lat": 22.58017486285074, "lng": 88.36543582989019, "links": [{"pano_id": "8fI9eKO7SIbj99r-8JrGyA", "heading": 198.70172, "description": "Bidhan Sarani Rd"}, {"pano_id": "LBKDEaCr_w5xLOvSSmGvPw", "heading": 18.873302, "description": "Bidhan Sarani Rd"}]}, "hTdBnQYYOf17EmbmOcaVvQ": {"lat": 22.58077233747392, "lng": 88.36674907806096, "links": [{"pano_id": "Ea3N_4pjPv9c4_kIc_a2pQ", "heading": 282.08136, "description": "Bechu Chatterjee St"}, {"pano_id": "9FGXyLlD8Mj5dF6TvFmn3g", "heading": 101.89281, "description": "Bechu Chatterjee St"}]}, "quGi-5nhvvLciuhvX9yG3A": {"lat": 22.5816507130251, "lng": 88.36568781664343, "links": [{"pano_id": "AIr5-PaOPKblKNngGE7GIg", "heading": 109.3358, "description": "Muktaram Babu St"}, {"pano_id": "xvNs3XK0wBBlccpogXT2SA", "heading": 289.3554, "description": "Muktaram Babu St"}]}, "O3hbRRoVrwONGwDcbwnMrw": {"lat": 22.58189197255179, "lng": 88.36617141673457, "links": [{"pano_id": "zeF2KmTT7KB_CyfGmonycA", "heading": 202.69673, "description": "Bidhan Sarani Rd"}, {"pano_id": "38uS3KgPN7UcNPboUxTzGw", "heading": 17.524736, "description": "Bidhan Sarani Rd"}, {"pano_id": "tOTqkqu-by4R4wvrslgoPQ", "heading": 17.53, "distance": 13.66, "virtual": true}, {"pano_id": "-m27kcYpwmnVcTLt1AZdgQ", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "C8sElboLI5NDuovCfyuNKg", "heading": 114.08, "distance": 7.52, "virtual": true}]}, "pTa9Dcf2XlRzVGoW7MhigA": {"lat": 22.58170898076987, "lng": 88.36493251861725, "links": [{"pano_id": "InoYzF5hwkW9JQ9AzfI58Q", "heading": 171.40492, "description": "Rajendra Deb Ln"}, {"pano_id": "sUwTKMebgqE4EYrAy0-cgQ", "heading": 359.30048, "description": "Rajendra Deb Ln"}]}, "9FGXyLlD8Mj5dF6TvFmn3g": {"lat": 22.58075358469699, "lng": 88.36684551467857, "links": [{"pano_id": "hTdBnQYYOf17EmbmOcaVvQ", "heading": 281.8928, "description": "Bechu Chatterjee St"}, {"pano_id": "W8Y0L1K-E9VGsJFHY3HBUw", "heading": 103.146866, "description": "Bechu Chatterjee St"}]}, "8fI9eKO7SIbj99r-8JrGyA": {"lat": 22.58008899721465, "lng": 88.36540434996033, "links": [{"pano_id": "NbDTlpJO6PyDY9oSp--r8A", "heading": 18.70172, "description": "Bidhan Sarani Rd"}, {"pano_id": "KwHHpf0RDWFKDOajxeFtlQ", "heading": 198.34013, "description": "Bidhan Sarani Rd"}]}, "xvNs3XK0wBBlccpogXT2SA": {"lat": 22.5816805996074, "lng": 88.36559567350959, "links": [{"pano_id": "oQAGOJrnotKmo9hDAatImw", "heading": 289.3702, "description": "Muktaram Babu St"}, {"pano_id": "quGi-5nhvvLciuhvX9yG3A", "heading": 109.355415, "description": "Muktaram Babu St"}]}, "38uS3KgPN7UcNPboUxTzGw": {"lat": 22.58192207722902, "lng": 88.36618171234318, "links": [{"pano_id": "O3hbRRoVrwONGwDcbwnMrw", "heading": 197.52473, "description": "Bidhan Sarani Rd"}, {"pano_id": "tOTqkqu-by4R4wvrslgoPQ", "heading": 17.5314, "description": "Bidhan Sarani Rd"}, {"pano_id": "-m27kcYpwmnVcTLt1AZdgQ", "heading": 197.52473, "description": "Sankar Ghosh Ln"}, {"pano_id": "zeF2KmTT7KB_CyfGmonycA", "heading": 201.2, "distance": 12.15, "virtual": true}, {"pano_id": "C8sElboLI5NDuovCfyuNKg", "heading": 137.84, "distance": 8.66, "virtual": true}]}, "sUwTKMebgqE4EYrAy0-cgQ": {"lat": 22.58179860676721, "lng": 88.36493133347709, "links": [{"pano_id": "pTa9Dcf2XlRzVGoW7MhigA", "heading": 179.30049, "description": "Rajendra Deb Ln"}, {"pano_id": "lnIs7FBK6Z7_9jGB7JnI_A", "heading": 358.30533, "description": "Rajendra Deb Ln"}]}, "KwHHpf0RDWFKDOajxeFtlQ": {"lat": 22.58000131335001, "lng": 88.36537287000756, "links": [{"pano_id": "8fI9eKO7SIbj99r-8JrGyA", "heading": 18.340137, "description": "Bidhan Sarani Rd"}, {"pano_id": "tDVjEB2Layy3DMHphUaZGA", "heading": 198.33203, "description": "Bidhan Sarani Rd"}]}, "tOTqkqu-by4R4wvrslgoPQ": {"lat": 22.58200910722977, "lng": 88.36621148811828, "links": [{"pano_id": "qFYEG6lQdSPF0xjeERTUwQ", "heading": 17.568611, "description": "Bidhan Sarani Rd"}, {"pano_id": "38uS3KgPN7UcNPboUxTzGw", "heading": 197.5314, "description": "Bidhan Sarani Rd"}, {"pano_id": "O3hbRRoVrwONGwDcbwnMrw", "heading": 197.53, "distance": 13.66, "virtual": true}, {"pano_id": "-m27kcYpwmnVcTLt1AZdgQ", "heading": 197.53, "distance": 13.66, "virtual": true}, {"pano_id": "C8sElboLI5NDuovCfyuNKg", "heading": 170.29, "distance": 16.33, "virtual": true}]}, "oQAGOJrnotKmo9hDAatImw": {"lat": 22.58171075137065, "lng": 88.36550278947648, "links": [{"pano_id": "QXsqHtGM7X8i-54ICQ-2RA", "heading": 289.33112, "description": "Muktaram Babu St"}, {"pano_id": "xvNs3XK0wBBlccpogXT2SA", "heading": 109.37021, "description": "Muktaram Babu St"}]}, "W8Y0L1K-E9VGsJFHY3HBUw": {"lat": 22.5807330903267, "lng": 88.36694054379247, "links": [{"pano_id": "9FGXyLlD8Mj5dF6TvFmn3g", "heading": 283.14688, "description": "Bechu Chatterjee St"}, {"pano_id": "lT9RTucHCCWe2F8GKdZC6g", "heading": 105.13912, "description": "Bechu Chatterjee St"}]}, "lnIs7FBK6Z7_9jGB7JnI_A": {"lat": 22.58188876097942, "lng": 88.36492844469782, "links": [{"pano_id": "zUUk4YJAHmDnjscItTTcfA", "heading": 358.3166, "description": "Rajendra Deb Ln"}, {"pano_id": "sUwTKMebgqE4EYrAy0-cgQ", "heading": 178.30534, "description": "Rajendra Deb Ln"}]}, "-m27kcYpwmnVcTLt1AZdgQ": {"lat": 22.58189197255179, "lng": 88.36617141673457, "links": [{"pano_id": "C8sElboLI5NDuovCfyuNKg", "heading": 114.078224, "description": "Sankar Ghosh Ln"}, {"pano_id": "38uS3KgPN7UcNPboUxTzGw", "heading": 17.524736, "description": "Bidhan Sarani Rd"}, {"pano_id": "zeF2KmTT7KB_CyfGmonycA", "heading": 202.7, "distance": 8.65, "virtual": true}, {"pano_id": "O3hbRRoVrwONGwDcbwnMrw", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "tOTqkqu-by4R4wvrslgoPQ", "heading": 17.53, "distance": 13.66, "virtual": true}]}, "lT9RTucHCCWe2F8GKdZC6g": {"lat": 22.5807094989371, "lng": 88.36703498015613, "links": [{"pano_id": "W8Y0L1K-E9VGsJFHY3HBUw", "heading": 285.13913, "description": "Bechu Chatterjee St"}]}, "QXsqHtGM7X8i-54ICQ-2RA": {"lat": 22.58174107740269, "lng": 88.36540916453933, "links": [{"pano_id": "oQAGOJrnotKmo9hDAatImw", "heading": 109.33113, "description": "Muktaram Babu St"}]}, "qFYEG6lQdSPF0xjeERTUwQ": {"lat": 22.58209486072429, "lng": 88.36624089352777, "links": [{"pano_id": "tOTqkqu-by4R4wvrslgoPQ", "heading": 197.5686, "description": "Bidhan Sarani Rd"}]}, "tDVjEB2Layy3DMHphUaZGA": {"lat": 22.57991709682888, "lng": 88.36534264923131, "links": [{"pano_id": "KwHHpf0RDWFKDOajxeFtlQ", "heading": 18.33203, "description": "Bidhan Sarani Rd"}]}, "zUUk4YJAHmDnjscItTTcfA": {"lat": 22.58196555580593, "lng": 88.36492600034597, "links": [{"pano_id": "lnIs7FBK6Z7_9jGB7JnI_A", "heading": 178.3166, "description": "Rajendra Deb Ln"}]}, "C8sElboLI5NDuovCfyuNKg": {"lat": 22.58186437571106, "lng": 88.36623830111213, "links": [{"pano_id": "-m27kcYpwmnVcTLt1AZdgQ", "heading": 294.07822, "description": "Sankar Ghosh Ln"}, {"pano_id": "zeF2KmTT7KB_CyfGmonycA", "heading": 244.29, "distance": 11.33, "virtual": true}, {"pano_id": "O3hbRRoVrwONGwDcbwnMrw", "heading": 294.08, "distance": 7.52, "virtual": true}, {"pano_id": "38uS3KgPN7UcNPboUxTzGw", "heading": 317.84, "distance": 8.66, "virtual": true}, {"pano_id": "tOTqkqu-by4R4wvrslgoPQ", "heading": 350.29, "distance": 16.33, "virtual": true}]}};
+        const targetPanos = ["Zcc94jFOv6fa45qLdFtiLA", "l-2KIOCZjGJD-DCnur3Nvg"];
+        const spawnPoints = ["lnIs7FBK6Z7_9jGB7JnI_A", "lT9RTucHCCWe2F8GKdZC6g", "tDVjEB2Layy3DMHphUaZGA", "-m27kcYpwmnVcTLt1AZdgQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

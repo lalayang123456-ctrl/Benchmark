@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_starbucks_20260124_163004</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_starbucks_20260124_163004</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"E7FTT8dU2H6CEm4s1UzSVw": {"lat": 21.16056602867217, "lng": 72.7732164564354, "links": [{"pano_id": "oZfVV1qg88pWQrFmnfI4xA", "heading": 241.40321, "description": ""}, {"pano_id": "D2GCZZWmjZf_1w5hMAeOOA", "heading": 61.40555, "description": ""}]}, "oZfVV1qg88pWQrFmnfI4xA": {"lat": 21.16052252189825, "lng": 72.773130878433, "links": [{"pano_id": "E7FTT8dU2H6CEm4s1UzSVw", "heading": 61.40321, "description": ""}, {"pano_id": "rVeSd26JbI0I7x2bQZkxVA", "heading": 241.42534, "description": ""}]}, "D2GCZZWmjZf_1w5hMAeOOA": {"lat": 21.16061750741682, "lng": 72.77331772520293, "links": [{"pano_id": "E7FTT8dU2H6CEm4s1UzSVw", "heading": 241.40555, "description": ""}, {"pano_id": "V3K22k6rfOtZF_4v9tULmA", "heading": 64.476875, "description": ""}]}, "V3K22k6rfOtZF_4v9tULmA": {"lat": 21.16066324242069, "lng": 72.77342043676005, "links": [{"pano_id": "D2GCZZWmjZf_1w5hMAeOOA", "heading": 244.47688, "description": ""}, {"pano_id": "Jw-keJ0o4EJdivauceI06Q", "heading": 64.52591, "description": ""}, {"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 64.95, "distance": 15.62, "virtual": true}, {"pano_id": "e7h5hszP-D7A5eWMXypr9w", "heading": 70.78, "distance": 12.3, "virtual": true}, {"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 107.81, "distance": 15.42, "virtual": true}]}, "rVeSd26JbI0I7x2bQZkxVA": {"lat": 21.16048088718368, "lng": 72.77304890748407, "links": [{"pano_id": "oZfVV1qg88pWQrFmnfI4xA", "heading": 61.42534, "description": ""}, {"pano_id": "k-uM600rx5gIFEFTb1ZqWw", "heading": 236.859, "description": ""}]}, "k-uM600rx5gIFEFTb1ZqWw": {"lat": 21.16042641865739, "lng": 72.77295945180802, "links": [{"pano_id": "6VnlZCtd9NFu8aPUMxneCg", "heading": 237.93199, "description": ""}, {"pano_id": "rVeSd26JbI0I7x2bQZkxVA", "heading": 56.85899, "description": ""}]}, "Jw-keJ0o4EJdivauceI06Q": {"lat": 21.16070394874231, "lng": 72.77351205651512, "links": [{"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 65.833984, "description": ""}, {"pano_id": "V3K22k6rfOtZF_4v9tULmA", "heading": 244.52591, "description": ""}, {"pano_id": "LRdqPJrpEGn-IUvywEwscg", "heading": 63.98, "distance": 13.83, "virtual": true}, {"pano_id": "e7h5hszP-D7A5eWMXypr9w", "heading": 102.73, "distance": 2.17, "virtual": true}, {"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 150.73, "distance": 10.59, "virtual": true}]}, "wEAVWysMHmywCEdyQ2veJA": {"lat": 21.16072270278068, "lng": 72.77355687443412, "links": [{"pano_id": "e7h5hszP-D7A5eWMXypr9w", "heading": 224.67648, "description": "Mavani Greenville Rd"}, {"pano_id": "Jw-keJ0o4EJdivauceI06Q", "heading": 245.83398, "description": ""}, {"pano_id": "LRdqPJrpEGn-IUvywEwscg", "heading": 62.89822, "description": ""}, {"pano_id": "V3K22k6rfOtZF_4v9tULmA", "heading": 244.95, "distance": 15.62, "virtual": true}, {"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 177.31, "distance": 11.34, "virtual": true}, {"pano_id": "AywAsiLej2Ye59FcPU6CMQ", "heading": 62.93, "distance": 16.49, "virtual": true}]}, "6VnlZCtd9NFu8aPUMxneCg": {"lat": 21.16036129578096, "lng": 72.77284799287605, "links": [{"pano_id": "W3LMmfBS-DnQzvxtPzO_6w", "heading": 237.91632, "description": ""}, {"pano_id": "k-uM600rx5gIFEFTb1ZqWw", "heading": 57.931995, "description": ""}, {"pano_id": "HZyj5re6hsJP8dUfLN9-gQ", "heading": 237.92, "distance": 14.71, "virtual": true}, {"pano_id": "o1bny45XOeKyK5TWS6LmaA", "heading": 235.57, "distance": 14.13, "virtual": true}]}, "W3LMmfBS-DnQzvxtPzO_6w": {"lat": 21.16031353102087, "lng": 72.77276629236489, "links": [{"pano_id": "HZyj5re6hsJP8dUfLN9-gQ", "heading": 237.93657, "description": ""}, {"pano_id": "6VnlZCtd9NFu8aPUMxneCg", "heading": 57.916325, "description": ""}, {"pano_id": "o1bny45XOeKyK5TWS6LmaA", "heading": 229.93182, "description": ""}, {"pano_id": "6r9wNBHbsaim4fLoCg-6vg", "heading": 237.93, "distance": 15.23, "virtual": true}, {"pano_id": "aMcHY8Zbsq_NnS8LUO2fcw", "heading": 192.44, "distance": 11.25, "virtual": true}]}, "LRdqPJrpEGn-IUvywEwscg": {"lat": 21.16075851005052, "lng": 72.77363190159625, "links": [{"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 242.89822, "description": ""}, {"pano_id": "AywAsiLej2Ye59FcPU6CMQ", "heading": 62.967266, "description": ""}, {"pano_id": "Jw-keJ0o4EJdivauceI06Q", "heading": 243.98, "distance": 13.83, "virtual": true}, {"pano_id": "e7h5hszP-D7A5eWMXypr9w", "heading": 237.6, "distance": 12.22, "virtual": true}, {"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 205.33, "distance": 16.94, "virtual": true}]}, "e7h5hszP-D7A5eWMXypr9w": {"lat": 21.16069965382825, "lng": 72.77353243649539, "links": [{"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 44.676487, "description": ""}, {"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 160.71152, "description": "Mavani Greenville Rd"}, {"pano_id": "V3K22k6rfOtZF_4v9tULmA", "heading": 250.78, "distance": 12.3, "virtual": true}, {"pano_id": "Jw-keJ0o4EJdivauceI06Q", "heading": 282.73, "distance": 2.17, "virtual": true}, {"pano_id": "LRdqPJrpEGn-IUvywEwscg", "heading": 57.6, "distance": 12.22, "virtual": true}]}, "HZyj5re6hsJP8dUfLN9-gQ": {"lat": 21.16029103704041, "lng": 72.77272778670623, "links": [{"pano_id": "W3LMmfBS-DnQzvxtPzO_6w", "heading": 57.936577, "description": ""}, {"pano_id": "6r9wNBHbsaim4fLoCg-6vg", "heading": 237.92252, "description": ""}, {"pano_id": "6VnlZCtd9NFu8aPUMxneCg", "heading": 57.92, "distance": 14.71, "virtual": true}, {"pano_id": "o1bny45XOeKyK5TWS6LmaA", "heading": 102.01, "distance": 0.83, "virtual": true}, {"pano_id": "aMcHY8Zbsq_NnS8LUO2fcw", "heading": 169.51, "distance": 8.63, "virtual": true}]}, "VPRKW3ShISMmGgY_HGC5gQ": {"lat": 21.16062083657436, "lng": 72.77356201451687, "links": [{"pano_id": "e7h5hszP-D7A5eWMXypr9w", "heading": 340.71152, "description": "Mavani Greenville Rd"}, {"pano_id": "YbvacS2YDCeEcPbVbToFBA", "heading": 158.53969, "description": "Mavani Greenville Rd"}, {"pano_id": "V3K22k6rfOtZF_4v9tULmA", "heading": 287.81, "distance": 15.42, "virtual": true}, {"pano_id": "Jw-keJ0o4EJdivauceI06Q", "heading": 330.73, "distance": 10.59, "virtual": true}, {"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 357.31, "distance": 11.34, "virtual": true}, {"pano_id": "LRdqPJrpEGn-IUvywEwscg", "heading": 25.33, "distance": 16.94, "virtual": true}]}, "o1bny45XOeKyK5TWS6LmaA": {"lat": 21.16028948065428, "lng": 72.77273563212195, "links": [{"pano_id": "W3LMmfBS-DnQzvxtPzO_6w", "heading": 49.931828, "description": ""}, {"pano_id": "aMcHY8Zbsq_NnS8LUO2fcw", "heading": 174.791, "description": ""}, {"pano_id": "6VnlZCtd9NFu8aPUMxneCg", "heading": 55.57, "distance": 14.13, "virtual": true}, {"pano_id": "HZyj5re6hsJP8dUfLN9-gQ", "heading": 282.01, "distance": 0.83, "virtual": true}, {"pano_id": "6r9wNBHbsaim4fLoCg-6vg", "heading": 240.9, "distance": 11.13, "virtual": true}]}, "AywAsiLej2Ye59FcPU6CMQ": {"lat": 21.16079017745238, "lng": 72.77369845211281, "links": [{"pano_id": "uDQOJ2Wu2ND7izPZqEXKQg", "heading": 62.928276, "description": ""}, {"pano_id": "LRdqPJrpEGn-IUvywEwscg", "heading": 242.96727, "description": ""}, {"pano_id": "wEAVWysMHmywCEdyQ2veJA", "heading": 242.93, "distance": 16.49, "virtual": true}]}, "6r9wNBHbsaim4fLoCg-6vg": {"lat": 21.16024080643253, "lng": 72.77264184782582, "links": [{"pano_id": "HZyj5re6hsJP8dUfLN9-gQ", "heading": 57.922516, "description": ""}, {"pano_id": "uDAu6u5ACsqKZyl4RWJzPA", "heading": 237.9372, "description": ""}, {"pano_id": "W3LMmfBS-DnQzvxtPzO_6w", "heading": 57.93, "distance": 15.23, "virtual": true}, {"pano_id": "o1bny45XOeKyK5TWS6LmaA", "heading": 60.9, "distance": 11.13, "virtual": true}, {"pano_id": "aMcHY8Zbsq_NnS8LUO2fcw", "heading": 105.44, "distance": 10.88, "virtual": true}]}, "YbvacS2YDCeEcPbVbToFBA": {"lat": 21.16053783340843, "lng": 72.77359700314747, "links": [{"pano_id": "VPRKW3ShISMmGgY_HGC5gQ", "heading": 338.53967, "description": "Mavani Greenville Rd"}, {"pano_id": "qszHU8RykMrDIh73GoozFQ", "heading": 153.53636, "description": "Mavani Greenville Rd"}]}, "uDQOJ2Wu2ND7izPZqEXKQg": {"lat": 21.16083264355643, "lng": 72.77378754681429, "links": [{"pano_id": "AywAsiLej2Ye59FcPU6CMQ", "heading": 242.92827, "description": ""}, {"pano_id": "qtxEymsUpDxr-IPutVV-jA", "heading": 62.975346, "description": ""}]}, "aMcHY8Zbsq_NnS8LUO2fcw": {"lat": 21.16021476094767, "lng": 72.77274293647429, "links": [{"pano_id": "QGmXP0C83DQJ8pnOsk0rcg", "heading": 174.8064, "description": ""}, {"pano_id": "o1bny45XOeKyK5TWS6LmaA", "heading": 354.79102, "description": ""}, {"pano_id": "W3LMmfBS-DnQzvxtPzO_6w", "heading": 12.44, "distance": 11.25, "virtual": true}, {"pano_id": "HZyj5re6hsJP8dUfLN9-gQ", "heading": 349.51, "distance": 8.63, "virtual": true}, {"pano_id": "6r9wNBHbsaim4fLoCg-6vg", "heading": 285.44, "distance": 10.88, "virtual": true}]}, "uDAu6u5ACsqKZyl4RWJzPA": {"lat": 21.16017985810306, "lng": 72.77253751275458, "links": [{"pano_id": "6r9wNBHbsaim4fLoCg-6vg", "heading": 57.937202, "description": ""}, {"pano_id": "pyY0qDJ-KNJ89OzMjp0obA", "heading": 237.91272, "description": ""}]}, "qszHU8RykMrDIh73GoozFQ": {"lat": 21.16045741800828, "lng": 72.77363992733699, "links": [{"pano_id": "mRPAMyXE0RRPFZSiIazaGw", "heading": 146.76576, "description": "Mavani Greenville Rd"}, {"pano_id": "YbvacS2YDCeEcPbVbToFBA", "heading": 333.53638, "description": "Mavani Greenville Rd"}]}, "QGmXP0C83DQJ8pnOsk0rcg": {"lat": 21.16011391244048, "lng": 72.77275276578759, "links": [{"pano_id": "2IYKzUnO64LtdJsz89-Qyg", "heading": 174.79466, "description": ""}, {"pano_id": "aMcHY8Zbsq_NnS8LUO2fcw", "heading": 354.8064, "description": ""}]}, "qtxEymsUpDxr-IPutVV-jA": {"lat": 21.16087197805058, "lng": 72.77387023893257, "links": [{"pano_id": "uDQOJ2Wu2ND7izPZqEXKQg", "heading": 242.97534, "description": ""}, {"pano_id": "7kfJbT07bMTkk3WVscqSdg", "heading": 62.949516, "description": ""}]}, "7kfJbT07bMTkk3WVscqSdg": {"lat": 21.16091749712173, "lng": 72.77396582629763, "links": [{"pano_id": "vfrUWIFfhFBoJQooN7TMtg", "heading": 62.938873, "description": ""}, {"pano_id": "qtxEymsUpDxr-IPutVV-jA", "heading": 242.94951, "description": ""}]}, "pyY0qDJ-KNJ89OzMjp0obA": {"lat": 21.16013155927835, "lng": 72.77245491036793, "links": [{"pano_id": "cmayzkXDy4H-s1YQVFnXgw", "heading": 237.92451, "description": ""}, {"pano_id": "uDAu6u5ACsqKZyl4RWJzPA", "heading": 57.912724, "description": ""}]}, "mRPAMyXE0RRPFZSiIazaGw": {"lat": 21.16038143745436, "lng": 72.7736933120329, "links": [{"pano_id": "qszHU8RykMrDIh73GoozFQ", "heading": 326.76578, "description": "Mavani Greenville Rd"}, {"pano_id": "W7prV6htlW9uRzVh4F5Llw", "heading": 149.32027, "description": "Mavani Greenville Rd"}]}, "2IYKzUnO64LtdJsz89-Qyg": {"lat": 21.16002160072067, "lng": 72.77276178350587, "links": [{"pano_id": "Mn6_t31C2Kfx_lDnmwRXzA", "heading": 174.78558, "description": ""}, {"pano_id": "QGmXP0C83DQJ8pnOsk0rcg", "heading": 354.79465, "description": ""}]}, "Mn6_t31C2Kfx_lDnmwRXzA": {"lat": 21.15993129358838, "lng": 72.77277062086948, "links": [{"pano_id": "rAlH2yOIfjxdgLGagKOYcQ", "heading": 174.80885, "description": ""}, {"pano_id": "2IYKzUnO64LtdJsz89-Qyg", "heading": 354.78558, "description": ""}]}, "W7prV6htlW9uRzVh4F5Llw": {"lat": 21.16030446779868, "lng": 72.77374227805298, "links": [{"pano_id": "mRPAMyXE0RRPFZSiIazaGw", "heading": 329.32025, "description": "Mavani Greenville Rd"}, {"pano_id": "4qyUOdvsgGgdeyf9lcpxrA", "heading": 159.55606, "description": "Mavani Greenville Rd"}]}, "vfrUWIFfhFBoJQooN7TMtg": {"lat": 21.16095805342557, "lng": 72.7740509531275, "links": [{"pano_id": "7kfJbT07bMTkk3WVscqSdg", "heading": 242.93887, "description": ""}, {"pano_id": "Yh2jFBBylzOC29LhqaY6Jg", "heading": 62.93844, "description": ""}]}, "cmayzkXDy4H-s1YQVFnXgw": {"lat": 21.16009160970902, "lng": 72.77238655597033, "links": [{"pano_id": "pyY0qDJ-KNJ89OzMjp0obA", "heading": 57.924507, "description": ""}, {"pano_id": "ACqLMwUXh9sZwS_kFR6aCQ", "heading": 237.91273, "description": ""}]}, "4qyUOdvsgGgdeyf9lcpxrA": {"lat": 21.16022415445692, "lng": 72.7737743810001, "links": [{"pano_id": "W7prV6htlW9uRzVh4F5Llw", "heading": 339.55606, "description": "Mavani Greenville Rd"}, {"pano_id": "-Uklg5soP2o-DTVOLUtTCg", "heading": 151.38937, "description": "Mavani Greenville Rd"}]}, "rAlH2yOIfjxdgLGagKOYcQ": {"lat": 21.15984150488947, "lng": 72.77277936805558, "links": [{"pano_id": "Mn6_t31C2Kfx_lDnmwRXzA", "heading": 354.80887, "description": ""}]}, "ACqLMwUXh9sZwS_kFR6aCQ": {"lat": 21.16004331085393, "lng": 72.77230395353324, "links": [{"pano_id": "eo5is_QZu35vuZOENoG8iA", "heading": 237.5475, "description": ""}, {"pano_id": "cmayzkXDy4H-s1YQVFnXgw", "heading": 57.91274, "description": ""}]}, "Yh2jFBBylzOC29LhqaY6Jg": {"lat": 21.16099770824545, "lng": 72.77413418621775, "links": [{"pano_id": "vfrUWIFfhFBoJQooN7TMtg", "heading": 242.93843, "description": ""}, {"pano_id": "TnTO2mBrB2DupCy4cfW1kg", "heading": 62.966595, "description": ""}]}, "eo5is_QZu35vuZOENoG8iA": {"lat": 21.15998266691557, "lng": 72.77220169239934, "links": [{"pano_id": "ACqLMwUXh9sZwS_kFR6aCQ", "heading": 57.547497, "description": ""}, {"pano_id": "bG_hRcSCeqoZJ1M8bKp-Dg", "heading": 237.18837, "description": ""}]}, "-Uklg5soP2o-DTVOLUtTCg": {"lat": 21.16013966594542, "lng": 72.77382379788807, "links": [{"pano_id": "SwenJYYoaRyr_9v6cTO8Jw", "heading": 184.9764, "description": "Mavani Greenville Rd"}, {"pano_id": "4qyUOdvsgGgdeyf9lcpxrA", "heading": 331.38937, "description": "Mavani Greenville Rd"}]}, "TnTO2mBrB2DupCy4cfW1kg": {"lat": 21.16104323664384, "lng": 72.77422986365742, "links": [{"pano_id": "Yh2jFBBylzOC29LhqaY6Jg", "heading": 242.9666, "description": ""}, {"pano_id": "IIbSiYSM8OQ8eysX43Seuw", "heading": 62.94391, "description": ""}]}, "IIbSiYSM8OQ8eysX43Seuw": {"lat": 21.1610844713188, "lng": 72.7743164332222, "links": [{"pano_id": "TnTO2mBrB2DupCy4cfW1kg", "heading": 242.94391, "description": ""}, {"pano_id": "APkr2PprxJHebNmtwIrHCg", "heading": 62.92564, "description": ""}]}, "SwenJYYoaRyr_9v6cTO8Jw": {"lat": 21.16004211887142, "lng": 72.77381469003173, "links": [{"pano_id": "ZTSBUz3xunGYEPlaRQvulw", "heading": 168.50433, "description": "Mavani Greenville Rd"}, {"pano_id": "-Uklg5soP2o-DTVOLUtTCg", "heading": 4.976392, "description": "Mavani Greenville Rd"}]}, "bG_hRcSCeqoZJ1M8bKp-Dg": {"lat": 21.15993327142361, "lng": 72.7721195407876, "links": [{"pano_id": "eo5is_QZu35vuZOENoG8iA", "heading": 57.18837, "description": ""}, {"pano_id": "l1lwH6aEyQGL22fbc4uEgw", "heading": 237.22462, "description": ""}]}, "l1lwH6aEyQGL22fbc4uEgw": {"lat": 21.15988215769124, "lng": 72.77203441329284, "links": [{"pano_id": "SBaAcYcLnF6I8ivxWxY8yw", "heading": 237.20709, "description": ""}, {"pano_id": "bG_hRcSCeqoZJ1M8bKp-Dg", "heading": 57.22463, "description": ""}]}, "ZTSBUz3xunGYEPlaRQvulw": {"lat": 21.15996272517755, "lng": 72.77383200397618, "links": [{"pano_id": "SwenJYYoaRyr_9v6cTO8Jw", "heading": 348.50433, "description": "Mavani Greenville Rd"}, {"pano_id": "nLop322R7z5NK8Wb87HpTQ", "heading": 177.27835, "description": "Mavani Greenville Rd"}]}, "APkr2PprxJHebNmtwIrHCg": {"lat": 21.16113549638003, "lng": 72.77442347284004, "links": [{"pano_id": "IIbSiYSM8OQ8eysX43Seuw", "heading": 242.92564, "description": ""}, {"pano_id": "jWM_7mxafapNdK-WhpYM7g", "heading": 62.947296, "description": ""}]}, "jWM_7mxafapNdK-WhpYM7g": {"lat": 21.16118067604998, "lng": 72.77451833857889, "links": [{"pano_id": "APkr2PprxJHebNmtwIrHCg", "heading": 242.9473, "description": ""}, {"pano_id": "V1GODWYL0GF2pUFVpCpW8A", "heading": 62.967327, "description": ""}, {"pano_id": "Pt_6yTJu7g3BoRFD2QBXCA", "heading": 62.96, "distance": 17.67, "virtual": true}]}, "SBaAcYcLnF6I8ivxWxY8yw": {"lat": 21.1598333935591, "lng": 72.77195325357778, "links": [{"pano_id": "8v0UVY8XUAu4b_3BHiZNBQ", "heading": 237.93977, "description": ""}, {"pano_id": "l1lwH6aEyQGL22fbc4uEgw", "heading": 57.207085, "description": ""}]}, "nLop322R7z5NK8Wb87HpTQ": {"lat": 21.15987250307883, "lng": 72.77383660299247, "links": [{"pano_id": "nQJooMnJWMzod_jSjvMUxw", "heading": 177.26996, "description": "Mavani Greenville Rd"}, {"pano_id": "ZTSBUz3xunGYEPlaRQvulw", "heading": 357.27835, "description": "Mavani Greenville Rd"}]}, "V1GODWYL0GF2pUFVpCpW8A": {"lat": 21.16122259849834, "lng": 72.77460644104329, "links": [{"pano_id": "Pt_6yTJu7g3BoRFD2QBXCA", "heading": 62.95485, "description": ""}, {"pano_id": "jWM_7mxafapNdK-WhpYM7g", "heading": 242.96733, "description": ""}]}, "nQJooMnJWMzod_jSjvMUxw": {"lat": 21.15978079482144, "lng": 72.77384129218547, "links": [{"pano_id": "8BebkUB7HpUepRJbJWlC8g", "heading": 177.30753, "description": "Mavani Greenville Rd"}, {"pano_id": "nLop322R7z5NK8Wb87HpTQ", "heading": 357.26996, "description": "Mavani Greenville Rd"}]}, "8v0UVY8XUAu4b_3BHiZNBQ": {"lat": 21.15978561920928, "lng": 72.77187146259355, "links": [{"pano_id": "SBaAcYcLnF6I8ivxWxY8yw", "heading": 57.939774, "description": ""}, {"pano_id": "HX6Xmst6WtrD8aDtDDhvLw", "heading": 237.3231, "description": ""}]}, "8BebkUB7HpUepRJbJWlC8g": {"lat": 21.15968601685757, "lng": 72.77384607155516, "links": [{"pano_id": "nQJooMnJWMzod_jSjvMUxw", "heading": 357.30753, "description": "Mavani Greenville Rd"}, {"pano_id": "SCoSZcbavpKdCWIODREn7Q", "heading": 177.23315, "description": "Mavani Greenville Rd"}]}, "HX6Xmst6WtrD8aDtDDhvLw": {"lat": 21.15971549487716, "lng": 72.77175423180823, "links": [{"pano_id": "8v0UVY8XUAu4b_3BHiZNBQ", "heading": 57.3231, "description": ""}, {"pano_id": "_3e1tpEGcnQfpWaMTTAH-g", "heading": 236.77185, "description": ""}]}, "Pt_6yTJu7g3BoRFD2QBXCA": {"lat": 21.16125290879122, "lng": 72.77467010565002, "links": [{"pano_id": "V1GODWYL0GF2pUFVpCpW8A", "heading": 242.95485, "description": ""}, {"pano_id": "tjRIUviYfVssK7HvY9mMjQ", "heading": 62.92085, "description": ""}, {"pano_id": "jWM_7mxafapNdK-WhpYM7g", "heading": 242.96, "distance": 17.67, "virtual": true}]}, "tjRIUviYfVssK7HvY9mMjQ": {"lat": 21.16129998868066, "lng": 72.77476884888156, "links": [{"pano_id": "gOumzhNzTvm45i_bN5qV-g", "heading": 62.96931, "description": ""}, {"pano_id": "Pt_6yTJu7g3BoRFD2QBXCA", "heading": 242.92085, "description": ""}]}, "_3e1tpEGcnQfpWaMTTAH-g": {"lat": 21.15964238915391, "lng": 72.77163456617237, "links": [{"pano_id": "ZOKKEMQaiz3alNop8k-zuw", "heading": 235.02783, "description": ""}, {"pano_id": "HX6Xmst6WtrD8aDtDDhvLw", "heading": 56.77185, "description": ""}]}, "SCoSZcbavpKdCWIODREn7Q": {"lat": 21.15959379016792, "lng": 72.77385085092476, "links": [{"pano_id": "8BebkUB7HpUepRJbJWlC8g", "heading": 357.23315, "description": "Mavani Greenville Rd"}, {"pano_id": "4OcKIuf2npI_FwdsGyVaHw", "heading": 176.71507, "description": "Mavani Greenville Rd"}]}, "ZOKKEMQaiz3alNop8k-zuw": {"lat": 21.15959421148618, "lng": 72.77156071071336, "links": [{"pano_id": "nVzje9oBGSk1PigOvoQWqg", "heading": 233.77652, "description": ""}, {"pano_id": "_3e1tpEGcnQfpWaMTTAH-g", "heading": 55.027824, "description": ""}, {"pano_id": "HjfjYCxu37z50vp42__L3A", "heading": 233.74, "distance": 12.12, "virtual": true}]}, "gOumzhNzTvm45i_bN5qV-g": {"lat": 21.16134315173163, "lng": 72.77485956637275, "links": [{"pano_id": "vgAYj1V9IGYed7jVE5EY1A", "heading": 62.950844, "description": ""}, {"pano_id": "tjRIUviYfVssK7HvY9mMjQ", "heading": 242.96931, "description": ""}, {"pano_id": "F7W1HXd2QigCeSqmG-vYkA", "heading": 79.94, "distance": 11.99, "virtual": true}]}, "4OcKIuf2npI_FwdsGyVaHw": {"lat": 21.15950148165063, "lng": 72.77385653206208, "links": [{"pano_id": "tGe9ZVNPep9naVuGm5Watg", "heading": 177.0383, "description": "Mavani Greenville Rd"}, {"pano_id": "SCoSZcbavpKdCWIODREn7Q", "heading": 356.7151, "description": "Mavani Greenville Rd"}, {"pano_id": "bB41WogfMPqxG8hBc4lKOA", "heading": 177.28, "distance": 17.15, "virtual": true}]}, "vgAYj1V9IGYed7jVE5EY1A": {"lat": 21.16138360097974, "lng": 72.77494451254208, "links": [{"pano_id": "gOumzhNzTvm45i_bN5qV-g", "heading": 242.95085, "description": ""}, {"pano_id": "9pJo8DGL3pGT92fOOQI42A", "heading": 62.105217, "description": ""}, {"pano_id": "F7W1HXd2QigCeSqmG-vYkA", "heading": 128.68, "distance": 3.85, "virtual": true}]}, "nVzje9oBGSk1PigOvoQWqg": {"lat": 21.1595413559549, "lng": 72.7714833383041, "links": [{"pano_id": "HjfjYCxu37z50vp42__L3A", "heading": 233.55519, "description": ""}, {"pano_id": "ZOKKEMQaiz3alNop8k-zuw", "heading": 53.77652, "description": ""}, {"pano_id": "oAk6KpP2nbO48jHh_bEvug", "heading": 233.76, "distance": 10.47, "virtual": true}]}, "tGe9ZVNPep9naVuGm5Watg": {"lat": 21.15940395438174, "lng": 72.77386194266894, "links": [{"pano_id": "bB41WogfMPqxG8hBc4lKOA", "heading": 177.7018, "description": "Mavani Greenville Rd"}, {"pano_id": "4OcKIuf2npI_FwdsGyVaHw", "heading": 357.0383, "description": "Mavani Greenville Rd"}, {"pano_id": "wc55I-8ejtUfuN8G5iIPDA", "heading": 177.69, "distance": 14.87, "virtual": true}]}, "9pJo8DGL3pGT92fOOQI42A": {"lat": 21.16142019353368, "lng": 72.77501863751948, "links": [{"pano_id": "vgAYj1V9IGYed7jVE5EY1A", "heading": 242.10521, "description": ""}, {"pano_id": "BulCvf3qdHIepmB7EmAZfQ", "heading": 61.697098, "description": ""}, {"pano_id": "F7W1HXd2QigCeSqmG-vYkA", "heading": 215.89928, "description": ""}]}, "HjfjYCxu37z50vp42__L3A": {"lat": 21.15952974254495, "lng": 72.77146647508347, "links": [{"pano_id": "oAk6KpP2nbO48jHh_bEvug", "heading": 233.81796, "description": ""}, {"pano_id": "nVzje9oBGSk1PigOvoQWqg", "heading": 53.555195, "description": ""}, {"pano_id": "ZOKKEMQaiz3alNop8k-zuw", "heading": 53.74, "distance": 12.12, "virtual": true}]}, "bB41WogfMPqxG8hBc4lKOA": {"lat": 21.15934737673644, "lng": 72.77386437744198, "links": [{"pano_id": "tGe9ZVNPep9naVuGm5Watg", "heading": 357.70178, "description": "Mavani Greenville Rd"}, {"pano_id": "wc55I-8ejtUfuN8G5iIPDA", "heading": 177.688, "description": "Mavani Greenville Rd"}, {"pano_id": "4OcKIuf2npI_FwdsGyVaHw", "heading": 357.28, "distance": 17.15, "virtual": true}]}, "BulCvf3qdHIepmB7EmAZfQ": {"lat": 21.16146561563424, "lng": 72.77510908439001, "links": [{"pano_id": "9pJo8DGL3pGT92fOOQI42A", "heading": 241.6971, "description": ""}]}, "F7W1HXd2QigCeSqmG-vYkA": {"lat": 21.16136198911362, "lng": 72.77497345915997, "links": [{"pano_id": "9pJo8DGL3pGT92fOOQI42A", "heading": 35.89928, "description": ""}, {"pano_id": "gOumzhNzTvm45i_bN5qV-g", "heading": 259.94, "distance": 11.99, "virtual": true}, {"pano_id": "vgAYj1V9IGYed7jVE5EY1A", "heading": 308.68, "distance": 3.85, "virtual": true}]}, "wc55I-8ejtUfuN8G5iIPDA": {"lat": 21.15927030709221, "lng": 72.7738677139828, "links": [{"pano_id": "bB41WogfMPqxG8hBc4lKOA", "heading": 357.68802, "description": "Mavani Greenville Rd"}, {"pano_id": "tGe9ZVNPep9naVuGm5Watg", "heading": 357.69, "distance": 14.87, "virtual": true}]}, "oAk6KpP2nbO48jHh_bEvug": {"lat": 21.15948570150887, "lng": 72.7714019078752, "links": [{"pano_id": "HjfjYCxu37z50vp42__L3A", "heading": 53.817955, "description": ""}, {"pano_id": "nVzje9oBGSk1PigOvoQWqg", "heading": 53.76, "distance": 10.47, "virtual": true}]}};
+        const targetPanos = ["V3K22k6rfOtZF_4v9tULmA", "E7FTT8dU2H6CEm4s1UzSVw"];
+        const spawnPoints = ["gOumzhNzTvm45i_bN5qV-g", "BulCvf3qdHIepmB7EmAZfQ", "wc55I-8ejtUfuN8G5iIPDA", "l1lwH6aEyQGL22fbc4uEgw", "oAk6KpP2nbO48jHh_bEvug", "APkr2PprxJHebNmtwIrHCg"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_supermarket_20260125_031324</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_supermarket_20260125_031324</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>11</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"EGo04CWy8nd3wvAtJU6WzA": {"lat": 29.75453899046008, "lng": -95.36176524704258, "links": [{"pano_id": "_1fVH8Ifbyr3hEqIAMepBw", "heading": 216.36975, "description": "Austin St"}, {"pano_id": "k9rSaffjS6oNsVlP3PYzyw", "heading": 36.369724, "description": "Austin St"}]}, "_1fVH8Ifbyr3hEqIAMepBw": {"lat": 29.75446491833987, "lng": -95.36182808148503, "links": [{"pano_id": "EGo04CWy8nd3wvAtJU6WzA", "heading": 36.36975, "description": "Austin St"}, {"pano_id": "mXsooeCvmfdvfodpxJFMnw", "heading": 216.36247, "description": "Austin St"}]}, "k9rSaffjS6oNsVlP3PYzyw": {"lat": 29.75461306251865, "lng": -95.36170241266856, "links": [{"pano_id": "D64En4EN0sIgFa-Xs75sdw", "heading": 35.07662, "description": "Austin St"}, {"pano_id": "EGo04CWy8nd3wvAtJU6WzA", "heading": 216.36972, "description": "Austin St"}]}, "mXsooeCvmfdvfodpxJFMnw": {"lat": 29.7543914854074, "lng": -95.36189035711178, "links": [{"pano_id": "_1fVH8Ifbyr3hEqIAMepBw", "heading": 36.36248, "description": "Austin St"}, {"pano_id": "0cTe6VeSfD8kpVW3pEbOaA", "heading": 214.66469, "description": "Austin St"}]}, "D64En4EN0sIgFa-Xs75sdw": {"lat": 29.75468956236486, "lng": -95.36164053644589, "links": [{"pano_id": "n2rHCcdruXN9Hp9RjBt3BQ", "heading": 34.242252, "description": "Austin St"}, {"pano_id": "k9rSaffjS6oNsVlP3PYzyw", "heading": 215.07661, "description": "Austin St"}]}, "n2rHCcdruXN9Hp9RjBt3BQ": {"lat": 29.75476552806031, "lng": -95.36158097565423, "links": [{"pano_id": "D64En4EN0sIgFa-Xs75sdw", "heading": 214.24225, "description": "Austin St"}, {"pano_id": "aeuD4ykOD8tubmnnV8eCLA", "heading": 34.632813, "description": "Austin St"}, {"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 8.53, "distance": 15.22, "virtual": true}]}, "0cTe6VeSfD8kpVW3pEbOaA": {"lat": 29.75431520669851, "lng": -95.36195111583291, "links": [{"pano_id": "-D8kClSVFctHTnNcVy528w", "heading": 215.36476, "description": "Austin St"}, {"pano_id": "mXsooeCvmfdvfodpxJFMnw", "heading": 34.66469, "description": "Austin St"}]}, "-D8kClSVFctHTnNcVy528w": {"lat": 29.75423922541085, "lng": -95.36201323191094, "links": [{"pano_id": "XJGmLIei8p7i5fmPd_25sA", "heading": 215.18248, "description": "Austin St"}, {"pano_id": "0cTe6VeSfD8kpVW3pEbOaA", "heading": 35.36477, "description": "Austin St"}, {"pano_id": "-Rq2Itrbikwn3C6-L6prsA", "heading": 169.4, "distance": 17.64, "virtual": true}]}, "aeuD4ykOD8tubmnnV8eCLA": {"lat": 29.75484089319003, "lng": -95.36152101572367, "links": [{"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 332.12082, "description": "McKinney St"}, {"pano_id": "4YCWPBNUUvv-0aNhEuiJ4g", "heading": 102.483925, "description": "McKinney St"}, {"pano_id": "n2rHCcdruXN9Hp9RjBt3BQ", "heading": 214.63281, "description": "Austin St"}, {"pano_id": "aeia_MnUccfTeLw6TADNqA", "heading": 35.03784, "description": "Austin St"}, {"pano_id": "kLqeaqcDrG6xRj3ImECXnA", "heading": 315.72, "distance": 17.2, "virtual": true}]}, "J7Fmu-vgg2hqQeNBUMQWiQ": {"lat": 29.75490090308798, "lng": -95.36155758249149, "links": [{"pano_id": "aeuD4ykOD8tubmnnV8eCLA", "heading": 152.12083, "description": "Austin St"}, {"pano_id": "kLqeaqcDrG6xRj3ImECXnA", "heading": 303.62943, "description": "McKinney St"}, {"pano_id": "n2rHCcdruXN9Hp9RjBt3BQ", "heading": 188.53, "distance": 15.22, "virtual": true}, {"pano_id": "aeia_MnUccfTeLw6TADNqA", "heading": 81.19, "distance": 9.32, "virtual": true}, {"pano_id": "4YCWPBNUUvv-0aNhEuiJ4g", "heading": 121.83, "distance": 17.36, "virtual": true}, {"pano_id": "v6J5cDCgOZJZkQQMt7b_pQ", "heading": 57.96, "distance": 17.49, "virtual": true}]}, "aeia_MnUccfTeLw6TADNqA": {"lat": 29.75491374647426, "lng": -95.36146217361538, "links": [{"pano_id": "v6J5cDCgOZJZkQQMt7b_pQ", "heading": 35.58228, "description": "Austin St"}, {"pano_id": "aeuD4ykOD8tubmnnV8eCLA", "heading": 215.03784, "description": "Austin St"}, {"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 261.19, "distance": 9.32, "virtual": true}, {"pano_id": "4YCWPBNUUvv-0aNhEuiJ4g", "heading": 152.37, "distance": 11.95, "virtual": true}]}, "XJGmLIei8p7i5fmPd_25sA": {"lat": 29.75416253286027, "lng": -95.36207550773753, "links": [{"pano_id": "-D8kClSVFctHTnNcVy528w", "heading": 35.18248, "description": "Austin St"}, {"pano_id": "GrCdczYhOXYrgyrga7wrgw", "heading": 212.93454, "description": "Austin St"}, {"pano_id": "-Rq2Itrbikwn3C6-L6prsA", "heading": 133.60246, "description": "Lamar St"}]}, "4YCWPBNUUvv-0aNhEuiJ4g": {"lat": 29.7548185493256, "lng": -95.3614047686856, "links": [{"pano_id": "dA0NycQJ2-xVgbbhRlhAnQ", "heading": 124.82812, "description": "McKinney St"}, {"pano_id": "aeuD4ykOD8tubmnnV8eCLA", "heading": 282.48392, "description": "Austin St"}, {"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 301.83, "distance": 17.36, "virtual": true}, {"pano_id": "aeia_MnUccfTeLw6TADNqA", "heading": 332.37, "distance": 11.95, "virtual": true}]}, "-Rq2Itrbikwn3C6-L6prsA": {"lat": 29.75408325087983, "lng": -95.36197961896067, "links": [{"pano_id": "3XdJWCj2GNQy140Bd2Ml0Q", "heading": 124.18172, "description": "Lamar St"}, {"pano_id": "XJGmLIei8p7i5fmPd_25sA", "heading": 313.60248, "description": "Austin St"}, {"pano_id": "-D8kClSVFctHTnNcVy528w", "heading": 349.4, "distance": 17.64, "virtual": true}, {"pano_id": "GrCdczYhOXYrgyrga7wrgw", "heading": 268.96, "distance": 15.15, "virtual": true}]}, "XhFDTuaSRpXXOt5FA7OqoA": {"lat": 29.75416636582997, "lng": -95.36215063802291, "links": [{"pano_id": "XJGmLIei8p7i5fmPd_25sA", "heading": 93.36312, "description": "Austin St"}, {"pano_id": "nppIC6aLe69RfhVg_sbhZQ", "heading": 318.63797, "description": "Lamar St"}, {"pano_id": "-D8kClSVFctHTnNcVy528w", "heading": 58.58, "distance": 15.54, "virtual": true}, {"pano_id": "GrCdczYhOXYrgyrga7wrgw", "heading": 171.84, "distance": 9.61, "virtual": true}]}, "v6J5cDCgOZJZkQQMt7b_pQ": {"lat": 29.75498437156506, "lng": -95.36140397028642, "links": [{"pano_id": "OL1QSMS7MGVbP5PGwFT9Kg", "heading": 35.735424, "description": "Austin St"}, {"pano_id": "aeia_MnUccfTeLw6TADNqA", "heading": 215.58228, "description": "Austin St"}, {"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 237.96, "distance": 17.49, "virtual": true}]}, "kLqeaqcDrG6xRj3ImECXnA": {"lat": 29.7549516166761, "lng": -95.36164540670102, "links": [{"pano_id": "J7Fmu-vgg2hqQeNBUMQWiQ", "heading": 123.62942, "description": "McKinney St"}, {"pano_id": "lMuhh40L4w36GLoTv8YUGA", "heading": 304.93057, "description": "McKinney St"}, {"pano_id": "aeuD4ykOD8tubmnnV8eCLA", "heading": 135.72, "distance": 17.2, "virtual": true}]}, "dA0NycQJ2-xVgbbhRlhAnQ": {"lat": 29.75476463417206, "lng": -95.36131550772605, "links": [{"pano_id": "4YCWPBNUUvv-0aNhEuiJ4g", "heading": 304.82813, "description": "McKinney St"}, {"pano_id": "T_sG60l8-cZJcsd_gY0cgg", "heading": 124.20924, "description": "McKinney St"}]}, "GrCdczYhOXYrgyrga7wrgw": {"lat": 29.75408078251986, "lng": -95.36213650617641, "links": [{"pano_id": "XJGmLIei8p7i5fmPd_25sA", "heading": 32.934536, "description": "Austin St"}, {"pano_id": "3axBbFPyBjS4ZJBON_IiKw", "heading": 212.771, "description": "Austin St"}, {"pano_id": "-Rq2Itrbikwn3C6-L6prsA", "heading": 88.96, "distance": 15.15, "virtual": true}]}, "OL1QSMS7MGVbP5PGwFT9Kg": {"lat": 29.7550554661178, "lng": -95.36134504845765, "links": [{"pano_id": "s__0pkbIETecJPoMmOOqpw", "heading": 35.73348, "description": "Austin St"}, {"pano_id": "v6J5cDCgOZJZkQQMt7b_pQ", "heading": 215.73543, "description": "Austin St"}]}, "lMuhh40L4w36GLoTv8YUGA": {"lat": 29.75500414044691, "lng": -95.36173203343864, "links": [{"pano_id": "kLqeaqcDrG6xRj3ImECXnA", "heading": 124.93058, "description": "McKinney St"}, {"pano_id": "a-ft71pGrqGNdA2G75CDIA", "heading": 304.97067, "description": "McKinney St"}]}, "3axBbFPyBjS4ZJBON_IiKw": {"lat": 29.75399378065461, "lng": -95.36220101768458, "links": [{"pano_id": "fubgJaMhunc7ZDrdbMjvbQ", "heading": 213.6403, "description": "Austin St"}, {"pano_id": "GrCdczYhOXYrgyrga7wrgw", "heading": 32.770992, "description": "Austin St"}]}, "T_sG60l8-cZJcsd_gY0cgg": {"lat": 29.75471261176205, "lng": -95.36122736466001, "links": [{"pano_id": "EQaT_je7jS_nTztzLLtGtw", "heading": 124.15604, "description": "McKinney St"}, {"pano_id": "dA0NycQJ2-xVgbbhRlhAnQ", "heading": 304.20926, "description": "McKinney St"}]}, "3XdJWCj2GNQy140Bd2Ml0Q": {"lat": 29.75403419984729, "lng": -95.36189642499696, "links": [{"pano_id": "mPi26YsVScCiOH8oGF0prw", "heading": 124.09192, "description": "Lamar St"}, {"pano_id": "-Rq2Itrbikwn3C6-L6prsA", "heading": 304.1817, "description": "Lamar St"}]}, "a-ft71pGrqGNdA2G75CDIA": {"lat": 29.75505708198634, "lng": -95.36181921918977, "links": [{"pano_id": "lMuhh40L4w36GLoTv8YUGA", "heading": 124.97068, "description": "McKinney St"}, {"pano_id": "EHvGJIaYFWHVgS4vuaVotw", "heading": 304.66174, "description": "McKinney St"}]}, "EQaT_je7jS_nTztzLLtGtw": {"lat": 29.75466257435401, "lng": -95.36114241531075, "links": [{"pano_id": "T_sG60l8-cZJcsd_gY0cgg", "heading": 304.15604, "description": "McKinney St"}, {"pano_id": "FggOC8HUislU6Vg13pHLwQ", "heading": 124.216736, "description": "McKinney St"}]}, "s__0pkbIETecJPoMmOOqpw": {"lat": 29.75512646929431, "lng": -95.36128620652883, "links": [{"pano_id": "OL1QSMS7MGVbP5PGwFT9Kg", "heading": 215.73347, "description": "Austin St"}, {"pano_id": "dcYbojxRf8jPJH082OVJ1A", "heading": 35.739193, "description": "Austin St"}]}, "fubgJaMhunc7ZDrdbMjvbQ": {"lat": 29.75390377892231, "lng": -95.36227000036716, "links": [{"pano_id": "3axBbFPyBjS4ZJBON_IiKw", "heading": 33.640312, "description": "Austin St"}, {"pano_id": "JiHkkdS3Dz_m24lcDjDqNA", "heading": 214.12422, "description": "Austin St"}]}, "mPi26YsVScCiOH8oGF0prw": {"lat": 29.75398573632453, "lng": -95.36181394971754, "links": [{"pano_id": "3XdJWCj2GNQy140Bd2Ml0Q", "heading": 304.09192, "description": "Lamar St"}, {"pano_id": "MhprqybtEf_oikqrWRtejg", "heading": 122.81352, "description": "Lamar St"}]}, "JiHkkdS3Dz_m24lcDjDqNA": {"lat": 29.75383391818547, "lng": -95.36232453187485, "links": [{"pano_id": "fubgJaMhunc7ZDrdbMjvbQ", "heading": 34.124226, "description": "Austin St"}, {"pano_id": "QySP_VIT5qbVzAyiyxBtrA", "heading": 214.10599, "description": "Austin St"}]}, "FggOC8HUislU6Vg13pHLwQ": {"lat": 29.75461393113423, "lng": -95.36106002094863, "links": [{"pano_id": "EQaT_je7jS_nTztzLLtGtw", "heading": 304.21674, "description": "McKinney St"}, {"pano_id": "NKsLWJxagNexU6jesT-1CQ", "heading": 124.1828, "description": "McKinney St"}]}, "MhprqybtEf_oikqrWRtejg": {"lat": 29.75393849541243, "lng": -95.36172955838718, "links": [{"pano_id": "OCMFydFa6sKekm7sjWfXbQ", "heading": 123.737564, "description": "Lamar St"}, {"pano_id": "mPi26YsVScCiOH8oGF0prw", "heading": 302.81354, "description": "Lamar St"}]}, "EHvGJIaYFWHVgS4vuaVotw": {"lat": 29.75511023282102, "lng": -95.36190776236307, "links": [{"pano_id": "a-ft71pGrqGNdA2G75CDIA", "heading": 124.661736, "description": "McKinney St"}, {"pano_id": "XJKClybTTOGA69eDV6xN6g", "heading": 305.18866, "description": "McKinney St"}]}, "dcYbojxRf8jPJH082OVJ1A": {"lat": 29.75519774637687, "lng": -95.36122712514099, "links": [{"pano_id": "s__0pkbIETecJPoMmOOqpw", "heading": 215.7392, "description": "Austin St"}, {"pano_id": "F7mSloA_P1XAPbjrCO95DA", "heading": 35.751976, "description": "Austin St"}]}, "QySP_VIT5qbVzAyiyxBtrA": {"lat": 29.75373094858105, "lng": -95.3624048521689, "links": [{"pano_id": "rNpOc0HOXGim5jAjyYlAFg", "heading": 214.13214, "description": "Austin St"}, {"pano_id": "JiHkkdS3Dz_m24lcDjDqNA", "heading": 34.105988, "description": "Austin St"}]}, "F7mSloA_P1XAPbjrCO95DA": {"lat": 29.75526793078643, "lng": -95.36116892204916, "links": [{"pano_id": "Gl_H5xO-ljcWbSGUrS_B_A", "heading": 35.765057, "description": "Austin St"}, {"pano_id": "dcYbojxRf8jPJH082OVJ1A", "heading": 215.75197, "description": "Austin St"}]}, "XJKClybTTOGA69eDV6xN6g": {"lat": 29.75516179606828, "lng": -95.36199199427261, "links": [{"pano_id": "EHvGJIaYFWHVgS4vuaVotw", "heading": 125.18865, "description": "McKinney St"}, {"pano_id": "bTvRDMwK8V5kxDb60zb-jQ", "heading": 304.94452, "description": "McKinney St"}]}, "NKsLWJxagNexU6jesT-1CQ": {"lat": 29.75456422010014, "lng": -95.36097571056035, "links": [{"pano_id": "FggOC8HUislU6Vg13pHLwQ", "heading": 304.1828, "description": "McKinney St"}, {"pano_id": "1R4QfHo9huHCHTQlSgjz9Q", "heading": 124.24235, "description": "McKinney St"}]}, "OCMFydFa6sKekm7sjWfXbQ": {"lat": 29.75388933251136, "lng": -95.361644767979, "links": [{"pano_id": "6lLn3Pu6DE-s-qnlQHe6KQ", "heading": 123.72589, "description": "Lamar St"}, {"pano_id": "MhprqybtEf_oikqrWRtejg", "heading": 303.73758, "description": "Lamar St"}]}, "Gl_H5xO-ljcWbSGUrS_B_A": {"lat": 29.75533529066664, "lng": -95.36111303436192, "links": [{"pano_id": "F7mSloA_P1XAPbjrCO95DA", "heading": 215.76506, "description": "Austin St"}, {"pano_id": "FgdWjXlu8zd7UdvaETfSCQ", "heading": 35.75488, "description": "Austin St"}]}, "6lLn3Pu6DE-s-qnlQHe6KQ": {"lat": 29.75384000625115, "lng": -95.3615596583349, "links": [{"pano_id": "OCMFydFa6sKekm7sjWfXbQ", "heading": 303.7259, "description": "Lamar St"}, {"pano_id": "NUQUw3yXHemtdNldH--AKQ", "heading": 123.78273, "description": "Lamar St"}]}, "bTvRDMwK8V5kxDb60zb-jQ": {"lat": 29.7552133301684, "lng": -95.36207694487277, "links": [{"pano_id": "XJKClybTTOGA69eDV6xN6g", "heading": 124.94453, "description": "McKinney St"}, {"pano_id": "gDN6y-0sRyZuwazLeYyWlA", "heading": 304.94412, "description": "McKinney St"}]}, "1R4QfHo9huHCHTQlSgjz9Q": {"lat": 29.75451293528543, "lng": -95.36088892527991, "links": [{"pano_id": "WOOsLlvC0LoUyCg6kBe3_Q", "heading": 124.16589, "description": "McKinney St"}, {"pano_id": "NKsLWJxagNexU6jesT-1CQ", "heading": 304.24234, "description": "McKinney St"}]}, "rNpOc0HOXGim5jAjyYlAFg": {"lat": 29.75365926773435, "lng": -95.36246082094883, "links": [{"pano_id": "QySP_VIT5qbVzAyiyxBtrA", "heading": 34.132137, "description": "Austin St"}, {"pano_id": "cSJcZaI2kJPmnWI9RN29aQ", "heading": 214.06786, "description": "Austin St"}, {"pano_id": "xpYcFrnv-IBPyxGS9NE59Q", "heading": 220.24, "distance": 13.84, "virtual": true}]}, "WOOsLlvC0LoUyCg6kBe3_Q": {"lat": 29.75445902185784, "lng": -95.3607974296242, "links": [{"pano_id": "1R4QfHo9huHCHTQlSgjz9Q", "heading": 304.1659, "description": "McKinney St"}, {"pano_id": "NQCvyBsd3TX_xqk63HHlsw", "heading": 123.90463, "description": "McKinney St"}]}, "NUQUw3yXHemtdNldH--AKQ": {"lat": 29.75379182604286, "lng": -95.36147670449678, "links": [{"pano_id": "PigX3-tcPhFP5m8K38wN5Q", "heading": 123.76459, "description": "Lamar St"}, {"pano_id": "6lLn3Pu6DE-s-qnlQHe6KQ", "heading": 303.78275, "description": "Lamar St"}]}, "cSJcZaI2kJPmnWI9RN29aQ": {"lat": 29.7535857733069, "lng": -95.36251806724638, "links": [{"pano_id": "xpYcFrnv-IBPyxGS9NE59Q", "heading": 234.98187, "description": "Austin St"}, {"pano_id": "rNpOc0HOXGim5jAjyYlAFg", "heading": 34.067863, "description": "Austin St"}, {"pano_id": "9DPeYX356ecRwyrKMT1Ehw", "heading": 214.88, "distance": 15.64, "virtual": true}]}, "FgdWjXlu8zd7UdvaETfSCQ": {"lat": 29.75542962965182, "lng": -95.36103479169074, "links": [{"pano_id": "VDXr84xTNffsFXzMx804tQ", "heading": 35.555172, "description": "Austin St"}, {"pano_id": "Gl_H5xO-ljcWbSGUrS_B_A", "heading": 215.75488, "description": "Austin St"}]}, "gDN6y-0sRyZuwazLeYyWlA": {"lat": 29.75526626810844, "lng": -95.36216421098607, "links": [{"pano_id": "bTvRDMwK8V5kxDb60zb-jQ", "heading": 124.944115, "description": "McKinney St"}, {"pano_id": "4uI95DInMdy1Wm6M8EjN5Q", "heading": 304.9542, "description": "McKinney St"}]}, "NQCvyBsd3TX_xqk63HHlsw": {"lat": 29.75440777881736, "lng": -95.3607096067055, "links": [{"pano_id": "WOOsLlvC0LoUyCg6kBe3_Q", "heading": 303.90463, "description": "McKinney St"}, {"pano_id": "c61JrarbfM0HJNXG6zaqIQ", "heading": 123.19481, "description": "McKinney St"}, {"pano_id": "LmNETEetAo6BPKrbhOBKSQ", "heading": 163.98, "distance": 12.62, "virtual": true}, {"pano_id": "kLffs6PHkABzp71A8EeS5g", "heading": 80.99, "distance": 12.94, "virtual": true}]}, "4uI95DInMdy1Wm6M8EjN5Q": {"lat": 29.75531714249671, "lng": -95.36224804406457, "links": [{"pano_id": "gDN6y-0sRyZuwazLeYyWlA", "heading": 124.95419, "description": "McKinney St"}, {"pano_id": "3rJ2nHfENTa9TyixQK0owQ", "heading": 306.40094, "description": "Caroline St"}, {"pano_id": "zNqsovObAQGA2rlyOmIAiQ", "heading": 262.96, "distance": 14.63, "virtual": true}, {"pano_id": "UOL4AfocgHpdMFHeqavrBg", "heading": 347.44, "distance": 15.28, "virtual": true}]}, "VDXr84xTNffsFXzMx804tQ": {"lat": 29.7555263138107, "lng": -95.3609551918576, "links": [{"pano_id": "9WCWDntNhMXEpq9lXwl60A", "heading": 59.811085, "description": "Walker St"}, {"pano_id": "FgdWjXlu8zd7UdvaETfSCQ", "heading": 215.55518, "description": "Austin St"}, {"pano_id": "y386A20NzXx2v-mY1l9Erw", "heading": 4.94, "distance": 12.53, "virtual": true}]}, "PigX3-tcPhFP5m8K38wN5Q": {"lat": 29.75374340084181, "lng": -95.36139327173852, "links": [{"pano_id": "rIPQSimPrg6pQjnHJEl9Hg", "heading": 123.79724, "description": "Lamar St"}, {"pano_id": "NUQUw3yXHemtdNldH--AKQ", "heading": 303.7646, "description": "Lamar St"}]}, "xpYcFrnv-IBPyxGS9NE59Q": {"lat": 29.75356425761699, "lng": -95.36255343702346, "links": [{"pano_id": "cSJcZaI2kJPmnWI9RN29aQ", "heading": 54.98187, "description": "Austin St"}, {"pano_id": "9DPeYX356ecRwyrKMT1Ehw", "heading": 207.90555, "description": "Austin St"}, {"pano_id": "rNpOc0HOXGim5jAjyYlAFg", "heading": 40.24, "distance": 13.84, "virtual": true}]}, "9DPeYX356ecRwyrKMT1Ehw": {"lat": 29.75347041357864, "lng": -95.36261068341292, "links": [{"pano_id": "xpYcFrnv-IBPyxGS9NE59Q", "heading": 27.905552, "description": "Austin St"}, {"pano_id": "WtWAfBbdJk2RnHcLjj6BwA", "heading": 229.31734, "description": "Dallas St"}, {"pano_id": "cSJcZaI2kJPmnWI9RN29aQ", "heading": 34.88, "distance": 15.64, "virtual": true}]}, "c61JrarbfM0HJNXG6zaqIQ": {"lat": 29.75435662606201, "lng": -95.36061954843315, "links": [{"pano_id": "LmNETEetAo6BPKrbhOBKSQ", "heading": 218.95987, "description": "La Branch St"}, {"pano_id": "65CinKXHnaXe1w6swL0vgA", "heading": 118.442764, "description": "McKinney St"}, {"pano_id": "NQCvyBsd3TX_xqk63HHlsw", "heading": 303.1948, "description": "McKinney St"}, {"pano_id": "kLffs6PHkABzp71A8EeS5g", "heading": 27.905437, "description": "La Branch St"}]}, "rIPQSimPrg6pQjnHJEl9Hg": {"lat": 29.75369431277804, "lng": -95.36130880118368, "links": [{"pano_id": "o1ylvKJALbWY4ssA9PhGfw", "heading": 123.75866, "description": "Lamar St"}, {"pano_id": "PigX3-tcPhFP5m8K38wN5Q", "heading": 303.79724, "description": "Lamar St"}]}, "9WCWDntNhMXEpq9lXwl60A": {"lat": 29.75558099163013, "lng": -95.36084692987367, "links": [{"pano_id": "VDXr84xTNffsFXzMx804tQ", "heading": 239.81108, "description": "Austin St"}, {"pano_id": "qlqzFy0UA425xO8cur1oNg", "heading": 123.1074, "description": "Walker St"}, {"pano_id": "y386A20NzXx2v-mY1l9Erw", "heading": 304.3317, "description": "Walker St"}, {"pano_id": "ytxpzvHQJJlZEm_daDSLkw", "heading": 8.548954, "description": "Austin St"}]}, "3rJ2nHfENTa9TyixQK0owQ": {"lat": 29.75537621945307, "lng": -95.36234034043284, "links": [{"pano_id": "W_g1yy3zoLb8nnCLtRp0-g", "heading": 303.18442, "description": "McKinney St"}, {"pano_id": "UOL4AfocgHpdMFHeqavrBg", "heading": 33.817604, "description": "Caroline St"}, {"pano_id": "zNqsovObAQGA2rlyOmIAiQ", "heading": 213.86148, "description": "Caroline St"}, {"pano_id": "4uI95DInMdy1Wm6M8EjN5Q", "heading": 126.400925, "description": "McKinney St"}]}, "LmNETEetAo6BPKrbhOBKSQ": {"lat": 29.75429868127859, "lng": -95.36067351950857, "links": [{"pano_id": "c61JrarbfM0HJNXG6zaqIQ", "heading": 38.95987, "description": "McKinney St"}, {"pano_id": "NQCvyBsd3TX_xqk63HHlsw", "heading": 343.98, "distance": 12.62, "virtual": true}, {"pano_id": "65CinKXHnaXe1w6swL0vgA", "heading": 85.3, "distance": 14.9, "virtual": true}, {"pano_id": "kLffs6PHkABzp71A8EeS5g", "heading": 33.29, "distance": 16.94, "virtual": true}]}, "WtWAfBbdJk2RnHcLjj6BwA": {"lat": 29.75340922006677, "lng": -95.36269268078098, "links": [{"pano_id": "9DPeYX356ecRwyrKMT1Ehw", "heading": 49.317333, "description": "Austin St"}]}, "y386A20NzXx2v-mY1l9Erw": {"lat": 29.75563855455248, "lng": -95.36094401435723, "links": [{"pano_id": "9WCWDntNhMXEpq9lXwl60A", "heading": 124.33169, "description": "Walker St"}, {"pano_id": "VDXr84xTNffsFXzMx804tQ", "heading": 184.94, "distance": 12.53, "virtual": true}, {"pano_id": "ytxpzvHQJJlZEm_daDSLkw", "heading": 62.63, "distance": 12.62, "virtual": true}]}, "TzjCOFas0S6wsXguGBMA2w": {"lat": 29.75349486454253, "lng": -95.36248748797577, "links": [{"pano_id": "UPRxJOhMaJnqkEU_KzDWHQ", "heading": 123.88313, "description": ""}, {"pano_id": "9DPeYX356ecRwyrKMT1Ehw", "heading": 257.12283, "description": "Austin St"}, {"pano_id": "cSJcZaI2kJPmnWI9RN29aQ", "heading": 343.72, "distance": 10.53, "virtual": true}, {"pano_id": "xpYcFrnv-IBPyxGS9NE59Q", "heading": 320.47, "distance": 10.0, "virtual": true}]}, "65CinKXHnaXe1w6swL0vgA": {"lat": 29.75430965821479, "lng": -95.36051967014126, "links": [{"pano_id": "c61JrarbfM0HJNXG6zaqIQ", "heading": 298.44275, "description": "McKinney St"}, {"pano_id": "LmNETEetAo6BPKrbhOBKSQ", "heading": 265.3, "distance": 14.9, "virtual": true}, {"pano_id": "kLffs6PHkABzp71A8EeS5g", "heading": 336.75, "distance": 14.08, "virtual": true}]}, "qlqzFy0UA425xO8cur1oNg": {"lat": 29.75551916226802, "lng": -95.36073771002494, "links": [{"pano_id": "9WCWDntNhMXEpq9lXwl60A", "heading": 303.1074, "description": "Walker St"}]}, "ytxpzvHQJJlZEm_daDSLkw": {"lat": 29.75569072973472, "lng": -95.36082792815999, "links": [{"pano_id": "r7b66PITGySENXuqZZ6Nlg", "heading": 31.935833, "description": "Austin St"}, {"pano_id": "9WCWDntNhMXEpq9lXwl60A", "heading": 188.54895, "description": "Walker St"}, {"pano_id": "y386A20NzXx2v-mY1l9Erw", "heading": 242.63, "distance": 12.62, "virtual": true}]}, "kLffs6PHkABzp71A8EeS5g": {"lat": 29.75442599208071, "lng": -95.3605772338679, "links": [{"pano_id": "c61JrarbfM0HJNXG6zaqIQ", "heading": 207.90544, "description": "McKinney St"}, {"pano_id": "NQCvyBsd3TX_xqk63HHlsw", "heading": 260.99, "distance": 12.94, "virtual": true}, {"pano_id": "LmNETEetAo6BPKrbhOBKSQ", "heading": 213.29, "distance": 16.94, "virtual": true}, {"pano_id": "65CinKXHnaXe1w6swL0vgA", "heading": 156.75, "distance": 14.08, "virtual": true}]}, "zNqsovObAQGA2rlyOmIAiQ": {"lat": 29.75530101659512, "lng": -95.36239846486508, "links": [{"pano_id": "3rJ2nHfENTa9TyixQK0owQ", "heading": 33.861485, "description": "Caroline St"}, {"pano_id": "4uI95DInMdy1Wm6M8EjN5Q", "heading": 82.96, "distance": 14.63, "virtual": true}, {"pano_id": "W_g1yy3zoLb8nnCLtRp0-g", "heading": 350.97, "distance": 13.6, "virtual": true}]}, "r7b66PITGySENXuqZZ6Nlg": {"lat": 29.75576957031052, "lng": -95.36077132225168, "links": [{"pano_id": "ytxpzvHQJJlZEm_daDSLkw", "heading": 211.93584, "description": "Austin St"}]}, "o1ylvKJALbWY4ssA9PhGfw": {"lat": 29.75364506458257, "lng": -95.36122393155418, "links": [{"pano_id": "rIPQSimPrg6pQjnHJEl9Hg", "heading": 303.75867, "description": "Lamar St"}]}, "W_g1yy3zoLb8nnCLtRp0-g": {"lat": 29.75542177726141, "lng": -95.36242058090755, "links": [{"pano_id": "3rJ2nHfENTa9TyixQK0owQ", "heading": 123.18443, "description": "Caroline St"}, {"pano_id": "zNqsovObAQGA2rlyOmIAiQ", "heading": 170.97, "distance": 13.6, "virtual": true}, {"pano_id": "UOL4AfocgHpdMFHeqavrBg", "heading": 76.2, "distance": 13.73, "virtual": true}]}, "UOL4AfocgHpdMFHeqavrBg": {"lat": 29.75545123638138, "lng": -95.36228245558254, "links": [{"pano_id": "3rJ2nHfENTa9TyixQK0owQ", "heading": 213.81761, "description": "Caroline St"}, {"pano_id": "4uI95DInMdy1Wm6M8EjN5Q", "heading": 167.44, "distance": 15.28, "virtual": true}, {"pano_id": "W_g1yy3zoLb8nnCLtRp0-g", "heading": 256.2, "distance": 13.73, "virtual": true}]}};
+        const targetPanos = ["kLqeaqcDrG6xRj3ImECXnA", "F7mSloA_P1XAPbjrCO95DA", "EGo04CWy8nd3wvAtJU6WzA"];
+        const spawnPoints = ["r7b66PITGySENXuqZZ6Nlg", "VDXr84xTNffsFXzMx804tQ", "cSJcZaI2kJPmnWI9RN29aQ", "zNqsovObAQGA2rlyOmIAiQ", "W_g1yy3zoLb8nnCLtRp0-g", "3rJ2nHfENTa9TyixQK0owQ", "WtWAfBbdJk2RnHcLjj6BwA", "65CinKXHnaXe1w6swL0vgA", "o1ylvKJALbWY4ssA9PhGfw", "qlqzFy0UA425xO8cur1oNg", "y386A20NzXx2v-mY1l9Erw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

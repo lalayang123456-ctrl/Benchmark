@@ -1,0 +1,43 @@
+{
+  "task_id": "nav_0197_target_20260124_1117_9",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_111649",
+  "spawn_point": "w51x3_Ozo3uEpSn7qGmkiQ",
+  "spawn_heading": 90.4,
+  "description": "Navigate to K St & 14th St Nw Wb. Head east for 38m. Total distance: approximately 38 m.",
+  "ground_truth": {
+    "target_name": "K St & 14th St Nw Wb",
+    "target_pano_id": "LmTaGPaqCeAeJA4UEWaXFg",
+    "optimal_distance_meters": 38,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "LmTaGPaqCeAeJA4UEWaXFg"
+  ],
+  "max_steps": 8,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "w51x3_Ozo3uEpSn7qGmkiQ",
+      "heading": 90.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "dZ21zJ7Z4poNcWV5JodvoA",
+      "heading": 90.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "q-vmlrGi_apAB7sQH0--xA",
+      "heading": 90.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "LmTaGPaqCeAeJA4UEWaXFg",
+      "heading": 90.4
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

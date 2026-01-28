@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0019_20260126_142244",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your North (approx. 348\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "bSKi-zQ2n9Qsx2k2uJ6JeA",
+  "spawn_heading": 348.70227503750766,
+  "target_building": {
+    "lat": 49.2651981,
+    "lng": -123.11597599999999,
+    "height": 12.32,
+    "floors": 3,
+    "ground_elevation": 13.80608940124512,
+    "roof_elevation": 26.123596,
+    "name": "buildings/ChIJ93lzTtxzhlQR0G9Va3NEBb4",
+    "date": "2021-07-27"
+  },
+  "geofence_id": "list_height_0019_20260126_142244",
+  "ground_truth": {
+    "height_meters": 12.32
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T14:22:44.971627",
+    "bearing_deg": 348.70227503750766,
+    "city": "Vancouver, Canada"
+  }
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_subway_20260125_032319</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_subway_20260125_032319</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>10</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"u2TF4bVicwXNszI7jgKTvg": {"lat": 18.48840024009845, "lng": 73.89922179554057, "links": [{"pano_id": "bHGZsDxR4afl6PinU_ou_Q", "heading": 4.778473, "description": "Flower Valley Ln"}, {"pano_id": "74r8dHU7j3LgDzGvQrYs3w", "heading": 184.71951, "description": "Flower Valley Ln"}]}, "74r8dHU7j3LgDzGvQrYs3w": {"lat": 18.48828996785627, "lng": 73.89921219625336, "links": [{"pano_id": "u2TF4bVicwXNszI7jgKTvg", "heading": 4.719519, "description": "Flower Valley Ln"}, {"pano_id": "pp5_HN4lHPvrIYz36sRxlA", "heading": 184.37337, "description": "Flower Valley Ln"}]}, "bHGZsDxR4afl6PinU_ou_Q": {"lat": 18.4885040565415, "lng": 73.89923094626252, "links": [{"pano_id": "k-npFyKDaKjEuVcaoUEuyQ", "heading": 4.813059, "description": "Flower Valley Ln"}, {"pano_id": "u2TF4bVicwXNszI7jgKTvg", "heading": 184.77847, "description": "Flower Valley Ln"}]}, "pp5_HN4lHPvrIYz36sRxlA": {"lat": 18.4882076420144, "lng": 73.89920555749372, "links": [{"pano_id": "1OjMNdKi8GGaanP_ZH2blQ", "heading": 184.34563, "description": "Flower Valley Ln"}, {"pano_id": "74r8dHU7j3LgDzGvQrYs3w", "heading": 4.3733597, "description": "Flower Valley Ln"}]}, "k-npFyKDaKjEuVcaoUEuyQ": {"lat": 18.4885960083769, "lng": 73.89923911014154, "links": [{"pano_id": "Kjl-0Yt9nicnQ335L60lYg", "heading": 4.8115277, "description": "Flower Valley Ln"}, {"pano_id": "bHGZsDxR4afl6PinU_ou_Q", "heading": 184.81306, "description": "Flower Valley Ln"}]}, "Kjl-0Yt9nicnQ335L60lYg": {"lat": 18.48871426988469, "lng": 73.89924960655692, "links": [{"pano_id": "yqaCpGRQW_vOY1B8TEJ1DA", "heading": 4.7829933, "description": "Flower Valley Ln"}, {"pano_id": "k-npFyKDaKjEuVcaoUEuyQ", "heading": 184.81152, "description": "Flower Valley Ln"}, {"pano_id": "PZemGSbbbNJ2YU0QBr1YtQ", "heading": 358.52, "distance": 17.97, "virtual": true}]}, "1OjMNdKi8GGaanP_ZH2blQ": {"lat": 18.48812478878157, "lng": 73.89919891873383, "links": [{"pano_id": "hpTF9Ww2uCSvaOTOG7lUCw", "heading": 184.36575, "description": "Flower Valley Ln"}, {"pano_id": "pp5_HN4lHPvrIYz36sRxlA", "heading": 4.345631, "description": "Flower Valley Ln"}]}, "hpTF9Ww2uCSvaOTOG7lUCw": {"lat": 18.48803786090027, "lng": 73.89919192112183, "links": [{"pano_id": "1OjMNdKi8GGaanP_ZH2blQ", "heading": 4.365747, "description": "Flower Valley Ln"}, {"pano_id": "OvxIXatURW99o4NKaMCKig", "heading": 184.3951, "description": "Flower Valley Ln"}]}, "yqaCpGRQW_vOY1B8TEJ1DA": {"lat": 18.48881188651879, "lng": 73.89925821899988, "links": [{"pano_id": "PZemGSbbbNJ2YU0QBr1YtQ", "heading": 349.07568, "description": "Flower Valley Ln"}, {"pano_id": "Kjl-0Yt9nicnQ335L60lYg", "heading": 184.78299, "description": "Flower Valley Ln"}, {"pano_id": "YjCZpWaxxc8As7s5ifhF3Q", "heading": 357.78, "distance": 15.61, "virtual": true}]}, "OvxIXatURW99o4NKaMCKig": {"lat": 18.48792162700468, "lng": 73.89918250125912, "links": [{"pano_id": "hpTF9Ww2uCSvaOTOG7lUCw", "heading": 4.395097, "description": "Flower Valley Ln"}, {"pano_id": "pRG5VKnGBuaOdZBlXifq6A", "heading": 184.3454, "description": "Flower Valley Ln"}]}, "PZemGSbbbNJ2YU0QBr1YtQ": {"lat": 18.48887580538535, "lng": 73.89924521062234, "links": [{"pano_id": "YjCZpWaxxc8As7s5ifhF3Q", "heading": 5.154214, "description": "Flower Valley Ln"}, {"pano_id": "yqaCpGRQW_vOY1B8TEJ1DA", "heading": 169.0757, "description": "Flower Valley Ln"}, {"pano_id": "Kjl-0Yt9nicnQ335L60lYg", "heading": 178.52, "distance": 17.97, "virtual": true}]}, "YjCZpWaxxc8As7s5ifhF3Q": {"lat": 18.48895220854547, "lng": 73.89925247737128, "links": [{"pano_id": "PZemGSbbbNJ2YU0QBr1YtQ", "heading": 185.15422, "description": "Flower Valley Ln"}, {"pano_id": "j0tHyhn9kjjq1rR0zxpsOQ", "heading": 5.1684523, "description": "Flower Valley Ln"}, {"pano_id": "yqaCpGRQW_vOY1B8TEJ1DA", "heading": 177.78, "distance": 15.61, "virtual": true}]}, "pRG5VKnGBuaOdZBlXifq6A": {"lat": 18.48783541019757, "lng": 73.8991755933595, "links": [{"pano_id": "OvxIXatURW99o4NKaMCKig", "heading": 4.3454046, "description": "Flower Valley Ln"}, {"pano_id": "Bd3ASOXYTdkb_dyhgjynjA", "heading": 184.36319, "description": "Flower Valley Ln"}]}, "j0tHyhn9kjjq1rR0zxpsOQ": {"lat": 18.48904439085407, "lng": 73.89926126924001, "links": [{"pano_id": "-nZoi-q3_OC91Raj141u8g", "heading": 5.200732, "description": "Flower Valley Ln"}, {"pano_id": "YjCZpWaxxc8As7s5ifhF3Q", "heading": 185.16846, "description": "Flower Valley Ln"}]}, "Bd3ASOXYTdkb_dyhgjynjA": {"lat": 18.4877551218294, "lng": 73.89916913402459, "links": [{"pano_id": "pRG5VKnGBuaOdZBlXifq6A", "heading": 4.3631954, "description": "Flower Valley Ln"}, {"pano_id": "OBu3QtMFHt7MKltD4o7VoQ", "heading": 184.42125, "description": "Flower Valley Ln"}]}, "-nZoi-q3_OC91Raj141u8g": {"lat": 18.48912665017793, "lng": 73.89926916397893, "links": [{"pano_id": "BFh4y835POqoZscQF5z0IQ", "heading": 5.1277275, "description": "Flower Valley Ln"}, {"pano_id": "j0tHyhn9kjjq1rR0zxpsOQ", "heading": 185.20073, "description": "Flower Valley Ln"}]}, "OBu3QtMFHt7MKltD4o7VoQ": {"lat": 18.48764508017248, "lng": 73.89916016272572, "links": [{"pano_id": "Bd3ASOXYTdkb_dyhgjynjA", "heading": 4.421253, "description": "Flower Valley Ln"}, {"pano_id": "ccJNGHH-1Yqapp_-u-CXeA", "heading": 184.47948, "description": "Flower Valley Ln"}]}, "ccJNGHH-1Yqapp_-u-CXeA": {"lat": 18.48753104400914, "lng": 73.89915074286148, "links": [{"pano_id": "sdoFJWe3TKJIQJuS0Deqzw", "heading": 184.49557, "description": "Flower Valley Ln"}, {"pano_id": "OBu3QtMFHt7MKltD4o7VoQ", "heading": 4.47947, "description": "Flower Valley Ln"}, {"pano_id": "mZz0g7Dil7yaVEfnXQ_WZQ", "heading": 184.53, "distance": 10.05, "virtual": true}]}, "BFh4y835POqoZscQF5z0IQ": {"lat": 18.48920819072692, "lng": 73.89927687929168, "links": [{"pano_id": "-nZoi-q3_OC91Raj141u8g", "heading": 185.12773, "description": "Flower Valley Ln"}, {"pano_id": "J-rOwrvIKszcxm28fa3SYA", "heading": 5.9558663, "description": "Flower Valley Ln"}]}, "sdoFJWe3TKJIQJuS0Deqzw": {"lat": 18.48745312909879, "lng": 73.89914428352571, "links": [{"pano_id": "mZz0g7Dil7yaVEfnXQ_WZQ", "heading": 184.77449, "description": "Flower Valley Ln"}, {"pano_id": "ccJNGHH-1Yqapp_-u-CXeA", "heading": 4.4955797, "description": "Flower Valley Ln"}, {"pano_id": "4ukZvR8N3HgWUDkHI6Z0pw", "heading": 184.51, "distance": 12.03, "virtual": true}]}, "J-rOwrvIKszcxm28fa3SYA": {"lat": 18.48929871631232, "lng": 73.89928683742743, "links": [{"pano_id": "BFh4y835POqoZscQF5z0IQ", "heading": 185.95587, "description": "Flower Valley Ln"}, {"pano_id": "n5hiQOgBdzqsaUBR26JV8A", "heading": 9.081663, "description": "Flower Valley Ln"}]}, "n5hiQOgBdzqsaUBR26JV8A": {"lat": 18.48941049438941, "lng": 73.89930567714232, "links": [{"pano_id": "J-rOwrvIKszcxm28fa3SYA", "heading": 189.08167, "description": "Flower Valley Ln"}, {"pano_id": "4M8ITEdJghAfMBeaRaGnfw", "heading": 29.950977, "description": "Flower Valley Ln"}]}, "mZz0g7Dil7yaVEfnXQ_WZQ": {"lat": 18.48744090510408, "lng": 73.89914320696975, "links": [{"pano_id": "4ukZvR8N3HgWUDkHI6Z0pw", "heading": 184.4773, "description": "Flower Valley Ln"}, {"pano_id": "sdoFJWe3TKJIQJuS0Deqzw", "heading": 4.774497, "description": "Flower Valley Ln"}, {"pano_id": "ccJNGHH-1Yqapp_-u-CXeA", "heading": 4.53, "distance": 10.05, "virtual": true}]}, "4M8ITEdJghAfMBeaRaGnfw": {"lat": 18.48948417582008, "lng": 73.89935044388616, "links": [{"pano_id": "n5hiQOgBdzqsaUBR26JV8A", "heading": 209.95097, "description": "Flower Valley Ln"}, {"pano_id": "-DHFG4XfyU0P6fn9YVA-DQ", "heading": 53.600056, "description": "Flower Valley Ln"}]}, "4ukZvR8N3HgWUDkHI6Z0pw": {"lat": 18.48734528512675, "lng": 73.89913531222572, "links": [{"pano_id": "mZz0g7Dil7yaVEfnXQ_WZQ", "heading": 4.477291, "description": "Flower Valley Ln"}, {"pano_id": "E2Qyunpqp3nGIKuFnC6mWA", "heading": 187.09413, "description": "Flower Valley Ln"}, {"pano_id": "sdoFJWe3TKJIQJuS0Deqzw", "heading": 4.51, "distance": 12.03, "virtual": true}]}, "-DHFG4XfyU0P6fn9YVA-DQ": {"lat": 18.48954439448015, "lng": 73.89943656825423, "links": [{"pano_id": "rcs9BeItR3t50i1ktfE63Q", "heading": 85.73886, "description": "Flower Valley Ln"}, {"pano_id": "4M8ITEdJghAfMBeaRaGnfw", "heading": 233.60005, "description": "Flower Valley Ln"}]}, "E2Qyunpqp3nGIKuFnC6mWA": {"lat": 18.48725299106597, "lng": 73.89912320097007, "links": [{"pano_id": "4ukZvR8N3HgWUDkHI6Z0pw", "heading": 7.0941367, "description": "Flower Valley Ln"}, {"pano_id": "ew64SOid9llndzM4QJLyCQ", "heading": 190.92653, "description": "Flower Valley Ln"}, {"pano_id": "a7IoqHGw0_Dw9r_6nGG0xw", "heading": 177.92, "distance": 14.36, "virtual": true}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 198.24, "distance": 14.96, "virtual": true}]}, "rcs9BeItR3t50i1ktfE63Q": {"lat": 18.48955131701718, "lng": 73.8995345346767, "links": [{"pano_id": "lZlvyfotOb3El_b4iXRo0Q", "heading": 91.425606, "description": "Flower Valley Ln"}, {"pano_id": "-DHFG4XfyU0P6fn9YVA-DQ", "heading": 265.73886, "description": "Flower Valley Ln"}]}, "ew64SOid9llndzM4QJLyCQ": {"lat": 18.48717630365515, "lng": 73.89910759090611, "links": [{"pano_id": "E2Qyunpqp3nGIKuFnC6mWA", "heading": 10.926531, "description": "Flower Valley Ln"}, {"pano_id": "a7IoqHGw0_Dw9r_6nGG0xw", "heading": 159.59048, "description": ""}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 208.12, "distance": 6.44, "virtual": true}, {"pano_id": "ZL19pAXfetWH6y_fzna95Q", "heading": 134.74, "distance": 15.37, "virtual": true}, {"pano_id": "rA2EA7yS9HbUDgsig4NJDw", "heading": 239.17, "distance": 14.12, "virtual": true}]}, "lZlvyfotOb3El_b4iXRo0Q": {"lat": 18.48954878036832, "lng": 73.89964201060377, "links": [{"pano_id": "3acczLGsBoPBdz_MoLEaRw", "heading": 91.3694, "description": "Flower Valley Ln"}, {"pano_id": "rcs9BeItR3t50i1ktfE63Q", "heading": 271.4256, "description": "Flower Valley Ln"}]}, "a7IoqHGw0_Dw9r_6nGG0xw": {"lat": 18.48712393914578, "lng": 73.89912813518542, "links": [{"pano_id": "ew64SOid9llndzM4QJLyCQ", "heading": 339.59048, "description": "Flower Valley Ln"}, {"pano_id": "ZL19pAXfetWH6y_fzna95Q", "heading": 119.71743, "description": ""}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 271.53583, "description": ""}, {"pano_id": "E2Qyunpqp3nGIKuFnC6mWA", "heading": 357.92, "distance": 14.36, "virtual": true}, {"pano_id": "rA2EA7yS9HbUDgsig4NJDw", "heading": 264.34, "distance": 14.37, "virtual": true}]}, "23YmkMYkwSLyl0I7d2Y9uQ": {"lat": 18.48712519381104, "lng": 73.89907879302622, "links": [{"pano_id": "rA2EA7yS9HbUDgsig4NJDw", "heading": 260.2916, "description": ""}, {"pano_id": "a7IoqHGw0_Dw9r_6nGG0xw", "heading": 91.53581, "description": ""}, {"pano_id": "E2Qyunpqp3nGIKuFnC6mWA", "heading": 18.24, "distance": 14.96, "virtual": true}, {"pano_id": "ew64SOid9llndzM4QJLyCQ", "heading": 28.12, "distance": 6.44, "virtual": true}, {"pano_id": "ZL19pAXfetWH6y_fzna95Q", "heading": 110.2, "distance": 14.87, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 236.88, "distance": 17.62, "virtual": true}]}, "3acczLGsBoPBdz_MoLEaRw": {"lat": 18.48954661427363, "lng": 73.89973755467955, "links": [{"pano_id": "lZlvyfotOb3El_b4iXRo0Q", "heading": 271.36942, "description": "Flower Valley Ln"}, {"pano_id": "gPIXV4pnBYvsuh9Gxaa1WA", "heading": 91.39436, "description": "Flower Valley Ln"}]}, "ZL19pAXfetWH6y_fzna95Q": {"lat": 18.48707901652291, "lng": 73.89921111969777, "links": [{"pano_id": "lUIAttu0CUo4LtkFnxpRaA", "heading": 128.43771, "description": ""}, {"pano_id": "a7IoqHGw0_Dw9r_6nGG0xw", "heading": 299.71744, "description": ""}, {"pano_id": "ew64SOid9llndzM4QJLyCQ", "heading": 314.74, "distance": 15.37, "virtual": true}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 290.2, "distance": 14.87, "virtual": true}]}, "gPIXV4pnBYvsuh9Gxaa1WA": {"lat": 18.48954441696614, "lng": 73.89983273985784, "links": [{"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 91.34379, "description": "Flower Valley Ln"}, {"pano_id": "3acczLGsBoPBdz_MoLEaRw", "heading": 271.39435, "description": "Flower Valley Ln"}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 94.52, "distance": 14.78, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 77.37, "distance": 15.11, "virtual": true}]}, "rA2EA7yS9HbUDgsig4NJDw": {"lat": 18.48711120511173, "lng": 73.89899257878722, "links": [{"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 266.37814, "description": ""}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 80.29161, "description": ""}, {"pano_id": "ew64SOid9llndzM4QJLyCQ", "heading": 59.17, "distance": 14.12, "virtual": true}, {"pano_id": "a7IoqHGw0_Dw9r_6nGG0xw", "heading": 84.34, "distance": 14.37, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 215.06, "distance": 9.86, "virtual": true}]}, "lUIAttu0CUo4LtkFnxpRaA": {"lat": 18.48702242852243, "lng": 73.89928629914982, "links": [{"pano_id": "ZL19pAXfetWH6y_fzna95Q", "heading": 308.4377, "description": ""}, {"pano_id": "88zQTTcSHmHrSo5MeXp_iQ", "heading": 123.36653, "description": ""}]}, "PS-SgHcBCbXKjUd7sPcFmw": {"lat": 18.48710489859842, "lng": 73.89888752475667, "links": [{"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 270.0084, "description": ""}, {"pano_id": "rA2EA7yS9HbUDgsig4NJDw", "heading": 86.37814, "description": ""}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 237.59059, "description": "Bapusaheb Kedari Marg"}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 225.95, "distance": 13.04, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 205.25, "distance": 16.04, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 204.98, "distance": 10.17, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 143.72, "distance": 9.15, "virtual": true}]}, "88zQTTcSHmHrSo5MeXp_iQ": {"lat": 18.48696987159393, "lng": 73.89937044986254, "links": [{"pano_id": "lUIAttu0CUo4LtkFnxpRaA", "heading": 303.36652, "description": ""}, {"pano_id": "INCui3kCDyeCMfw_6U6lQg", "heading": 125.22133, "description": ""}]}, "oeP4WgPfmQvStaFcihapJg": {"lat": 18.48954210379186, "lng": 73.899936716828, "links": [{"pano_id": "gPIXV4pnBYvsuh9Gxaa1WA", "heading": 271.34378, "description": "Flower Valley Ln"}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 103.5357, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 46.67, "distance": 5.19, "virtual": true}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 89.34, "distance": 9.77, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 161.97, "distance": 14.55, "virtual": true}, {"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 88.48, "distance": 13.55, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 86.88, "distance": 13.46, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 89.0, "distance": 13.47, "virtual": true}]}, "NH8d8lUzyORVOW2r8bSrmw": {"lat": 18.48953395179464, "lng": 73.89997242245293, "links": [{"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 0.12132568, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 176.7342, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 283.5357, "description": "Flower Valley Ln"}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 80.37241, "description": "Flower Valley Ln"}, {"pano_id": "gPIXV4pnBYvsuh9Gxaa1WA", "heading": 274.52, "distance": 14.78, "virtual": true}, {"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 82.62, "distance": 9.86, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 80.39, "distance": 9.82, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 83.29, "distance": 9.77, "virtual": true}]}, "CQfcCTTm7k1qyhXSRikGDw": {"lat": 18.48710490955201, "lng": 73.8988086669118, "links": [{"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 272.30878, "description": ""}, {"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 90.00839, "description": ""}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 165.24, "distance": 4.68, "virtual": true}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 186.66, "distance": 9.13, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 174.19, "distance": 14.58, "virtual": true}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 224.34, "distance": 12.14, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 156.44, "distance": 10.06, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 118.24, "distance": 15.58, "virtual": true}]}, "INCui3kCDyeCMfw_6U6lQg": {"lat": 18.48691851419694, "lng": 73.89944715437184, "links": [{"pano_id": "yFzUWz0d8ntXsVtTvBaWZg", "heading": 125.232414, "description": ""}, {"pano_id": "88zQTTcSHmHrSo5MeXp_iQ", "heading": 305.2213, "description": ""}]}, "HPxxGi7l6Mr73rC4euBe7Q": {"lat": 18.48706422513228, "lng": 73.89881997076866, "links": [{"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 57.59059, "description": ""}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 206.35033, "description": ""}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 345.24, "distance": 4.68, "virtual": true}, {"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 293.13, "distance": 12.58, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 178.37, "distance": 9.99, "virtual": true}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 246.74, "distance": 10.53, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 148.94, "distance": 5.48, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 102.81, "distance": 12.86, "virtual": true}]}, "coqqZLj4dk5kAY86xIbsuw": {"lat": 18.48957413140759, "lng": 73.89997251216555, "links": [{"pano_id": "xGW5t3UetnKHRsqp16gzgA", "heading": 0.81102, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 180.12132, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "gPIXV4pnBYvsuh9Gxaa1WA", "heading": 257.37, "distance": 15.11, "virtual": true}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 226.67, "distance": 5.19, "virtual": true}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 119.9, "distance": 6.92, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 177.6, "distance": 17.42, "virtual": true}, {"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 108.14, "distance": 10.28, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 106.31, "distance": 10.07, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 108.93, "distance": 10.25, "virtual": true}]}, "SL3hvPyicSV-ynmDP-3vCg": {"lat": 18.48710867266156, "lng": 73.89871025155901, "links": [{"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 92.30878, "description": ""}, {"pano_id": "frya6XGWrjKtvIXEb1w_Iw", "heading": 272.26495, "description": ""}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 113.13, "distance": 12.58, "virtual": true}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 135.52, "distance": 13.3, "virtual": true}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 168.26, "distance": 9.3, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 123.8, "distance": 17.33, "virtual": true}, {"pano_id": "VItsdVz6Gkslgw9MpvwRyQ", "heading": 223.13, "distance": 11.76, "virtual": true}]}, "AZ1bTslH9cq8r9EuW0eQLw": {"lat": 18.4895431165263, "lng": 73.9000293899566, "links": [{"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 86.24442, "description": "SRPF Rd"}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 260.3724, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 269.34, "distance": 9.77, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 299.9, "distance": 6.92, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 200.69, "distance": 14.91, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 80.42, "distance": 3.72, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 88.09, "distance": 3.7, "virtual": true}, {"pano_id": "inwqzWeJ7Un-gaY2NnnR2Q", "heading": 88.06, "distance": 12.22, "virtual": true}]}, "KllKbPrHhjuKpnRmn7xnrA": {"lat": 18.48702334304724, "lng": 73.8987986190385, "links": [{"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 154.99834, "description": "Bapusaheb Kedari Marg"}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 91.69974, "description": ""}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 272.9723, "description": ""}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 26.350323, "description": "Bapusaheb Kedari Marg"}, {"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 45.95, "distance": 13.04, "virtual": true}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 6.66, "distance": 9.13, "virtual": true}, {"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 315.52, "distance": 13.3, "virtual": true}, {"pano_id": "VItsdVz6Gkslgw9MpvwRyQ", "heading": 272.98, "distance": 17.38, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 83.46, "distance": 14.88, "virtual": true}, {"pano_id": "VivHEF-RZe99ed2r2myeZg", "heading": 168.57, "distance": 16.37, "virtual": true}]}, "yFzUWz0d8ntXsVtTvBaWZg": {"lat": 18.48686575360421, "lng": 73.89952592224594, "links": [{"pano_id": "HX7bSQnt3f0Pt2OE7qQNmg", "heading": 128.03923, "description": ""}, {"pano_id": "INCui3kCDyeCMfw_6U6lQg", "heading": 305.23242, "description": ""}]}, "O3Ddq1DUISMYFHtCMZ9HSw": {"lat": 18.48941764784615, "lng": 73.89997942003696, "links": [{"pano_id": "SjDhsD2qUl3zp-WrY8fHyQ", "heading": 176.72754, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 356.7342, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 341.97, "distance": 14.55, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 357.6, "distance": 17.42, "virtual": true}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 20.69, "distance": 14.91, "virtual": true}, {"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 32.5, "distance": 16.84, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 31.53, "distance": 17.1, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 32.51, "distance": 16.69, "virtual": true}]}, "HX7bSQnt3f0Pt2OE7qQNmg": {"lat": 18.48680830521303, "lng": 73.89960334439643, "links": [{"pano_id": "yFzUWz0d8ntXsVtTvBaWZg", "heading": 308.03925, "description": ""}, {"pano_id": "n0su1jJLQOf_FlAM47wA1Q", "heading": 130.08894, "description": ""}]}, "KaVQWpcyCZaGkXB9GsZH7A": {"lat": 18.48697444685437, "lng": 73.89882266216304, "links": [{"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 334.99835, "description": ""}, {"pano_id": "VivHEF-RZe99ed2r2myeZg", "heading": 176.17342, "description": "Bapusaheb Kedari Marg"}, {"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 25.25, "distance": 16.04, "virtual": true}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 354.19, "distance": 14.58, "virtual": true}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 358.37, "distance": 9.99, "virtual": true}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 300.3, "distance": 11.54, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 25.71, "distance": 5.87, "virtual": true}, {"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 59.79, "distance": 14.18, "virtual": true}]}, "frya6XGWrjKtvIXEb1w_Iw": {"lat": 18.48711225319458, "lng": 73.89861479669358, "links": [{"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 92.26494, "description": ""}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 128.47, "distance": 15.27, "virtual": true}, {"pano_id": "VItsdVz6Gkslgw9MpvwRyQ", "heading": 167.3, "distance": 9.21, "virtual": true}]}, "xGW5t3UetnKHRsqp16gzgA": {"lat": 18.48970034837489, "lng": 73.89997439613052, "links": [{"pano_id": "drGfcSOmVi8zK_robMqOfw", "heading": 0.8200416, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 180.81102, "description": "Vitthal Rao Shivarkar Rd"}]}, "PJPpnodrs-gbDXVEU7G2_A": {"lat": 18.48702681100009, "lng": 73.89872819419767, "links": [{"pano_id": "VItsdVz6Gkslgw9MpvwRyQ", "heading": 272.9837, "description": ""}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 92.97229, "description": ""}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 44.34, "distance": 12.14, "virtual": true}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 66.74, "distance": 10.53, "virtual": true}, {"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 348.26, "distance": 9.3, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 120.3, "distance": 11.54, "virtual": true}, {"pano_id": "frya6XGWrjKtvIXEb1w_Iw", "heading": 308.47, "distance": 15.27, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 92.46, "distance": 12.52, "virtual": true}]}, "h8CUVyTiUFMxEa5iF4oyqQ": {"lat": 18.48702198721385, "lng": 73.89884679499777, "links": [{"pano_id": "nlNLmhHKLCHJ_Re9Ktvt_A", "heading": 79.23037, "description": ""}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 271.69974, "description": ""}, {"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 24.98, "distance": 10.17, "virtual": true}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 336.44, "distance": 10.06, "virtual": true}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 328.94, "distance": 5.48, "virtual": true}, {"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 303.8, "distance": 17.33, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 205.71, "distance": 5.87, "virtual": true}, {"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 272.46, "distance": 12.52, "virtual": true}, {"pano_id": "VivHEF-RZe99ed2r2myeZg", "heading": 186.59, "distance": 16.0, "virtual": true}]}, "CdnLrMwhkB8Y3k_rsTH1-w": {"lat": 18.48954534488985, "lng": 73.90006518527716, "links": [{"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 266.24442, "description": "Flower Valley Ln"}, {"pano_id": "inwqzWeJ7Un-gaY2NnnR2Q", "heading": 88.87011, "description": "SRPF Rd"}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 211.35313, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 344.35806, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 268.48, "distance": 13.55, "virtual": true}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 262.62, "distance": 9.86, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 288.14, "distance": 10.28, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 212.5, "distance": 16.84, "virtual": true}]}, "SjDhsD2qUl3zp-WrY8fHyQ": {"lat": 18.48932836586334, "lng": 73.89998480279372, "links": [{"pano_id": "5_zVGYreOq0WzNQOUiuYdg", "heading": 176.77425, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 356.72754, "description": "Vitthal Rao Shivarkar Rd"}]}, "VItsdVz6Gkslgw9MpvwRyQ": {"lat": 18.48703146752663, "lng": 73.89863399532628, "links": [{"pano_id": "PJPpnodrs-gbDXVEU7G2_A", "heading": 92.98371, "description": ""}, {"pano_id": "SL3hvPyicSV-ynmDP-3vCg", "heading": 43.13, "distance": 11.76, "virtual": true}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 92.98, "distance": 17.38, "virtual": true}, {"pano_id": "frya6XGWrjKtvIXEb1w_Iw", "heading": 347.3, "distance": 9.21, "virtual": true}]}, "muM-kTlX2vbPaBcj3oaA7w": {"lat": 18.4895486874536, "lng": 73.90006419843884, "links": [{"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 164.35805, "description": "SRPF Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 266.88, "distance": 13.46, "virtual": true}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 260.39, "distance": 9.82, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 286.31, "distance": 10.07, "virtual": true}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 260.42, "distance": 3.72, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 211.53, "distance": 17.1, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 176.72, "distance": 0.5, "virtual": true}, {"pano_id": "inwqzWeJ7Un-gaY2NnnR2Q", "heading": 91.38, "distance": 8.55, "virtual": true}]}, "SZLXIpYN6S26A49MS1ipew": {"lat": 18.48954422774584, "lng": 73.90006446757657, "links": [{"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 31.353134, "description": "SRPF Rd"}, {"pano_id": "oeP4WgPfmQvStaFcihapJg", "heading": 269.0, "distance": 13.47, "virtual": true}, {"pano_id": "NH8d8lUzyORVOW2r8bSrmw", "heading": 263.29, "distance": 9.77, "virtual": true}, {"pano_id": "coqqZLj4dk5kAY86xIbsuw", "heading": 288.93, "distance": 10.25, "virtual": true}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 268.09, "distance": 3.7, "virtual": true}, {"pano_id": "O3Ddq1DUISMYFHtCMZ9HSw", "heading": 212.51, "distance": 16.69, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 356.72, "distance": 0.5, "virtual": true}, {"pano_id": "inwqzWeJ7Un-gaY2NnnR2Q", "heading": 88.04, "distance": 8.52, "virtual": true}]}, "inwqzWeJ7Un-gaY2NnnR2Q": {"lat": 18.48954684171534, "lng": 73.90014520887733, "links": [{"pano_id": "CdnLrMwhkB8Y3k_rsTH1-w", "heading": 268.87012, "description": "SRPF Rd"}, {"pano_id": "k1OE8qU0_NexAZDF3RImag", "heading": 89.382835, "description": "SRPF Rd"}, {"pano_id": "AZ1bTslH9cq8r9EuW0eQLw", "heading": 268.06, "distance": 12.22, "virtual": true}, {"pano_id": "muM-kTlX2vbPaBcj3oaA7w", "heading": 271.38, "distance": 8.55, "virtual": true}, {"pano_id": "SZLXIpYN6S26A49MS1ipew", "heading": 268.04, "distance": 8.52, "virtual": true}]}, "5_zVGYreOq0WzNQOUiuYdg": {"lat": 18.48923627878555, "lng": 73.89999027526295, "links": [{"pano_id": "SjDhsD2qUl3zp-WrY8fHyQ", "heading": 356.77423, "description": "Vitthal Rao Shivarkar Rd"}]}, "drGfcSOmVi8zK_robMqOfw": {"lat": 18.48978951133062, "lng": 73.89997574181974, "links": [{"pano_id": "xGW5t3UetnKHRsqp16gzgA", "heading": 180.82004, "description": "Vitthal Rao Shivarkar Rd"}, {"pano_id": "oP0exA1bRMo9pd6NGOzr2Q", "heading": 0.7871739, "description": "Vitthal Rao Shivarkar Rd"}]}, "n0su1jJLQOf_FlAM47wA1Q": {"lat": 18.48674828871475, "lng": 73.8996785236974, "links": [{"pano_id": "HX7bSQnt3f0Pt2OE7qQNmg", "heading": 310.08893, "description": ""}, {"pano_id": "zkdnhy8y8LkOS3CKGVtGDA", "heading": 134.77197, "description": ""}]}, "nlNLmhHKLCHJ_Re9Ktvt_A": {"lat": 18.48703859180751, "lng": 73.89893884065228, "links": [{"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 259.23038, "description": ""}, {"pano_id": "23YmkMYkwSLyl0I7d2Y9uQ", "heading": 56.88, "distance": 17.62, "virtual": true}, {"pano_id": "rA2EA7yS9HbUDgsig4NJDw", "heading": 35.06, "distance": 9.86, "virtual": true}, {"pano_id": "PS-SgHcBCbXKjUd7sPcFmw", "heading": 323.72, "distance": 9.15, "virtual": true}, {"pano_id": "CQfcCTTm7k1qyhXSRikGDw", "heading": 298.24, "distance": 15.58, "virtual": true}, {"pano_id": "HPxxGi7l6Mr73rC4euBe7Q", "heading": 282.81, "distance": 12.86, "virtual": true}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 263.46, "distance": 14.88, "virtual": true}, {"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 239.79, "distance": 14.18, "virtual": true}]}, "zkdnhy8y8LkOS3CKGVtGDA": {"lat": 18.48668261868616, "lng": 73.89974832020629, "links": [{"pano_id": "n0su1jJLQOf_FlAM47wA1Q", "heading": 314.77197, "description": ""}]}, "k1OE8qU0_NexAZDF3RImag": {"lat": 18.48954780312637, "lng": 73.90023931730684, "links": [{"pano_id": "inwqzWeJ7Un-gaY2NnnR2Q", "heading": 269.38284, "description": "SRPF Rd"}]}, "VivHEF-RZe99ed2r2myeZg": {"lat": 18.48687904169433, "lng": 73.89882939064887, "links": [{"pano_id": "KaVQWpcyCZaGkXB9GsZH7A", "heading": 356.1734, "description": "Bapusaheb Kedari Marg"}, {"pano_id": "KllKbPrHhjuKpnRmn7xnrA", "heading": 348.57, "distance": 16.37, "virtual": true}, {"pano_id": "h8CUVyTiUFMxEa5iF4oyqQ", "heading": 6.59, "distance": 16.0, "virtual": true}]}, "oP0exA1bRMo9pd6NGOzr2Q": {"lat": 18.48987620522817, "lng": 73.89997699779637, "links": [{"pano_id": "drGfcSOmVi8zK_robMqOfw", "heading": 180.78717, "description": "Vitthal Rao Shivarkar Rd"}]}};
+        const targetPanos = ["u2TF4bVicwXNszI7jgKTvg", "xGW5t3UetnKHRsqp16gzgA"];
+        const spawnPoints = ["J-rOwrvIKszcxm28fa3SYA", "frya6XGWrjKtvIXEb1w_Iw", "VivHEF-RZe99ed2r2myeZg", "yFzUWz0d8ntXsVtTvBaWZg", "k1OE8qU0_NexAZDF3RImag", "drGfcSOmVi8zK_robMqOfw", "5_zVGYreOq0WzNQOUiuYdg", "zkdnhy8y8LkOS3CKGVtGDA", "oP0exA1bRMo9pd6NGOzr2Q", "CdnLrMwhkB8Y3k_rsTH1-w"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

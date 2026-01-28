@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_transit_20260125_034029</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_transit_20260125_034029</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"PZ9QraVx9AkwHZrfzSpSEQ": {"lat": 50.84832926816453, "lng": 4.349266830598812, "links": [{"pano_id": "lSNvF7R87YGmf0sIvyzkWg", "heading": 213.26709, "description": "Pl. de la Bourse"}, {"pano_id": "60n3np6gij6iS2UzCFQcag", "heading": 354.15488, "description": "Auguste Ortsstraat"}]}, "lSNvF7R87YGmf0sIvyzkWg": {"lat": 50.84825553113973, "lng": 4.349190211313059, "links": [{"pano_id": "PZ9QraVx9AkwHZrfzSpSEQ", "heading": 33.267094, "description": "Pl. de la Bourse"}, {"pano_id": "ykwo-JpRzB4E8eb4SsklRg", "heading": 248.98117, "description": "Rue Jules Van Praet"}]}, "60n3np6gij6iS2UzCFQcag": {"lat": 50.84844497144817, "lng": 4.349248070262762, "links": [{"pano_id": "PZ9QraVx9AkwHZrfzSpSEQ", "heading": 174.15486, "description": "Pl. de la Bourse"}, {"pano_id": "gmiT6xwNdIPuIj6Qji52DQ", "heading": 124.84811, "description": "Auguste Ortsstraat"}, {"pano_id": "NfgwrWOQxWdBatREUnFhYA", "heading": 303.6073, "description": "Auguste Ortsstraat"}, {"pano_id": "dMsJszTB8fk4PZm9gWBcJQ", "heading": 62.3319, "description": "Pl. de la Bourse"}]}, "gmiT6xwNdIPuIj6Qji52DQ": {"lat": 50.84829864225767, "lng": 4.349580936483343, "links": [{"pano_id": "Sziqj4J3SR9yfTxvhqx4Ng", "heading": 198.18132, "description": "Anspachlaan"}, {"pano_id": "60n3np6gij6iS2UzCFQcag", "heading": 304.8481, "description": "Auguste Ortsstraat"}, {"pano_id": "bP_LZYmXSzmgo-zucCyl9Q", "heading": 81.75, "distance": 1.49, "virtual": true}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 210.42, "distance": 14.5, "virtual": true}, {"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 40.01, "distance": 12.06, "virtual": true}]}, "dMsJszTB8fk4PZm9gWBcJQ": {"lat": 50.84851446057289, "lng": 4.349457988091342, "links": [{"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 50.99331, "description": "Pl. de la Bourse"}, {"pano_id": "60n3np6gij6iS2UzCFQcag", "heading": 242.33191, "description": "Auguste Ortsstraat"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 61.24, "distance": 17.48, "virtual": true}]}, "ykwo-JpRzB4E8eb4SsklRg": {"lat": 50.84819919914682, "lng": 4.348958011046401, "links": [{"pano_id": "1EGoyAeFgMfWpexnYxZhBg", "heading": 114.36835, "description": "Rue Jules Van Praet"}, {"pano_id": "6tRCc0r_P1pVvQP7OS5AQw", "heading": 281.52716, "description": "Rue Jules Van Praet"}, {"pano_id": "lSNvF7R87YGmf0sIvyzkWg", "heading": 68.98117, "description": "Pl. de la Bourse"}]}, "NfgwrWOQxWdBatREUnFhYA": {"lat": 50.84849454568702, "lng": 4.349129923688539, "links": [{"pano_id": "drReCZ1nSe0jgCzUnIJb-A", "heading": 304.84512, "description": "Auguste Ortsstraat"}, {"pano_id": "60n3np6gij6iS2UzCFQcag", "heading": 123.6073, "description": "Auguste Ortsstraat"}]}, "1EGoyAeFgMfWpexnYxZhBg": {"lat": 50.84810373742138, "lng": 4.349291810619392, "links": [{"pano_id": "3QgtXWAvCmXpEbqzjS6NWw", "heading": 84.15992, "description": "Anspachlaan"}, {"pano_id": "ykwo-JpRzB4E8eb4SsklRg", "heading": 294.36835, "description": "Rue Jules Van Praet"}, {"pano_id": "u21oNC_RIf1cr6zcuyye0w", "heading": 123.312355, "description": "Henri Mausstraat"}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 54.72, "distance": 15.87, "virtual": true}, {"pano_id": "DkAb6LrnqafezyG5oFZ9VA", "heading": 122.75, "distance": 16.92, "virtual": true}]}, "drReCZ1nSe0jgCzUnIJb-A": {"lat": 50.84854503126118, "lng": 4.349015067103462, "links": [{"pano_id": "NfgwrWOQxWdBatREUnFhYA", "heading": 124.84511, "description": "Auguste Ortsstraat"}, {"pano_id": "kRCWNIFe6O_-_thswJctFA", "heading": 305.08832, "description": "Auguste Ortsstraat"}]}, "Sziqj4J3SR9yfTxvhqx4Ng": {"lat": 50.84826595125467, "lng": 4.349563931650207, "links": [{"pano_id": "bP_LZYmXSzmgo-zucCyl9Q", "heading": 34.733505, "description": "Anspachlaan"}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 214.72781, "description": "Anspachlaan"}, {"pano_id": "gmiT6xwNdIPuIj6Qji52DQ", "heading": 18.181318, "description": "Auguste Ortsstraat"}, {"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 34.8, "distance": 15.67, "virtual": true}]}, "QROdbQEj9oF7IC-v3WVVig": {"lat": 50.8485696909258, "lng": 4.349565986961561, "links": [{"pano_id": "dMsJszTB8fk4PZm9gWBcJQ", "heading": 230.9933, "description": "Pl. de la Bourse"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 73.668144, "description": "Pl. de la Bourse"}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 61.88, "distance": 8.9, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 76.46, "distance": 9.22, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 59.67, "distance": 8.43, "virtual": true}, {"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 5.19, "distance": 12.97, "virtual": true}]}, "6tRCc0r_P1pVvQP7OS5AQw": {"lat": 50.84822202387054, "lng": 4.348780755032146, "links": [{"pano_id": "Kb8mSsaY310ROIPCB5e4jA", "heading": 284.50894, "description": "Rue Jules Van Praet"}, {"pano_id": "ykwo-JpRzB4E8eb4SsklRg", "heading": 101.527176, "description": "Rue Jules Van Praet"}]}, "aDZye8irXktJeYiB7jQkVg": {"lat": 50.84859008246541, "lng": 4.349676207181566, "links": [{"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 253.66814, "description": "Pl. de la Bourse"}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 3.4282355, "description": "Pl. de la Bourse"}, {"pano_id": "dMsJszTB8fk4PZm9gWBcJQ", "heading": 241.24, "distance": 17.48, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 62.58, "distance": 10.14, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 95.02, "distance": 1.23, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 346.95, "distance": 2.04, "virtual": true}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 154.65, "distance": 16.27, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 132.9, "distance": 14.04, "virtual": true}, {"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 328.34, "distance": 12.51, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 101.85, "distance": 15.27, "virtual": true}]}, "bP_LZYmXSzmgo-zucCyl9Q": {"lat": 50.84830056421648, "lng": 4.349601939285869, "links": [{"pano_id": "Sziqj4J3SR9yfTxvhqx4Ng", "heading": 214.7335, "description": "Anspachlaan"}, {"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 34.829384, "description": "Anspachlaan"}, {"pano_id": "gmiT6xwNdIPuIj6Qji52DQ", "heading": 261.75, "distance": 1.49, "virtual": true}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 214.73, "distance": 15.48, "virtual": true}]}, "bA3_KG9W6DqLzfqx0G_1lw": {"lat": 50.84818618034787, "lng": 4.349476355903927, "links": [{"pano_id": "Sziqj4J3SR9yfTxvhqx4Ng", "heading": 34.72781, "description": "Anspachlaan"}, {"pano_id": "3QgtXWAvCmXpEbqzjS6NWw", "heading": 211.44, "description": "Anspachlaan"}, {"pano_id": "gmiT6xwNdIPuIj6Qji52DQ", "heading": 30.42, "distance": 14.5, "virtual": true}, {"pano_id": "1EGoyAeFgMfWpexnYxZhBg", "heading": 234.72, "distance": 15.87, "virtual": true}, {"pano_id": "bP_LZYmXSzmgo-zucCyl9Q", "heading": 34.73, "distance": 15.48, "virtual": true}, {"pano_id": "u21oNC_RIf1cr6zcuyye0w", "heading": 188.71, "distance": 16.25, "virtual": true}]}, "u21oNC_RIf1cr6zcuyye0w": {"lat": 50.84804170179487, "lng": 4.349441318063486, "links": [{"pano_id": "1EGoyAeFgMfWpexnYxZhBg", "heading": 303.31235, "description": "Rue Jules Van Praet"}, {"pano_id": "DkAb6LrnqafezyG5oFZ9VA", "heading": 121.13859, "description": "Henri Mausstraat"}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 8.71, "distance": 16.25, "virtual": true}, {"pano_id": "3QgtXWAvCmXpEbqzjS6NWw", "heading": 340.98, "distance": 8.14, "virtual": true}, {"pano_id": "Hhd01EXzUQNMQdNVrtkbdQ", "heading": 121.01, "distance": 14.39, "virtual": true}]}, "kRCWNIFe6O_-_thswJctFA": {"lat": 50.84859677707207, "lng": 4.348898402496964, "links": [{"pano_id": "drReCZ1nSe0jgCzUnIJb-A", "heading": 125.08831, "description": "Auguste Ortsstraat"}, {"pano_id": "EroAdKfGQUYkwVt2Hnjaug", "heading": 303.76404, "description": "Auguste Ortsstraat"}]}, "Kb8mSsaY310ROIPCB5e4jA": {"lat": 50.84824035887095, "lng": 4.34866853902744, "links": [{"pano_id": "ZUWDIO3ui2Gnkh7V0neQ3Q", "heading": 282.39474, "description": "Rue Jules Van Praet"}, {"pano_id": "6tRCc0r_P1pVvQP7OS5AQw", "heading": 104.50894, "description": "Rue Jules Van Praet"}]}, "3QgtXWAvCmXpEbqzjS6NWw": {"lat": 50.84811095099374, "lng": 4.349403511531438, "links": [{"pano_id": "1EGoyAeFgMfWpexnYxZhBg", "heading": 264.1599, "description": "Rue Jules Van Praet"}, {"pano_id": "bA3_KG9W6DqLzfqx0G_1lw", "heading": 31.440006, "description": "Anspachlaan"}, {"pano_id": "u21oNC_RIf1cr6zcuyye0w", "heading": 160.98, "distance": 8.14, "virtual": true}, {"pano_id": "DkAb6LrnqafezyG5oFZ9VA", "heading": 147.32, "distance": 11.83, "virtual": true}]}, "GNQ5F2nLP6wTBRIB9nm6DQ": {"lat": 50.84838169845997, "lng": 4.349691349659849, "links": [{"pano_id": "bP_LZYmXSzmgo-zucCyl9Q", "heading": 214.82938, "description": "Anspachlaan"}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 34.869633, "description": "Anspachlaan"}, {"pano_id": "gmiT6xwNdIPuIj6Qji52DQ", "heading": 220.01, "distance": 12.06, "virtual": true}, {"pano_id": "Sziqj4J3SR9yfTxvhqx4Ng", "heading": 214.8, "distance": 15.67, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 34.1, "distance": 16.44, "virtual": true}]}, "ZUWDIO3ui2Gnkh7V0neQ3Q": {"lat": 50.84826166405771, "lng": 4.34851499522445, "links": [{"pano_id": "RfPtdCKEoGDTfY78GNqbYg", "heading": 275.02167, "description": "Rue Jules Van Praet"}, {"pano_id": "Kb8mSsaY310ROIPCB5e4jA", "heading": 102.394745, "description": "Rue Jules Van Praet"}]}, "sF7HPgWJMrgusYNGh1TtFA": {"lat": 50.84860743892317, "lng": 4.349677853988386, "links": [{"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 151.35713, "description": "Rue Paul Devaux"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 183.42824, "description": "Pl. de la Bourse"}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 72.86101, "description": "Pl. de la Bourse"}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 275.99295, "description": "Rue Paul Devaux"}, {"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 241.88, "distance": 8.9, "virtual": true}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 157.62, "distance": 17.99, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 138.49, "distance": 15.34, "virtual": true}, {"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 322.53, "distance": 10.98, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 108.86, "distance": 15.67, "virtual": true}]}, "DkAb6LrnqafezyG5oFZ9VA": {"lat": 50.84802143027964, "lng": 4.349494461009104, "links": [{"pano_id": "Hhd01EXzUQNMQdNVrtkbdQ", "heading": 120.94879, "description": "Henri Mausstraat"}, {"pano_id": "u21oNC_RIf1cr6zcuyye0w", "heading": 301.13858, "description": "Henri Mausstraat"}, {"pano_id": "1EGoyAeFgMfWpexnYxZhBg", "heading": 302.75, "distance": 16.92, "virtual": true}, {"pano_id": "3QgtXWAvCmXpEbqzjS6NWw", "heading": 327.32, "distance": 11.83, "virtual": true}]}, "EroAdKfGQUYkwVt2Hnjaug": {"lat": 50.84864719480253, "lng": 4.348778955377536, "links": [{"pano_id": "8p-Cfe7IcffSgFWcgZj_pQ", "heading": 303.7626, "description": "Auguste Ortsstraat"}, {"pano_id": "kRCWNIFe6O_-_thswJctFA", "heading": 123.76402, "description": "Auguste Ortsstraat"}]}, "b9y0PdVO6z-5KfSU4RrFJQ": {"lat": 50.84863207457863, "lng": 4.349804381668961, "links": [{"pano_id": "r8aS4Ek3x6ZGSDingm4YnA", "heading": 43.995056, "description": "Pl. de la Bourse"}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 252.86101, "description": "Pl. de la Bourse"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 242.58, "distance": 10.14, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 238.42, "distance": 9.12, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 254.19, "distance": 9.83, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 174.84, "distance": 14.28, "virtual": true}, {"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 291.01, "distance": 16.67, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 142.7, "distance": 9.81, "virtual": true}, {"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 86.9, "distance": 11.36, "virtual": true}]}, "vBueBNN-sBiBMSBBkb6zIw": {"lat": 50.84858911258464, "lng": 4.349693707781876, "links": [{"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 331.35715, "description": "Pl. de la Bourse"}, {"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 256.46, "distance": 9.22, "virtual": true}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 275.02, "distance": 1.23, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 58.42, "distance": 9.12, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 321.15, "distance": 2.69, "virtual": true}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 158.54, "distance": 15.68, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 136.22, "distance": 13.09, "virtual": true}, {"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 324.07, "distance": 13.28, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 102.45, "distance": 14.05, "virtual": true}]}, "Hhd01EXzUQNMQdNVrtkbdQ": {"lat": 50.84797503235026, "lng": 4.349617011141225, "links": [{"pano_id": "SbMabcHmVa3PXTKaV0SyRA", "heading": 120.489136, "description": "Henri Mausstraat"}, {"pano_id": "DkAb6LrnqafezyG5oFZ9VA", "heading": 300.9488, "description": "Henri Mausstraat"}, {"pano_id": "u21oNC_RIf1cr6zcuyye0w", "heading": 301.01, "distance": 14.39, "virtual": true}]}, "zDRTkbpXycwWeioSYSdozQ": {"lat": 50.848607983508, "lng": 4.34966963771827, "links": [{"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 324.8075, "description": "Rue Paul Devaux"}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 95.99295, "description": "Pl. de la Bourse"}, {"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 239.67, "distance": 8.43, "virtual": true}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 166.95, "distance": 2.04, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 74.19, "distance": 9.83, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 141.15, "distance": 2.69, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 137.06, "distance": 15.77, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 108.41, "distance": 16.24, "virtual": true}]}, "UTQARTRl2Ckt8s9l5Pq57w": {"lat": 50.84845786239521, "lng": 4.349775408700654, "links": [{"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 214.86963, "description": "Anspachlaan"}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 32.814274, "description": "Anspachlaan"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 334.65, "distance": 16.27, "virtual": true}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 337.62, "distance": 17.99, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 338.54, "distance": 15.68, "virtual": true}, {"pano_id": "4aHBOh-Jnu5TQiNcne2yXQ", "heading": 89.41, "distance": 9.94, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 34.61, "distance": 14.05, "virtual": true}]}, "8p-Cfe7IcffSgFWcgZj_pQ": {"lat": 50.84869900834552, "lng": 4.348656194719648, "links": [{"pano_id": "fTwkTOrLp19SsYfc-9LAbQ", "heading": 299.59784, "description": "Auguste Ortsstraat"}, {"pano_id": "EroAdKfGQUYkwVt2Hnjaug", "heading": 123.76262, "description": "Auguste Ortsstraat"}]}, "RfPtdCKEoGDTfY78GNqbYg": {"lat": 50.84827133604759, "lng": 4.348340658626124, "links": [{"pano_id": "ZUWDIO3ui2Gnkh7V0neQ3Q", "heading": 95.02167, "description": "Rue Jules Van Praet"}, {"pano_id": "c9NsHMArSvIvbpbHFD5eHQ", "heading": 271.58093, "description": "Rue Jules Van Praet"}]}, "SbMabcHmVa3PXTKaV0SyRA": {"lat": 50.84792527047519, "lng": 4.34975086946177, "links": [{"pano_id": "Hhd01EXzUQNMQdNVrtkbdQ", "heading": 300.48914, "description": "Henri Mausstraat"}, {"pano_id": "myW-fmmbwedRuc_qVVmR4g", "heading": 120.43384, "description": "Henri Mausstraat"}]}, "C7hWi-lwkdBGPVjgZ9SfIw": {"lat": 50.8485041402331, "lng": 4.349822671306939, "links": [{"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 212.81427, "description": "Anspachlaan"}, {"pano_id": "4aHBOh-Jnu5TQiNcne2yXQ", "heading": 127.27304, "description": "Rue de la Bourse"}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 35.9884, "description": "Anspachlaan"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 312.9, "distance": 14.04, "virtual": true}, {"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 214.1, "distance": 16.44, "virtual": true}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 318.49, "distance": 15.34, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 354.84, "distance": 14.28, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 316.22, "distance": 13.09, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 317.06, "distance": 15.77, "virtual": true}, {"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 34.13, "distance": 17.93, "virtual": true}]}, "ns_i4rxNHHZZaIFfn-gc6A": {"lat": 50.84868582370833, "lng": 4.349582692104351, "links": [{"pano_id": "WxL_HXc3aYDL38WPzbdZMg", "heading": 324.1619, "description": "Rue Paul Devaux"}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 144.80751, "description": "Rue Paul Devaux"}, {"pano_id": "QROdbQEj9oF7IC-v3WVVig", "heading": 185.19, "distance": 12.97, "virtual": true}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 148.34, "distance": 12.51, "virtual": true}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 142.53, "distance": 10.98, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 111.01, "distance": 16.67, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 144.07, "distance": 13.28, "virtual": true}]}, "fTwkTOrLp19SsYfc-9LAbQ": {"lat": 50.84874169547347, "lng": 4.348537168673918, "links": [{"pano_id": "4ieTDY7X-s4n1ubQvFHMvQ", "heading": 299.13794, "description": "Auguste Ortsstraat"}, {"pano_id": "8p-Cfe7IcffSgFWcgZj_pQ", "heading": 119.597855, "description": "Auguste Ortsstraat"}]}, "c9NsHMArSvIvbpbHFD5eHQ": {"lat": 50.84827336553171, "lng": 4.348224193543051, "links": [{"pano_id": "RfPtdCKEoGDTfY78GNqbYg", "heading": 91.58093, "description": "Rue Jules Van Praet"}, {"pano_id": "siUyoE2u89VgmWHNw-DbBw", "heading": 269.0448, "description": "Rue Jules Van Praet"}]}, "krRNwvX4-lZp6CFCIryC_g": {"lat": 50.84850856691295, "lng": 4.349804181153023, "links": [{"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 110.76599, "description": "Anspachlaan"}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 319.10855, "description": "Rue Paul Devaux"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 315.25, "distance": 12.76, "virtual": true}, {"pano_id": "GNQ5F2nLP6wTBRIB9nm6DQ", "heading": 209.32, "distance": 16.18, "virtual": true}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 321.11, "distance": 14.13, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 0.06, "distance": 13.73, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 319.49, "distance": 14.54, "virtual": true}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 199.71, "distance": 5.99, "virtual": true}, {"pano_id": "4aHBOh-Jnu5TQiNcne2yXQ", "heading": 124.93, "distance": 9.67, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 45.16, "distance": 8.41, "virtual": true}]}, "r8aS4Ek3x6ZGSDingm4YnA": {"lat": 50.84869784110494, "lng": 4.349904954936328, "links": [{"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 36.121098, "description": "Pl. de la Bourse"}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 223.99506, "description": "Pl. de la Bourse"}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 184.22, "distance": 15.16, "virtual": true}, {"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 147.43, "distance": 7.95, "virtual": true}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 80.44, "distance": 9.74, "virtual": true}]}, "myW-fmmbwedRuc_qVVmR4g": {"lat": 50.84787859053209, "lng": 4.349876714954402, "links": [{"pano_id": "SbMabcHmVa3PXTKaV0SyRA", "heading": 300.43384, "description": "Henri Mausstraat"}, {"pano_id": "QlnScfcwy-mitavZtH-YMA", "heading": 121.800476, "description": "Henri Mausstraat"}]}, "4ieTDY7X-s4n1ubQvFHMvQ": {"lat": 50.84879248118841, "lng": 4.348392876180953, "links": [{"pano_id": "fTwkTOrLp19SsYfc-9LAbQ", "heading": 119.13795, "description": "Auguste Ortsstraat"}, {"pano_id": "iREBcixrkp0Z8wWpli0V8Q", "heading": 299.10538, "description": "Auguste Ortsstraat"}]}, "4aHBOh-Jnu5TQiNcne2yXQ": {"lat": 50.84845879087928, "lng": 4.349917049192744, "links": [{"pano_id": "kETqFjOTfL72lf2pohP9MQ", "heading": 122.297615, "description": "Rue de la Bourse"}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 307.27304, "description": "Anspachlaan"}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 269.41, "distance": 9.94, "virtual": true}, {"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 350.28, "distance": 11.63, "virtual": true}]}, "6rNKYlhvHy3M9XLCdJSRJQ": {"lat": 50.84876822074926, "lng": 4.349986304119587, "links": [{"pano_id": "m4FHT7OZonr8iD3wI8ueTg", "heading": 69.91599, "description": "Pl. de la Bourse"}, {"pano_id": "r8aS4Ek3x6ZGSDingm4YnA", "heading": 216.1211, "description": "Pl. de la Bourse"}, {"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 185.63, "distance": 14.6, "virtual": true}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 147.91, "distance": 7.33, "virtual": true}, {"pano_id": "IObtTZxxDcETII7PInD5iA", "heading": 68.27, "distance": 11.44, "virtual": true}, {"pano_id": "DOIq0Eva2XkwG8eQZZHlWg", "heading": 76.36, "distance": 9.6, "virtual": true}]}, "kZnBg_SwxocVY_5oJcXkag": {"lat": 50.84856187365544, "lng": 4.34988907889153, "links": [{"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 32.64733, "description": "Anspachlaan"}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 215.9884, "description": "Anspachlaan"}, {"pano_id": "aDZye8irXktJeYiB7jQkVg", "heading": 281.85, "distance": 15.27, "virtual": true}, {"pano_id": "sF7HPgWJMrgusYNGh1TtFA", "heading": 288.86, "distance": 15.67, "virtual": true}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 322.7, "distance": 9.81, "virtual": true}, {"pano_id": "vBueBNN-sBiBMSBBkb6zIw", "heading": 282.45, "distance": 14.05, "virtual": true}, {"pano_id": "zDRTkbpXycwWeioSYSdozQ", "heading": 288.41, "distance": 16.24, "virtual": true}, {"pano_id": "UTQARTRl2Ckt8s9l5Pq57w", "heading": 214.61, "distance": 14.05, "virtual": true}, {"pano_id": "r8aS4Ek3x6ZGSDingm4YnA", "heading": 4.22, "distance": 15.16, "virtual": true}, {"pano_id": "4aHBOh-Jnu5TQiNcne2yXQ", "heading": 170.28, "distance": 11.63, "virtual": true}]}, "WxL_HXc3aYDL38WPzbdZMg": {"lat": 50.84875925959245, "lng": 4.349498687654148, "links": [{"pano_id": "ns_i4rxNHHZZaIFfn-gc6A", "heading": 144.1619, "description": "Rue Paul Devaux"}, {"pano_id": "lkke9Ob6e8p3Ehk2RNrA6A", "heading": 326.57175, "description": "Rue Paul Devaux"}]}, "siUyoE2u89VgmWHNw-DbBw": {"lat": 50.84827155973773, "lng": 4.348052654948359, "links": [{"pano_id": "iFQmompJxAD_67aeCcP9iQ", "heading": 268.72757, "description": "Rue Jules Van Praet"}, {"pano_id": "c9NsHMArSvIvbpbHFD5eHQ", "heading": 89.044785, "description": "Rue Jules Van Praet"}]}, "iREBcixrkp0Z8wWpli0V8Q": {"lat": 50.84883900492116, "lng": 4.348260515888914, "links": [{"pano_id": "4ieTDY7X-s4n1ubQvFHMvQ", "heading": 119.105385, "description": "Auguste Ortsstraat"}, {"pano_id": "8_bxTk86y4Nw9MLiSC5ELA", "heading": 299.16605, "description": "Auguste Ortsstraat"}]}, "lkke9Ob6e8p3Ehk2RNrA6A": {"lat": 50.8488349808268, "lng": 4.349419522313751, "links": [{"pano_id": "WxL_HXc3aYDL38WPzbdZMg", "heading": 146.57175, "description": "Rue Paul Devaux"}, {"pano_id": "YT7JrGgkA1aSq_ow2KdklQ", "heading": 329.43744, "description": "Rue Paul Devaux"}]}, "0fKWXaIrfWounE4XgCTBvg": {"lat": 50.84863759094448, "lng": 4.349965913826934, "links": [{"pano_id": "kZnBg_SwxocVY_5oJcXkag", "heading": 212.64734, "description": "Anspachlaan"}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 32.623245, "description": "Anspachlaan"}, {"pano_id": "b9y0PdVO6z-5KfSU4RrFJQ", "heading": 266.9, "distance": 11.36, "virtual": true}, {"pano_id": "C7hWi-lwkdBGPVjgZ9SfIw", "heading": 214.13, "distance": 17.93, "virtual": true}, {"pano_id": "r8aS4Ek3x6ZGSDingm4YnA", "heading": 327.43, "distance": 7.95, "virtual": true}, {"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 5.63, "distance": 14.6, "virtual": true}]}, "m4FHT7OZonr8iD3wI8ueTg": {"lat": 50.84879835389363, "lng": 4.350116836234587, "links": [{"pano_id": "IObtTZxxDcETII7PInD5iA", "heading": 58.859116, "description": "Anspachlaan"}, {"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 249.916, "description": "Pl. de la Bourse"}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 208.88, "distance": 10.92, "virtual": true}, {"pano_id": "-hL8hzJ_KXqPeEMRHJ0c9g", "heading": 36.25, "distance": 11.78, "virtual": true}, {"pano_id": "DOIq0Eva2XkwG8eQZZHlWg", "heading": 171.58, "distance": 1.1, "virtual": true}]}, "QlnScfcwy-mitavZtH-YMA": {"lat": 50.8478311276381, "lng": 4.349997954423877, "links": [{"pano_id": "3i7CdV_ArjV6JHM02b72Vg", "heading": 122.8996, "description": "Henri Mausstraat"}, {"pano_id": "myW-fmmbwedRuc_qVVmR4g", "heading": 301.80048, "description": "Henri Mausstraat"}]}, "kETqFjOTfL72lf2pohP9MQ": {"lat": 50.84840966823984, "lng": 4.350040132322707, "links": [{"pano_id": "jtsGFYrbrxp6Pc4Q5sDHYQ", "heading": 122.87442, "description": "Rue de la Bourse"}, {"pano_id": "4aHBOh-Jnu5TQiNcne2yXQ", "heading": 302.2976, "description": "Rue de la Bourse"}]}, "iFQmompJxAD_67aeCcP9iQ": {"lat": 50.84826994928981, "lng": 4.347937819638503, "links": [{"pano_id": "iCPjrDcGYA7dMvkKPCFOGQ", "heading": 268.84448, "description": "Rue Jules Van Praet"}, {"pano_id": "siUyoE2u89VgmWHNw-DbBw", "heading": 88.72757, "description": "Rue Jules Van Praet"}]}, "3i7CdV_ArjV6JHM02b72Vg": {"lat": 50.84778264593148, "lng": 4.350116650236841, "links": [{"pano_id": "QlnScfcwy-mitavZtH-YMA", "heading": 302.8996, "description": "Henri Mausstraat"}, {"pano_id": "frf8nvSewNTV3vqybZIORQ", "heading": 122.923164, "description": "Henri Mausstraat"}]}, "YT7JrGgkA1aSq_ow2KdklQ": {"lat": 50.8489116162329, "lng": 4.349347845459342, "links": [{"pano_id": "2LnguqFf40r9rnag9VovQQ", "heading": 327.97116, "description": "Rue Paul Devaux"}, {"pano_id": "lkke9Ob6e8p3Ehk2RNrA6A", "heading": 149.43744, "description": "Rue Paul Devaux"}]}, "8_bxTk86y4Nw9MLiSC5ELA": {"lat": 50.8488830248082, "lng": 4.348135590333063, "links": [{"pano_id": "m6XUoGURMmDvLKIZoXEyWg", "heading": 299.10638, "description": "Auguste Ortsstraat"}, {"pano_id": "iREBcixrkp0Z8wWpli0V8Q", "heading": 119.166046, "description": "Auguste Ortsstraat"}, {"pano_id": "FXGRlnblxv2M1btO5F_3EQ", "heading": 300.34, "distance": 15.07, "virtual": true}]}, "uFqcqEiRdDU5sW5R3G3QlQ": {"lat": 50.84871239115375, "lng": 4.350041748034283, "links": [{"pano_id": "0fKWXaIrfWounE4XgCTBvg", "heading": 212.62325, "description": "Anspachlaan"}, {"pano_id": "DOIq0Eva2XkwG8eQZZHlWg", "heading": 32.67599, "description": "Anspachlaan"}, {"pano_id": "r8aS4Ek3x6ZGSDingm4YnA", "heading": 260.44, "distance": 9.74, "virtual": true}, {"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 327.91, "distance": 7.33, "virtual": true}, {"pano_id": "m4FHT7OZonr8iD3wI8ueTg", "heading": 28.88, "distance": 10.92, "virtual": true}, {"pano_id": "IObtTZxxDcETII7PInD5iA", "heading": 32.83, "distance": 12.43, "virtual": true}]}, "iCPjrDcGYA7dMvkKPCFOGQ": {"lat": 50.84826808417994, "lng": 4.347791365059752, "links": [{"pano_id": "iFQmompJxAD_67aeCcP9iQ", "heading": 88.84448, "description": "Rue Jules Van Praet"}, {"pano_id": "JUZCTrEmjihgsveOe1j-Aw", "heading": 268.8738, "description": "Rue Jules Van Praet"}, {"pano_id": "l8iKz5-6R8_NWUbw8GlG0w", "heading": 267.43, "distance": 12.1, "virtual": true}]}, "IObtTZxxDcETII7PInD5iA": {"lat": 50.84880632439948, "lng": 4.350137729825954, "links": [{"pano_id": "m4FHT7OZonr8iD3wI8ueTg", "heading": 238.85912, "description": "Pl. de la Bourse"}, {"pano_id": "-hL8hzJ_KXqPeEMRHJ0c9g", "heading": 32.55386, "description": "Anspachlaan"}, {"pano_id": "DOIq0Eva2XkwG8eQZZHlWg", "heading": 213.47223, "description": "Anspachlaan"}, {"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 248.27, "distance": 11.44, "virtual": true}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 212.83, "distance": 12.43, "virtual": true}]}, "jtsGFYrbrxp6Pc4Q5sDHYQ": {"lat": 50.84835811805267, "lng": 4.350166463846683, "links": [{"pano_id": "sjiYVjkoJWhdri1JyQ42mg", "heading": 122.88835, "description": "Rue de la Bourse"}, {"pano_id": "kETqFjOTfL72lf2pohP9MQ", "heading": 302.87442, "description": "Rue de la Bourse"}]}, "frf8nvSewNTV3vqybZIORQ": {"lat": 50.84772821820699, "lng": 4.350249783208653, "links": [{"pano_id": "3i7CdV_ArjV6JHM02b72Vg", "heading": 302.92316, "description": "Henri Mausstraat"}]}, "-hL8hzJ_KXqPeEMRHJ0c9g": {"lat": 50.84888381460767, "lng": 4.350216082135253, "links": [{"pano_id": "IObtTZxxDcETII7PInD5iA", "heading": 212.55386, "description": "Anspachlaan"}, {"pano_id": "HhtREBcdCio7fASqJzqxog", "heading": 32.51156, "description": "Anspachlaan"}, {"pano_id": "m4FHT7OZonr8iD3wI8ueTg", "heading": 216.25, "distance": 11.78, "virtual": true}, {"pano_id": "DOIq0Eva2XkwG8eQZZHlWg", "heading": 212.73, "distance": 12.59, "virtual": true}]}, "JUZCTrEmjihgsveOe1j-Aw": {"lat": 50.84826641362766, "lng": 4.347656771656541, "links": [{"pano_id": "l8iKz5-6R8_NWUbw8GlG0w", "heading": 262.26758, "description": "Pl. Saint-G\u00e9ry"}, {"pano_id": "iCPjrDcGYA7dMvkKPCFOGQ", "heading": 88.8738, "description": "Rue Jules Van Praet"}]}, "m6XUoGURMmDvLKIZoXEyWg": {"lat": 50.84892732419227, "lng": 4.348009563188995, "links": [{"pano_id": "FXGRlnblxv2M1btO5F_3EQ", "heading": 302.865, "description": "Antoine Dansaertstraat"}, {"pano_id": "8_bxTk86y4Nw9MLiSC5ELA", "heading": 119.10637, "description": "Auguste Ortsstraat"}]}, "sjiYVjkoJWhdri1JyQ42mg": {"lat": 50.84830639548101, "lng": 4.350293150105646, "links": [{"pano_id": "jtsGFYrbrxp6Pc4Q5sDHYQ", "heading": 302.88834, "description": "Rue de la Bourse"}, {"pano_id": "i-lWwrOQTemy0AZySaUwqA", "heading": 122.869156, "description": "Rue de la Bourse"}]}, "DOIq0Eva2XkwG8eQZZHlWg": {"lat": 50.84878856529615, "lng": 4.350119131958577, "links": [{"pano_id": "IObtTZxxDcETII7PInD5iA", "heading": 33.472225, "description": "Anspachlaan"}, {"pano_id": "uFqcqEiRdDU5sW5R3G3QlQ", "heading": 212.676, "description": "Anspachlaan"}, {"pano_id": "6rNKYlhvHy3M9XLCdJSRJQ", "heading": 256.36, "distance": 9.6, "virtual": true}, {"pano_id": "m4FHT7OZonr8iD3wI8ueTg", "heading": 351.58, "distance": 1.1, "virtual": true}, {"pano_id": "-hL8hzJ_KXqPeEMRHJ0c9g", "heading": 32.73, "distance": 12.59, "virtual": true}]}, "2LnguqFf40r9rnag9VovQQ": {"lat": 50.84899427941374, "lng": 4.349265941359347, "links": [{"pano_id": "oH3kiSHmrxcm2i3NhPEfBQ", "heading": 327.43878, "description": "Rue Paul Devaux"}, {"pano_id": "YT7JrGgkA1aSq_ow2KdklQ", "heading": 147.97118, "description": "Rue Paul Devaux"}]}, "i-lWwrOQTemy0AZySaUwqA": {"lat": 50.84825580679055, "lng": 4.350417150034136, "links": [{"pano_id": "sjiYVjkoJWhdri1JyQ42mg", "heading": 302.86917, "description": "Rue de la Bourse"}]}, "HhtREBcdCio7fASqJzqxog": {"lat": 50.84895854997752, "lng": 4.350291526130589, "links": [{"pano_id": "-hL8hzJ_KXqPeEMRHJ0c9g", "heading": 212.51155, "description": "Anspachlaan"}]}, "FXGRlnblxv2M1btO5F_3EQ": {"lat": 50.84895148001226, "lng": 4.347950343594658, "links": [{"pano_id": "m6XUoGURMmDvLKIZoXEyWg", "heading": 122.864975, "description": "Auguste Ortsstraat"}, {"pano_id": "8_bxTk86y4Nw9MLiSC5ELA", "heading": 120.34, "distance": 15.07, "virtual": true}]}, "oH3kiSHmrxcm2i3NhPEfBQ": {"lat": 50.84907196708688, "lng": 4.34918736680565, "links": [{"pano_id": "2LnguqFf40r9rnag9VovQQ", "heading": 147.43878, "description": "Rue Paul Devaux"}]}, "l8iKz5-6R8_NWUbw8GlG0w": {"lat": 50.8482631972808, "lng": 4.347619254118842, "links": [{"pano_id": "JUZCTrEmjihgsveOe1j-Aw", "heading": 82.267586, "description": "Rue Jules Van Praet"}, {"pano_id": "iCPjrDcGYA7dMvkKPCFOGQ", "heading": 87.42, "distance": 12.1, "virtual": true}]}};
+        const targetPanos = ["PZ9QraVx9AkwHZrfzSpSEQ", "0fKWXaIrfWounE4XgCTBvg", "8p-Cfe7IcffSgFWcgZj_pQ", "WxL_HXc3aYDL38WPzbdZMg"];
+        const spawnPoints = ["m6XUoGURMmDvLKIZoXEyWg", "FXGRlnblxv2M1btO5F_3EQ", "HhtREBcdCio7fASqJzqxog", "l8iKz5-6R8_NWUbw8GlG0w"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

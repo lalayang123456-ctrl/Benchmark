@@ -1,0 +1,131 @@
+{
+  "task_id": "nav_0343_target_20260124_1250_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_124930",
+  "spawn_point": "fJuyxI4ySHC-V2EMHd4nFA",
+  "spawn_heading": 322.5,
+  "description": "Navigate to Burger King. Proceed along the service road, keeping the highway divider to your right and shops to your left. Pass under the blue overhead sign for 'Nigdi Pradhikaran Akurdi' and continue straight as the road curves gently to the left.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "YWNUOeS8FsMHsCCaoAyLLA",
+    "optimal_distance_meters": 208,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "YWNUOeS8FsMHsCCaoAyLLA"
+  ],
+  "max_steps": 42,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "fJuyxI4ySHC-V2EMHd4nFA",
+      "heading": 322.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "23twfqAU3xbNVFQUPUlrWA",
+      "heading": 322.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "gqPF0pm2Z48Ikw8LhlY0pw",
+      "heading": 322.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "k2NDH2JZsHJXYSC380Gngw",
+      "heading": 322.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "Y5RxehBQcR2EQtTFYYMWTw",
+      "heading": 322.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "1LQ3wGLnvQ2q2Et0rs-B7g",
+      "heading": 320.6
+    },
+    {
+      "step_index": 6,
+      "pano_id": "yUSxFiBrVbkRcj5-s3hyag",
+      "heading": 320.6
+    },
+    {
+      "step_index": 7,
+      "pano_id": "bmMI-bdEnMxvRVUeAw0eWg",
+      "heading": 322.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "L8Gz6jWOGKCYob28BrtF3A",
+      "heading": 321.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "mjxIc4xLnXQnbM8fF_TrTQ",
+      "heading": 319.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "HtCH0Yuq6oOessHjxwjthA",
+      "heading": 319.9
+    },
+    {
+      "step_index": 11,
+      "pano_id": "LVnd-uv_JVmKwzkS-46GGg",
+      "heading": 319.9
+    },
+    {
+      "step_index": 12,
+      "pano_id": "JMp11RC6yypp-3JZErGzPg",
+      "heading": 320.4
+    },
+    {
+      "step_index": 13,
+      "pano_id": "Qt29H5G1jcLFPiVn-E_a2Q",
+      "heading": 320.8
+    },
+    {
+      "step_index": 14,
+      "pano_id": "pYOS1MQFnRrQT2tGMlHj4A",
+      "heading": 320.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "vU-mwVN3sUs9_U_Z7cpU-w",
+      "heading": 320.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "YCNhBMRtKo5XZwo37jf1Ig",
+      "heading": 320.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "MksPzefRtmuVr42NQlJHkg",
+      "heading": 320.9
+    },
+    {
+      "step_index": 18,
+      "pano_id": "SEDIuxybemc5mcBOrPxhlg",
+      "heading": 320.8
+    },
+    {
+      "step_index": 19,
+      "pano_id": "aOKdTuwwVBwxU3wr4R0lZA",
+      "heading": 320.8
+    },
+    {
+      "step_index": 20,
+      "pano_id": "YWNUOeS8FsMHsCCaoAyLLA",
+      "heading": 320.9
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [208m]",
+  "agent_concise_description": "Proceed along the service road, keeping the highway divider to your right and shops to your left. Pass under the blue overhead sign for 'Nigdi Pradhikaran Akurdi' and continue straight as the road curves gently to the left."
+}

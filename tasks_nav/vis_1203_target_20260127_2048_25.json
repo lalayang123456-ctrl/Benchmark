@@ -1,0 +1,36 @@
+{
+  "task_id": "nav_1203_target_20260125_0353_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260125_035347",
+  "spawn_point": "QVtCWinU0zbSvaRK70UgFQ",
+  "spawn_heading": 95.6,
+  "description": "Head straight along the road towards the yellow pedestrian bridge visible in the distance. Your destination is the 'Fukushima 6-chome' bus stop shelter located on the sidewalk to your left.",
+  "ground_truth": {
+    "target_name": "Fukushima 6-chome",
+    "target_pano_id": "qYHPYXG8HKrObS2O5PL9ew",
+    "optimal_distance_meters": 13,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "qYHPYXG8HKrObS2O5PL9ew"
+  ],
+  "max_steps": 4,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "QVtCWinU0zbSvaRK70UgFQ",
+      "heading": 95.6
+    },
+    {
+      "step_index": 1,
+      "pano_id": "qYHPYXG8HKrObS2O5PL9ew",
+      "heading": 95.6
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 13m -> Stop",
+  "agent_concise_description": "Head straight along the road towards the yellow pedestrian bridge visible in the distance. Your destination is the 'Fukushima 6-chome' bus stop shelter located on the sidewalk to your left."
+}

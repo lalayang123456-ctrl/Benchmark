@@ -1,0 +1,241 @@
+{
+  "task_id": "nav_0046_target_20260124_0245_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "_cuiB8N9s42xqOsgueFNPQ",
+  "spawn_heading": 278.1,
+  "description": "Navigate to KFC. The route proceeds straight along a service road lined with trees and large billboards, including one for 'Apollo Hospital'. You continue straight for a significant distance with the large 'LuLu Mall' visible on the right side. The path follows the road alongside the mall, keeping the destination on the right.",
+  "ground_truth": {
+    "target_name": "KFC",
+    "target_pano_id": "KCMzZ8ItwGSJtVOzGK6yQA",
+    "optimal_distance_meters": 402,
+    "route_description": "left→left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "KCMzZ8ItwGSJtVOzGK6yQA"
+  ],
+  "max_steps": 86,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "_cuiB8N9s42xqOsgueFNPQ",
+      "heading": 278.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA",
+      "heading": 278.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ",
+      "heading": 286.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "pH9Y1ju_sVzbK1XmAJANUw",
+      "heading": 289.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "O19Fwxo1spzyieggD1OUsw",
+      "heading": 13.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "lXgOkyn21-ZiGermsmKqBw",
+      "heading": 13.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "pa95H4_xYxQUzvFUak4Lng",
+      "heading": 14.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ba0tXMacxtlvX4ozL7XdGw",
+      "heading": 16.8
+    },
+    {
+      "step_index": 8,
+      "pano_id": "pTDpBf_Z7OIUtqRZLoOa4Q",
+      "heading": 24.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "Ui8GSajyN9lnfFwjplHlKQ",
+      "heading": 28.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "vcQH7zmHFzFUXZyU9sbuMA",
+      "heading": 28.8
+    },
+    {
+      "step_index": 11,
+      "pano_id": "CY6kpeLzhTDy_L34FzdSYg",
+      "heading": 29.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "Vk8hTJ0U26y4a4HiCMXs9A",
+      "heading": 29.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "84FI-hWEACuZ8za8rAUyvg",
+      "heading": 31.0
+    },
+    {
+      "step_index": 14,
+      "pano_id": "27CORRj0mnU31QLoG_lK3w",
+      "heading": 32.0
+    },
+    {
+      "step_index": 15,
+      "pano_id": "NKQlHyEROHEaQ8gste7AXQ",
+      "heading": 31.5
+    },
+    {
+      "step_index": 16,
+      "pano_id": "X-U-Jtu6P2yJnmHHMM2CRw",
+      "heading": 25.1
+    },
+    {
+      "step_index": 17,
+      "pano_id": "z50v2haMggbOqBpvBA53qA",
+      "heading": 22.7
+    },
+    {
+      "step_index": 18,
+      "pano_id": "e1TIosSi0WYp1aiqxxY7og",
+      "heading": 22.7
+    },
+    {
+      "step_index": 19,
+      "pano_id": "pKvpjZ03_gXfoqC6rCssDQ",
+      "heading": 22.7
+    },
+    {
+      "step_index": 20,
+      "pano_id": "UhTo-hWYLKHm4kK1wKSvWg",
+      "heading": 30.1
+    },
+    {
+      "step_index": 21,
+      "pano_id": "i_G0cdMOyMl81qgBVs60nw",
+      "heading": 31.4
+    },
+    {
+      "step_index": 22,
+      "pano_id": "NksYiD7yBb1D-FRoSepDrQ",
+      "heading": 31.4
+    },
+    {
+      "step_index": 23,
+      "pano_id": "ndsW5MKWfxIL56lKGUmLIw",
+      "heading": 31.4
+    },
+    {
+      "step_index": 24,
+      "pano_id": "0YNdIZmyb-BFmmEXAsVuGw",
+      "heading": 29.7
+    },
+    {
+      "step_index": 25,
+      "pano_id": "GJiP00oo5j04FwbkJEHvNQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 26,
+      "pano_id": "ExvqUMRAxZixH6r3-wgO7Q",
+      "heading": 29.4
+    },
+    {
+      "step_index": 27,
+      "pano_id": "hjG1RQkbRDmWY4YCWEpQEQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 28,
+      "pano_id": "6K6KOiFoxzU6sLLC_b2jRw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 29,
+      "pano_id": "YvDbrR5chni0HQ8XAwwNqw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 30,
+      "pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+      "heading": 29.4
+    },
+    {
+      "step_index": 31,
+      "pano_id": "LjGAqNgqg1CtvhRHRnfy7w",
+      "heading": 29.4
+    },
+    {
+      "step_index": 32,
+      "pano_id": "H5qd1vVz12mSgHMgNTogkw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 33,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 29.8
+    },
+    {
+      "step_index": 34,
+      "pano_id": "iKG7gYOkiAgAP031LrCF6g",
+      "heading": 30.4
+    },
+    {
+      "step_index": 35,
+      "pano_id": "Pg3VH3J7pLRL04_2ackNUw",
+      "heading": 30.7
+    },
+    {
+      "step_index": 36,
+      "pano_id": "0tGt2ssLYSXBZtMxFNb8Vg",
+      "heading": 30.7
+    },
+    {
+      "step_index": 37,
+      "pano_id": "ILyQxXuoIXMEOgR5ewKbRQ",
+      "heading": 30.7
+    },
+    {
+      "step_index": 38,
+      "pano_id": "dSyZvZpQPa7Z32K2QtnY1A",
+      "heading": 30.2
+    },
+    {
+      "step_index": 39,
+      "pano_id": "wEtaoJs3d835bxJzflKS8Q",
+      "heading": 29.5
+    },
+    {
+      "step_index": 40,
+      "pano_id": "tCcldFeEz83aMFccmU9IKg",
+      "heading": 29.5
+    },
+    {
+      "step_index": 41,
+      "pano_id": "xMC3bA_YDAyDnWD9eECDiQ",
+      "heading": 29.5
+    },
+    {
+      "step_index": 42,
+      "pano_id": "KCMzZ8ItwGSJtVOzGK6yQA",
+      "heading": 29.5
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [279m]",
+  "agent_concise_description": "The route proceeds straight along a service road lined with trees and large billboards, including one for 'Apollo Hospital'. You continue straight for a significant distance with the large 'LuLu Mall' visible on the right side. The path follows the road alongside the mall, keeping the destination on the right."
+}

@@ -1,0 +1,116 @@
+{
+  "task_id": "nav_0044_target_20260124_0245_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "wDFqrW4wZZEdjF6_eDQe5A",
+  "spawn_heading": 213.3,
+  "description": "Travel straight along the main road with the large Lulu Mall complex on your left. Pass the Decathlon store and the PVR Superplex entrance, where a Starbucks logo is visible on the building facade. Continue straight past the Uniqlo and Max stores without turning, staying on the main road.",
+  "ground_truth": {
+    "target_name": "Starbucks",
+    "target_pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+    "optimal_distance_meters": 214,
+    "route_description": "left→left→right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "FjDSnVpBhOJ27rRtr05m6g"
+  ],
+  "max_steps": 36,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "wDFqrW4wZZEdjF6_eDQe5A",
+      "heading": 213.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "m_iV4WJ_gjmxZjpMDZIsKQ",
+      "heading": 213.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "z6pRtlbZYZbiqaEMmtgySA",
+      "heading": 213.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "mdowBheArOyE6y12QZ6MJg",
+      "heading": 213.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "2geEamJqiZ2cQpQ-HR2Bxg",
+      "heading": 214.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "3XlpgTsw9sV7nTkgKhORIA",
+      "heading": 211.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "R_GT9NqnWMBLK-0BYUHswA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "FBy42OsVimhsuwPThtBAdQ",
+      "heading": 209.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "KCMzZ8ItwGSJtVOzGK6yQA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "xMC3bA_YDAyDnWD9eECDiQ",
+      "heading": 209.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "tCcldFeEz83aMFccmU9IKg",
+      "heading": 209.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "wEtaoJs3d835bxJzflKS8Q",
+      "heading": 209.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "dSyZvZpQPa7Z32K2QtnY1A",
+      "heading": 209.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "ILyQxXuoIXMEOgR5ewKbRQ",
+      "heading": 210.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "0tGt2ssLYSXBZtMxFNb8Vg",
+      "heading": 210.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Pg3VH3J7pLRL04_2ackNUw",
+      "heading": 210.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "iKG7gYOkiAgAP031LrCF6g",
+      "heading": 210.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 210.4
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 215m -> Stop",
+  "agent_concise_description": "Travel straight along the main road with the large Lulu Mall complex on your left. Pass the Decathlon store and the PVR Superplex entrance, where a Starbucks logo is visible on the building facade. Continue straight past the Uniqlo and Max stores without turning, staying on the main road."
+}

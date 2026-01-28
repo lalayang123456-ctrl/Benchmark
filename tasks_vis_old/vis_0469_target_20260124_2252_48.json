@@ -1,0 +1,46 @@
+{
+  "task_id": "nav_0469_target_20260124_1353_17",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_135109",
+  "spawn_point": "xfpw3ERqTuBhZtN0K6sK8Q",
+  "spawn_heading": 2.8,
+  "description": "Navigate to Apotek Bhayangkari. Head straight along the road, passing a yellow kiosk and 'CV. Mentari' on the left. Continue forward on the main street, ending near a parked white truck on the left side. The final left turn into the destination premises is not shown in the visuals.",
+  "ground_truth": {
+    "target_name": "Apotek Bhayangkari",
+    "target_pano_id": "gn2w5_apgn7zPd2LNnd0Cw",
+    "optimal_distance_meters": 43,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "gn2w5_apgn7zPd2LNnd0Cw"
+  ],
+  "max_steps": 8,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "xfpw3ERqTuBhZtN0K6sK8Q",
+      "heading": 2.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "e6PTkKcqp-NIEVXyMhsB3w",
+      "heading": 2.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GZ9r5WWccRRE5BcF9ghVLA",
+      "heading": 2.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "gn2w5_apgn7zPd2LNnd0Cw",
+      "heading": 1.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [32m]",
+  "agent_concise_description": "Head straight along the road, passing a yellow kiosk and 'CV. Mentari' on the left. Continue forward on the main street, ending near a parked white truck on the left side. The final left turn into the destination premises is not shown in the visuals."
+}

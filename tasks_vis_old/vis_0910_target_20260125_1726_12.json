@@ -1,0 +1,31 @@
+{
+  "task_id": "nav_0910_target_20260125_0319_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260125_031931",
+  "spawn_point": "CiKKbojNJloV1wtEKQaMvg",
+  "spawn_heading": 0.0,
+  "description": "Navigate to Menara KH, Jalan Raja Chulan. Proceed along Jalan Raja Chulan, following the overhead monorail tracks. The destination, Menara KH, is the tall brown building visible on the left side of the road.",
+  "ground_truth": {
+    "target_name": "Menara KH, Jalan Raja Chulan",
+    "target_pano_id": "CiKKbojNJloV1wtEKQaMvg",
+    "optimal_distance_meters": 55,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "CiKKbojNJloV1wtEKQaMvg"
+  ],
+  "max_steps": 2,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "CiKKbojNJloV1wtEKQaMvg",
+      "heading": 0.0
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head south [20m]",
+  "agent_concise_description": "Proceed along Jalan Raja Chulan, following the overhead monorail tracks. The destination, Menara KH, is the tall brown building visible on the left side of the road."
+}

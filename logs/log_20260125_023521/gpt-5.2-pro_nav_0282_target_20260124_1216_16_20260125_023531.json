@@ -1,0 +1,1937 @@
+{
+  "agent": "gpt-5.2-pro",
+  "task_id": "nav_0282_target_20260124_1216_16",
+  "timestamp": "20260125_023531",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 54,
+  "session_id": "gpt-5.2-pro_20260125_023531_nav_0282_target_20260124_1216_16_20260125023531",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.6,
+          "heading": 351.47
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 176.14323
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.8,
+          "heading": 3.8019145
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.3,
+          "heading": 3.53
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 176.68895
+        },
+        {
+          "id": 4,
+          "direction": "front-left 17°",
+          "distance": 4.5,
+          "heading": 339.57584
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.5,
+          "heading": 3.2535083
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 11.8,
+          "heading": 1.11
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.8,
+          "heading": 183.80191
+        },
+        {
+          "id": 4,
+          "direction": "left-back 68°",
+          "distance": 5.0,
+          "heading": 205.34
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.3,
+          "heading": 355.54153
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 12.7,
+          "heading": 1.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 15°",
+          "distance": 11.6,
+          "heading": 17.86
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 8.5,
+          "heading": 183.25351
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 183.53
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.3,
+          "heading": 191.41
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 31°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 32°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 32°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 36°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "left-back 77°",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 31°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 58°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 74°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right-back 23°",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 31°",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 2,
+          "direction": "front-right 37°",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 3,
+          "direction": "right-back 60°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 237.37628
+        },
+        {
+          "id": 6,
+          "direction": "left-back 61°",
+          "distance": 15.9,
+          "heading": 266.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 28°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 8,
+          "direction": "front-left 28°",
+          "distance": 13.1,
+          "heading": 28.91
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 3,
+          "direction": "right-back 33°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 4,
+          "direction": "right-back 40°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 5,
+          "direction": "right-back 64°",
+          "distance": 8.7,
+          "heading": 241.94
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 9,
+          "direction": "front-left 65°",
+          "distance": 12.5,
+          "heading": 23.58
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 2,
+          "direction": "right-back 63°",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 3,
+          "direction": "right-back 72°",
+          "distance": 15.8,
+          "heading": 257.5
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 7,
+          "direction": "left-back 18°",
+          "distance": 12.4,
+          "heading": 347.35
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 95.41431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 275.05
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.61873
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 275.4143
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 275.4143
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.61873
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 275.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 95.41431
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 4,
+          "direction": "front-right 72°",
+          "distance": 12.4,
+          "heading": 347.35
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 6,
+          "direction": "front-left 27°",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 7,
+          "direction": "front-left 18°",
+          "distance": 15.8,
+          "heading": 257.5
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 7,
+          "direction": "front-left 63°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 8,
+          "direction": "front-left 57°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 9,
+          "direction": "front-left 33°",
+          "distance": 8.7,
+          "heading": 241.94
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 15.9,
+          "heading": 266.66
+        },
+        {
+          "id": 2,
+          "direction": "right-back 31°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 3,
+          "direction": "right-back 31°",
+          "distance": 13.1,
+          "heading": 28.91
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 6,
+          "direction": "front-left 61°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 7,
+          "direction": "front-left 59°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 7.5,
+          "heading": 237.37628
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 22°",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left-back 66°",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 32°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 288.25333
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 108.25782
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 288.2618
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 108.25332
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 288.1634
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 108.26182
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 287.8953
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 108.1634
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 107.89529
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 108.1634
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 287.8953
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 108.26182
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 288.1634
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 108.25332
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 288.2618
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 108.25782
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 288.25333
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 7,
+          "direction": "front-left 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 8.7,
+          "heading": 206.11113
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.6,
+          "heading": 197.86
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 3.5,
+          "heading": 296.54
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 290.39
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 6.5,
+          "heading": 29.363491
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 6.7,
+          "heading": 29.37
+        },
+        {
+          "id": 7,
+          "direction": "front-left 78°",
+          "distance": 7.3,
+          "heading": 38.52
+        },
+        {
+          "id": 8,
+          "direction": "front-left 49°",
+          "distance": 13.2,
+          "heading": 67.79
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 29°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 7,
+          "direction": "front-left 31°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 8,
+          "direction": "front-left 25°",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 9,
+          "direction": "front-left 18°",
+          "distance": 16.5,
+          "heading": 188.29
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 31°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 2,
+          "direction": "right-back 32°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 3,
+          "direction": "right-back 32°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 4,
+          "direction": "right-back 54°",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 5,
+          "direction": "right-back 56°",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 7,
+          "direction": "front-left 36°",
+          "distance": 10.1,
+          "heading": 288.2578
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 1.3,
+          "heading": 95.01
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 9.0,
+          "heading": 95.06
+        },
+        {
+          "id": 3,
+          "direction": "right-back 31°",
+          "distance": 15.3,
+          "heading": 207.52
+        },
+        {
+          "id": 4,
+          "direction": "right-back 33°",
+          "distance": 0.2,
+          "heading": 209.54291
+        },
+        {
+          "id": 5,
+          "direction": "right-back 33°",
+          "distance": 6.7,
+          "heading": 209.37
+        },
+        {
+          "id": 6,
+          "direction": "right-back 61°",
+          "distance": 7.7,
+          "heading": 236.78
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 266.14
+        },
+        {
+          "id": 8,
+          "direction": "front-left 57°",
+          "distance": 13.0,
+          "heading": 28.906097
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 3,
+          "direction": "right-back 27°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 4,
+          "direction": "right-back 34°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 5,
+          "direction": "right-back 57°",
+          "distance": 8.7,
+          "heading": 241.94
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 9,
+          "direction": "front-left 71°",
+          "distance": 12.5,
+          "heading": 23.58
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 2,
+          "direction": "right-back 63°",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 3,
+          "direction": "right-back 72°",
+          "distance": 15.8,
+          "heading": 257.5
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 7,
+          "direction": "left-back 18°",
+          "distance": 12.4,
+          "heading": 347.35
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 95.41431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 275.05
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.61873
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 275.4143
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 275.4143
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.61873
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 275.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 95.41431
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 4,
+          "direction": "front-right 72°",
+          "distance": 12.4,
+          "heading": 347.35
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 6,
+          "direction": "front-left 27°",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 7,
+          "direction": "front-left 18°",
+          "distance": 15.8,
+          "heading": 257.5
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 7,
+          "direction": "front-left 63°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 8,
+          "direction": "front-left 57°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 9,
+          "direction": "front-left 33°",
+          "distance": 8.7,
+          "heading": 241.94
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 15.9,
+          "heading": 266.66
+        },
+        {
+          "id": 2,
+          "direction": "right-back 31°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 3,
+          "direction": "right-back 31°",
+          "distance": 13.1,
+          "heading": 28.91
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 6,
+          "direction": "front-left 61°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 7,
+          "direction": "front-left 59°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 7.5,
+          "heading": 237.37628
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 22°",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left-back 66°",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 32°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 288.25333
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 108.25782
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 288.2618
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 108.25332
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 288.1634
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 108.26182
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 287.8953
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 108.1634
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 107.89529
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 108.1634
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 287.8953
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 108.26182
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 288.1634
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 108.25332
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 288.2618
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "action": {
+        "type": "move",
+        "move_id": 1
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 108.25782
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 288.25333
+        }
+      ]
+    }
+  ]
+}

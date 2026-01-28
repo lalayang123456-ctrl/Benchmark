@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0228_20260127_153522",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your North-East (approx. 50\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "bF75QXG509N0jXSZsSwr3g",
+  "spawn_heading": 50.393951689229596,
+  "target_building": {
+    "lat": 52.3838118,
+    "lng": 4.9021675,
+    "height": 81.73,
+    "floors": 23,
+    "ground_elevation": 2.826732397079468,
+    "roof_elevation": 84.55686,
+    "name": "buildings/ChIJja2MQLQJxkcRiMyYfhm9-_Y",
+    "date": "2022-08-24"
+  },
+  "geofence_id": "list_height_0228_20260127_153522",
+  "ground_truth": {
+    "height_meters": 81.73
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T15:35:22.151823",
+    "bearing_deg": 50.393951689229596,
+    "city": "Amsterdam, Netherlands"
+  }
+}

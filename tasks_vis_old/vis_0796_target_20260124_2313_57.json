@@ -1,0 +1,151 @@
+{
+  "task_id": "nav_0796_target_20260124_1631_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_163004",
+  "spawn_point": "oAk6KpP2nbO48jHh_bEvug",
+  "spawn_heading": 53.8,
+  "description": "Navigate to Indian Overseas Bank. Head northeast along the main road, passing the Lancers Army School gate on the right. Turn right at the corner with the Croma building into the commercial complex driveway. The destination is located in this complex, near the Subway and Cafe Coffee Day outlets.",
+  "ground_truth": {
+    "target_name": "Indian Overseas Bank",
+    "target_pano_id": "V3K22k6rfOtZF_4v9tULmA",
+    "optimal_distance_meters": 249,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "V3K22k6rfOtZF_4v9tULmA"
+  ],
+  "max_steps": 50,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "oAk6KpP2nbO48jHh_bEvug",
+      "heading": 53.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "HjfjYCxu37z50vp42__L3A",
+      "heading": 53.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "nVzje9oBGSk1PigOvoQWqg",
+      "heading": 53.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "ZOKKEMQaiz3alNop8k-zuw",
+      "heading": 53.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "_3e1tpEGcnQfpWaMTTAH-g",
+      "heading": 55.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "HX6Xmst6WtrD8aDtDDhvLw",
+      "heading": 56.8
+    },
+    {
+      "step_index": 6,
+      "pano_id": "8v0UVY8XUAu4b_3BHiZNBQ",
+      "heading": 57.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "SBaAcYcLnF6I8ivxWxY8yw",
+      "heading": 57.9
+    },
+    {
+      "step_index": 8,
+      "pano_id": "l1lwH6aEyQGL22fbc4uEgw",
+      "heading": 57.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "bG_hRcSCeqoZJ1M8bKp-Dg",
+      "heading": 57.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "eo5is_QZu35vuZOENoG8iA",
+      "heading": 57.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "ACqLMwUXh9sZwS_kFR6aCQ",
+      "heading": 57.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "cmayzkXDy4H-s1YQVFnXgw",
+      "heading": 57.9
+    },
+    {
+      "step_index": 13,
+      "pano_id": "pyY0qDJ-KNJ89OzMjp0obA",
+      "heading": 57.9
+    },
+    {
+      "step_index": 14,
+      "pano_id": "uDAu6u5ACsqKZyl4RWJzPA",
+      "heading": 57.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "6r9wNBHbsaim4fLoCg-6vg",
+      "heading": 57.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "HZyj5re6hsJP8dUfLN9-gQ",
+      "heading": 57.9
+    },
+    {
+      "step_index": 17,
+      "pano_id": "W3LMmfBS-DnQzvxtPzO_6w",
+      "heading": 57.9
+    },
+    {
+      "step_index": 18,
+      "pano_id": "6VnlZCtd9NFu8aPUMxneCg",
+      "heading": 57.9
+    },
+    {
+      "step_index": 19,
+      "pano_id": "k-uM600rx5gIFEFTb1ZqWw",
+      "heading": 57.9
+    },
+    {
+      "step_index": 20,
+      "pano_id": "rVeSd26JbI0I7x2bQZkxVA",
+      "heading": 56.9
+    },
+    {
+      "step_index": 21,
+      "pano_id": "oZfVV1qg88pWQrFmnfI4xA",
+      "heading": 61.4
+    },
+    {
+      "step_index": 22,
+      "pano_id": "E7FTT8dU2H6CEm4s1UzSVw",
+      "heading": 61.4
+    },
+    {
+      "step_index": 23,
+      "pano_id": "D2GCZZWmjZf_1w5hMAeOOA",
+      "heading": 61.4
+    },
+    {
+      "step_index": 24,
+      "pano_id": "V3K22k6rfOtZF_4v9tULmA",
+      "heading": 64.5
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head northeast [249m] -> Turn right",
+  "agent_concise_description": "Head northeast along the main road, passing the Lancers Army School gate on the right. Turn right at the corner with the Croma building into the commercial complex driveway. The destination is located in this complex, near the Subway and Cafe Coffee Day outlets."
+}

@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0177_20260127_144622",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your South (approx. 174\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "q5ECpnVrqxHbPf1XbcqAhw",
+  "spawn_heading": 174.09694536762822,
+  "target_building": {
+    "lat": 47.618365999999995,
+    "lng": -122.3444912,
+    "height": 135.8,
+    "floors": 38,
+    "ground_elevation": 38.15498352050781,
+    "roof_elevation": 173.95566,
+    "name": "buildings/ChIJWS7N2EgVkFQRYFI7MKM78Ag",
+    "date": "2022-09-25"
+  },
+  "geofence_id": "list_height_0177_20260127_144622",
+  "ground_truth": {
+    "height_meters": 135.8
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T14:46:22.781144",
+    "bearing_deg": 174.09694536762822,
+    "city": "Seattle, USA"
+  }
+}

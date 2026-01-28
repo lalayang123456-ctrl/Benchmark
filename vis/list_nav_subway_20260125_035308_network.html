@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_subway_20260125_035308</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_subway_20260125_035308</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"gPQZQUiXIdStsp1elrDelQ": {"lat": 51.47850411658759, "lng": -3.178154634912915, "links": [{"pano_id": "chN1n_qPD55hwefeTbzRaQ", "heading": 158.3567, "description": "St Mary St"}, {"pano_id": "QNH9simYJgPnpDEyTxNGWw", "heading": 338.3234, "description": "St Mary St"}, {"pano_id": "nuuWn7KJ48j0HFvRwn5TSg", "heading": 157.77, "distance": 12.13, "virtual": true}, {"pano_id": "JLyqOHzT7R9MXKTgj-sLIA", "heading": 121.79, "distance": 12.0, "virtual": true}]}, "QNH9simYJgPnpDEyTxNGWw": {"lat": 51.47858733559463, "lng": -3.178207745263925, "links": [{"pano_id": "lHNbhtI8rM_XPbLMoNXZ5g", "heading": 338.33072, "description": "St Mary St"}, {"pano_id": "gPQZQUiXIdStsp1elrDelQ", "heading": 158.32338, "description": "St Mary St"}]}, "chN1n_qPD55hwefeTbzRaQ": {"lat": 51.47841726666521, "lng": -3.178099301295823, "links": [{"pano_id": "gPQZQUiXIdStsp1elrDelQ", "heading": 338.3567, "description": "St Mary St"}, {"pano_id": "nuuWn7KJ48j0HFvRwn5TSg", "heading": 154.26955, "description": "St Mary St"}, {"pano_id": "9YEAyIDxmdQeaabahNOOnw", "heading": 152.48, "distance": 12.05, "virtual": true}, {"pano_id": "JLyqOHzT7R9MXKTgj-sLIA", "heading": 62.34, "distance": 7.19, "virtual": true}, {"pano_id": "Tcg0UomVWHewVMsmnk7W5w", "heading": 59.46, "distance": 17.0, "virtual": true}]}, "nuuWn7KJ48j0HFvRwn5TSg": {"lat": 51.47840311920329, "lng": -3.178088354163363, "links": [{"pano_id": "chN1n_qPD55hwefeTbzRaQ", "heading": 334.26953, "description": "St Mary St"}, {"pano_id": "9YEAyIDxmdQeaabahNOOnw", "heading": 152.1825, "description": "St Mary St"}, {"pano_id": "JLyqOHzT7R9MXKTgj-sLIA", "heading": 48.797874, "description": "Morgan Arcade"}, {"pano_id": "gPQZQUiXIdStsp1elrDelQ", "heading": 337.77, "distance": 12.13, "virtual": true}, {"pano_id": "Tcg0UomVWHewVMsmnk7W5w", "heading": 53.67, "distance": 17.24, "virtual": true}]}, "lHNbhtI8rM_XPbLMoNXZ5g": {"lat": 51.47867150178551, "lng": -3.178261440167945, "links": [{"pano_id": "NkCXJMyEgUIpUtVVHFNRkw", "heading": 338.3135, "description": "St Mary St"}, {"pano_id": "QNH9simYJgPnpDEyTxNGWw", "heading": 158.33072, "description": "St Mary St"}]}, "9YEAyIDxmdQeaabahNOOnw": {"lat": 51.47832114479787, "lng": -3.178018907303376, "links": [{"pano_id": "5XlmQuLhLKbwXxQr25tmZw", "heading": 148.76823, "description": "St Mary St"}, {"pano_id": "nuuWn7KJ48j0HFvRwn5TSg", "heading": 332.1825, "description": "St Mary St"}, {"pano_id": "chN1n_qPD55hwefeTbzRaQ", "heading": 332.48, "distance": 12.05, "virtual": true}, {"pano_id": "JLyqOHzT7R9MXKTgj-sLIA", "heading": 3.26, "distance": 14.05, "virtual": true}]}, "NkCXJMyEgUIpUtVVHFNRkw": {"lat": 51.47875685001264, "lng": -3.178315936913356, "links": [{"pano_id": "lHNbhtI8rM_XPbLMoNXZ5g", "heading": 158.31352, "description": "St Mary St"}, {"pano_id": "xgPwIds7LBJHY9fvpPQpWg", "heading": 338.36145, "description": "St Mary St"}]}, "JLyqOHzT7R9MXKTgj-sLIA": {"lat": 51.47844727706114, "lng": -3.178007370565443, "links": [{"pano_id": "Tcg0UomVWHewVMsmnk7W5w", "heading": 57.35902, "description": "Morgan Arcade"}, {"pano_id": "nuuWn7KJ48j0HFvRwn5TSg", "heading": 228.79787, "description": "St Mary St"}, {"pano_id": "gPQZQUiXIdStsp1elrDelQ", "heading": 301.79, "distance": 12.0, "virtual": true}, {"pano_id": "chN1n_qPD55hwefeTbzRaQ", "heading": 242.34, "distance": 7.19, "virtual": true}, {"pano_id": "9YEAyIDxmdQeaabahNOOnw", "heading": 183.26, "distance": 14.05, "virtual": true}]}, "xgPwIds7LBJHY9fvpPQpWg": {"lat": 51.47883880986964, "lng": -3.178368142722368, "links": [{"pano_id": "QwIyRlEnJAmBlrpqhQyzKw", "heading": 338.31442, "description": "St Mary St"}, {"pano_id": "NkCXJMyEgUIpUtVVHFNRkw", "heading": 158.36145, "description": "St Mary St"}]}, "5XlmQuLhLKbwXxQr25tmZw": {"lat": 51.47824014732252, "lng": -3.17794004678375, "links": [{"pano_id": "9YEAyIDxmdQeaabahNOOnw", "heading": 328.76822, "description": "St Mary St"}, {"pano_id": "pg67qAtmeKQmC3hYLqIIDw", "heading": 145.21864, "description": "St Mary St"}, {"pano_id": "VYTPzRnthJKMBb40IJ2VmQ", "heading": 118.15, "distance": 17.12, "virtual": true}, {"pano_id": "ZS87a_aPsWzxgKKD4qs9cg", "heading": 145.22, "distance": 14.95, "virtual": true}]}, "Tcg0UomVWHewVMsmnk7W5w": {"lat": 51.47849496553734, "lng": -3.177887829811405, "links": [{"pano_id": "wHg-1xrzxMPmjnf75Gn76g", "heading": 57.368008, "description": "Morgan Arcade"}, {"pano_id": "JLyqOHzT7R9MXKTgj-sLIA", "heading": 237.35902, "description": "Morgan Arcade"}, {"pano_id": "chN1n_qPD55hwefeTbzRaQ", "heading": 239.46, "distance": 17.0, "virtual": true}, {"pano_id": "nuuWn7KJ48j0HFvRwn5TSg", "heading": 233.67, "distance": 17.24, "virtual": true}]}, "pg67qAtmeKQmC3hYLqIIDw": {"lat": 51.47816194352944, "lng": -3.177852837008565, "links": [{"pano_id": "ZS87a_aPsWzxgKKD4qs9cg", "heading": 145.21524, "description": "St Mary St"}, {"pano_id": "5XlmQuLhLKbwXxQr25tmZw", "heading": 325.21863, "description": "St Mary St"}, {"pano_id": "VYTPzRnthJKMBb40IJ2VmQ", "heading": 86.10653, "description": "Royal Arcade"}, {"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 149.21, "distance": 13.68, "virtual": true}]}, "wHg-1xrzxMPmjnf75Gn76g": {"lat": 51.47854394634734, "lng": -3.177765007011351, "links": [{"pano_id": "Tcg0UomVWHewVMsmnk7W5w", "heading": 237.36801, "description": "Morgan Arcade"}, {"pano_id": "Sq30aTAgiwDY1RJR1MzZiw", "heading": 57.34551, "description": "Morgan Arcade"}]}, "QwIyRlEnJAmBlrpqhQyzKw": {"lat": 51.47892652474447, "lng": -3.178424148212114, "links": [{"pano_id": "s00lLoFmtquj0_JNVwiXGg", "heading": 337.4782, "description": "St Mary St"}, {"pano_id": "xgPwIds7LBJHY9fvpPQpWg", "heading": 158.31444, "description": "St Mary St"}]}, "Sq30aTAgiwDY1RJR1MzZiw": {"lat": 51.47859344043368, "lng": -3.177641004256731, "links": [{"pano_id": "wHg-1xrzxMPmjnf75Gn76g", "heading": 237.3455, "description": "Morgan Arcade"}, {"pano_id": "EncX5JRVFBI8B4ASSxUgpQ", "heading": 57.38056, "description": "Morgan Arcade"}]}, "s00lLoFmtquj0_JNVwiXGg": {"lat": 51.47900921020252, "lng": -3.178479199857511, "links": [{"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 336.693, "description": "St Mary St"}, {"pano_id": "QwIyRlEnJAmBlrpqhQyzKw", "heading": 157.47823, "description": "St Mary St"}]}, "VYTPzRnthJKMBb40IJ2VmQ": {"lat": 51.47816748863644, "lng": -3.177722018554904, "links": [{"pano_id": "9LY7ojsNZKKwi3VLN0Bajw", "heading": 57.77491, "description": "Royal Arcade"}, {"pano_id": "pg67qAtmeKQmC3hYLqIIDw", "heading": 266.10654, "description": "St Mary St"}, {"pano_id": "5XlmQuLhLKbwXxQr25tmZw", "heading": 298.15, "distance": 17.12, "virtual": true}, {"pano_id": "ZS87a_aPsWzxgKKD4qs9cg", "heading": 237.39, "distance": 7.8, "virtual": true}, {"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 189.45, "distance": 12.54, "virtual": true}]}, "ZS87a_aPsWzxgKKD4qs9cg": {"lat": 51.47812969627744, "lng": -3.177816871637944, "links": [{"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 151.07863, "description": "St Mary St"}, {"pano_id": "pg67qAtmeKQmC3hYLqIIDw", "heading": 325.21524, "description": "St Mary St"}, {"pano_id": "5XlmQuLhLKbwXxQr25tmZw", "heading": 325.22, "distance": 14.95, "virtual": true}, {"pano_id": "VYTPzRnthJKMBb40IJ2VmQ", "heading": 57.39, "distance": 7.8, "virtual": true}]}, "EncX5JRVFBI8B4ASSxUgpQ": {"lat": 51.47864087322984, "lng": -3.177522005550213, "links": [{"pano_id": "WAaGCk4R7bVgzqmvwaylMQ", "heading": 57.338264, "description": "Morgan Arcade"}, {"pano_id": "Sq30aTAgiwDY1RJR1MzZiw", "heading": 237.38055, "description": "Morgan Arcade"}]}, "oGdkZ2cHr0z_nUlNta04Yw": {"lat": 51.47909065723984, "lng": -3.178535539580661, "links": [{"pano_id": "s00lLoFmtquj0_JNVwiXGg", "heading": 156.69301, "description": "St Mary St"}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 336.67587, "description": "St Mary St"}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 333.97, "distance": 13.88, "virtual": true}, {"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 319.92, "distance": 10.26, "virtual": true}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 347.22, "distance": 11.07, "virtual": true}, {"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 278.08, "distance": 14.97, "virtual": true}]}, "9LY7ojsNZKKwi3VLN0Bajw": {"lat": 51.47821695632884, "lng": -3.177596014127083, "links": [{"pano_id": "VYTPzRnthJKMBb40IJ2VmQ", "heading": 237.7749, "description": "Royal Arcade"}, {"pano_id": "j9Ja9pOnYZH-m2ZHUc4LbQ", "heading": 57.806328, "description": "Royal Arcade"}]}, "ah2UBubpD_FfbZl4r3_YBg": {"lat": 51.47805627162521, "lng": -3.177751734485895, "links": [{"pano_id": "ZS87a_aPsWzxgKKD4qs9cg", "heading": 331.07864, "description": "St Mary St"}, {"pano_id": "gBHzK31c5hWPHHjKZNwqWA", "heading": 154.7966, "description": "St Mary St"}, {"pano_id": "pg67qAtmeKQmC3hYLqIIDw", "heading": 329.21, "distance": 13.68, "virtual": true}, {"pano_id": "VYTPzRnthJKMBb40IJ2VmQ", "heading": 9.45, "distance": 12.54, "virtual": true}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 154.13, "distance": 16.43, "virtual": true}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 133.71, "distance": 16.85, "virtual": true}]}, "gBHzK31c5hWPHHjKZNwqWA": {"lat": 51.47797700807156, "lng": -3.177691838146259, "links": [{"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 109.39669, "description": "Brewery Quarter"}, {"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 334.7966, "description": "St Mary St"}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 153.15172, "description": "St Mary St"}, {"pano_id": "2KffpphWzL_0XL4KbYzFDQ", "heading": 84.94, "distance": 17.47, "virtual": true}, {"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 156.17, "distance": 16.46, "virtual": true}]}, "j9Ja9pOnYZH-m2ZHUc4LbQ": {"lat": 51.47826375653359, "lng": -3.177476659183963, "links": [{"pano_id": "9LY7ojsNZKKwi3VLN0Bajw", "heading": 237.80632, "description": "Royal Arcade"}, {"pano_id": "llV_iMbVw3taA1Wi2EykYA", "heading": 54.363422, "description": "Royal Arcade"}]}, "z1xrH7XK5xEMrfjE3ug9EQ": {"lat": 51.47917021269301, "lng": -3.178590616227306, "links": [{"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 250.37392, "description": "Golate"}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 34.99099, "description": "Wharton St"}, {"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 156.67587, "description": "St Mary St"}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 327.85773, "description": "St Mary St"}, {"pano_id": "jJvGrOzhbJTY0aw1Oh7W2Q", "heading": 326.45, "distance": 15.32, "virtual": true}, {"pano_id": "MAHSCILFsKrfqexvUl0YPA", "heading": 50.83, "distance": 13.31, "virtual": true}, {"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 238.51, "distance": 12.91, "virtual": true}]}, "WAaGCk4R7bVgzqmvwaylMQ": {"lat": 51.47869139900306, "lng": -3.1773954529563, "links": [{"pano_id": "EncX5JRVFBI8B4ASSxUgpQ", "heading": 237.33826, "description": "Morgan Arcade"}, {"pano_id": "t2PRSCksjREbpEDk0fpscw", "heading": 57.369675, "description": "Morgan Arcade"}]}, "FyQDRUaYVQgi4qlmvZ8zgw": {"lat": 51.47792330340938, "lng": -3.177648189607922, "links": [{"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 158.24231, "description": "St Mary St"}, {"pano_id": "gBHzK31c5hWPHHjKZNwqWA", "heading": 333.15173, "description": "St Mary St"}, {"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 334.13, "distance": 16.43, "virtual": true}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 57.88, "distance": 5.91, "virtual": true}, {"pano_id": "2KffpphWzL_0XL4KbYzFDQ", "heading": 62.41, "distance": 16.22, "virtual": true}, {"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 159.98, "distance": 15.43, "virtual": true}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 173.42, "distance": 11.98, "virtual": true}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 205.54, "distance": 16.9, "virtual": true}]}, "Ka2NzccqR5NY2oKM6Ri0ag": {"lat": 51.47920278497973, "lng": -3.178623477649395, "links": [{"pano_id": "jJvGrOzhbJTY0aw1Oh7W2Q", "heading": 325.9034, "description": "St Mary St"}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 147.85773, "description": "St Mary St"}, {"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 153.97, "distance": 13.88, "virtual": true}, {"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 186.38, "distance": 4.65, "virtual": true}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 114.65, "distance": 4.01, "virtual": true}, {"pano_id": "MAHSCILFsKrfqexvUl0YPA", "heading": 69.2, "distance": 13.48, "virtual": true}, {"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 220.11, "distance": 13.55, "virtual": true}]}, "Yo3ooeWuRv8f96XHtXfbOQ": {"lat": 51.47916125773685, "lng": -3.178630937833147, "links": [{"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 235.02559, "description": "Golate"}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 70.373924, "description": "St Mary St"}, {"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 139.92, "distance": 10.26, "virtual": true}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 6.38, "distance": 4.65, "virtual": true}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 54.68, "distance": 5.1, "virtual": true}, {"pano_id": "jJvGrOzhbJTY0aw1Oh7W2Q", "heading": 337.59, "distance": 14.89, "virtual": true}, {"pano_id": "MAHSCILFsKrfqexvUl0YPA", "heading": 54.36, "distance": 16.14, "virtual": true}]}, "3vnlxhPwpv1S736SeelYjg": {"lat": 51.47918775789933, "lng": -3.178570896904862, "links": [{"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 214.99098, "description": "St Mary St"}, {"pano_id": "MAHSCILFsKrfqexvUl0YPA", "heading": 54.2099, "description": "Wharton St"}, {"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 167.22, "distance": 11.07, "virtual": true}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 294.65, "distance": 4.01, "virtual": true}, {"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 234.68, "distance": 5.1, "virtual": true}, {"pano_id": "jJvGrOzhbJTY0aw1Oh7W2Q", "heading": 317.73, "distance": 14.62, "virtual": true}, {"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 234.91, "distance": 15.12, "virtual": true}]}, "t2PRSCksjREbpEDk0fpscw": {"lat": 51.47874339249288, "lng": -3.177265066741002, "links": [{"pano_id": "WAaGCk4R7bVgzqmvwaylMQ", "heading": 237.36967, "description": "Morgan Arcade"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 57.367363, "description": "Morgan Arcade"}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 42.82, "distance": 15.3, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 57.36, "distance": 12.57, "virtual": true}]}, "HpYZcltc4PgoTKL724s-tA": {"lat": 51.47795157895784, "lng": -3.177575875709946, "links": [{"pano_id": "2KffpphWzL_0XL4KbYzFDQ", "heading": 64.997955, "description": "Brewery Quarter"}, {"pano_id": "gBHzK31c5hWPHHjKZNwqWA", "heading": 289.3967, "description": "St Mary St"}, {"pano_id": "ah2UBubpD_FfbZl4r3_YBg", "heading": 313.71, "distance": 16.85, "virtual": true}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 237.88, "distance": 5.91, "virtual": true}, {"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 186.45, "distance": 12.31, "virtual": true}, {"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 179.1, "distance": 17.65, "virtual": true}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 193.58, "distance": 15.48, "virtual": true}]}, "llV_iMbVw3taA1Wi2EykYA": {"lat": 51.47831628808892, "lng": -3.177359004866347, "links": [{"pano_id": "pe4NfH-k1KwN9zG82K-Bbw", "heading": 54.18878, "description": "Royal Arcade"}, {"pano_id": "j9Ja9pOnYZH-m2ZHUc4LbQ", "heading": 234.36342, "description": "Royal Arcade"}]}, "2KffpphWzL_0XL4KbYzFDQ": {"lat": 51.47799086525277, "lng": -3.177440615923253, "links": [{"pano_id": "m1S5rjIsMEe5W7oxjJtrtw", "heading": 64.98508, "description": "Brewery Quarter"}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 244.99796, "description": "Brewery Quarter"}, {"pano_id": "gBHzK31c5hWPHHjKZNwqWA", "heading": 264.94, "distance": 17.47, "virtual": true}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 242.41, "distance": 16.22, "virtual": true}]}, "jJvGrOzhbJTY0aw1Oh7W2Q": {"lat": 51.4792850229428, "lng": -3.178712868037145, "links": [{"pano_id": "yN3WezZ4nAnm09yQb5hPJg", "heading": 325.86383, "description": "St Mary St"}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 145.9034, "description": "St Mary St"}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 146.45, "distance": 15.32, "virtual": true}, {"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 157.59, "distance": 14.89, "virtual": true}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 137.73, "distance": 14.62, "virtual": true}]}, "r_lpNusNfIu8TH9dlKv-MA": {"lat": 51.47784158944739, "lng": -3.177595825418833, "links": [{"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 162.98276, "description": "St Mary St"}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 338.2423, "description": "St Mary St"}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 218.64108, "description": "Wood St"}, {"pano_id": "gBHzK31c5hWPHHjKZNwqWA", "heading": 336.17, "distance": 16.46, "virtual": true}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 6.45, "distance": 12.31, "virtual": true}, {"pano_id": "T_CPOhouW7IQTu0NPWiTqg", "heading": 158.65, "distance": 13.53, "virtual": true}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 240.54, "distance": 12.54, "virtual": true}]}, "fUJbCZek-mpfOZ-Qo4ckTQ": {"lat": 51.47879168404355, "lng": -3.177143974646563, "links": [{"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 18.979153, "description": "Morgan Arcade"}, {"pano_id": "t2PRSCksjREbpEDk0fpscw", "heading": 237.36737, "description": "Morgan Arcade"}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 57.34992, "description": "Green Garden Ct"}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 31.14, "distance": 15.34, "virtual": true}, {"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 83.63, "distance": 11.85, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 70.11, "distance": 16.12, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 33.34, "distance": 17.28, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 36.83, "distance": 16.54, "virtual": true}]}, "MAHSCILFsKrfqexvUl0YPA": {"lat": 51.47924582264255, "lng": -3.178441580471023, "links": [{"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 234.2099, "description": "Wharton St"}, {"pano_id": "_ZuEzT3fmYimkPJo2AvioA", "heading": 54.206223, "description": "Wharton St"}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 230.83, "distance": 13.31, "virtual": true}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 249.2, "distance": 13.48, "virtual": true}, {"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 234.36, "distance": 16.14, "virtual": true}]}, "4oPsHNrtPY2ny6AVtnuchQ": {"lat": 51.47910958098309, "lng": -3.178749551029329, "links": [{"pano_id": "Yo3ooeWuRv8f96XHtXfbOQ", "heading": 55.02559, "description": "Golate"}, {"pano_id": "C0pAp2aU9sFFT_QUuLEQ3w", "heading": 235.05244, "description": "Golate"}, {"pano_id": "oGdkZ2cHr0z_nUlNta04Yw", "heading": 98.08, "distance": 14.97, "virtual": true}, {"pano_id": "z1xrH7XK5xEMrfjE3ug9EQ", "heading": 58.51, "distance": 12.91, "virtual": true}, {"pano_id": "Ka2NzccqR5NY2oKM6Ri0ag", "heading": 40.11, "distance": 13.55, "virtual": true}, {"pano_id": "3vnlxhPwpv1S736SeelYjg", "heading": 54.91, "distance": 15.12, "virtual": true}]}, "pe4NfH-k1KwN9zG82K-Bbw": {"lat": 51.47837007857969, "lng": -3.177239302980927, "links": [{"pano_id": "YClk0yJVNJi4-cnTleMTSw", "heading": 54.251865, "description": "Royal Arcade"}, {"pano_id": "llV_iMbVw3taA1Wi2EykYA", "heading": 234.18878, "description": "Royal Arcade"}]}, "RlqNrRbv6Izeca55SlQkHA": {"lat": 51.47884430694077, "lng": -3.177114915576112, "links": [{"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 39.129253, "description": "Morgan Arcade"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 198.97916, "description": "Morgan Arcade"}, {"pano_id": "t2PRSCksjREbpEDk0fpscw", "heading": 222.82, "distance": 15.3, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 177.64, "distance": 4.45, "virtual": true}, {"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 114.91, "distance": 10.77, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 91.59, "distance": 13.15, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 41.08, "distance": 11.39, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 46.94, "distance": 10.81, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 91.22, "distance": 15.71, "virtual": true}]}, "m1S5rjIsMEe5W7oxjJtrtw": {"lat": 51.47803129923055, "lng": -3.177301486270143, "links": [{"pano_id": "yLo43ChE-LrMGvbBVEeMzA", "heading": 60.78453, "description": "Brewery Quarter"}, {"pano_id": "2KffpphWzL_0XL4KbYzFDQ", "heading": 244.98508, "description": "Brewery Quarter"}]}, "2of0eyfuJJA2i8ry4nXQBw": {"lat": 51.47779288819476, "lng": -3.177571893053311, "links": [{"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 342.98276, "description": "St Mary St"}, {"pano_id": "T_CPOhouW7IQTu0NPWiTqg", "heading": 155.54343, "description": "St Mary St"}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 339.98, "distance": 15.43, "virtual": true}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 359.1, "distance": 17.65, "virtual": true}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 303.57, "distance": 4.69, "virtual": true}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 266.58, "distance": 12.6, "virtual": true}, {"pano_id": "iyWVcKPvmAVo7kdEQVRPSw", "heading": 155.22, "distance": 17.37, "virtual": true}]}, "C0pAp2aU9sFFT_QUuLEQ3w": {"lat": 51.47905807184969, "lng": -3.178867897405753, "links": [{"pano_id": "S6t_GED9DP4ccm0RKQZWxQ", "heading": 232.88873, "description": "Golate"}, {"pano_id": "4oPsHNrtPY2ny6AVtnuchQ", "heading": 55.05244, "description": "Golate"}]}, "yN3WezZ4nAnm09yQb5hPJg": {"lat": 51.47935969654663, "lng": -3.178794157162423, "links": [{"pano_id": "jJvGrOzhbJTY0aw1Oh7W2Q", "heading": 145.86382, "description": "St Mary St"}, {"pano_id": "DAs4amPhsq05H4snD7lcOQ", "heading": 325.91467, "description": "St Mary St"}]}, "bPvW6Ec5kMRgLoBaSYo__Q": {"lat": 51.47781623531287, "lng": -3.177628370624754, "links": [{"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 38.641083, "description": "St Mary St"}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 248.86967, "description": "Wood St"}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 353.42, "distance": 11.98, "virtual": true}, {"pano_id": "HpYZcltc4PgoTKL724s-tA", "heading": 13.58, "distance": 15.48, "virtual": true}, {"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 123.57, "distance": 4.69, "virtual": true}, {"pano_id": "T_CPOhouW7IQTu0NPWiTqg", "heading": 143.72, "distance": 12.13, "virtual": true}]}, "_ZuEzT3fmYimkPJo2AvioA": {"lat": 51.47931362105174, "lng": -3.178290606325159, "links": [{"pano_id": "Pld4hPiL34cA-CMm_tUeIQ", "heading": 54.216343, "description": "Wharton St"}, {"pano_id": "MAHSCILFsKrfqexvUl0YPA", "heading": 234.20622, "description": "Wharton St"}]}, "mFu9ext_FaZVDT-F26F6wA": {"lat": 51.47880433734577, "lng": -3.177112267463132, "links": [{"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 90.551994, "description": "Green Garden Ct"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 237.34991, "description": "Morgan Arcade"}, {"pano_id": "t2PRSCksjREbpEDk0fpscw", "heading": 237.36, "distance": 12.57, "virtual": true}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 357.64, "distance": 4.45, "virtual": true}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 26.08, "distance": 13.05, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 72.54, "distance": 13.59, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 29.26, "distance": 14.94, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 33.12, "distance": 14.12, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 75.17, "distance": 16.06, "virtual": true}]}, "T_CPOhouW7IQTu0NPWiTqg": {"lat": 51.47772828595595, "lng": -3.177524717461345, "links": [{"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 335.54343, "description": "St Mary St"}, {"pano_id": "iyWVcKPvmAVo7kdEQVRPSw", "heading": 154.95203, "description": "St Mary St"}, {"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 338.65, "distance": 13.53, "virtual": true}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 323.72, "distance": 12.13, "virtual": true}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 292.1, "distance": 17.1, "virtual": true}]}, "S6t_GED9DP4ccm0RKQZWxQ": {"lat": 51.47900290592712, "lng": -3.178984969489539, "links": [{"pano_id": "C0pAp2aU9sFFT_QUuLEQ3w", "heading": 52.888733, "description": "Golate"}, {"pano_id": "cOk-moVkLYQQ2DzKGdspNA", "heading": 228.55501, "description": "Golate"}]}, "lGbUqGLAWAdMZEVfwjfUKw": {"lat": 51.47890977098766, "lng": -3.177029404263257, "links": [{"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 50.072193, "description": "Morgan Arcade"}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 219.12926, "description": "Morgan Arcade"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 211.14, "distance": 15.34, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 206.08, "distance": 13.05, "virtual": true}, {"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 161.97, "distance": 12.43, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 136.62, "distance": 10.52, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 87.0, "distance": 1.98, "virtual": true}, {"pano_id": "xTNnuOGXwZwzdftz5PFvRA", "heading": 27.38, "distance": 9.39, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 127.9, "distance": 12.4, "virtual": true}]}, "npBKQcOXAXzN1kb6GoaGNA": {"lat": 51.47880350687237, "lng": -3.176973863330546, "links": [{"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 39.008038, "description": "Tabernacle Ln"}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 270.552, "description": "Green Garden Ct"}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 54.70755, "description": "Barry Ln"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 263.63, "distance": 11.85, "virtual": true}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 294.91, "distance": 10.77, "virtual": true}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 341.97, "distance": 12.43, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 350.13, "distance": 13.32, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 351.09, "distance": 12.07, "virtual": true}]}, "DAs4amPhsq05H4snD7lcOQ": {"lat": 51.47943453016625, "lng": -3.178875465047319, "links": [{"pano_id": "yN3WezZ4nAnm09yQb5hPJg", "heading": 145.91467, "description": "St Mary St"}, {"pano_id": "Uvfdr7KiIEuRkIgy4--2xA", "heading": 325.88803, "description": "St Mary St"}]}, "YClk0yJVNJi4-cnTleMTSw": {"lat": 51.47842797591297, "lng": -3.17711016241164, "links": [{"pano_id": "L32eRaMZUrl23dOKKIv-5g", "heading": 54.282394, "description": "Royal Arcade"}, {"pano_id": "pe4NfH-k1KwN9zG82K-Bbw", "heading": 234.25186, "description": "Royal Arcade"}]}, "VLUd51ri2XpjybTwzirYZg": {"lat": 51.47778613149548, "lng": -3.177753436280735, "links": [{"pano_id": "qKNbf6sw7IDawp0o8JQ3Fw", "heading": 247.31245, "description": "Wood St"}, {"pano_id": "bPvW6Ec5kMRgLoBaSYo__Q", "heading": 68.86968, "description": "Wood St"}, {"pano_id": "FyQDRUaYVQgi4qlmvZ8zgw", "heading": 25.54, "distance": 16.9, "virtual": true}, {"pano_id": "r_lpNusNfIu8TH9dlKv-MA", "heading": 60.54, "distance": 12.54, "virtual": true}, {"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 86.58, "distance": 12.6, "virtual": true}, {"pano_id": "T_CPOhouW7IQTu0NPWiTqg", "heading": 112.1, "distance": 17.1, "virtual": true}]}, "Pld4hPiL34cA-CMm_tUeIQ": {"lat": 51.47936622148113, "lng": -3.178173431410209, "links": [{"pano_id": "4aA9AxuN3LQISF1hs6amqw", "heading": 54.172043, "description": "Wharton St"}, {"pano_id": "_ZuEzT3fmYimkPJo2AvioA", "heading": 234.21634, "description": "Wharton St"}]}, "Uvfdr7KiIEuRkIgy4--2xA": {"lat": 51.47951006322103, "lng": -3.178957615260587, "links": [{"pano_id": "DAs4amPhsq05H4snD7lcOQ", "heading": 145.88803, "description": "St Mary St"}]}, "G5pJVlz7C0-3Ph43q0_vpQ": {"lat": 51.47884101583263, "lng": -3.176925079316921, "links": [{"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 219.00804, "description": "Green Garden Ct"}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 325.89954, "description": "Tabernacle Ln"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 250.11, "distance": 16.12, "virtual": true}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 271.59, "distance": 13.15, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 252.54, "distance": 13.59, "virtual": true}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 316.62, "distance": 10.52, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 327.69, "distance": 10.59, "virtual": true}, {"pano_id": "xTNnuOGXwZwzdftz5PFvRA", "heading": 349.69, "distance": 16.24, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 89.31, "distance": 2.56, "virtual": true}]}, "L32eRaMZUrl23dOKKIv-5g": {"lat": 51.47848126571136, "lng": -3.176991165174595, "links": [{"pano_id": "YClk0yJVNJi4-cnTleMTSw", "heading": 234.2824, "description": "Royal Arcade"}]}, "yLo43ChE-LrMGvbBVEeMzA": {"lat": 51.47807358033457, "lng": -3.177180093467158, "links": [{"pano_id": "m1S5rjIsMEe5W7oxjJtrtw", "heading": 240.78453, "description": "Brewery Quarter"}]}, "cOk-moVkLYQQ2DzKGdspNA": {"lat": 51.47894458794541, "lng": -3.179091013117983, "links": [{"pano_id": "S6t_GED9DP4ccm0RKQZWxQ", "heading": 48.555016, "description": "Golate"}]}, "iyWVcKPvmAVo7kdEQVRPSw": {"lat": 51.47765105629745, "lng": -3.177466768824568, "links": [{"pano_id": "2DkaAmIDzreG7cjztQR1dw", "heading": 153.51974, "description": "St Mary St"}, {"pano_id": "T_CPOhouW7IQTu0NPWiTqg", "heading": 334.95203, "description": "St Mary St"}, {"pano_id": "2of0eyfuJJA2i8ry4nXQBw", "heading": 335.22, "distance": 17.37, "virtual": true}]}, "n4ydrpmsMgpCuYy8Vf_6GQ": {"lat": 51.47892153517618, "lng": -3.177006835404804, "links": [{"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 230.07219, "description": "Morgan Arcade"}, {"pano_id": "xTNnuOGXwZwzdftz5PFvRA", "heading": 21.402569, "description": "Morgan Arcade"}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 160.97536, "description": "Tabernacle Ln"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 213.34, "distance": 17.28, "virtual": true}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 221.08, "distance": 11.39, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 209.26, "distance": 14.94, "virtual": true}, {"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 170.13, "distance": 13.32, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 147.69, "distance": 10.59, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 137.35, "distance": 12.13, "virtual": true}]}, "qKNbf6sw7IDawp0o8JQ3Fw": {"lat": 51.47775219363701, "lng": -3.17788378027933, "links": [{"pano_id": "1bYhGb15kp3BifCfQ6NySg", "heading": 244.73824, "description": "Wood St"}, {"pano_id": "VLUd51ri2XpjybTwzirYZg", "heading": 67.312454, "description": "Wood St"}]}, "-Cq9jWnhzxbzhKqJPlSl4A": {"lat": 51.47891070406538, "lng": -3.17700083886227, "links": [{"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 145.89955, "description": "Tabernacle Ln"}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 340.97534, "description": "Morgan Arcade"}, {"pano_id": "fUJbCZek-mpfOZ-Qo4ckTQ", "heading": 216.83, "distance": 16.54, "virtual": true}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 226.94, "distance": 10.81, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 213.12, "distance": 14.12, "virtual": true}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 267.0, "distance": 1.98, "virtual": true}, {"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 171.09, "distance": 12.07, "virtual": true}, {"pano_id": "xTNnuOGXwZwzdftz5PFvRA", "heading": 15.86, "distance": 8.56, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 134.68, "distance": 10.98, "virtual": true}]}, "xTNnuOGXwZwzdftz5PFvRA": {"lat": 51.47898471875977, "lng": -3.17696707214158, "links": [{"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 201.40257, "description": "Morgan Arcade"}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 207.38, "distance": 9.39, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 169.69, "distance": 16.24, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 195.86, "distance": 8.56, "virtual": true}, {"pano_id": "Z0OsE1ZsI8ltHY79XLpaJw", "heading": 161.08, "distance": 16.86, "virtual": true}]}, "1bYhGb15kp3BifCfQ6NySg": {"lat": 51.47771383793609, "lng": -3.178014287669613, "links": [{"pano_id": "qKNbf6sw7IDawp0o8JQ3Fw", "heading": 64.738235, "description": "Wood St"}]}, "4aA9AxuN3LQISF1hs6amqw": {"lat": 51.47941804790324, "lng": -3.178058168563109, "links": [{"pano_id": "Pld4hPiL34cA-CMm_tUeIQ", "heading": 234.17204, "description": "Wharton St"}]}, "2DkaAmIDzreG7cjztQR1dw": {"lat": 51.47756662348599, "lng": -3.177399236800066, "links": [{"pano_id": "iyWVcKPvmAVo7kdEQVRPSw", "heading": 333.51974, "description": "St Mary St"}]}, "Z0OsE1ZsI8ltHY79XLpaJw": {"lat": 51.47884129236078, "lng": -3.176888152122314, "links": [{"pano_id": "npBKQcOXAXzN1kb6GoaGNA", "heading": 234.70755, "description": "Green Garden Ct"}, {"pano_id": "RlqNrRbv6Izeca55SlQkHA", "heading": 271.22, "distance": 15.71, "virtual": true}, {"pano_id": "mFu9ext_FaZVDT-F26F6wA", "heading": 255.17, "distance": 16.06, "virtual": true}, {"pano_id": "lGbUqGLAWAdMZEVfwjfUKw", "heading": 307.9, "distance": 12.4, "virtual": true}, {"pano_id": "G5pJVlz7C0-3Ph43q0_vpQ", "heading": 269.31, "distance": 2.56, "virtual": true}, {"pano_id": "n4ydrpmsMgpCuYy8Vf_6GQ", "heading": 317.35, "distance": 12.13, "virtual": true}, {"pano_id": "-Cq9jWnhzxbzhKqJPlSl4A", "heading": 314.68, "distance": 10.98, "virtual": true}, {"pano_id": "xTNnuOGXwZwzdftz5PFvRA", "heading": 341.08, "distance": 16.86, "virtual": true}]}};
+        const targetPanos = ["lHNbhtI8rM_XPbLMoNXZ5g", "wHg-1xrzxMPmjnf75Gn76g", "gPQZQUiXIdStsp1elrDelQ"];
+        const spawnPoints = ["Uvfdr7KiIEuRkIgy4--2xA", "4aA9AxuN3LQISF1hs6amqw", "2DkaAmIDzreG7cjztQR1dw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

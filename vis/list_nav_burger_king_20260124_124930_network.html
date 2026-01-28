@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260124_124930</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260124_124930</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"YWNUOeS8FsMHsCCaoAyLLA": {"lat": 18.63692622605211, "lng": 73.79641892448554, "links": [{"pano_id": "aOKdTuwwVBwxU3wr4R0lZA", "heading": 140.87334, "description": "Service Rd"}, {"pano_id": "jitWzoIwhZ5q7u9r-tcZkQ", "heading": 320.81592, "description": "Service Rd"}]}, "jitWzoIwhZ5q7u9r-tcZkQ": {"lat": 18.63700991027212, "lng": 73.79634693713786, "links": [{"pano_id": "YWNUOeS8FsMHsCCaoAyLLA", "heading": 140.8159, "description": "Service Rd"}, {"pano_id": "-CDWEODWvpm8xCosLW8IdA", "heading": 320.85052, "description": "Service Rd"}]}, "aOKdTuwwVBwxU3wr4R0lZA": {"lat": 18.63685470820438, "lng": 73.796480320158, "links": [{"pano_id": "YWNUOeS8FsMHsCCaoAyLLA", "heading": 320.87335, "description": "Service Rd"}, {"pano_id": "SEDIuxybemc5mcBOrPxhlg", "heading": 140.83504, "description": "Service Rd"}]}, "SEDIuxybemc5mcBOrPxhlg": {"lat": 18.63678287027179, "lng": 73.79654207485036, "links": [{"pano_id": "aOKdTuwwVBwxU3wr4R0lZA", "heading": 320.83502, "description": "Service Rd"}, {"pano_id": "MksPzefRtmuVr42NQlJHkg", "heading": 140.82631, "description": "Service Rd"}, {"pano_id": "YCNhBMRtKo5XZwo37jf1Ig", "heading": 140.84, "distance": 17.19, "virtual": true}]}, "-CDWEODWvpm8xCosLW8IdA": {"lat": 18.63708011626727, "lng": 73.79628661854218, "links": [{"pano_id": "0J5ddZhNRZOcKNGL-S7uaw", "heading": 320.82452, "description": "Service Rd"}, {"pano_id": "jitWzoIwhZ5q7u9r-tcZkQ", "heading": 140.85052, "description": "Service Rd"}, {"pano_id": "IcEPtF7qG7XkFAqFZqEbsg", "heading": 320.68, "distance": 16.46, "virtual": true}]}, "0J5ddZhNRZOcKNGL-S7uaw": {"lat": 18.63713773207376, "lng": 73.79623707111065, "links": [{"pano_id": "IcEPtF7qG7XkFAqFZqEbsg", "heading": 320.5344, "description": "Service Rd"}, {"pano_id": "-CDWEODWvpm8xCosLW8IdA", "heading": 140.82452, "description": "Service Rd"}]}, "MksPzefRtmuVr42NQlJHkg": {"lat": 18.63672827787861, "lng": 73.79658901917493, "links": [{"pano_id": "SEDIuxybemc5mcBOrPxhlg", "heading": 320.82632, "description": "Service Rd"}, {"pano_id": "YCNhBMRtKo5XZwo37jf1Ig", "heading": 140.85356, "description": "Service Rd"}]}, "YCNhBMRtKo5XZwo37jf1Ig": {"lat": 18.6366629750022, "lng": 73.79664511897465, "links": [{"pano_id": "vU-mwVN3sUs9_U_Z7cpU-w", "heading": 140.80168, "description": "Service Rd"}, {"pano_id": "MksPzefRtmuVr42NQlJHkg", "heading": 320.85358, "description": "Service Rd"}, {"pano_id": "SEDIuxybemc5mcBOrPxhlg", "heading": 320.84, "distance": 17.19, "virtual": true}]}, "IcEPtF7qG7XkFAqFZqEbsg": {"lat": 18.63719465247941, "lng": 73.79618761342665, "links": [{"pano_id": "0J5ddZhNRZOcKNGL-S7uaw", "heading": 140.53441, "description": "Service Rd"}, {"pano_id": "K7JCHBVwXWkQY5ifDkwj5Q", "heading": 320.36163, "description": "Service Rd"}, {"pano_id": "-CDWEODWvpm8xCosLW8IdA", "heading": 140.68, "distance": 16.46, "virtual": true}]}, "K7JCHBVwXWkQY5ifDkwj5Q": {"lat": 18.63726395558061, "lng": 73.796127025503, "links": [{"pano_id": "IcEPtF7qG7XkFAqFZqEbsg", "heading": 140.36162, "description": "Service Rd"}, {"pano_id": "4STCZC0f4eTTrYfYslxVgg", "heading": 320.3791, "description": "Service Rd"}, {"pano_id": "dyp6Pf5uYrV2nELS3DObrw", "heading": 320.36, "distance": 17.48, "virtual": true}]}, "vU-mwVN3sUs9_U_Z7cpU-w": {"lat": 18.63658934512475, "lng": 73.7967084892894, "links": [{"pano_id": "pYOS1MQFnRrQT2tGMlHj4A", "heading": 140.85461, "description": "Service Rd"}, {"pano_id": "YCNhBMRtKo5XZwo37jf1Ig", "heading": 320.8017, "description": "Service Rd"}]}, "pYOS1MQFnRrQT2tGMlHj4A": {"lat": 18.63651954679712, "lng": 73.79676844871875, "links": [{"pano_id": "Qt29H5G1jcLFPiVn-E_a2Q", "heading": 140.85165, "description": "Service Rd"}, {"pano_id": "vU-mwVN3sUs9_U_Z7cpU-w", "heading": 320.8546, "description": "Service Rd"}]}, "4STCZC0f4eTTrYfYslxVgg": {"lat": 18.63732436375645, "lng": 73.79607424667448, "links": [{"pano_id": "dyp6Pf5uYrV2nELS3DObrw", "heading": 320.34744, "description": "Service Rd"}, {"pano_id": "K7JCHBVwXWkQY5ifDkwj5Q", "heading": 140.37909, "description": "Service Rd"}]}, "dyp6Pf5uYrV2nELS3DObrw": {"lat": 18.63738501193155, "lng": 73.79602119855214, "links": [{"pano_id": "fxwZZLglecvRsKfxPyDesA", "heading": 320.36603, "description": "Service Rd"}, {"pano_id": "4STCZC0f4eTTrYfYslxVgg", "heading": 140.34746, "description": "Service Rd"}, {"pano_id": "K7JCHBVwXWkQY5ifDkwj5Q", "heading": 140.36, "distance": 17.48, "virtual": true}]}, "Qt29H5G1jcLFPiVn-E_a2Q": {"lat": 18.63645497970258, "lng": 73.7968239201508, "links": [{"pano_id": "pYOS1MQFnRrQT2tGMlHj4A", "heading": 320.85165, "description": "Service Rd"}, {"pano_id": "JMp11RC6yypp-3JZErGzPg", "heading": 140.84761, "description": "Service Rd"}, {"pano_id": "3rDP8wKU9Jn7ylhubFTTgg", "heading": 165.14, "distance": 16.44, "virtual": true}]}, "JMp11RC6yypp-3JZErGzPg": {"lat": 18.63637611052368, "lng": 73.79689168862689, "links": [{"pano_id": "LVnd-uv_JVmKwzkS-46GGg", "heading": 140.43236, "description": "Service Rd"}, {"pano_id": "Qt29H5G1jcLFPiVn-E_a2Q", "heading": 320.84763, "description": "Service Rd"}, {"pano_id": "3rDP8wKU9Jn7ylhubFTTgg", "heading": 202.31, "distance": 7.7, "virtual": true}]}, "fxwZZLglecvRsKfxPyDesA": {"lat": 18.63744949953821, "lng": 73.79596482929664, "links": [{"pano_id": "dyp6Pf5uYrV2nELS3DObrw", "heading": 140.36601, "description": "Service Rd"}, {"pano_id": "xTUCCIyVfgxEhk8q8GexIw", "heading": 320.3887, "description": "Service Rd"}]}, "xTUCCIyVfgxEhk8q8GexIw": {"lat": 18.63752452167433, "lng": 73.79589930450508, "links": [{"pano_id": "6YtU3E6ZP899s0VOFksMMA", "heading": 320.3422, "description": "Service Rd"}, {"pano_id": "fxwZZLglecvRsKfxPyDesA", "heading": 140.3887, "description": "Service Rd"}]}, "LVnd-uv_JVmKwzkS-46GGg": {"lat": 18.63629201687949, "lng": 73.7969650221704, "links": [{"pano_id": "JMp11RC6yypp-3JZErGzPg", "heading": 320.43234, "description": "Service Rd"}, {"pano_id": "HtCH0Yuq6oOessHjxwjthA", "heading": 139.94986, "description": "Service Rd"}, {"pano_id": "3rDP8wKU9Jn7ylhubFTTgg", "heading": 281.81238, "description": ""}]}, "HtCH0Yuq6oOessHjxwjthA": {"lat": 18.6362092497084, "lng": 73.79703844544636, "links": [{"pano_id": "LVnd-uv_JVmKwzkS-46GGg", "heading": 319.94986, "description": "Service Rd"}, {"pano_id": "mjxIc4xLnXQnbM8fF_TrTQ", "heading": 139.94562, "description": "Service Rd"}]}, "3rDP8wKU9Jn7ylhubFTTgg": {"lat": 18.63631204582282, "lng": 73.79686395292225, "links": [{"pano_id": "LVnd-uv_JVmKwzkS-46GGg", "heading": 101.81238, "description": "Service Rd"}, {"pano_id": "MMBialBI9O5gnOL-nwJdGA", "heading": 236.84764, "description": ""}, {"pano_id": "Qt29H5G1jcLFPiVn-E_a2Q", "heading": 345.14, "distance": 16.44, "virtual": true}, {"pano_id": "JMp11RC6yypp-3JZErGzPg", "heading": 22.31, "distance": 7.7, "virtual": true}]}, "6YtU3E6ZP899s0VOFksMMA": {"lat": 18.63759439254877, "lng": 73.79583817793349, "links": [{"pano_id": "FvzkuNrWhhGteQQXkQ23Rw", "heading": 322.35794, "description": "Service Rd"}, {"pano_id": "xTUCCIyVfgxEhk8q8GexIw", "heading": 140.3422, "description": "Service Rd"}]}, "mjxIc4xLnXQnbM8fF_TrTQ": {"lat": 18.63614156887375, "lng": 73.79709849453579, "links": [{"pano_id": "L8Gz6jWOGKCYob28BrtF3A", "heading": 139.9121, "description": "Service Rd"}, {"pano_id": "HtCH0Yuq6oOessHjxwjthA", "heading": 319.94562, "description": "Service Rd"}]}, "FvzkuNrWhhGteQQXkQ23Rw": {"lat": 18.63766485887054, "lng": 73.79578082126557, "links": [{"pano_id": "6YtU3E6ZP899s0VOFksMMA", "heading": 142.35794, "description": "Service Rd"}, {"pano_id": "9Rmf9TCOTbR2vDCHmhvRFg", "heading": 322.90262, "description": "Service Rd"}]}, "MMBialBI9O5gnOL-nwJdGA": {"lat": 18.63625732287884, "lng": 73.79677553972793, "links": [{"pano_id": "3rDP8wKU9Jn7ylhubFTTgg", "heading": 56.847633, "description": ""}]}, "L8Gz6jWOGKCYob28BrtF3A": {"lat": 18.63607315999959, "lng": 73.79715926168258, "links": [{"pano_id": "bmMI-bdEnMxvRVUeAw0eWg", "heading": 141.19539, "description": "Service Rd"}, {"pano_id": "mjxIc4xLnXQnbM8fF_TrTQ", "heading": 319.91208, "description": "Service Rd"}]}, "9Rmf9TCOTbR2vDCHmhvRFg": {"lat": 18.6377358278936, "lng": 73.79572418266176, "links": [{"pano_id": "FvzkuNrWhhGteQQXkQ23Rw", "heading": 142.9026, "description": "Service Rd"}, {"pano_id": "uUpbhA6_YoHQ797gXZvDhw", "heading": 322.9812, "description": "Service Rd"}]}, "bmMI-bdEnMxvRVUeAw0eWg": {"lat": 18.63599626715673, "lng": 73.79722451678114, "links": [{"pano_id": "yUSxFiBrVbkRcj5-s3hyag", "heading": 142.35352, "description": "Service Rd"}, {"pano_id": "L8Gz6jWOGKCYob28BrtF3A", "heading": 321.1954, "description": "Service Rd"}]}, "uUpbhA6_YoHQ797gXZvDhw": {"lat": 18.63780327746781, "lng": 73.79567050612538, "links": [{"pano_id": "9Rmf9TCOTbR2vDCHmhvRFg", "heading": 142.98119, "description": "Service Rd"}, {"pano_id": "bY_QB_rvz7_PCL7RNWxlSA", "heading": 322.94205, "description": "Service Rd"}]}, "bY_QB_rvz7_PCL7RNWxlSA": {"lat": 18.63787885335374, "lng": 73.79561027708489, "links": [{"pano_id": "uUpbhA6_YoHQ797gXZvDhw", "heading": 142.94203, "description": "Service Rd"}, {"pano_id": "QNKYvC3etSntWBo9Gq4z9A", "heading": 322.8792, "description": "Service Rd"}]}, "yUSxFiBrVbkRcj5-s3hyag": {"lat": 18.63590045246911, "lng": 73.79730251768932, "links": [{"pano_id": "bmMI-bdEnMxvRVUeAw0eWg", "heading": 322.35352, "description": "Service Rd"}, {"pano_id": "1LQ3wGLnvQ2q2Et0rs-B7g", "heading": 140.64854, "description": "Service Rd"}]}, "1LQ3wGLnvQ2q2Et0rs-B7g": {"lat": 18.63581508723745, "lng": 73.79737638963745, "links": [{"pano_id": "yUSxFiBrVbkRcj5-s3hyag", "heading": 320.64856, "description": "Service Rd"}, {"pano_id": "Y5RxehBQcR2EQtTFYYMWTw", "heading": 140.64546, "description": "Service Rd"}]}, "QNKYvC3etSntWBo9Gq4z9A": {"lat": 18.637973473299, "lng": 73.79553469903809, "links": [{"pano_id": "CVaw_mq4ohabzsvtByUdJA", "heading": 322.943, "description": "Service Rd"}, {"pano_id": "bY_QB_rvz7_PCL7RNWxlSA", "heading": 142.8792, "description": "Service Rd"}]}, "Y5RxehBQcR2EQtTFYYMWTw": {"lat": 18.63574238435305, "lng": 73.7974393109228, "links": [{"pano_id": "1LQ3wGLnvQ2q2Et0rs-B7g", "heading": 320.64548, "description": "Service Rd"}, {"pano_id": "k2NDH2JZsHJXYSC380Gngw", "heading": 142.47246, "description": "Service Rd"}]}, "CVaw_mq4ohabzsvtByUdJA": {"lat": 18.6380499528968, "lng": 73.79547375187494, "links": [{"pano_id": "UPfcWTx_4RlRT2a91GhPyA", "heading": 322.92657, "description": "Service Rd"}, {"pano_id": "QNKYvC3etSntWBo9Gq4z9A", "heading": 142.94301, "description": "Service Rd"}]}, "k2NDH2JZsHJXYSC380Gngw": {"lat": 18.63566918970937, "lng": 73.79749864181701, "links": [{"pano_id": "gqPF0pm2Z48Ikw8LhlY0pw", "heading": 142.54657, "description": "Service Rd"}, {"pano_id": "Y5RxehBQcR2EQtTFYYMWTw", "heading": 322.47247, "description": "Service Rd"}]}, "UPfcWTx_4RlRT2a91GhPyA": {"lat": 18.63811985790231, "lng": 73.79541801078598, "links": [{"pano_id": "CysuKnldzmR5xAxHv6lljA", "heading": 322.9394, "description": "Service Rd"}, {"pano_id": "CVaw_mq4ohabzsvtByUdJA", "heading": 142.92656, "description": "Service Rd"}]}, "CysuKnldzmR5xAxHv6lljA": {"lat": 18.63819666535767, "lng": 73.79535679430636, "links": [{"pano_id": "bQvvIYP4w3YJMVTIRAFQ8A", "heading": 322.9327, "description": "Service Rd"}, {"pano_id": "UPfcWTx_4RlRT2a91GhPyA", "heading": 142.9394, "description": "Service Rd"}]}, "gqPF0pm2Z48Ikw8LhlY0pw": {"lat": 18.63559901863695, "lng": 73.79755536967512, "links": [{"pano_id": "23twfqAU3xbNVFQUPUlrWA", "heading": 142.4656, "description": "Service Rd"}, {"pano_id": "k2NDH2JZsHJXYSC380Gngw", "heading": 322.54657, "description": "Service Rd"}]}, "bQvvIYP4w3YJMVTIRAFQ8A": {"lat": 18.63828415047917, "lng": 73.79528705058158, "links": [{"pano_id": "p3ksf3OCyM4Wwa_5QRqYIQ", "heading": 322.9265, "description": "Service Rd"}, {"pano_id": "CysuKnldzmR5xAxHv6lljA", "heading": 142.9327, "description": "Service Rd"}]}, "23twfqAU3xbNVFQUPUlrWA": {"lat": 18.63552672773696, "lng": 73.7976139824609, "links": [{"pano_id": "fJuyxI4ySHC-V2EMHd4nFA", "heading": 142.4811, "description": "Service Rd"}, {"pano_id": "gqPF0pm2Z48Ikw8LhlY0pw", "heading": 322.4656, "description": "Service Rd"}]}, "p3ksf3OCyM4Wwa_5QRqYIQ": {"lat": 18.63835709471004, "lng": 73.7952288859121, "links": [{"pano_id": "Y0NX3Z38lvGxHBql9iUDyw", "heading": 322.91425, "description": "Service Rd"}, {"pano_id": "bQvvIYP4w3YJMVTIRAFQ8A", "heading": 142.92653, "description": "Service Rd"}, {"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 354.98, "distance": 16.23, "virtual": true}]}, "fJuyxI4ySHC-V2EMHd4nFA": {"lat": 18.63544631030271, "lng": 73.79767914765115, "links": [{"pano_id": "23twfqAU3xbNVFQUPUlrWA", "heading": 322.4811, "description": "Service Rd"}]}, "Y0NX3Z38lvGxHBql9iUDyw": {"lat": 18.63843011891221, "lng": 73.79517063146531, "links": [{"pano_id": "p3ksf3OCyM4Wwa_5QRqYIQ", "heading": 142.91423, "description": "Service Rd"}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 322.92267, "description": "Service Rd"}, {"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 311.97, "distance": 15.33, "virtual": true}, {"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 328.14, "distance": 9.42, "virtual": true}, {"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 30.4, "distance": 9.33, "virtual": true}]}, "LIyy0nvKB2pji5U5937dHw": {"lat": 18.6385003516647, "lng": 73.7951146210104, "links": [{"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 293.95883, "description": "Mahavir Chowk"}, {"pano_id": "Y0NX3Z38lvGxHBql9iUDyw", "heading": 142.92267, "description": "Service Rd"}, {"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 276.48, "distance": 10.34, "virtual": true}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 298.97, "distance": 9.12, "virtual": true}, {"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 78.2, "distance": 0.95, "virtual": true}, {"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 88.74, "distance": 10.62, "virtual": true}]}, "bO9Z51kEWZLKe9NXIlxGmw": {"lat": 18.6385223104027, "lng": 73.79506247023613, "links": [{"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 255.05875, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 308.49493, "description": "Mahavir Chowk"}, {"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 109.29426, "description": "Mahavir Chowk"}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 113.95883, "description": "Service Rd"}, {"pano_id": "Y0NX3Z38lvGxHBql9iUDyw", "heading": 131.97, "distance": 15.33, "virtual": true}, {"pano_id": "EB2E2KV2PXNRpO6ZM2HgXw", "heading": 244.24, "distance": 13.87, "virtual": true}, {"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 97.8, "distance": 16.27, "virtual": true}]}, "edoObKtdgVhyF_BFzN5vDg": {"lat": 18.63851084873219, "lng": 73.79501714123882, "links": [{"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 75.058754, "description": "Mahavir Chowk"}, {"pano_id": "EB2E2KV2PXNRpO6ZM2HgXw", "heading": 238.36673, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 96.48, "distance": 10.34, "virtual": true}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 35.13, "distance": 3.98, "virtual": true}, {"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 94.97, "distance": 11.24, "virtual": true}, {"pano_id": "Kk4uezeD9OCdS7hgxE1o0A", "heading": 342.14, "distance": 17.55, "virtual": true}]}, "sVPmbCGIcw8pBRHNEvhDjg": {"lat": 18.63854010018104, "lng": 73.79503886325466, "links": [{"pano_id": "Kk4uezeD9OCdS7hgxE1o0A", "heading": 330.30862, "description": "Mahavir Chowk"}, {"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 128.49492, "description": "Mahavir Chowk"}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 118.97, "distance": 9.12, "virtual": true}, {"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 215.13, "distance": 3.98, "virtual": true}, {"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 115.38, "distance": 9.86, "virtual": true}, {"pano_id": "EB2E2KV2PXNRpO6ZM2HgXw", "heading": 231.33, "distance": 12.81, "virtual": true}]}, "Zsa0TT2B4lfUhWKsxsQQlg": {"lat": 18.63850209284091, "lng": 73.79512341752519, "links": [{"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 289.29425, "description": "Mahavir Chowk"}, {"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 89.76259, "description": "Mahavir Chowk"}, {"pano_id": "Y0NX3Z38lvGxHBql9iUDyw", "heading": 148.14, "distance": 9.42, "virtual": true}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 258.2, "distance": 0.95, "virtual": true}, {"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 274.97, "distance": 11.24, "virtual": true}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 295.38, "distance": 9.86, "virtual": true}]}, "Kk4uezeD9OCdS7hgxE1o0A": {"lat": 18.63866107350707, "lng": 73.7949660675641, "links": [{"pano_id": "1fJrpbIi8jcJ76iTIze5gQ", "heading": 330.36685, "description": "Service Rd"}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 150.30864, "description": "Mahavir Chowk"}, {"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 162.14, "distance": 17.55, "virtual": true}]}, "EB2E2KV2PXNRpO6ZM2HgXw": {"lat": 18.63846809606702, "lng": 73.79494389673813, "links": [{"pano_id": "5JmidMh7HJUSj2Zp9X_ERQ", "heading": 238.01378, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "edoObKtdgVhyF_BFzN5vDg", "heading": 58.366722, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 64.24, "distance": 13.87, "virtual": true}, {"pano_id": "sVPmbCGIcw8pBRHNEvhDjg", "heading": 51.33, "distance": 12.81, "virtual": true}, {"pano_id": "w7xdYmI8N5T_cPV2Rz496A", "heading": 238.44, "distance": 15.43, "virtual": true}]}, "AU1lNw55wmuDLJWBU1ia2w": {"lat": 18.63850245408123, "lng": 73.79521542186582, "links": [{"pano_id": "Zsa0TT2B4lfUhWKsxsQQlg", "heading": 269.76257, "description": "Mahavir Chowk"}, {"pano_id": "JWEiofzOyFKrBjsTBsBMyA", "heading": 57.51019, "description": "Mahavir Chowk"}, {"pano_id": "p3ksf3OCyM4Wwa_5QRqYIQ", "heading": 174.98, "distance": 16.23, "virtual": true}, {"pano_id": "Y0NX3Z38lvGxHBql9iUDyw", "heading": 210.4, "distance": 9.33, "virtual": true}, {"pano_id": "LIyy0nvKB2pji5U5937dHw", "heading": 268.74, "distance": 10.62, "virtual": true}, {"pano_id": "bO9Z51kEWZLKe9NXIlxGmw", "heading": 277.8, "distance": 16.27, "virtual": true}]}, "JWEiofzOyFKrBjsTBsBMyA": {"lat": 18.6385601921387, "lng": 73.79531110633496, "links": [{"pano_id": "AU1lNw55wmuDLJWBU1ia2w", "heading": 237.5102, "description": "Mahavir Chowk"}, {"pano_id": "3ucDBoqneh58if7wYXPRPw", "heading": 21.679176, "description": "Mahavir Chowk"}, {"pano_id": "NOERBPILYICT69aeiDqOEQ", "heading": 17.2, "distance": 15.03, "virtual": true}, {"pano_id": "5nPkdVxiFHMVlHFKxU-VTA", "heading": 36.76, "distance": 11.71, "virtual": true}, {"pano_id": "9H32m0HDceAY6pnMI2xHUA", "heading": 86.95, "distance": 14.12, "virtual": true}]}, "1fJrpbIi8jcJ76iTIze5gQ": {"lat": 18.63873822504757, "lng": 73.79491975117993, "links": [{"pano_id": "Kk4uezeD9OCdS7hgxE1o0A", "heading": 150.36687, "description": "Mahavir Chowk"}, {"pano_id": "M_Ch05-9evBcueVVItEY8Q", "heading": 318.15854, "description": "Service Rd"}, {"pano_id": "MET_FMYvHOdpkadYWSnI2Q", "heading": 318.16, "distance": 17.14, "virtual": true}]}, "5JmidMh7HJUSj2Zp9X_ERQ": {"lat": 18.63842007694431, "lng": 73.79486275328928, "links": [{"pano_id": "w7xdYmI8N5T_cPV2Rz496A", "heading": 239.25648, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "EB2E2KV2PXNRpO6ZM2HgXw", "heading": 58.013783, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "1uD_sXXhaJQn19CEm5rnIQ", "heading": 239.22, "distance": 15.43, "virtual": true}, {"pano_id": "w-Xsx_-eJVeWK-_KFi8p5w", "heading": 239.21, "distance": 13.94, "virtual": true}]}, "3ucDBoqneh58if7wYXPRPw": {"lat": 18.63866096453522, "lng": 73.79535338341691, "links": [{"pano_id": "NOERBPILYICT69aeiDqOEQ", "heading": 359.82834, "description": "Mahavir Chowk"}, {"pano_id": "JWEiofzOyFKrBjsTBsBMyA", "heading": 201.67917, "description": "Mahavir Chowk"}, {"pano_id": "5nPkdVxiFHMVlHFKxU-VTA", "heading": 125.56, "distance": 3.14, "virtual": true}, {"pano_id": "ShnNA-Arxnivj8RJ_VRlMg", "heading": 343.73, "distance": 13.03, "virtual": true}, {"pano_id": "9H32m0HDceAY6pnMI2xHUA", "heading": 137.3, "distance": 14.22, "virtual": true}]}, "M_Ch05-9evBcueVVItEY8Q": {"lat": 18.63880623638737, "lng": 73.79485548269103, "links": [{"pano_id": "1fJrpbIi8jcJ76iTIze5gQ", "heading": 138.15854, "description": "Service Rd"}, {"pano_id": "MET_FMYvHOdpkadYWSnI2Q", "heading": 318.1584, "description": "Service Rd"}]}, "w7xdYmI8N5T_cPV2Rz496A": {"lat": 18.63839549110304, "lng": 73.7948191296958, "links": [{"pano_id": "5JmidMh7HJUSj2Zp9X_ERQ", "heading": 59.25648, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "1uD_sXXhaJQn19CEm5rnIQ", "heading": 239.19954, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "EB2E2KV2PXNRpO6ZM2HgXw", "heading": 58.44, "distance": 15.43, "virtual": true}, {"pano_id": "w-Xsx_-eJVeWK-_KFi8p5w", "heading": 239.19, "distance": 8.59, "virtual": true}]}, "1uD_sXXhaJQn19CEm5rnIQ": {"lat": 18.63834904743845, "lng": 73.79473690906977, "links": [{"pano_id": "tVEh8xXQ8nR7C_LLGyFTgw", "heading": 239.541, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "w7xdYmI8N5T_cPV2Rz496A", "heading": 59.199535, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "5JmidMh7HJUSj2Zp9X_ERQ", "heading": 59.22, "distance": 15.43, "virtual": true}, {"pano_id": "w-Xsx_-eJVeWK-_KFi8p5w", "heading": 59.27, "distance": 1.5, "virtual": true}]}, "MET_FMYvHOdpkadYWSnI2Q": {"lat": 18.63885306515216, "lng": 73.79481123077251, "links": [{"pano_id": "M_Ch05-9evBcueVVItEY8Q", "heading": 138.15839, "description": "Service Rd"}, {"pano_id": "Rtnffdj8Sn8cd9Lq-S442w", "heading": 318.15796, "description": "Service Rd"}, {"pano_id": "1fJrpbIi8jcJ76iTIze5gQ", "heading": 138.16, "distance": 17.14, "virtual": true}]}, "NOERBPILYICT69aeiDqOEQ": {"lat": 18.63868935128159, "lng": 73.79535329365666, "links": [{"pano_id": "5nPkdVxiFHMVlHFKxU-VTA", "heading": 152.77591, "description": "Service Rd"}, {"pano_id": "3ucDBoqneh58if7wYXPRPw", "heading": 179.82832, "description": "Mahavir Chowk"}, {"pano_id": "ShnNA-Arxnivj8RJ_VRlMg", "heading": 338.7206, "description": "Mahavir Chowk"}, {"pano_id": "JWEiofzOyFKrBjsTBsBMyA", "heading": 197.2, "distance": 15.03, "virtual": true}, {"pano_id": "9H32m0HDceAY6pnMI2xHUA", "heading": 144.64, "distance": 16.69, "virtual": true}]}, "5nPkdVxiFHMVlHFKxU-VTA": {"lat": 18.63864454862629, "lng": 73.79537761868276, "links": [{"pano_id": "NOERBPILYICT69aeiDqOEQ", "heading": 332.7759, "description": "Mahavir Chowk"}, {"pano_id": "9H32m0HDceAY6pnMI2xHUA", "heading": 140.5748, "description": "Service Rd"}, {"pano_id": "JWEiofzOyFKrBjsTBsBMyA", "heading": 216.76, "distance": 11.71, "virtual": true}, {"pano_id": "3ucDBoqneh58if7wYXPRPw", "heading": 305.56, "distance": 3.14, "virtual": true}, {"pano_id": "ShnNA-Arxnivj8RJ_VRlMg", "heading": 336.59, "distance": 15.62, "virtual": true}]}, "ShnNA-Arxnivj8RJ_VRlMg": {"lat": 18.63877342783321, "lng": 73.79531873595764, "links": [{"pano_id": "NOERBPILYICT69aeiDqOEQ", "heading": 158.72061, "description": "Mahavir Chowk"}, {"pano_id": "rLpgbCZv3NzzEsh82AN5gg", "heading": 306.49503, "description": "Mahavir Chowk"}, {"pano_id": "3ucDBoqneh58if7wYXPRPw", "heading": 163.73, "distance": 13.03, "virtual": true}, {"pano_id": "5nPkdVxiFHMVlHFKxU-VTA", "heading": 156.59, "distance": 15.62, "virtual": true}]}, "Rtnffdj8Sn8cd9Lq-S442w": {"lat": 18.63893000379056, "lng": 73.79473852475924, "links": [{"pano_id": "4D7O7v-twWnNY-ZpVZhGqQ", "heading": 318.13718, "description": "Service Rd"}, {"pano_id": "MET_FMYvHOdpkadYWSnI2Q", "heading": 138.15797, "description": "Service Rd"}]}, "tVEh8xXQ8nR7C_LLGyFTgw": {"lat": 18.63831073355252, "lng": 73.79466815249397, "links": [{"pano_id": "RrUJIClo6AFo8JmqMIZ34g", "heading": 240.39578, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "w-Xsx_-eJVeWK-_KFi8p5w", "heading": 59.5, "description": "Chikhali - Kaspate Vasti BRTS Rd"}]}, "9H32m0HDceAY6pnMI2xHUA": {"lat": 18.63856695969323, "lng": 73.79544493885021, "links": [{"pano_id": "5nPkdVxiFHMVlHFKxU-VTA", "heading": 320.5748, "description": "Service Rd"}, {"pano_id": "JWEiofzOyFKrBjsTBsBMyA", "heading": 266.95, "distance": 14.12, "virtual": true}, {"pano_id": "3ucDBoqneh58if7wYXPRPw", "heading": 317.3, "distance": 14.22, "virtual": true}, {"pano_id": "NOERBPILYICT69aeiDqOEQ", "heading": 324.64, "distance": 16.69, "virtual": true}]}, "RrUJIClo6AFo8JmqMIZ34g": {"lat": 18.63826438971647, "lng": 73.79458207209994, "links": [{"pano_id": "tVEh8xXQ8nR7C_LLGyFTgw", "heading": 60.39578, "description": "Chikhali - Kaspate Vasti BRTS Rd"}]}, "rLpgbCZv3NzzEsh82AN5gg": {"lat": 18.63882911573061, "lng": 73.79523929810726, "links": [{"pano_id": "ShnNA-Arxnivj8RJ_VRlMg", "heading": 126.49503, "description": "Mahavir Chowk"}]}, "w-Xsx_-eJVeWK-_KFi8p5w": {"lat": 18.63835592381085, "lng": 73.7947491165011, "links": [{"pano_id": "tVEh8xXQ8nR7C_LLGyFTgw", "heading": 239.5, "description": "Chikhali - Kaspate Vasti BRTS Rd"}, {"pano_id": "5JmidMh7HJUSj2Zp9X_ERQ", "heading": 59.21, "distance": 13.94, "virtual": true}, {"pano_id": "w7xdYmI8N5T_cPV2Rz496A", "heading": 59.19, "distance": 8.59, "virtual": true}, {"pano_id": "1uD_sXXhaJQn19CEm5rnIQ", "heading": 239.27, "distance": 1.5, "virtual": true}]}, "4D7O7v-twWnNY-ZpVZhGqQ": {"lat": 18.63900052687404, "lng": 73.79467183267683, "links": [{"pano_id": "Rtnffdj8Sn8cd9Lq-S442w", "heading": 138.13719, "description": "Service Rd"}]}};
+        const targetPanos = ["YWNUOeS8FsMHsCCaoAyLLA", "MksPzefRtmuVr42NQlJHkg"];
+        const spawnPoints = ["sVPmbCGIcw8pBRHNEvhDjg", "FvzkuNrWhhGteQQXkQ23Rw", "M_Ch05-9evBcueVVItEY8Q", "JWEiofzOyFKrBjsTBsBMyA", "fJuyxI4ySHC-V2EMHd4nFA"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

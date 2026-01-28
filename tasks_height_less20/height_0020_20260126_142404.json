@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0020_20260126_142404",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your South-West (approx. 216\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "hda4RXPOVWCzFQsGQSNCBA",
+  "spawn_heading": 216.12701730065575,
+  "target_building": {
+    "lat": 50.8590998,
+    "lng": 4.3714876,
+    "height": 8.31,
+    "floors": 2,
+    "ground_elevation": 49.75435638427734,
+    "roof_elevation": 58.067314,
+    "name": "buildings/ChIJWRqrP3DDw0cRiKLI-zGcxKc",
+    "date": "2021-03-30"
+  },
+  "geofence_id": "list_height_0020_20260126_142404",
+  "ground_truth": {
+    "height_meters": 8.31
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T14:24:04.259018",
+    "bearing_deg": 216.12701730065575,
+    "city": "Brussels, Belgium"
+  }
+}

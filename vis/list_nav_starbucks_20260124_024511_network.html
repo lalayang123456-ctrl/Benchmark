@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_starbucks_20260124_024511</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_starbucks_20260124_024511</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>10</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"FjDSnVpBhOJ27rRtr05m6g": {"lat": 26.78445942703107, "lng": 80.99071234446934, "links": [{"pano_id": "H5qd1vVz12mSgHMgNTogkw", "heading": 209.831, "description": "Lulu Mall Rd"}, {"pano_id": "iKG7gYOkiAgAP031LrCF6g", "heading": 30.425, "description": "Lulu Mall Rd"}]}, "iKG7gYOkiAgAP031LrCF6g": {"lat": 26.784543624291, "lng": 80.99076773508719, "links": [{"pano_id": "Pg3VH3J7pLRL04_2ackNUw", "heading": 30.677204, "description": "Lulu Mall Rd"}, {"pano_id": "FjDSnVpBhOJ27rRtr05m6g", "heading": 210.425, "description": "Lulu Mall Rd"}]}, "H5qd1vVz12mSgHMgNTogkw": {"lat": 26.78437568843122, "lng": 80.99065855567392, "links": [{"pano_id": "LjGAqNgqg1CtvhRHRnfy7w", "heading": 209.41045, "description": "Lulu Mall Rd"}, {"pano_id": "FjDSnVpBhOJ27rRtr05m6g", "heading": 29.830988, "description": "Lulu Mall Rd"}]}, "Pg3VH3J7pLRL04_2ackNUw": {"lat": 26.78462748649445, "lng": 80.99082346289947, "links": [{"pano_id": "iKG7gYOkiAgAP031LrCF6g", "heading": 210.6772, "description": "Lulu Mall Rd"}, {"pano_id": "0tGt2ssLYSXBZtMxFNb8Vg", "heading": 30.707972, "description": "Lulu Mall Rd"}]}, "LjGAqNgqg1CtvhRHRnfy7w": {"lat": 26.78429117449407, "lng": 80.99060518838459, "links": [{"pano_id": "bU8Fx38tXpPFvGdtMLgj4A", "heading": 209.41048, "description": "Lulu Mall Rd"}, {"pano_id": "H5qd1vVz12mSgHMgNTogkw", "heading": 29.410448, "description": "Lulu Mall Rd"}]}, "0tGt2ssLYSXBZtMxFNb8Vg": {"lat": 26.78470288276353, "lng": 80.99087362632774, "links": [{"pano_id": "Pg3VH3J7pLRL04_2ackNUw", "heading": 210.70798, "description": "Lulu Mall Rd"}, {"pano_id": "ILyQxXuoIXMEOgR5ewKbRQ", "heading": 30.72111, "description": "Lulu Mall Rd"}]}, "bU8Fx38tXpPFvGdtMLgj4A": {"lat": 26.7842066605191, "lng": 80.99055182105921, "links": [{"pano_id": "LjGAqNgqg1CtvhRHRnfy7w", "heading": 29.410473, "description": "Lulu Mall Rd"}, {"pano_id": "YvDbrR5chni0HQ8XAwwNqw", "heading": 209.4218, "description": "Lulu Mall Rd"}]}, "YvDbrR5chni0HQ8XAwwNqw": {"lat": 26.78412205199686, "lng": 80.99049836938916, "links": [{"pano_id": "6K6KOiFoxzU6sLLC_b2jRw", "heading": 209.42181, "description": "Lulu Mall Rd"}, {"pano_id": "bU8Fx38tXpPFvGdtMLgj4A", "heading": 29.421793, "description": "Lulu Mall Rd"}]}, "ILyQxXuoIXMEOgR5ewKbRQ": {"lat": 26.78477874616924, "lng": 80.990924126957, "links": [{"pano_id": "0tGt2ssLYSXBZtMxFNb8Vg", "heading": 210.72112, "description": "Lulu Mall Rd"}, {"pano_id": "dSyZvZpQPa7Z32K2QtnY1A", "heading": 30.159325, "description": "Lulu Mall Rd"}]}, "dSyZvZpQPa7Z32K2QtnY1A": {"lat": 26.78485490691982, "lng": 80.99097370016432, "links": [{"pano_id": "wEtaoJs3d835bxJzflKS8Q", "heading": 29.521534, "description": "Lulu Mall Rd"}, {"pano_id": "ILyQxXuoIXMEOgR5ewKbRQ", "heading": 210.15933, "description": "Lulu Mall Rd"}]}, "6K6KOiFoxzU6sLLC_b2jRw": {"lat": 26.78403744343672, "lng": 80.99044491768296, "links": [{"pano_id": "hjG1RQkbRDmWY4YCWEpQEQ", "heading": 209.39604, "description": "Lulu Mall Rd"}, {"pano_id": "YvDbrR5chni0HQ8XAwwNqw", "heading": 29.421818, "description": "Lulu Mall Rd"}]}, "hjG1RQkbRDmWY4YCWEpQEQ": {"lat": 26.78395274570666, "lng": 80.9903914659406, "links": [{"pano_id": "ExvqUMRAxZixH6r3-wgO7Q", "heading": 209.44107, "description": "Lulu Mall Rd"}, {"pano_id": "6K6KOiFoxzU6sLLC_b2jRw", "heading": 29.396036, "description": "Lulu Mall Rd"}]}, "wEtaoJs3d835bxJzflKS8Q": {"lat": 26.78493079796191, "lng": 80.99102184010292, "links": [{"pano_id": "tCcldFeEz83aMFccmU9IKg", "heading": 29.466476, "description": "Lulu Mall Rd"}, {"pano_id": "dSyZvZpQPa7Z32K2QtnY1A", "heading": 209.52153, "description": "Lulu Mall Rd"}]}, "tCcldFeEz83aMFccmU9IKg": {"lat": 26.78501578415402, "lng": 80.9910756286511, "links": [{"pano_id": "xMC3bA_YDAyDnWD9eECDiQ", "heading": 29.463076, "description": "Lulu Mall Rd"}, {"pano_id": "wEtaoJs3d835bxJzflKS8Q", "heading": 209.46648, "description": "Lulu Mall Rd"}]}, "ExvqUMRAxZixH6r3-wgO7Q": {"lat": 26.78386766990024, "lng": 80.9903376769268, "links": [{"pano_id": "GJiP00oo5j04FwbkJEHvNQ", "heading": 209.41542, "description": "Lulu Mall Rd"}, {"pano_id": "hjG1RQkbRDmWY4YCWEpQEQ", "heading": 29.441065, "description": "Lulu Mall Rd"}]}, "xMC3bA_YDAyDnWD9eECDiQ": {"lat": 26.78510104845725, "lng": 80.99112958577865, "links": [{"pano_id": "KCMzZ8ItwGSJtVOzGK6yQA", "heading": 29.451897, "description": "Lulu Mall Rd"}, {"pano_id": "tCcldFeEz83aMFccmU9IKg", "heading": 209.46307, "description": "Lulu Mall Rd"}]}, "GJiP00oo5j04FwbkJEHvNQ": {"lat": 26.78378250492342, "lng": 80.99028388787637, "links": [{"pano_id": "0YNdIZmyb-BFmmEXAsVuGw", "heading": 209.42847, "description": "Lulu Mall Rd"}, {"pano_id": "ExvqUMRAxZixH6r3-wgO7Q", "heading": 29.415413, "description": "Lulu Mall Rd"}]}, "0YNdIZmyb-BFmmEXAsVuGw": {"lat": 26.78369845251406, "lng": 80.99023077326089, "links": [{"pano_id": "GJiP00oo5j04FwbkJEHvNQ", "heading": 29.428474, "description": "Lulu Mall Rd"}, {"pano_id": "ndsW5MKWfxIL56lKGUmLIw", "heading": 209.7178, "description": "Lulu Mall Rd"}]}, "KCMzZ8ItwGSJtVOzGK6yQA": {"lat": 26.78518621821307, "lng": 80.99118345856142, "links": [{"pano_id": "xMC3bA_YDAyDnWD9eECDiQ", "heading": 209.45189, "description": "Lulu Mall Rd"}, {"pano_id": "FBy42OsVimhsuwPThtBAdQ", "heading": 29.42622, "description": "Lulu Mall Rd"}]}, "FBy42OsVimhsuwPThtBAdQ": {"lat": 26.78527147706204, "lng": 80.99123733130749, "links": [{"pano_id": "KCMzZ8ItwGSJtVOzGK6yQA", "heading": 209.42622, "description": "Lulu Mall Rd"}, {"pano_id": "R_GT9NqnWMBLK-0BYUHswA", "heading": 29.422556, "description": "Lulu Mall Rd"}]}, "ndsW5MKWfxIL56lKGUmLIw": {"lat": 26.78361380074281, "lng": 80.99017664690172, "links": [{"pano_id": "0YNdIZmyb-BFmmEXAsVuGw", "heading": 29.7178, "description": "Lulu Mall Rd"}, {"pano_id": "NksYiD7yBb1D-FRoSepDrQ", "heading": 211.39241, "description": "Lulu Mall Rd"}]}, "NksYiD7yBb1D-FRoSepDrQ": {"lat": 26.7835306703574, "lng": 80.9901198226156, "links": [{"pano_id": "ndsW5MKWfxIL56lKGUmLIw", "heading": 31.392412, "description": "Lulu Mall Rd"}, {"pano_id": "i_G0cdMOyMl81qgBVs60nw", "heading": 211.40126, "description": "Lulu Mall Rd"}]}, "R_GT9NqnWMBLK-0BYUHswA": {"lat": 26.78534754082229, "lng": 80.99128538677768, "links": [{"pano_id": "FBy42OsVimhsuwPThtBAdQ", "heading": 209.42256, "description": "Lulu Mall Rd"}, {"pano_id": "3XlpgTsw9sV7nTkgKhORIA", "heading": 29.435066, "description": "Lulu Mall Rd"}]}, "3XlpgTsw9sV7nTkgKhORIA": {"lat": 26.78542369906059, "lng": 80.9913335265264, "links": [{"pano_id": "2geEamJqiZ2cQpQ-HR2Bxg", "heading": 31.688549, "description": "Lulu Mall Rd"}, {"pano_id": "R_GT9NqnWMBLK-0BYUHswA", "heading": 209.43506, "description": "Lulu Mall Rd"}]}, "i_G0cdMOyMl81qgBVs60nw": {"lat": 26.7834474454231, "lng": 80.9900629139795, "links": [{"pano_id": "NksYiD7yBb1D-FRoSepDrQ", "heading": 31.401262, "description": "Lulu Mall Rd"}, {"pano_id": "UhTo-hWYLKHm4kK1wKSvWg", "heading": 211.35695, "description": "Lulu Mall Rd"}]}, "2geEamJqiZ2cQpQ-HR2Bxg": {"lat": 26.78550538096794, "lng": 80.99139001270908, "links": [{"pano_id": "3XlpgTsw9sV7nTkgKhORIA", "heading": 211.68855, "description": "Lulu Mall Rd"}, {"pano_id": "mdowBheArOyE6y12QZ6MJg", "heading": 34.455036, "description": "Lulu Mall Rd"}]}, "UhTo-hWYLKHm4kK1wKSvWg": {"lat": 26.78336469299916, "lng": 80.99000642684835, "links": [{"pano_id": "pKvpjZ03_gXfoqC6rCssDQ", "heading": 210.09236, "description": "Lulu Mall Rd"}, {"pano_id": "i_G0cdMOyMl81qgBVs60nw", "heading": 31.356947, "description": "Lulu Mall Rd"}]}, "mdowBheArOyE6y12QZ6MJg": {"lat": 26.7855852355512, "lng": 80.99145138869461, "links": [{"pano_id": "2geEamJqiZ2cQpQ-HR2Bxg", "heading": 214.45503, "description": "Lulu Mall Rd"}, {"pano_id": "z6pRtlbZYZbiqaEMmtgySA", "heading": 33.63454, "description": "Lulu Mall Rd"}]}, "pKvpjZ03_gXfoqC6rCssDQ": {"lat": 26.78328351951881, "lng": 80.98995373359259, "links": [{"pano_id": "UhTo-hWYLKHm4kK1wKSvWg", "heading": 30.092363, "description": "Lulu Mall Rd"}, {"pano_id": "e1TIosSi0WYp1aiqxxY7og", "heading": 202.70319, "description": "Lulu Mall Rd"}]}, "z6pRtlbZYZbiqaEMmtgySA": {"lat": 26.7856664624276, "lng": 80.99151192155675, "links": [{"pano_id": "mdowBheArOyE6y12QZ6MJg", "heading": 213.63454, "description": "Lulu Mall Rd"}, {"pano_id": "m_iV4WJ_gjmxZjpMDZIsKQ", "heading": 33.207367, "description": "Lulu Mall Rd"}]}, "e1TIosSi0WYp1aiqxxY7og": {"lat": 26.78319788849268, "lng": 80.98991360238544, "links": [{"pano_id": "z50v2haMggbOqBpvBA53qA", "heading": 202.69875, "description": "Lulu Mall Rd"}, {"pano_id": "pKvpjZ03_gXfoqC6rCssDQ", "heading": 22.70319, "description": "Lulu Mall Rd"}]}, "z50v2haMggbOqBpvBA53qA": {"lat": 26.78311565750466, "lng": 80.98987507303502, "links": [{"pano_id": "e1TIosSi0WYp1aiqxxY7og", "heading": 22.69875, "description": "Lulu Mall Rd"}, {"pano_id": "X-U-Jtu6P2yJnmHHMM2CRw", "heading": 202.68542, "description": "Lulu Mall Rd"}, {"pano_id": "NKQlHyEROHEaQ8gste7AXQ", "heading": 203.49, "distance": 15.44, "virtual": true}, {"pano_id": "dZVtkxg1Jc2ZwVziBytYNA", "heading": 199.46, "distance": 11.43, "virtual": true}]}, "m_iV4WJ_gjmxZjpMDZIsKQ": {"lat": 26.78573855420196, "lng": 80.99156478238868, "links": [{"pano_id": "wDFqrW4wZZEdjF6_eDQe5A", "heading": 33.256096, "description": "Lulu Mall Rd"}, {"pano_id": "z6pRtlbZYZbiqaEMmtgySA", "heading": 213.20737, "description": "Lulu Mall Rd"}]}, "wDFqrW4wZZEdjF6_eDQe5A": {"lat": 26.78581934919863, "lng": 80.99162413485959, "links": [{"pano_id": "m_iV4WJ_gjmxZjpMDZIsKQ", "heading": 213.2561, "description": "Lulu Mall Rd"}]}, "X-U-Jtu6P2yJnmHHMM2CRw": {"lat": 26.78303067185142, "lng": 80.98983527902539, "links": [{"pano_id": "NKQlHyEROHEaQ8gste7AXQ", "heading": 205.06404, "description": "Golf City Rd"}, {"pano_id": "z50v2haMggbOqBpvBA53qA", "heading": 22.685423, "description": "Lulu Mall Rd"}, {"pano_id": "dZVtkxg1Jc2ZwVziBytYNA", "heading": 173.88422, "description": ""}, {"pano_id": "LW1jwwFVD3nQ4rtIPdAhBQ", "heading": 141.77, "distance": 11.16, "virtual": true}, {"pano_id": "27CORRj0mnU31QLoG_lK3w", "heading": 209.37, "distance": 15.7, "virtual": true}]}, "NKQlHyEROHEaQ8gste7AXQ": {"lat": 26.78298834577456, "lng": 80.98981310565964, "links": [{"pano_id": "27CORRj0mnU31QLoG_lK3w", "heading": 211.49098, "description": "Golf City Rd"}, {"pano_id": "X-U-Jtu6P2yJnmHHMM2CRw", "heading": 25.064035, "description": "Lulu Mall Rd"}, {"pano_id": "z50v2haMggbOqBpvBA53qA", "heading": 23.49, "distance": 15.44, "virtual": true}, {"pano_id": "dZVtkxg1Jc2ZwVziBytYNA", "heading": 34.74, "distance": 4.11, "virtual": true}, {"pano_id": "LW1jwwFVD3nQ4rtIPdAhBQ", "heading": 114.02, "distance": 9.97, "virtual": true}]}, "dZVtkxg1Jc2ZwVziBytYNA": {"lat": 26.78301873041843, "lng": 80.98983671228456, "links": [{"pano_id": "LW1jwwFVD3nQ4rtIPdAhBQ", "heading": 137.7162, "description": ""}, {"pano_id": "X-U-Jtu6P2yJnmHHMM2CRw", "heading": 353.88422, "description": "Lulu Mall Rd"}, {"pano_id": "z50v2haMggbOqBpvBA53qA", "heading": 19.46, "distance": 11.43, "virtual": true}, {"pano_id": "NKQlHyEROHEaQ8gste7AXQ", "heading": 214.74, "distance": 4.11, "virtual": true}, {"pano_id": "27CORRj0mnU31QLoG_lK3w", "heading": 212.4, "distance": 14.63, "virtual": true}]}, "LW1jwwFVD3nQ4rtIPdAhBQ": {"lat": 26.78295185896813, "lng": 80.98990483421981, "links": [{"pano_id": "dDJl19Ofh6UtU44LAkl2Ug", "heading": 137.7158, "description": ""}, {"pano_id": "dZVtkxg1Jc2ZwVziBytYNA", "heading": 317.7162, "description": ""}, {"pano_id": "X-U-Jtu6P2yJnmHHMM2CRw", "heading": 321.77, "distance": 11.16, "virtual": true}, {"pano_id": "NKQlHyEROHEaQ8gste7AXQ", "heading": 294.02, "distance": 9.97, "virtual": true}, {"pano_id": "27CORRj0mnU31QLoG_lK3w", "heading": 251.39, "distance": 15.41, "virtual": true}]}, "27CORRj0mnU31QLoG_lK3w": {"lat": 26.78290762397786, "lng": 80.98975771437277, "links": [{"pano_id": "NKQlHyEROHEaQ8gste7AXQ", "heading": 31.490982, "description": "Golf City Rd"}, {"pano_id": "84FI-hWEACuZ8za8rAUyvg", "heading": 212.00198, "description": "Golf City Rd"}, {"pano_id": "X-U-Jtu6P2yJnmHHMM2CRw", "heading": 29.37, "distance": 15.7, "virtual": true}, {"pano_id": "dZVtkxg1Jc2ZwVziBytYNA", "heading": 32.4, "distance": 14.63, "virtual": true}, {"pano_id": "LW1jwwFVD3nQ4rtIPdAhBQ", "heading": 71.39, "distance": 15.41, "virtual": true}]}, "dDJl19Ofh6UtU44LAkl2Ug": {"lat": 26.7828850711971, "lng": 80.98997287178715, "links": [{"pano_id": "LW1jwwFVD3nQ4rtIPdAhBQ", "heading": 317.71582, "description": ""}]}, "84FI-hWEACuZ8za8rAUyvg": {"lat": 26.7828281338631, "lng": 80.98970207011855, "links": [{"pano_id": "Vk8hTJ0U26y4a4HiCMXs9A", "heading": 210.95299, "description": "Golf City Rd"}, {"pano_id": "27CORRj0mnU31QLoG_lK3w", "heading": 32.001987, "description": "Golf City Rd"}]}, "Vk8hTJ0U26y4a4HiCMXs9A": {"lat": 26.78274618565157, "lng": 80.98964701599212, "links": [{"pano_id": "CY6kpeLzhTDy_L34FzdSYg", "heading": 209.51581, "description": "Golf City Rd"}, {"pano_id": "84FI-hWEACuZ8za8rAUyvg", "heading": 30.95299, "description": "Golf City Rd"}]}, "CY6kpeLzhTDy_L34FzdSYg": {"lat": 26.78266695051818, "lng": 80.98959676747572, "links": [{"pano_id": "Vk8hTJ0U26y4a4HiCMXs9A", "heading": 29.51581, "description": "Golf City Rd"}, {"pano_id": "vcQH7zmHFzFUXZyU9sbuMA", "heading": 209.53983, "description": "Golf City Rd"}]}, "vcQH7zmHFzFUXZyU9sbuMA": {"lat": 26.78258659736127, "lng": 80.98954576014033, "links": [{"pano_id": "CY6kpeLzhTDy_L34FzdSYg", "heading": 29.53983, "description": "Golf City Rd"}, {"pano_id": "Ui8GSajyN9lnfFwjplHlKQ", "heading": 208.75906, "description": "Golf City Rd"}]}, "Ui8GSajyN9lnfFwjplHlKQ": {"lat": 26.78250774249527, "lng": 80.98949728206378, "links": [{"pano_id": "pTDpBf_Z7OIUtqRZLoOa4Q", "heading": 208.0931, "description": "Golf City Rd"}, {"pano_id": "vcQH7zmHFzFUXZyU9sbuMA", "heading": 28.75907, "description": "Golf City Rd"}]}, "pTDpBf_Z7OIUtqRZLoOa4Q": {"lat": 26.78242934630851, "lng": 80.98945040584323, "links": [{"pano_id": "Ui8GSajyN9lnfFwjplHlKQ", "heading": 28.09309, "description": "Golf City Rd"}, {"pano_id": "ba0tXMacxtlvX4ozL7XdGw", "heading": 204.07936, "description": "Golf City Rd"}]}, "ba0tXMacxtlvX4ozL7XdGw": {"lat": 26.78234749385506, "lng": 80.98940943128235, "links": [{"pano_id": "pa95H4_xYxQUzvFUak4Lng", "heading": 196.77332, "description": "Golf City Rd"}, {"pano_id": "pTDpBf_Z7OIUtqRZLoOa4Q", "heading": 24.07936, "description": "Golf City Rd"}]}, "pa95H4_xYxQUzvFUak4Lng": {"lat": 26.7822548508838, "lng": 80.98937815233371, "links": [{"pano_id": "ba0tXMacxtlvX4ozL7XdGw", "heading": 16.773323, "description": "Golf City Rd"}, {"pano_id": "lXgOkyn21-ZiGermsmKqBw", "heading": 194.04665, "description": "Golf City Rd"}]}, "lXgOkyn21-ZiGermsmKqBw": {"lat": 26.78216309762159, "lng": 80.9893524378249, "links": [{"pano_id": "O19Fwxo1spzyieggD1OUsw", "heading": 193.324, "description": "Golf City Rd"}, {"pano_id": "pa95H4_xYxQUzvFUak4Lng", "heading": 14.046639, "description": "Golf City Rd"}]}, "O19Fwxo1spzyieggD1OUsw": {"lat": 26.78207061742458, "lng": 80.9893279036464, "links": [{"pano_id": "lXgOkyn21-ZiGermsmKqBw", "heading": 13.324007, "description": "Golf City Rd"}, {"pano_id": "pH9Y1ju_sVzbK1XmAJANUw", "heading": 193.041, "description": "Golf City Rd"}, {"pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ", "heading": 167.23, "distance": 10.68, "virtual": true}, {"pano_id": "weoGaxyp_cGsWeFrXHzsHA", "heading": 193.41, "distance": 10.47, "virtual": true}, {"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 138.25, "distance": 17.78, "virtual": true}]}, "pH9Y1ju_sVzbK1XmAJANUw": {"lat": 26.78199067950151, "lng": 80.98930716340709, "links": [{"pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ", "heading": 109.07135, "description": "Felix Sq Rd"}, {"pano_id": "O19Fwxo1spzyieggD1OUsw", "heading": 13.040994, "description": "Golf City Rd"}, {"pano_id": "weoGaxyp_cGsWeFrXHzsHA", "heading": 195.87431, "description": "Golf City Rd"}, {"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 107.48, "distance": 14.57, "virtual": true}, {"pano_id": "jefmUudt6Zk_ESJWVYNtXQ", "heading": 196.09, "distance": 11.32, "virtual": true}]}, "Dq-P3p7Hc9OFtVo0Q0P7uQ": {"lat": 26.78197694042674, "lng": 80.989351679036, "links": [{"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 106.733246, "description": "Felix Sq Rd"}, {"pano_id": "pH9Y1ju_sVzbK1XmAJANUw", "heading": 289.07135, "description": "Golf City Rd"}, {"pano_id": "O19Fwxo1spzyieggD1OUsw", "heading": 347.23, "distance": 10.68, "virtual": true}, {"pano_id": "weoGaxyp_cGsWeFrXHzsHA", "heading": 272.78, "distance": 4.79, "virtual": true}, {"pano_id": "jefmUudt6Zk_ESJWVYNtXQ", "heading": 218.94, "distance": 12.02, "virtual": true}]}, "weoGaxyp_cGsWeFrXHzsHA": {"lat": 26.781979033897, "lng": 80.98930345377022, "links": [{"pano_id": "jefmUudt6Zk_ESJWVYNtXQ", "heading": 196.12202, "description": "Golf City Rd"}, {"pano_id": "pH9Y1ju_sVzbK1XmAJANUw", "heading": 15.874318, "description": "Golf City Rd"}, {"pano_id": "O19Fwxo1spzyieggD1OUsw", "heading": 13.41, "distance": 10.47, "virtual": true}, {"pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ", "heading": 92.78, "distance": 4.79, "virtual": true}, {"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 102.19, "distance": 14.6, "virtual": true}]}, "d0xBrJ0ZhRJxu5Cw3MGBdA": {"lat": 26.78195130244154, "lng": 80.98944720207174, "links": [{"pano_id": "_cuiB8N9s42xqOsgueFNPQ", "heading": 98.06575, "description": "Felix Sq Rd"}, {"pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ", "heading": 286.73325, "description": "Felix Sq Rd"}, {"pano_id": "O19Fwxo1spzyieggD1OUsw", "heading": 318.25, "distance": 17.78, "virtual": true}, {"pano_id": "pH9Y1ju_sVzbK1XmAJANUw", "heading": 287.48, "distance": 14.57, "virtual": true}, {"pano_id": "weoGaxyp_cGsWeFrXHzsHA", "heading": 282.19, "distance": 14.6, "virtual": true}, {"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 98.06, "distance": 16.82, "virtual": true}, {"pano_id": "H61WiTmcoKCqyZIwO69U8Q", "heading": 82.35, "distance": 17.99, "virtual": true}]}, "jefmUudt6Zk_ESJWVYNtXQ": {"lat": 26.78189284519158, "lng": 80.98927554717814, "links": [{"pano_id": "Jwtu3W4h-nN4rzM9hLdM2w", "heading": 196.10979, "description": "Golf City Rd"}, {"pano_id": "weoGaxyp_cGsWeFrXHzsHA", "heading": 16.122028, "description": "Golf City Rd"}, {"pano_id": "pH9Y1ju_sVzbK1XmAJANUw", "heading": 16.09, "distance": 11.32, "virtual": true}, {"pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ", "heading": 38.94, "distance": 12.02, "virtual": true}]}, "Jwtu3W4h-nN4rzM9hLdM2w": {"lat": 26.78180319950051, "lng": 80.98924654454633, "links": [{"pano_id": "cSa94JMJGFlU7RQ2GM8-zg", "heading": 196.11124, "description": "Golf City Rd"}, {"pano_id": "jefmUudt6Zk_ESJWVYNtXQ", "heading": 16.109781, "description": "Golf City Rd"}]}, "_cuiB8N9s42xqOsgueFNPQ": {"lat": 26.78193956985939, "lng": 80.98953994277271, "links": [{"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 278.06573, "description": "Felix Sq Rd"}, {"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 98.05085, "description": "Felix Sq Rd"}, {"pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA", "heading": 104.12, "distance": 14.24, "virtual": true}, {"pano_id": "H61WiTmcoKCqyZIwO69U8Q", "heading": 66.8, "distance": 9.39, "virtual": true}, {"pano_id": "0o534f6DrjXcpV7GQLkyeA", "heading": 37.85, "distance": 17.17, "virtual": true}]}, "cSa94JMJGFlU7RQ2GM8-zg": {"lat": 26.78171564685263, "lng": 80.98921821638407, "links": [{"pano_id": "9p0OI6rtWSnZiVNZqhzwxg", "heading": 196.11398, "description": "Golf City Rd"}, {"pano_id": "Jwtu3W4h-nN4rzM9hLdM2w", "heading": 16.11124, "description": "Golf City Rd"}]}, "5k3XV4jstrC1OXDdwt9hJA": {"lat": 26.78193009490567, "lng": 80.98961497835113, "links": [{"pano_id": "_cuiB8N9s42xqOsgueFNPQ", "heading": 278.05084, "description": "Felix Sq Rd"}, {"pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA", "heading": 110.82839, "description": "Felix Sq Rd"}, {"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 278.06, "distance": 16.82, "virtual": true}, {"pano_id": "H61WiTmcoKCqyZIwO69U8Q", "heading": 13.94, "distance": 4.9, "virtual": true}, {"pano_id": "G90Rnd4BUpX2SsCqj2t7qw", "heading": 111.16, "distance": 17.87, "virtual": true}, {"pano_id": "0o534f6DrjXcpV7GQLkyeA", "heading": 11.93, "distance": 14.93, "virtual": true}]}, "4Ip6_CRZ1J9OKnWqMA2ikA": {"lat": 26.78190833354572, "lng": 80.98967905362014, "links": [{"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 290.8284, "description": "Felix Sq Rd"}, {"pano_id": "G90Rnd4BUpX2SsCqj2t7qw", "heading": 111.369446, "description": "Felix Sq Rd"}, {"pano_id": "H61WiTmcoKCqyZIwO69U8Q", "heading": 324.1593, "description": ""}, {"pano_id": "_cuiB8N9s42xqOsgueFNPQ", "heading": 284.12, "distance": 14.24, "virtual": true}, {"pano_id": "0o534f6DrjXcpV7GQLkyeA", "heading": 349.12, "distance": 17.34, "virtual": true}]}, "9p0OI6rtWSnZiVNZqhzwxg": {"lat": 26.78162654664897, "lng": 80.98918938235134, "links": [{"pano_id": "pKIjum0hKWr0TGH2ljQUOQ", "heading": 196.07275, "description": "Golf City Rd"}, {"pano_id": "cSa94JMJGFlU7RQ2GM8-zg", "heading": 16.113981, "description": "Golf City Rd"}]}, "pKIjum0hKWr0TGH2ljQUOQ": {"lat": 26.78153981764476, "lng": 80.98916139140893, "links": [{"pano_id": "9p0OI6rtWSnZiVNZqhzwxg", "heading": 16.072758, "description": "Golf City Rd"}, {"pano_id": "OypxYlPj1nARJ0wA9DJRlw", "heading": 193.51732, "description": "Golf City Rd"}]}, "H61WiTmcoKCqyZIwO69U8Q": {"lat": 26.78197283465788, "lng": 80.98962686600363, "links": [{"pano_id": "0o534f6DrjXcpV7GQLkyeA", "heading": 10.953756, "description": ""}, {"pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA", "heading": 144.1593, "description": "Felix Sq Rd"}, {"pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA", "heading": 262.35, "distance": 17.99, "virtual": true}, {"pano_id": "_cuiB8N9s42xqOsgueFNPQ", "heading": 246.8, "distance": 9.39, "virtual": true}, {"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 193.94, "distance": 4.9, "virtual": true}]}, "G90Rnd4BUpX2SsCqj2t7qw": {"lat": 26.7818720806939, "lng": 80.9897828385838, "links": [{"pano_id": "QeWn_L0JlAV-j-pjYUkbJw", "heading": 111.31869, "description": "Felix Sq Rd"}, {"pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA", "heading": 291.36945, "description": "Felix Sq Rd"}, {"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 291.16, "distance": 17.87, "virtual": true}]}, "OypxYlPj1nARJ0wA9DJRlw": {"lat": 26.78146436307892, "lng": 80.98914107267643, "links": [{"pano_id": "pKIjum0hKWr0TGH2ljQUOQ", "heading": 13.5173235, "description": "Golf City Rd"}, {"pano_id": "gbrvfbI8Kf-bzZZ2FLkO0A", "heading": 186.25714, "description": "Golf City Rd"}]}, "QeWn_L0JlAV-j-pjYUkbJw": {"lat": 26.78183900666008, "lng": 80.98987777093326, "links": [{"pano_id": "K3eAGyNIE7VD9dqh4bQWzA", "heading": 111.35598, "description": "Felix Sq Rd"}, {"pano_id": "G90Rnd4BUpX2SsCqj2t7qw", "heading": 291.3187, "description": "Felix Sq Rd"}]}, "0o534f6DrjXcpV7GQLkyeA": {"lat": 26.78206149991096, "lng": 80.9896460885869, "links": [{"pano_id": "5Dbq6dlMfDbfK4V3uDXUJg", "heading": 10.983308, "description": ""}, {"pano_id": "H61WiTmcoKCqyZIwO69U8Q", "heading": 190.95375, "description": ""}, {"pano_id": "_cuiB8N9s42xqOsgueFNPQ", "heading": 217.85, "distance": 17.17, "virtual": true}, {"pano_id": "5k3XV4jstrC1OXDdwt9hJA", "heading": 191.93, "distance": 14.93, "virtual": true}, {"pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA", "heading": 169.12, "distance": 17.34, "virtual": true}]}, "K3eAGyNIE7VD9dqh4bQWzA": {"lat": 26.78180366186862, "lng": 80.98997902635975, "links": [{"pano_id": "QeWn_L0JlAV-j-pjYUkbJw", "heading": 291.356, "description": "Felix Sq Rd"}]}, "5Dbq6dlMfDbfK4V3uDXUJg": {"lat": 26.7821522474486, "lng": 80.98966581702277, "links": [{"pano_id": "0o534f6DrjXcpV7GQLkyeA", "heading": 190.9833, "description": ""}]}, "gbrvfbI8Kf-bzZZ2FLkO0A": {"lat": 26.78137443663366, "lng": 80.98913002805203, "links": [{"pano_id": "OypxYlPj1nARJ0wA9DJRlw", "heading": 6.2571406, "description": "Golf City Rd"}]}};
+        const targetPanos = ["bU8Fx38tXpPFvGdtMLgj4A", "KCMzZ8ItwGSJtVOzGK6yQA", "FjDSnVpBhOJ27rRtr05m6g", "4Ip6_CRZ1J9OKnWqMA2ikA", "iKG7gYOkiAgAP031LrCF6g", "QeWn_L0JlAV-j-pjYUkbJw"];
+        const spawnPoints = ["gbrvfbI8Kf-bzZZ2FLkO0A", "e1TIosSi0WYp1aiqxxY7og", "ndsW5MKWfxIL56lKGUmLIw", "0o534f6DrjXcpV7GQLkyeA", "wDFqrW4wZZEdjF6_eDQe5A", "5Dbq6dlMfDbfK4V3uDXUJg", "_cuiB8N9s42xqOsgueFNPQ", "ba0tXMacxtlvX4ozL7XdGw", "9p0OI6rtWSnZiVNZqhzwxg", "jefmUudt6Zk_ESJWVYNtXQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

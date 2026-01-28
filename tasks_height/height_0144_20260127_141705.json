@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0144_20260127_141705",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your South-East (approx. 127\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "-ZSBIydm_Y3TGLBswt1aYQ",
+  "spawn_heading": 127.080475802867,
+  "target_building": {
+    "lat": 52.520080799999995,
+    "lng": 13.4022613,
+    "height": 24.3,
+    "floors": 6,
+    "ground_elevation": 36.75733947753906,
+    "roof_elevation": 61.056877,
+    "name": "buildings/ChIJfQUSS95RqEcRLeyPDpHbMBk",
+    "date": "2022-07-25"
+  },
+  "geofence_id": "list_height_0144_20260127_141705",
+  "ground_truth": {
+    "height_meters": 24.3
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T14:17:05.942722",
+    "bearing_deg": 127.080475802867,
+    "city": "Berlin, Germany"
+  }
+}

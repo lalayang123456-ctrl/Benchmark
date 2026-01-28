@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_service_20260125_034111</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_service_20260125_034111</h3>
+        <div>Total Panos: <strong>31</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"bsByIOCLlQ-7R3TmwUsAEw": {"lat": -6.196680613446178, "lng": 106.8484972403237, "links": [{"pano_id": "hK7J1pUzpx8sOYPhKP7N6w", "heading": 45.748077, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "PWLrn4k--fLRB3S5DvFS3w", "heading": 223.98659, "description": "Jl. Pangeran Diponegoro"}]}, "hK7J1pUzpx8sOYPhKP7N6w": {"lat": -6.196617568046457, "lng": 106.8485623342203, "links": [{"pano_id": "J4naIjXpcQRgxJnRuosZLQ", "heading": 45.745243, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "bsByIOCLlQ-7R3TmwUsAEw", "heading": 225.74808, "description": "Jl. Pangeran Diponegoro"}]}, "PWLrn4k--fLRB3S5DvFS3w": {"lat": -6.196748677732384, "lng": 106.8484311560826, "links": [{"pano_id": "VG_FkasTRuXWrV5oJrxn1w", "heading": 223.43495, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "bsByIOCLlQ-7R3TmwUsAEw", "heading": 43.986584, "description": "Jl. Pangeran Diponegoro"}]}, "VG_FkasTRuXWrV5oJrxn1w": {"lat": -6.19681806669727, "lng": 106.8483650718608, "links": [{"pano_id": "9sCkgEFK42FmEI3r0fJGxA", "heading": 223.49797, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "PWLrn4k--fLRB3S5DvFS3w", "heading": 43.434944, "description": "Jl. Pangeran Diponegoro"}]}, "J4naIjXpcQRgxJnRuosZLQ": {"lat": -6.196554603582999, "lng": 106.8486273381025, "links": [{"pano_id": "2GZqigGxStEz53ORGVpQ_A", "heading": 45.698242, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "hK7J1pUzpx8sOYPhKP7N6w", "heading": 225.74524, "description": "Jl. Pangeran Diponegoro"}]}, "9sCkgEFK42FmEI3r0fJGxA": {"lat": -6.196886736975998, "lng": 106.8482995278559, "links": [{"pano_id": "VG_FkasTRuXWrV5oJrxn1w", "heading": 43.497963, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "b-KlFk5MpnU6HQ9PeH9fnQ", "heading": 223.50351, "description": "Jl. Pangeran Diponegoro"}]}, "2GZqigGxStEz53ORGVpQ_A": {"lat": -6.196489788645192, "lng": 106.8486941426656, "links": [{"pano_id": "J4naIjXpcQRgxJnRuosZLQ", "heading": 225.69824, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "2-ArIGkRBB_62Z2xtYKeTg", "heading": 45.776745, "description": "Jl. Pangeran Diponegoro"}]}, "2-ArIGkRBB_62Z2xtYKeTg": {"lat": -6.196425935122585, "lng": 106.8487601369501, "links": [{"pano_id": "2GZqigGxStEz53ORGVpQ_A", "heading": 225.77675, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "Iq_LJCy4ylK3rrSdw7tETQ", "heading": 46.06258, "description": "Jl. Pangeran Diponegoro"}]}, "b-KlFk5MpnU6HQ9PeH9fnQ": {"lat": -6.196955488207783, "lng": 106.848233893837, "links": [{"pano_id": "gEY2_-00r1QmB5eBXw2gVQ", "heading": 223.53682, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "9sCkgEFK42FmEI3r0fJGxA", "heading": 43.503517, "description": "Jl. Pangeran Diponegoro"}]}, "Iq_LJCy4ylK3rrSdw7tETQ": {"lat": -6.196362543336221, "lng": 106.8488263113201, "links": [{"pano_id": "2-ArIGkRBB_62Z2xtYKeTg", "heading": 226.06258, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "pi_QGixpB7T8dX9WkDMDpA", "heading": 43.84543, "description": "Jl. Pangeran Diponegoro"}]}, "gEY2_-00r1QmB5eBXw2gVQ": {"lat": -6.197028021578058, "lng": 106.8481645684879, "links": [{"pano_id": "b-KlFk5MpnU6HQ9PeH9fnQ", "heading": 43.536827, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "I_VQ0LY1n9JHBy9r-iNYSA", "heading": 223.52072, "description": "Jl. Pangeran Diponegoro"}]}, "pi_QGixpB7T8dX9WkDMDpA": {"lat": -6.196296099415349, "lng": 106.8488905049791, "links": [{"pano_id": "Iq_LJCy4ylK3rrSdw7tETQ", "heading": 223.84543, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "Rqney8OrPtXfpTGckQ2gKQ", "heading": 42.469753, "description": "Jl. Pangeran Diponegoro"}]}, "I_VQ0LY1n9JHBy9r-iNYSA": {"lat": -6.197091547547382, "lng": 106.8481038863166, "links": [{"pano_id": "GC5NvRjGnykFYx_-RpKYWg", "heading": 223.55641, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "gEY2_-00r1QmB5eBXw2gVQ", "heading": 43.52072, "description": "Jl. Pangeran Diponegoro"}]}, "Rqney8OrPtXfpTGckQ2gKQ": {"lat": -6.196227748688439, "lng": 106.8489534381912, "links": [{"pano_id": "M059uC228JchNXBCPaKmnw", "heading": 44.08288, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "pi_QGixpB7T8dX9WkDMDpA", "heading": 222.46976, "description": "Jl. Pangeran Diponegoro"}]}, "GC5NvRjGnykFYx_-RpKYWg": {"lat": -6.197159418621752, "lng": 106.8480389726171, "links": [{"pano_id": "VDxzY7CSBb8smdvTekohKw", "heading": 223.49333, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "I_VQ0LY1n9JHBy9r-iNYSA", "heading": 43.55641, "description": "Jl. Pangeran Diponegoro"}]}, "M059uC228JchNXBCPaKmnw": {"lat": -6.196161206583205, "lng": 106.8490182621188, "links": [{"pano_id": "Rqney8OrPtXfpTGckQ2gKQ", "heading": 224.08287, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "lfLDSK_VhBgFje6Z7Tj7XQ", "heading": 44.03611, "description": "Jl. Pangeran Diponegoro"}]}, "VDxzY7CSBb8smdvTekohKw": {"lat": -6.197228571581724, "lng": 106.8479729785422, "links": [{"pano_id": "r4uSMVMp2AjPVuvRsV5sTA", "heading": 223.52322, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "GC5NvRjGnykFYx_-RpKYWg", "heading": 43.493336, "description": "Jl. Pangeran Diponegoro"}]}, "lfLDSK_VhBgFje6Z7Tj7XQ": {"lat": -6.196094185391783, "lng": 106.8490834461981, "links": [{"pano_id": "M059uC228JchNXBCPaKmnw", "heading": 224.0361, "description": "Jl. Pangeran Diponegoro"}]}, "r4uSMVMp2AjPVuvRsV5sTA": {"lat": -6.197290489775008, "lng": 106.8479138269798, "links": [{"pano_id": "VDxzY7CSBb8smdvTekohKw", "heading": 43.523224, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "Q3wTwgkgo757xPXLTQ9QJw", "heading": 223.41544, "description": "Jl. Pangeran Diponegoro"}]}, "Q3wTwgkgo757xPXLTQ9QJw": {"lat": -6.197354249887023, "lng": 106.8478531448755, "links": [{"pano_id": "-ghIDg9vYYM7f57ssmGzwA", "heading": 223.25105, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "r4uSMVMp2AjPVuvRsV5sTA", "heading": 43.415432, "description": "Jl. Pangeran Diponegoro"}]}, "-ghIDg9vYYM7f57ssmGzwA": {"lat": -6.197419043496385, "lng": 106.8477918325581, "links": [{"pano_id": "us9zDZ3arphQ0XRQCXTUKw", "heading": 223.2281, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "Q3wTwgkgo757xPXLTQ9QJw", "heading": 43.25106, "description": "Jl. Pangeran Diponegoro"}]}, "us9zDZ3arphQ0XRQCXTUKw": {"lat": -6.197489221503742, "lng": 106.8477254784241, "links": [{"pano_id": "-ghIDg9vYYM7f57ssmGzwA", "heading": 43.228104, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "P6ZcKx03Nb2IWSSic0sI0g", "heading": 223.23814, "description": "Jl. Pangeran Diponegoro"}]}, "P6ZcKx03Nb2IWSSic0sI0g": {"lat": -6.197557471094, "lng": 106.8476609249637, "links": [{"pano_id": "us9zDZ3arphQ0XRQCXTUKw", "heading": 43.238144, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "yTzw5-LGc5qjI2pMZMiQBA", "heading": 223.86235, "description": "Jl. Pangeran Diponegoro"}]}, "yTzw5-LGc5qjI2pMZMiQBA": {"lat": -6.197618287221319, "lng": 106.8476021336133, "links": [{"pano_id": "b5Itioop87EtrwegXkAMGg", "heading": 224.20596, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "P6ZcKx03Nb2IWSSic0sI0g", "heading": 43.86235, "description": "Jl. Pangeran Diponegoro"}]}, "b5Itioop87EtrwegXkAMGg": {"lat": -6.197682426796493, "lng": 106.8475393808412, "links": [{"pano_id": "yTzw5-LGc5qjI2pMZMiQBA", "heading": 44.205967, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "A_skGekiWaaBKuLLYXmhgA", "heading": 224.15663, "description": "Jl. Pangeran Diponegoro"}]}, "A_skGekiWaaBKuLLYXmhgA": {"lat": -6.197747045678086, "lng": 106.8474762679558, "links": [{"pano_id": "pUjQzz3P3sKf779HqRatVg", "heading": 224.19533, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "b5Itioop87EtrwegXkAMGg", "heading": 44.156624, "description": "Jl. Pangeran Diponegoro"}]}, "pUjQzz3P3sKf779HqRatVg": {"lat": -6.19780973611413, "lng": 106.8474149557402, "links": [{"pano_id": "VdgE-nU_JPupXvImj3rO6g", "heading": 224.18501, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "A_skGekiWaaBKuLLYXmhgA", "heading": 44.195335, "description": "Jl. Pangeran Diponegoro"}]}, "VdgE-nU_JPupXvImj3rO6g": {"lat": -6.197872264955441, "lng": 106.8473538236063, "links": [{"pano_id": "0-VPpYzYx1KNTiiE_Elr2A", "heading": 224.18103, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "pUjQzz3P3sKf779HqRatVg", "heading": 44.18501, "description": "Jl. Pangeran Diponegoro"}]}, "0-VPpYzYx1KNTiiE_Elr2A": {"lat": -6.197936644521431, "lng": 106.8472908908376, "links": [{"pano_id": "yR681EZpTvFp-LF_agO8fQ", "heading": 221.98631, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "VdgE-nU_JPupXvImj3rO6g", "heading": 44.181026, "description": "Jl. Pangeran Diponegoro"}]}, "yR681EZpTvFp-LF_agO8fQ": {"lat": -6.198005765466474, "lng": 106.8472283182166, "links": [{"pano_id": "0-VPpYzYx1KNTiiE_Elr2A", "heading": 41.986305, "description": "Jl. Pangeran Diponegoro"}, {"pano_id": "QyY7Dhb3Rfl0ode9uvDiXw", "heading": 218.6586, "description": "Jl. Pangeran Diponegoro"}]}, "QyY7Dhb3Rfl0ode9uvDiXw": {"lat": -6.198076254671506, "lng": 106.847171597726, "links": [{"pano_id": "yR681EZpTvFp-LF_agO8fQ", "heading": 38.658607, "description": "Jl. Pangeran Diponegoro"}]}};
+        const targetPanos = ["Q3wTwgkgo757xPXLTQ9QJw", "bsByIOCLlQ-7R3TmwUsAEw"];
+        const spawnPoints = ["pUjQzz3P3sKf779HqRatVg", "QyY7Dhb3Rfl0ode9uvDiXw", "A_skGekiWaaBKuLLYXmhgA", "P6ZcKx03Nb2IWSSic0sI0g", "Q3wTwgkgo757xPXLTQ9QJw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

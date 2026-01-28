@@ -1,0 +1,1247 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0206_target_20260124_1147_3",
+  "timestamp": "20260125_023530",
+  "success": false,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023530_nav_0206_target_20260124_1147_3_20260125023531",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Current heading is south (189°), matching the initial instruction to head south for 86m. Moving forward continues toward the first waypoint.",
+        "agent_vlm_duration_seconds": 9.355,
+        "agent_total_duration_seconds": 9.355
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.4,
+          "heading": 189.12273
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Still in the initial southbound phase (86m total needed). Continue moving forward to progress toward the Flavours of Taj Mahal Hotel landmark.",
+        "agent_vlm_duration_seconds": 7.224,
+        "agent_total_duration_seconds": 7.224
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 189.11455
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 9.122725
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 30.5m covered of 86m needed before first turn. Continue south to locate Flavours of Taj Mahal Hotel landmark.",
+        "agent_vlm_duration_seconds": 4.581,
+        "agent_total_duration_seconds": 4.581
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.13431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 9.114544
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 42.7m covered of 86m needed. Continue south to approach the Flavours of Taj Mahal Hotel landmark.",
+        "agent_vlm_duration_seconds": 5.484,
+        "agent_total_duration_seconds": 5.484
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 12.2,
+          "heading": 189.36996
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 9.134304
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 52.7m covered of 86m needed. Continue south; landmark should appear soon as I approach the turn point.",
+        "agent_vlm_duration_seconds": 5.068,
+        "agent_total_duration_seconds": 5.068
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 189.40932
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 12.2,
+          "heading": 9.369958
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "rotation",
+        "heading": 99.40932,
+        "pitch": 0.0,
+        "reason": "Approximately 63.6m covered of 86m needed. Scout left side to locate Flavours of Taj Mahal Hotel landmark before proceeding.",
+        "agent_vlm_duration_seconds": 5.636,
+        "agent_total_duration_seconds": 5.636
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 189.37491
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 9.409314
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "rotation",
+        "heading": 189.40932,
+        "pitch": 0.0,
+        "reason": "Rotated to scout left side but need to return to southbound heading. Rotate back to face south (189°) to continue toward the landmark.",
+        "agent_vlm_duration_seconds": 6.196,
+        "agent_total_duration_seconds": 6.196
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.9,
+          "heading": 189.37491
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 9.409314
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Back to southbound heading. Continue moving forward to reach the Flavours of Taj Mahal Hotel landmark area (currently at ~63.6m of 86m needed).",
+        "agent_vlm_duration_seconds": 5.024,
+        "agent_total_duration_seconds": 5.024
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 189.37491
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 9.409314
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 74.5m covered of 86m needed. Continue south; landmark should be visible at the turn point (within next 11.5m).",
+        "agent_vlm_duration_seconds": 5.135,
+        "agent_total_duration_seconds": 5.135
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 189.41446
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 9.374913
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "rotation",
+        "heading": 99.41446,
+        "pitch": 0.0,
+        "reason": "At approximately 84m of 86m needed. Multiple move options suggest a junction. Scout left to confirm Flavours of Taj Mahal Hotel landmark before turning.",
+        "agent_vlm_duration_seconds": 5.584,
+        "agent_total_duration_seconds": 5.584
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 3,
+          "direction": "front-right 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 9.414453
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 16.3,
+          "heading": 160.23
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "rotation",
+        "heading": 189.41446,
+        "pitch": 0.0,
+        "reason": "Scouted left side. Now rotate back to south-facing heading to execute the left turn at the landmark location.",
+        "agent_vlm_duration_seconds": 6.091,
+        "agent_total_duration_seconds": 6.091
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 61°",
+          "distance": 16.3,
+          "heading": 160.23
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 4,
+          "direction": "right-back 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.5,
+          "heading": 9.414453
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "At turn point (~84m of 86m). Execute left turn using move 5 (front-left 29°) to head toward Just For U - Kids Wear store.",
+        "agent_vlm_duration_seconds": 5.564,
+        "agent_total_duration_seconds": 5.564
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 189.35017
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.4,
+          "heading": 188.59
+        },
+        {
+          "id": 3,
+          "direction": "front-right 21°",
+          "distance": 13.6,
+          "heading": 210.72
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 9.414453
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 16.3,
+          "heading": 160.23
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Turned left successfully. Now heading southwest (160°). Continue forward to pass Just For U - Kids Wear store on the left for approximately 60m.",
+        "agent_vlm_duration_seconds": 7.211,
+        "agent_total_duration_seconds": 7.211
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.2,
+          "heading": 160.4
+        },
+        {
+          "id": 2,
+          "direction": "front-right 67°",
+          "distance": 9.3,
+          "heading": 227.69
+        },
+        {
+          "id": 3,
+          "direction": "front-right 74°",
+          "distance": 11.4,
+          "heading": 233.8
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 8.8,
+          "heading": 254.0
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 14.1,
+          "heading": 252.62
+        },
+        {
+          "id": 6,
+          "direction": "right-back 35°",
+          "distance": 7.8,
+          "heading": 285.57727
+        },
+        {
+          "id": 7,
+          "direction": "right-back 36°",
+          "distance": 13.0,
+          "heading": 286.41
+        },
+        {
+          "id": 8,
+          "direction": "right-back 57°",
+          "distance": 9.0,
+          "heading": 307.17
+        },
+        {
+          "id": 9,
+          "direction": "back",
+          "distance": 16.3,
+          "heading": 340.23
+        },
+        {
+          "id": 10,
+          "direction": "front-left 55°",
+          "distance": 10.0,
+          "heading": 105.5201
+        },
+        {
+          "id": 11,
+          "direction": "front-left 29°",
+          "distance": 17.5,
+          "heading": 131.16
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 11,
+        "reason": "No direct forward move available; road appears to curve. Take front-left move to continue passing the store and follow the road.",
+        "agent_vlm_duration_seconds": 6.703,
+        "agent_total_duration_seconds": 6.703
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 16.2,
+          "heading": 240.82
+        },
+        {
+          "id": 2,
+          "direction": "right-back 28°",
+          "distance": 12.4,
+          "heading": 278.87
+        },
+        {
+          "id": 3,
+          "direction": "right-back 33°",
+          "distance": 10.2,
+          "heading": 283.6036
+        },
+        {
+          "id": 4,
+          "direction": "right-back 34°",
+          "distance": 17.1,
+          "heading": 284.89
+        },
+        {
+          "id": 5,
+          "direction": "right-back 48°",
+          "distance": 13.1,
+          "heading": 298.3
+        },
+        {
+          "id": 6,
+          "direction": "right-back 65°",
+          "distance": 15.1,
+          "heading": 315.33
+        },
+        {
+          "id": 7,
+          "direction": "right-back 74°",
+          "distance": 17.4,
+          "heading": 323.94
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 9.2,
+          "heading": 340.4
+        },
+        {
+          "id": 9,
+          "direction": "left-back 22°",
+          "distance": 8.9,
+          "heading": 47.92
+        },
+        {
+          "id": 10,
+          "direction": "left",
+          "distance": 16.0,
+          "heading": 78.93
+        },
+        {
+          "id": 11,
+          "direction": "front-left 54°",
+          "distance": 10.5,
+          "heading": 106.033936
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Road has curved east (106°). Continue forward to progress along the 60m segment passing the store (currently at ~19.7m of 60m).",
+        "agent_vlm_duration_seconds": 6.897,
+        "agent_total_duration_seconds": 6.897
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 108.41583
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 286.03394
+        },
+        {
+          "id": 3,
+          "direction": "left-back 65°",
+          "distance": 17.5,
+          "heading": 311.16
+        },
+        {
+          "id": 4,
+          "direction": "left-back 38°",
+          "distance": 9.5,
+          "heading": 338.21
+        },
+        {
+          "id": 5,
+          "direction": "front-left 63°",
+          "distance": 8.2,
+          "heading": 43.06
+        },
+        {
+          "id": 6,
+          "direction": "front-left 27°",
+          "distance": 15.4,
+          "heading": 79.44
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing east along the road. At approximately 30.2m of 60m on this segment. Move forward to progress toward the final left turn.",
+        "agent_vlm_duration_seconds": 7.418,
+        "agent_total_duration_seconds": 7.418
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 108.41937
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 288.41583
+        },
+        {
+          "id": 3,
+          "direction": "left-back 43°",
+          "distance": 10.3,
+          "heading": 334.96
+        },
+        {
+          "id": 4,
+          "direction": "front-left 68°",
+          "distance": 8.0,
+          "heading": 40.25
+        },
+        {
+          "id": 5,
+          "direction": "front-left 30°",
+          "distance": 15.1,
+          "heading": 78.72
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing east along the road. At approximately 40.5m of 60m on this segment. Move forward to approach the final left turn.",
+        "agent_vlm_duration_seconds": 5.807,
+        "agent_total_duration_seconds": 5.807
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.374794
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 288.41937
+        },
+        {
+          "id": 3,
+          "direction": "left-back 44°",
+          "distance": 10.4,
+          "heading": 334.13
+        },
+        {
+          "id": 4,
+          "direction": "front-left 69°",
+          "distance": 8.0,
+          "heading": 39.16
+        },
+        {
+          "id": 5,
+          "direction": "front-left 30°",
+          "distance": 14.8,
+          "heading": 78.12
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "At approximately 50.5m of 60m on this segment. Move forward to reach the final left turn point toward Pizza Hut.",
+        "agent_vlm_duration_seconds": 5.659,
+        "agent_total_duration_seconds": 5.66
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.39982
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.3748
+        },
+        {
+          "id": 3,
+          "direction": "left-back 44°",
+          "distance": 10.4,
+          "heading": 334.48
+        },
+        {
+          "id": 4,
+          "direction": "front-left 70°",
+          "distance": 8.0,
+          "heading": 38.78
+        },
+        {
+          "id": 5,
+          "direction": "front-left 29°",
+          "distance": 15.3,
+          "heading": 79.34
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "Completed 60m segment. No direct forward move available at junction. Turn left using move 4 (front-left 28°) toward Pizza Hut for final 10m.",
+        "agent_vlm_duration_seconds": 5.818,
+        "agent_total_duration_seconds": 5.818
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.3998
+        },
+        {
+          "id": 2,
+          "direction": "left-back 44°",
+          "distance": 10.4,
+          "heading": 334.41
+        },
+        {
+          "id": 3,
+          "direction": "front-left 66°",
+          "distance": 8.1,
+          "heading": 42.84
+        },
+        {
+          "id": 4,
+          "direction": "front-left 28°",
+          "distance": 15.5,
+          "heading": 80.29
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Made final left turn. Now heading northeast (80°E). Take front-right move to approach Pizza Hut on the right side for final 10m.",
+        "agent_vlm_duration_seconds": 5.654,
+        "agent_total_duration_seconds": 5.654
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 29°",
+          "distance": 10.2,
+          "heading": 109.340836
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 15.5,
+          "heading": 260.29
+        },
+        {
+          "id": 3,
+          "direction": "left-back 61°",
+          "distance": 10.3,
+          "heading": 289.06546
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Heading east (109°E) toward Pizza Hut on the right. Move forward approximately 10m to reach the destination.",
+        "agent_vlm_duration_seconds": 5.439,
+        "agent_total_duration_seconds": 5.439
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 109.77718
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 289.34082
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 199.77718,
+        "pitch": 0.0,
+        "reason": "At approximately 197m total distance, very close to destination. Rotate right to check if Pizza Hut is visible on the right side.",
+        "agent_vlm_duration_seconds": 7.032,
+        "agent_total_duration_seconds": 7.032
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 109.94439
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.0,
+          "heading": 107.27
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 289.7772
+        },
+        {
+          "id": 4,
+          "direction": "front-left 40°",
+          "distance": 16.1,
+          "heading": 69.47
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 109.77718,
+        "pitch": 0.0,
+        "reason": "Rotated right to scout. If Pizza Hut not clearly visible, rotate back to east heading to continue forward approach.",
+        "agent_vlm_duration_seconds": 6.376,
+        "agent_total_duration_seconds": 6.376
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.5,
+          "heading": 289.7772
+        },
+        {
+          "id": 2,
+          "direction": "left-back 40°",
+          "distance": 16.1,
+          "heading": 69.47
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 9.6,
+          "heading": 109.94439
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 15.0,
+          "heading": 107.27
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Back to eastward heading (110°E). Take shorter front move (9.6m) to cautiously approach and locate Pizza Hut on the right.",
+        "agent_vlm_duration_seconds": 5.004,
+        "agent_total_duration_seconds": 5.004
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 109.94439
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.0,
+          "heading": 107.27
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 289.7772
+        },
+        {
+          "id": 4,
+          "direction": "front-left 40°",
+          "distance": 16.1,
+          "heading": 69.47
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 199.94439,
+        "pitch": 0.0,
+        "reason": "Multiple front options suggest complex junction. Rotate right to scout for Pizza Hut on the right side before proceeding.",
+        "agent_vlm_duration_seconds": 5.855,
+        "agent_total_duration_seconds": 5.855
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.4,
+          "heading": 109.46349
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 108.36
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 5.5,
+          "heading": 102.57
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 289.9444
+        },
+        {
+          "id": 5,
+          "direction": "front-left 76°",
+          "distance": 10.8,
+          "heading": 34.25
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 109.94439,
+        "pitch": 0.0,
+        "reason": "Scouting right side (south-southwest direction). Examine view for Pizza Hut. If visible, stop; if not, rotate back to continue forward approach.",
+        "agent_vlm_duration_seconds": 6.695,
+        "agent_total_duration_seconds": 6.695
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.6,
+          "heading": 289.9444
+        },
+        {
+          "id": 2,
+          "direction": "left-back 76°",
+          "distance": 10.8,
+          "heading": 34.25
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 8.4,
+          "heading": 109.46349
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 17.9,
+          "heading": 108.36
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 5.5,
+          "heading": 102.57
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Take shortest front move (5.5m) to approach destination closely. Should be able to see Pizza Hut clearly after this move.",
+        "agent_vlm_duration_seconds": 6.655,
+        "agent_total_duration_seconds": 6.655
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.4,
+          "heading": 109.46349
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 108.36
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 5.5,
+          "heading": 102.57
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 289.9444
+        },
+        {
+          "id": 5,
+          "direction": "front-left 76°",
+          "distance": 10.8,
+          "heading": 34.25
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Very short front-right move (3.1m) available. Turn right toward destination which should be on the right side.",
+        "agent_vlm_duration_seconds": 7.527,
+        "agent_total_duration_seconds": 7.527
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 12.5,
+          "heading": 110.89
+        },
+        {
+          "id": 2,
+          "direction": "front-right 19°",
+          "distance": 3.1,
+          "heading": 121.65929
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.0,
+          "heading": 287.27
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 5.5,
+          "heading": 282.57
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 4.2636046
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 211.65929,
+        "pitch": 0.0,
+        "reason": "No direct forward move available at junction. Rotate right to scout for Pizza Hut on the right side.",
+        "agent_vlm_duration_seconds": 6.015,
+        "agent_total_duration_seconds": 6.016
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 78°",
+          "distance": 8.4,
+          "heading": 289.4635
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 3.1,
+          "heading": 301.6593
+        },
+        {
+          "id": 3,
+          "direction": "left-back 41°",
+          "distance": 11.9,
+          "heading": 350.88
+        },
+        {
+          "id": 4,
+          "direction": "front-left 14°",
+          "distance": 9.4,
+          "heading": 107.37336
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 121.65929,
+        "pitch": 0.0,
+        "reason": "Scouting right side (southwest direction). Examine view for Pizza Hut. If clearly visible, stop; otherwise rotate back to continue approach.",
+        "agent_vlm_duration_seconds": 6.078,
+        "agent_total_duration_seconds": 6.078
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 78°",
+          "distance": 8.4,
+          "heading": 289.4635
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 3.1,
+          "heading": 301.6593
+        },
+        {
+          "id": 3,
+          "direction": "right-back 49°",
+          "distance": 11.9,
+          "heading": 350.88
+        },
+        {
+          "id": 4,
+          "direction": "left-back 14°",
+          "distance": 9.4,
+          "heading": 107.37336
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "No direct forward move. Take front-left move (9.4m) which is most forward-oriented to continue approaching destination.",
+        "agent_vlm_duration_seconds": 6.204,
+        "agent_total_duration_seconds": 6.204
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 78°",
+          "distance": 8.4,
+          "heading": 289.4635
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 3.1,
+          "heading": 301.6593
+        },
+        {
+          "id": 3,
+          "direction": "left-back 41°",
+          "distance": 11.9,
+          "heading": 350.88
+        },
+        {
+          "id": 4,
+          "direction": "front-left 14°",
+          "distance": 9.4,
+          "heading": 107.37336
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Only one forward move available (10.3m). Continue east toward destination. Should be very close now.",
+        "agent_vlm_duration_seconds": 5.805,
+        "agent_total_duration_seconds": 5.805
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 103.37888
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 287.37335
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 288.36
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 12.5,
+          "heading": 290.89
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "rotation",
+        "heading": 193.37888,
+        "pitch": 0.0,
+        "reason": "Heading east (103°E). Rotate right to scout for Pizza Hut on the right side (south direction) before proceeding.",
+        "agent_vlm_duration_seconds": 7.732,
+        "agent_total_duration_seconds": 7.732
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 11.1,
+          "heading": 103.38291
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 283.37888
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "rotation",
+        "heading": 103.37888,
+        "pitch": 0.0,
+        "reason": "Scouting right side (south direction). Examine view for Pizza Hut. If clearly visible, stop; otherwise rotate back to continue.",
+        "agent_vlm_duration_seconds": 5.626,
+        "agent_total_duration_seconds": 5.626
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 283.37888
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 11.1,
+          "heading": 103.38291
+        }
+      ]
+    }
+  ]
+}

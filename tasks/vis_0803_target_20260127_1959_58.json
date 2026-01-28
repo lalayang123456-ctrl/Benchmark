@@ -1,0 +1,101 @@
+{
+  "task_id": "nav_0803_target_20260125_0310_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_supermarket_20260125_031001",
+  "spawn_point": "8rcP10fKpgXjU1f808hTcQ",
+  "spawn_heading": 270.4,
+  "description": "Proceed straight down the narrow street, passing A.J. Traders on the right and a green mosque on the left. Continue forward past a large blue-and-white tent structure and S.M. Stores on the left. The route concludes at the corner intersection with Mactoon Sheriff St.",
+  "ground_truth": {
+    "target_name": "Amir Store",
+    "target_pano_id": "ksL-tJcLbIuMxRh2XEWnQg",
+    "optimal_distance_meters": 195,
+    "route_description": "right→left→left→right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ksL-tJcLbIuMxRh2XEWnQg"
+  ],
+  "max_steps": 30,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "8rcP10fKpgXjU1f808hTcQ",
+      "heading": 270.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA",
+      "heading": 270.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "tDCBlNom1H1bHM-iIqT48Q",
+      "heading": 184.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "6ac0EdwdLaYZzT8JAehV9g",
+      "heading": 3.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "0seyAE8JsFiFk1wgWtmvMA",
+      "heading": 354.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "jmr2dcd6lfE6LGf8psAKRw",
+      "heading": 1.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "9HVGrs3Gzl5m4vV8sx5cTA",
+      "heading": 8.5
+    },
+    {
+      "step_index": 7,
+      "pano_id": "IjFGmUbldO8fh9D4ReI1Pw",
+      "heading": 0.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "GbzyK8kPzRuktwkhXMLqDQ",
+      "heading": 1.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "RbTJmxDW_CzqxfZjy_m0MQ",
+      "heading": 1.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "WT3KVBgrGDhg1LMr9tq53A",
+      "heading": 1.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "485OjpL363H9urFXNIOyqQ",
+      "heading": 3.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q",
+      "heading": 5.3
+    },
+    {
+      "step_index": 13,
+      "pano_id": "JZPy3EzGmduQivlL2KYUsQ",
+      "heading": 1.9
+    },
+    {
+      "step_index": 14,
+      "pano_id": "ksL-tJcLbIuMxRh2XEWnQg",
+      "heading": 304.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [195m] -> Stop",
+  "agent_concise_description": "Proceed straight down the narrow street, passing A.J. Traders on the right and a green mosque on the left. Continue forward past a large blue-and-white tent structure and S.M. Stores on the left. The route concludes at the corner intersection with Mactoon Sheriff St."
+}

@@ -1,0 +1,1121 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0134_target_20260124_0402_20",
+  "timestamp": "20260125_023532",
+  "success": true,
+  "done_reason": "stopped",
+  "total_steps": 27,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023532_nav_0134_target_20260124_0402_20_20260125023532",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Current heading 211°SW matches the required southwest direction on D92; moving forward to progress toward McDonald's.",
+        "agent_vlm_duration_seconds": 5.064,
+        "agent_total_duration_seconds": 5.064
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 210.58192
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "rotation",
+        "heading": 300.58,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout for D92 road markers or McDonald's signage before continuing forward on the long southwest segment.",
+        "agent_vlm_duration_seconds": 5.193,
+        "agent_total_duration_seconds": 5.193
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.81783
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.581923
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "rotation",
+        "heading": 210.58,
+        "pitch": 0.0,
+        "reason": "Rotate left back to southwest heading (210.58°) to realign with the D92 route and find the forward movement option.",
+        "agent_vlm_duration_seconds": 5.351,
+        "agent_total_duration_seconds": 5.351
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.2,
+          "heading": 30.581923
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 210.81783
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest heading to progress toward McDonald's; still in early stages of the 203m segment.",
+        "agent_vlm_duration_seconds": 6.729,
+        "agent_total_duration_seconds": 6.729
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.81783
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.581923
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 172m remaining on this segment before the right turn.",
+        "agent_vlm_duration_seconds": 7.339,
+        "agent_total_duration_seconds": 7.339
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.83481
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.817822
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 162m remaining before the right turn to McDonald's.",
+        "agent_vlm_duration_seconds": 4.612,
+        "agent_total_duration_seconds": 4.612
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.83487
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.834812
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 152m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 4.467,
+        "agent_total_duration_seconds": 4.467
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.84341
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.834866
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 142m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 6.632,
+        "agent_total_duration_seconds": 6.632
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.83481
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.843414
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 132m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 3.72,
+        "agent_total_duration_seconds": 3.72
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.82608
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.8348
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 122m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 6.326,
+        "agent_total_duration_seconds": 6.326
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86943
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.826077
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 112m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 3.581,
+        "agent_total_duration_seconds": 3.581
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86945
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.869429
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; approximately 103m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 3.753,
+        "agent_total_duration_seconds": 3.753
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 210.87842
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.86944
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; avoid the left deviation and maintain the primary route toward the right turn.",
+        "agent_vlm_duration_seconds": 5.458,
+        "agent_total_duration_seconds": 5.458
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 210.90659
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 30.878412
+        },
+        {
+          "id": 3,
+          "direction": "front-left 40°",
+          "distance": 17.7,
+          "heading": 171.03
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; maintain the primary route and avoid left deviations.",
+        "agent_vlm_duration_seconds": 5.835,
+        "agent_total_duration_seconds": 5.835
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 210.87027
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 30.90659
+        },
+        {
+          "id": 3,
+          "direction": "front-left 70°",
+          "distance": 12.1,
+          "heading": 140.66
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest; maintain the primary route and ignore all left and back deviations.",
+        "agent_vlm_duration_seconds": 4.347,
+        "agent_total_duration_seconds": 4.347
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 211.57204
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 30.870274
+        },
+        {
+          "id": 3,
+          "direction": "left-back 26°",
+          "distance": 12.6,
+          "heading": 94.93
+        },
+        {
+          "id": 4,
+          "direction": "front-left 68°",
+          "distance": 12.2,
+          "heading": 143.01
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest with the shortest front option (10.6m) to maintain consistent progression and control for detecting the right turn.",
+        "agent_vlm_duration_seconds": 6.955,
+        "agent_total_duration_seconds": 6.955
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 211.81891
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.5,
+          "heading": 211.5
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.8,
+          "heading": 211.56
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 31.572039
+        },
+        {
+          "id": 5,
+          "direction": "left-back 26°",
+          "distance": 12.7,
+          "heading": 95.12
+        },
+        {
+          "id": 6,
+          "direction": "front-left 69°",
+          "distance": 12.3,
+          "heading": 142.71
+        },
+        {
+          "id": 7,
+          "direction": "front-left 10°",
+          "distance": 13.0,
+          "heading": 201.23
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue forward on D92 southwest with the longer front option (15.5m) to progress toward the 203m mark; the right turn option is premature.",
+        "agent_vlm_duration_seconds": 5.445,
+        "agent_total_duration_seconds": 5.445
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 5.2,
+          "heading": 211.02466
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.5,
+          "heading": 210.98
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 6.9,
+          "heading": 211.02
+        },
+        {
+          "id": 4,
+          "direction": "front-right 45°",
+          "distance": 14.9,
+          "heading": 257.13
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 31.818914
+        },
+        {
+          "id": 6,
+          "direction": "left-back 28°",
+          "distance": 13.1,
+          "heading": 93.56
+        },
+        {
+          "id": 7,
+          "direction": "front-left 71°",
+          "distance": 12.3,
+          "heading": 140.43
+        },
+        {
+          "id": 8,
+          "direction": "front-left 48°",
+          "distance": 3.2,
+          "heading": 164.07167
+        },
+        {
+          "id": 9,
+          "direction": "front-left 37°",
+          "distance": 12.7,
+          "heading": 175.17
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue forward on D92 southwest (10.0m) to approach the 203m mark; the front-right options are still premature.",
+        "agent_vlm_duration_seconds": 8.358,
+        "agent_total_duration_seconds": 8.358
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.2,
+          "heading": 210.9382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.67
+        },
+        {
+          "id": 3,
+          "direction": "front-right 23°",
+          "distance": 5.2,
+          "heading": 234.03
+        },
+        {
+          "id": 4,
+          "direction": "right-back 26°",
+          "distance": 11.9,
+          "heading": 326.56
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 8.6,
+          "heading": 30.953514
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 30.96
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 15.5,
+          "heading": 30.98
+        },
+        {
+          "id": 8,
+          "direction": "left-back 80°",
+          "distance": 13.5,
+          "heading": 41.0
+        },
+        {
+          "id": 9,
+          "direction": "left-back 45°",
+          "distance": 16.2,
+          "heading": 76.42
+        },
+        {
+          "id": 10,
+          "direction": "left-back 35°",
+          "distance": 9.1,
+          "heading": 86.09
+        },
+        {
+          "id": 11,
+          "direction": "left",
+          "distance": 11.6,
+          "heading": 114.46
+        },
+        {
+          "id": 12,
+          "direction": "front-left 64°",
+          "distance": 8.5,
+          "heading": 146.95
+        },
+        {
+          "id": 13,
+          "direction": "front-left 53°",
+          "distance": 14.5,
+          "heading": 158.2
+        },
+        {
+          "id": 14,
+          "direction": "front-left 28°",
+          "distance": 16.5,
+          "heading": 183.06
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest (10.1m) to approach the 203m mark; need approximately 28m more before the right turn.",
+        "agent_vlm_duration_seconds": 7.749,
+        "agent_total_duration_seconds": 7.749
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 209.4078
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 5.6,
+          "heading": 9.01532
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 1.9,
+          "heading": 29.515821
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.67
+        },
+        {
+          "id": 5,
+          "direction": "left-back 64°",
+          "distance": 16.9,
+          "heading": 56.84
+        },
+        {
+          "id": 6,
+          "direction": "left-back 44°",
+          "distance": 16.2,
+          "heading": 76.34
+        },
+        {
+          "id": 7,
+          "direction": "left-back 39°",
+          "distance": 9.9,
+          "heading": 81.23
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 11.6,
+          "heading": 114.67
+        },
+        {
+          "id": 9,
+          "direction": "front-left 70°",
+          "distance": 12.2,
+          "heading": 140.28
+        },
+        {
+          "id": 10,
+          "direction": "front-left 59°",
+          "distance": 8.9,
+          "heading": 151.61
+        },
+        {
+          "id": 11,
+          "direction": "front-left 36°",
+          "distance": 16.0,
+          "heading": 174.45
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest (10.0m) to approach the 203m mark; approximately 18m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 5.337,
+        "agent_total_duration_seconds": 5.337
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.43823
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 29.4078
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 11.9,
+          "heading": 29.42
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.5,
+          "heading": 22.12
+        },
+        {
+          "id": 5,
+          "direction": "left-back 64°",
+          "distance": 17.9,
+          "heading": 55.07
+        },
+        {
+          "id": 6,
+          "direction": "left-back 44°",
+          "distance": 15.9,
+          "heading": 75.72
+        },
+        {
+          "id": 7,
+          "direction": "left-back 35°",
+          "distance": 9.2,
+          "heading": 84.32
+        },
+        {
+          "id": 8,
+          "direction": "left-back 27°",
+          "distance": 12.7,
+          "heading": 92.72
+        },
+        {
+          "id": 9,
+          "direction": "front-left 72°",
+          "distance": 9.6,
+          "heading": 137.77
+        },
+        {
+          "id": 10,
+          "direction": "front-left 69°",
+          "distance": 11.9,
+          "heading": 140.58
+        },
+        {
+          "id": 11,
+          "direction": "front-left 50°",
+          "distance": 14.3,
+          "heading": 159.74
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward on D92 southwest (10.0m) to reach the 203m mark; approximately 8m remaining before the right turn.",
+        "agent_vlm_duration_seconds": 4.975,
+        "agent_total_duration_seconds": 4.975
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.68045
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 3,
+          "direction": "left-back 64°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 4,
+          "direction": "left-back 38°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 5,
+          "direction": "left-back 28°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 7,
+          "direction": "front-left 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 300.68,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout for the right turn to McDonald's; have reached the 203m southwest mark and need to find the right turn.",
+        "agent_vlm_duration_seconds": 5.67,
+        "agent_total_duration_seconds": 5.67
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.64697
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 3,
+          "direction": "left-back 45°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 5,
+          "direction": "front-left 49°",
+          "distance": 14.1,
+          "heading": 161.61
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Turn right (10.0m) to reach McDonald's; this is the final segment after completing the 203m southwest leg.",
+        "agent_vlm_duration_seconds": 5.712,
+        "agent_total_duration_seconds": 5.712
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 2,
+          "direction": "right-back 45°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 4,
+          "direction": "left-back 49°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 210.64697
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 300.68,
+        "pitch": 0.0,
+        "reason": "Rotate left to look for McDonald's; have traveled approximately 215m and should be at or very near the destination.",
+        "agent_vlm_duration_seconds": 5.747,
+        "agent_total_duration_seconds": 5.747
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 2,
+          "direction": "front-right 26°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 3,
+          "direction": "front-right 52°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 4,
+          "direction": "front-right 62°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 6,
+          "direction": "right-back 40°",
+          "distance": 14.2,
+          "heading": 160.79
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.68045
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 210.68,
+        "pitch": 0.0,
+        "reason": "Rotate left to look back along the southwest path to locate McDonald's; should be visible nearby after completing the 213m route.",
+        "agent_vlm_duration_seconds": 5.182,
+        "agent_total_duration_seconds": 5.182
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 2,
+          "direction": "right-back 26°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 3,
+          "direction": "right-back 52°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 6,
+          "direction": "left-back 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.68045
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 300.68,
+        "pitch": 0.0,
+        "reason": "Rotate right to look northeast; McDonald's should be visible in this direction after completing the right turn from the southwest leg.",
+        "agent_vlm_duration_seconds": 6.161,
+        "agent_total_duration_seconds": 6.161
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.68045
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 3,
+          "direction": "left-back 64°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 4,
+          "direction": "left-back 38°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 5,
+          "direction": "left-back 28°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 7,
+          "direction": "front-left 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "stop",
+        "answer": "Reached McDonald's after traveling approximately 213m (203m southwest on D92, then 10m right turn).",
+        "reason": "Stop - have completed the 213m navigation route (203m southwest + 10m right turn) and should be at McDonald's location.",
+        "agent_vlm_duration_seconds": 6.17,
+        "agent_total_duration_seconds": 6.17
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 2,
+          "direction": "right-back 26°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 3,
+          "direction": "right-back 52°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 6,
+          "direction": "left-back 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.68045
+        }
+      ]
+    }
+  ]
+}

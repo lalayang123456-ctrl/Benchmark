@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_gas_station_20260124_120904</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_gas_station_20260124_120904</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"-T1C-bitt5iUVnwCKyeyKQ": {"lat": 14.60497581099176, "lng": 120.97930435, "links": [{"pano_id": "-lqRu_P3apwxvsaVyb7VHA", "heading": 189.9413, "description": "Alonzo St"}, {"pano_id": "lUH97KmuDxhQmfKA_adhfQ", "heading": 9.956182, "description": "Alonzo St"}]}, "lUH97KmuDxhQmfKA_adhfQ": {"lat": 14.6050645932692, "lng": 120.9793204551137, "links": [{"pano_id": "-T1C-bitt5iUVnwCKyeyKQ", "heading": 189.95618, "description": "Alonzo St"}, {"pano_id": "efva_E-o9CqbcRMGiUXtfg", "heading": 9.906963, "description": "Alonzo St"}]}, "-lqRu_P3apwxvsaVyb7VHA": {"lat": 14.60488640974479, "lng": 120.9792881573563, "links": [{"pano_id": "-T1C-bitt5iUVnwCKyeyKQ", "heading": 9.941294, "description": "Alonzo St"}, {"pano_id": "_4s19O-OuKooSlWkLqOv2A", "heading": 189.93758, "description": "Alonzo St"}]}, "_4s19O-OuKooSlWkLqOv2A": {"lat": 14.60479600745763, "lng": 120.9792717896549, "links": [{"pano_id": "iNbsTsilyIuQ39-0sVbL8w", "heading": 189.91212, "description": "Alonzo St"}, {"pano_id": "-lqRu_P3apwxvsaVyb7VHA", "heading": 9.937576, "description": "Alonzo St"}]}, "efva_E-o9CqbcRMGiUXtfg": {"lat": 14.60515431050954, "lng": 120.9793366477531, "links": [{"pano_id": "8HrLP0JJDKpTXLri1Cnbbw", "heading": 9.906181, "description": "Alonzo St"}, {"pano_id": "lUH97KmuDxhQmfKA_adhfQ", "heading": 189.90697, "description": "Alonzo St"}]}, "iNbsTsilyIuQ39-0sVbL8w": {"lat": 14.60470536827435, "lng": 120.9792554219512, "links": [{"pano_id": "_4s19O-OuKooSlWkLqOv2A", "heading": 9.912125, "description": "Alonzo St"}, {"pano_id": "kIO3S9hl4J1kAt1_gVzjEw", "heading": 189.91716, "description": "Alonzo St"}]}, "8HrLP0JJDKpTXLri1Cnbbw": {"lat": 14.60524548992193, "lng": 120.9793531029736, "links": [{"pano_id": "Accteoh9k8W6jHSheXv0TQ", "heading": 9.942627, "description": "Alonzo St"}, {"pano_id": "efva_E-o9CqbcRMGiUXtfg", "heading": 189.90617, "description": "Alonzo St"}]}, "kIO3S9hl4J1kAt1_gVzjEw": {"lat": 14.60461380703159, "lng": 120.9792388791896, "links": [{"pano_id": "iNbsTsilyIuQ39-0sVbL8w", "heading": 9.917153, "description": "Alonzo St"}, {"pano_id": "1oeJlpVTIK1PpAZJ4JzZhg", "heading": 189.9762, "description": "Alonzo St"}, {"pano_id": "TNQdKE-FW2X6DSYwa2CY3A", "heading": 190.96, "distance": 16.44, "virtual": true}, {"pano_id": "Rxb1DLe6DSFZqeZRUvcVXA", "heading": 226.37, "distance": 17.84, "virtual": true}]}, "Accteoh9k8W6jHSheXv0TQ": {"lat": 14.60533342919239, "lng": 120.9793690330254, "links": [{"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 9.935195, "description": "Alonzo St"}, {"pano_id": "8HrLP0JJDKpTXLri1Cnbbw", "heading": 189.94263, "description": "Alonzo St"}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 9.19, "distance": 15.62, "virtual": true}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 27.87, "distance": 16.4, "virtual": true}]}, "G-w6lqA0jtBg7o1sexZU7w": {"lat": 14.60541660002631, "lng": 120.9793840877976, "links": [{"pano_id": "Accteoh9k8W6jHSheXv0TQ", "heading": 189.9352, "description": "Alonzo St"}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 8.07588, "description": "Doroteo Jose St"}, {"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 11.71, "distance": 10.21, "virtual": true}, {"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 314.02, "distance": 11.13, "virtual": true}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 49.03, "distance": 8.01, "virtual": true}, {"pano_id": "78boN2g1C4EVaEx3qGIOIQ", "heading": 78.65, "distance": 17.04, "virtual": true}]}, "1oeJlpVTIK1PpAZJ4JzZhg": {"lat": 14.60452279867989, "lng": 120.9792223364257, "links": [{"pano_id": "rhhSyc86k_PxMtAMjhQ4VQ", "heading": 156.03764, "description": "C-1"}, {"pano_id": "kIO3S9hl4J1kAt1_gVzjEw", "heading": 9.9762, "description": "Alonzo St"}, {"pano_id": "TNQdKE-FW2X6DSYwa2CY3A", "heading": 192.61, "distance": 6.17, "virtual": true}, {"pano_id": "Rxb1DLe6DSFZqeZRUvcVXA", "heading": 258.88, "distance": 11.35, "virtual": true}]}, "rhhSyc86k_PxMtAMjhQ4VQ": {"lat": 14.60445057050437, "lng": 120.979255509479, "links": [{"pano_id": "TNQdKE-FW2X6DSYwa2CY3A", "heading": 292.2253, "description": "Recto Ave"}, {"pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA", "heading": 112.38003, "description": "C-1"}, {"pano_id": "1oeJlpVTIK1PpAZJ4JzZhg", "heading": 336.03763, "description": "Alonzo St"}, {"pano_id": "Rxb1DLe6DSFZqeZRUvcVXA", "heading": 291.68, "distance": 15.82, "virtual": true}]}, "s4geihBqAAg8gtG7JPoR9Q": {"lat": 14.60547211448161, "lng": 120.9793922278772, "links": [{"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 188.07588, "description": "Alonzo St"}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 100.1244, "description": "Doroteo Jose St"}, {"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 279.988, "description": "Doroteo Jose St"}, {"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 17.37101, "description": "Alonzo St"}, {"pano_id": "Accteoh9k8W6jHSheXv0TQ", "heading": 189.19, "distance": 15.62, "virtual": true}, {"pano_id": "78boN2g1C4EVaEx3qGIOIQ", "heading": 100.09, "distance": 16.08, "virtual": true}, {"pano_id": "AlbpQSS_tNC55Xz-BEEEfw", "heading": 15.43, "distance": 12.67, "virtual": true}]}, "cnZqkd_LEL4Q_9652_USYA": {"lat": 14.60550650045885, "lng": 120.979403343899, "links": [{"pano_id": "AlbpQSS_tNC55Xz-BEEEfw", "heading": 14.534977, "description": "Alonzo St"}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 197.371, "description": "Doroteo Jose St"}, {"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 191.71, "distance": 10.21, "virtual": true}, {"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 257.36, "distance": 10.33, "virtual": true}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 140.06, "distance": 6.19, "virtual": true}, {"pano_id": "78boN2g1C4EVaEx3qGIOIQ", "heading": 114.41, "distance": 16.07, "virtual": true}]}, "8CaKBn5Jm6Zaj4Zb8giYRA": {"lat": 14.60441360175483, "lng": 120.9793482889465, "links": [{"pano_id": "gyztDz5vW8SUEJ-Z5OXQBw", "heading": 166.27225, "description": "Alonzo St"}, {"pano_id": "rhhSyc86k_PxMtAMjhQ4VQ", "heading": 292.38004, "description": "C-1"}, {"pano_id": "u0JCN_zX2qY-z31jA8HGDA", "heading": 112.25317, "description": "Recto Ave"}, {"pano_id": "TNQdKE-FW2X6DSYwa2CY3A", "heading": 292.33, "distance": 16.11, "virtual": true}]}, "NUYLaSLsfK_27hm4akR7fg": {"lat": 14.60548618073726, "lng": 120.9793096891956, "links": [{"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 99.98801, "description": "Doroteo Jose St"}, {"pano_id": "BrzPoJBYMZanlL87Q_qErQ", "heading": 280.00565, "description": "Doroteo Jose St"}, {"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 134.02, "distance": 11.13, "virtual": true}, {"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 77.36, "distance": 10.33, "virtual": true}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 100.04, "distance": 14.27, "virtual": true}, {"pano_id": "AlbpQSS_tNC55Xz-BEEEfw", "heading": 49.0, "distance": 16.23, "virtual": true}]}, "oD9FQyIFbmG99lFtyy3bhw": {"lat": 14.60546381116126, "lng": 120.9794402805939, "links": [{"pano_id": "78boN2g1C4EVaEx3qGIOIQ", "heading": 100.07909, "description": "Doroteo Jose St"}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 280.1244, "description": "Doroteo Jose St"}, {"pano_id": "Accteoh9k8W6jHSheXv0TQ", "heading": 207.87, "distance": 16.4, "virtual": true}, {"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 229.03, "distance": 8.01, "virtual": true}, {"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 320.06, "distance": 6.19, "virtual": true}, {"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 280.04, "distance": 14.27, "virtual": true}, {"pano_id": "AlbpQSS_tNC55Xz-BEEEfw", "heading": 352.2, "distance": 13.26, "virtual": true}]}, "TNQdKE-FW2X6DSYwa2CY3A": {"lat": 14.60446863639651, "lng": 120.9792098199415, "links": [{"pano_id": "rhhSyc86k_PxMtAMjhQ4VQ", "heading": 112.2253, "description": "C-1"}, {"pano_id": "Rxb1DLe6DSFZqeZRUvcVXA", "heading": 291.40002, "description": "Recto Ave"}, {"pano_id": "kIO3S9hl4J1kAt1_gVzjEw", "heading": 10.96, "distance": 16.44, "virtual": true}, {"pano_id": "1oeJlpVTIK1PpAZJ4JzZhg", "heading": 12.61, "distance": 6.17, "virtual": true}, {"pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA", "heading": 112.33, "distance": 16.11, "virtual": true}]}, "BrzPoJBYMZanlL87Q_qErQ": {"lat": 14.60550231959173, "lng": 120.9792151591412, "links": [{"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 100.005646, "description": "Doroteo Jose St"}, {"pano_id": "K-tJs-jo3QyUtTSd6qzw8Q", "heading": 279.98907, "description": "Doroteo Jose St"}]}, "gyztDz5vW8SUEJ-Z5OXQBw": {"lat": 14.60428115375314, "lng": 120.9793817245486, "links": [{"pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA", "heading": 346.27225, "description": "C-1"}, {"pano_id": "u0JCN_zX2qY-z31jA8HGDA", "heading": 29.1, "distance": 12.36, "virtual": true}, {"pano_id": "fhR2KrIG2IqzefgPWHc_ow", "heading": 67.17, "distance": 17.38, "virtual": true}]}, "Rxb1DLe6DSFZqeZRUvcVXA": {"lat": 14.60450312451038, "lng": 120.9791188784547, "links": [{"pano_id": "TNQdKE-FW2X6DSYwa2CY3A", "heading": 111.40004, "description": "Recto Ave"}, {"pano_id": "FeRBRzba_5UWLJTsO-Ochg", "heading": 291.3644, "description": "Recto Ave"}, {"pano_id": "kIO3S9hl4J1kAt1_gVzjEw", "heading": 46.37, "distance": 17.84, "virtual": true}, {"pano_id": "1oeJlpVTIK1PpAZJ4JzZhg", "heading": 78.88, "distance": 11.35, "virtual": true}, {"pano_id": "rhhSyc86k_PxMtAMjhQ4VQ", "heading": 111.68, "distance": 15.82, "virtual": true}]}, "u0JCN_zX2qY-z31jA8HGDA": {"lat": 14.60437825159127, "lng": 120.9794375672352, "links": [{"pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA", "heading": 292.25317, "description": "C-1"}, {"pano_id": "fhR2KrIG2IqzefgPWHc_ow", "heading": 112.042404, "description": "Recto Ave"}, {"pano_id": "gyztDz5vW8SUEJ-Z5OXQBw", "heading": 209.1, "distance": 12.36, "virtual": true}]}, "78boN2g1C4EVaEx3qGIOIQ": {"lat": 14.605446768529, "lng": 120.9795393619096, "links": [{"pano_id": "joKaOdoPKyquQ989Lae1hg", "heading": 100.13532, "description": "Doroteo Jose St"}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 280.07907, "description": "Doroteo Jose St"}, {"pano_id": "G-w6lqA0jtBg7o1sexZU7w", "heading": 258.65, "distance": 17.04, "virtual": true}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 280.09, "distance": 16.08, "virtual": true}, {"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 294.41, "distance": 16.07, "virtual": true}]}, "AlbpQSS_tNC55Xz-BEEEfw": {"lat": 14.60558196465362, "lng": 120.9794235628021, "links": [{"pano_id": "cnZqkd_LEL4Q_9652_USYA", "heading": 194.53497, "description": "Alonzo St"}, {"pano_id": "D9BhjU1Ir8xOnPQkWfDupg", "heading": 14.5294075, "description": "Alonzo St"}, {"pano_id": "s4geihBqAAg8gtG7JPoR9Q", "heading": 195.43, "distance": 12.67, "virtual": true}, {"pano_id": "NUYLaSLsfK_27hm4akR7fg", "heading": 229.0, "distance": 16.23, "virtual": true}, {"pano_id": "oD9FQyIFbmG99lFtyy3bhw", "heading": 172.2, "distance": 13.26, "virtual": true}]}, "D9BhjU1Ir8xOnPQkWfDupg": {"lat": 14.60567445341005, "lng": 120.979448333142, "links": [{"pano_id": "AlbpQSS_tNC55Xz-BEEEfw", "heading": 194.5294, "description": "Alonzo St"}, {"pano_id": "-5YJM9YKXTg6FjsAoVQr6w", "heading": 14.514929, "description": "Alonzo St"}]}, "K-tJs-jo3QyUtTSd6qzw8Q": {"lat": 14.60551862511511, "lng": 120.9791194911502, "links": [{"pano_id": "Z8PQeRT8JsqkGUI8XUz-hw", "heading": 279.9778, "description": "Doroteo Jose St"}, {"pano_id": "BrzPoJBYMZanlL87Q_qErQ", "heading": 99.989075, "description": "Doroteo Jose St"}]}, "FeRBRzba_5UWLJTsO-Ochg": {"lat": 14.60453662179645, "lng": 120.9790303876835, "links": [{"pano_id": "Rxb1DLe6DSFZqeZRUvcVXA", "heading": 111.3644, "description": "Recto Ave"}, {"pano_id": "FXPkk1iClSe88d0cKM_swg", "heading": 291.38602, "description": "Recto Ave"}]}, "fhR2KrIG2IqzefgPWHc_ow": {"lat": 14.60434179725547, "lng": 120.9795306091464, "links": [{"pano_id": "i1KBDcUa7umkCgaxQDd21w", "heading": 112.002846, "description": "Recto Ave"}, {"pano_id": "u0JCN_zX2qY-z31jA8HGDA", "heading": 292.04242, "description": "Recto Ave"}, {"pano_id": "gyztDz5vW8SUEJ-Z5OXQBw", "heading": 247.17, "distance": 17.38, "virtual": true}]}, "NlPoG6JdVFf843lSCZY7PA": {"lat": 14.60425985115338, "lng": 120.9793804991602, "links": [{"pano_id": "gyztDz5vW8SUEJ-Z5OXQBw", "heading": 3.1860476, "description": "Alonzo St"}, {"pano_id": "X13sxnUdMWy3ucXht_ROOA", "heading": 226.27092, "description": "Alonzo St"}, {"pano_id": "MPYhTitXyfjvSS5P3EQ-KA", "heading": 110.87599, "description": "Recto Ave"}, {"pano_id": "DjIJqVsxQeIO0vs9dBxROg", "heading": 294.2959, "description": "Recto Ave"}, {"pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA", "heading": 348.54, "distance": 17.44, "virtual": true}, {"pano_id": "u0JCN_zX2qY-z31jA8HGDA", "heading": 25.01, "distance": 14.53, "virtual": true}]}, "joKaOdoPKyquQ989Lae1hg": {"lat": 14.60543129432921, "lng": 120.9796288151127, "links": [{"pano_id": "78boN2g1C4EVaEx3qGIOIQ", "heading": 280.1353, "description": "Doroteo Jose St"}, {"pano_id": "vx_-rmDv2e2uT5DjsjmUZw", "heading": 100.11691, "description": "Doroteo Jose St"}]}, "-5YJM9YKXTg6FjsAoVQr6w": {"lat": 14.60576572981898, "lng": 120.9794727533661, "links": [{"pano_id": "a-_L1Pe25yisEdzpZVmqMg", "heading": 14.497139, "description": "Alonzo St"}, {"pano_id": "D9BhjU1Ir8xOnPQkWfDupg", "heading": 194.51492, "description": "Alonzo St"}]}, "FXPkk1iClSe88d0cKM_swg": {"lat": 14.6045691944106, "lng": 120.9789444351616, "links": [{"pano_id": "ICI293xDBzKJrbOfFwPQBQ", "heading": 291.39792, "description": "Recto Ave"}, {"pano_id": "FeRBRzba_5UWLJTsO-Ochg", "heading": 111.386, "description": "Recto Ave"}]}, "i1KBDcUa7umkCgaxQDd21w": {"lat": 14.60430555217831, "lng": 120.979623300876, "links": [{"pano_id": "z9Y_w-CjjtUUzEyxm5nvOQ", "heading": 112.02206, "description": "Recto Ave"}, {"pano_id": "fhR2KrIG2IqzefgPWHc_ow", "heading": 292.00284, "description": "Recto Ave"}]}, "vx_-rmDv2e2uT5DjsjmUZw": {"lat": 14.60541409572975, "lng": 120.9797284214393, "links": [{"pano_id": "joKaOdoPKyquQ989Lae1hg", "heading": 280.1169, "description": "Doroteo Jose St"}, {"pano_id": "PKn2nTg7ow3lUC6OD2vODw", "heading": 100.08132, "description": "Doroteo Jose St"}, {"pano_id": "SW-otdCd6Y-qUEgwT6cIsQ", "heading": 99.99, "distance": 15.84, "virtual": true}, {"pano_id": "lS5edE7R3DkKiDYVWYAtHA", "heading": 100.1, "distance": 14.34, "virtual": true}]}, "Z8PQeRT8JsqkGUI8XUz-hw": {"lat": 14.60553504601607, "lng": 120.9790230353317, "links": [{"pano_id": "K-tJs-jo3QyUtTSd6qzw8Q", "heading": 99.97782, "description": "Doroteo Jose St"}, {"pano_id": "nTXROHm8F1qoLBd5k-ZVzw", "heading": 280.2918, "description": "Doroteo Jose St"}]}, "z9Y_w-CjjtUUzEyxm5nvOQ": {"lat": 14.60427197858216, "lng": 120.9797090778621, "links": [{"pano_id": "bMdyPTFRtsRSsbZJ8ICD8g", "heading": 112.026405, "description": "Recto Ave"}, {"pano_id": "i1KBDcUa7umkCgaxQDd21w", "heading": 292.02206, "description": "Recto Ave"}]}, "PKn2nTg7ow3lUC6OD2vODw": {"lat": 14.60539760644059, "lng": 120.9798242640051, "links": [{"pano_id": "vx_-rmDv2e2uT5DjsjmUZw", "heading": 280.08133, "description": "Doroteo Jose St"}, {"pano_id": "SW-otdCd6Y-qUEgwT6cIsQ", "heading": 99.81505, "description": "Doroteo Jose St"}, {"pano_id": "lS5edE7R3DkKiDYVWYAtHA", "heading": 100.15, "distance": 3.87, "virtual": true}, {"pano_id": "VYxpXSLIEqgcm_Pitzgk3A", "heading": 99.38, "distance": 16.08, "virtual": true}]}, "a-_L1Pe25yisEdzpZVmqMg": {"lat": 14.60585450252435, "lng": 120.9794964733641, "links": [{"pano_id": "w1Nylru4ESf-4ZQtAjG02Q", "heading": 14.47336, "description": "Alonzo St"}, {"pano_id": "-5YJM9YKXTg6FjsAoVQr6w", "heading": 194.49713, "description": "Alonzo St"}]}, "nTXROHm8F1qoLBd5k-ZVzw": {"lat": 14.60555119501493, "lng": 120.9789311308961, "links": [{"pano_id": "Z8PQeRT8JsqkGUI8XUz-hw", "heading": 100.2918, "description": "Doroteo Jose St"}, {"pano_id": "04xZku6NZkWyk-nyoh5e1g", "heading": 280.86035, "description": "Doroteo Jose St"}]}, "ICI293xDBzKJrbOfFwPQBQ": {"lat": 14.60460072490784, "lng": 120.9788612834785, "links": [{"pano_id": "f_g7jsDWF8MrO2NYAnu71w", "heading": 291.3604, "description": "Recto Ave"}, {"pano_id": "FXPkk1iClSe88d0cKM_swg", "heading": 111.39791, "description": "Recto Ave"}]}, "w1Nylru4ESf-4ZQtAjG02Q": {"lat": 14.60593522402905, "lng": 120.9795180051664, "links": [{"pano_id": "a-_L1Pe25yisEdzpZVmqMg", "heading": 194.47336, "description": "Alonzo St"}, {"pano_id": "DkmqdU0nbKTASiIEn8S09Q", "heading": 14.551931, "description": "Alonzo St"}]}, "04xZku6NZkWyk-nyoh5e1g": {"lat": 14.60556804607223, "lng": 120.9788403642566, "links": [{"pano_id": "IYZaZ3ilN7EX_C7T97TW1A", "heading": 280.88477, "description": "Doroteo Jose St"}, {"pano_id": "nTXROHm8F1qoLBd5k-ZVzw", "heading": 100.86037, "description": "Doroteo Jose St"}]}, "SW-otdCd6Y-qUEgwT6cIsQ": {"lat": 14.60538938612534, "lng": 120.9798733668794, "links": [{"pano_id": "lS5edE7R3DkKiDYVWYAtHA", "heading": 278.94116, "description": "Kusang Loob St"}, {"pano_id": "VYxpXSLIEqgcm_Pitzgk3A", "heading": 99.16607, "description": "Doroteo Jose St"}, {"pano_id": "PKn2nTg7ow3lUC6OD2vODw", "heading": 279.81506, "description": "Doroteo Jose St"}, {"pano_id": "vx_-rmDv2e2uT5DjsjmUZw", "heading": 279.99, "distance": 15.84, "virtual": true}]}, "bMdyPTFRtsRSsbZJ8ICD8g": {"lat": 14.60424093337677, "lng": 120.9797883777565, "links": [{"pano_id": "IV9pGklxzc-uk2EgjalBAw", "heading": 112.04116, "description": "Recto Ave"}, {"pano_id": "z9Y_w-CjjtUUzEyxm5nvOQ", "heading": 292.0264, "description": "Recto Ave"}]}, "f_g7jsDWF8MrO2NYAnu71w": {"lat": 14.6046334534524, "lng": 120.9787748056677, "links": [{"pano_id": "qkoFYkkGwkGKsSHaRxWfFg", "heading": 291.39667, "description": "Recto Ave"}, {"pano_id": "ICI293xDBzKJrbOfFwPQBQ", "heading": 111.3604, "description": "Recto Ave"}]}, "lS5edE7R3DkKiDYVWYAtHA": {"lat": 14.60539147828464, "lng": 120.9798596250787, "links": [{"pano_id": "SW-otdCd6Y-qUEgwT6cIsQ", "heading": 98.94116, "description": "Doroteo Jose St"}, {"pano_id": "vx_-rmDv2e2uT5DjsjmUZw", "heading": 280.1, "distance": 14.34, "virtual": true}, {"pano_id": "PKn2nTg7ow3lUC6OD2vODw", "heading": 280.15, "distance": 3.87, "virtual": true}, {"pano_id": "VYxpXSLIEqgcm_Pitzgk3A", "heading": 99.14, "distance": 12.21, "virtual": true}]}, "VYxpXSLIEqgcm_Pitzgk3A": {"lat": 14.60537403835232, "lng": 120.9799716600955, "links": [{"pano_id": "9LqKxqNq-UKeLogKKMvA5A", "heading": 99.1674, "description": "Doroteo Jose St"}, {"pano_id": "SW-otdCd6Y-qUEgwT6cIsQ", "heading": 279.16608, "description": "Doroteo Jose St"}, {"pano_id": "PKn2nTg7ow3lUC6OD2vODw", "heading": 279.38, "distance": 16.08, "virtual": true}, {"pano_id": "lS5edE7R3DkKiDYVWYAtHA", "heading": 279.14, "distance": 12.21, "virtual": true}]}, "IYZaZ3ilN7EX_C7T97TW1A": {"lat": 14.60558438216377, "lng": 120.9787525735079, "links": [{"pano_id": "04xZku6NZkWyk-nyoh5e1g", "heading": 100.884766, "description": "Doroteo Jose St"}, {"pano_id": "23nd2Ysk7M4spFidTnNoSA", "heading": 280.83557, "description": "Doroteo Jose St"}]}, "IV9pGklxzc-uk2EgjalBAw": {"lat": 14.60420914505519, "lng": 120.9798695156742, "links": [{"pano_id": "KWwwzKV_Lbb_OvU8RfdfHA", "heading": 112.02401, "description": "Recto Ave"}, {"pano_id": "bMdyPTFRtsRSsbZJ8ICD8g", "heading": 292.04117, "description": "Recto Ave"}]}, "qkoFYkkGwkGKsSHaRxWfFg": {"lat": 14.60466614354235, "lng": 120.9786885903799, "links": [{"pano_id": "21hS1EwtKcYFzRfwOiuRvg", "heading": 291.37384, "description": "Recto Ave"}, {"pano_id": "f_g7jsDWF8MrO2NYAnu71w", "heading": 111.39667, "description": "Recto Ave"}]}, "DkmqdU0nbKTASiIEn8S09Q": {"lat": 14.60601744820256, "lng": 120.9795400621306, "links": [{"pano_id": "w1Nylru4ESf-4ZQtAjG02Q", "heading": 194.55193, "description": "Alonzo St"}, {"pano_id": "SgQh0Gtb7LiEuGXlwD2I7g", "heading": 14.508304, "description": "Alonzo St"}]}, "23nd2Ysk7M4spFidTnNoSA": {"lat": 14.60560062643386, "lng": 120.978664870224, "links": [{"pano_id": "IYZaZ3ilN7EX_C7T97TW1A", "heading": 100.83558, "description": "Doroteo Jose St"}, {"pano_id": "LblHKmaGEKOs2gY9oUqVvw", "heading": 283.11472, "description": "Luzon Bridge"}]}, "KWwwzKV_Lbb_OvU8RfdfHA": {"lat": 14.60417443757243, "lng": 120.979958180888, "links": [{"pano_id": "ISyU660W6WWqwJr2B74vog", "heading": 112.04063, "description": "Recto Ave"}, {"pano_id": "IV9pGklxzc-uk2EgjalBAw", "heading": 292.02402, "description": "Recto Ave"}, {"pano_id": "kuaDXF0_tXn7YL8Qu8kGcQ", "heading": 111.85, "distance": 15.85, "virtual": true}, {"pano_id": "kOVj7mFkXWgDyhrfrvoUDQ", "heading": 90.21, "distance": 9.69, "virtual": true}]}, "9LqKxqNq-UKeLogKKMvA5A": {"lat": 14.60536000052292, "lng": 120.9800615506162, "links": [{"pano_id": "yKotI-dXj-0XmJ99MAhyag", "heading": 99.094315, "description": "Doroteo Jose St"}, {"pano_id": "VYxpXSLIEqgcm_Pitzgk3A", "heading": 279.1674, "description": "Doroteo Jose St"}, {"pano_id": "vnDfV1mBT3k48CqEsuh2hg", "heading": 99.12, "distance": 17.36, "virtual": true}]}, "SgQh0Gtb7LiEuGXlwD2I7g": {"lat": 14.60611138640581, "lng": 120.9795651825571, "links": [{"pano_id": "pVCUktZElaqf0gHoBHabvg", "heading": 12.457914, "description": "Alonzo St"}, {"pano_id": "DkmqdU0nbKTASiIEn8S09Q", "heading": 194.5083, "description": "Alonzo St"}]}, "8fx7FdaYBkIgQR48N46jpg": {"lat": 14.60548337957242, "lng": 120.9798722290233, "links": [{"pano_id": "lS5edE7R3DkKiDYVWYAtHA", "heading": 187.55981, "description": "Kusang Loob St"}, {"pano_id": "B-YyTXiZIfW12um-awPbRg", "heading": 7.6017265, "description": "Kusang Loob St"}, {"pano_id": "vx_-rmDv2e2uT5DjsjmUZw", "heading": 243.53, "distance": 17.29, "virtual": true}, {"pano_id": "PKn2nTg7ow3lUC6OD2vODw", "heading": 208.42, "distance": 10.84, "virtual": true}, {"pano_id": "SW-otdCd6Y-qUEgwT6cIsQ", "heading": 179.33, "distance": 10.45, "virtual": true}, {"pano_id": "VYxpXSLIEqgcm_Pitzgk3A", "heading": 138.65, "distance": 16.2, "virtual": true}]}, "21hS1EwtKcYFzRfwOiuRvg": {"lat": 14.60469872902043, "lng": 120.9786025500875, "links": [{"pano_id": "H0S-pvOpvpR2fK0gMvN_TQ", "heading": 291.37714, "description": "Recto Ave"}, {"pano_id": "qkoFYkkGwkGKsSHaRxWfFg", "heading": 111.37384, "description": "Recto Ave"}]}, "yKotI-dXj-0XmJ99MAhyag": {"lat": 14.60534688999881, "lng": 120.9801461894389, "links": [{"pano_id": "9LqKxqNq-UKeLogKKMvA5A", "heading": 279.09433, "description": "Doroteo Jose St"}, {"pano_id": "vnDfV1mBT3k48CqEsuh2hg", "heading": 99.15912, "description": "Doroteo Jose St"}, {"pano_id": "YWFPwvVfKRxFHiQ_o8Iqxg", "heading": 98.61, "distance": 11.69, "virtual": true}]}, "pVCUktZElaqf0gHoBHabvg": {"lat": 14.60620378206791, "lng": 120.9795862767092, "links": [{"pano_id": "8qXxvrYSv3OCSWOHFKSspg", "heading": 8.966484, "description": "Alonzo St"}, {"pano_id": "SgQh0Gtb7LiEuGXlwD2I7g", "heading": 192.45792, "description": "Alonzo St"}]}, "LblHKmaGEKOs2gY9oUqVvw": {"lat": 14.60562272761846, "lng": 120.9785668385342, "links": [{"pano_id": "nRGYsCK2adO2vKD-wo1nWA", "heading": 287.1337, "description": "Luzon Bridge"}, {"pano_id": "23nd2Ysk7M4spFidTnNoSA", "heading": 103.11472, "description": "Doroteo Jose St"}]}, "H0S-pvOpvpR2fK0gMvN_TQ": {"lat": 14.60472989440371, "lng": 120.9785202734538, "links": [{"pano_id": "21hS1EwtKcYFzRfwOiuRvg", "heading": 111.377144, "description": "Recto Ave"}, {"pano_id": "BfNV3FDWMXhdOy__pAe2UQ", "heading": 291.37524, "description": "Recto Ave"}]}, "ISyU660W6WWqwJr2B74vog": {"lat": 14.6041465592812, "lng": 120.9800293405833, "links": [{"pano_id": "kuaDXF0_tXn7YL8Qu8kGcQ", "heading": 111.634834, "description": "Recto Ave"}, {"pano_id": "KWwwzKV_Lbb_OvU8RfdfHA", "heading": 292.04062, "description": "Recto Ave"}, {"pano_id": "kOVj7mFkXWgDyhrfrvoUDQ", "heading": 33.58, "distance": 3.68, "virtual": true}]}, "vnDfV1mBT3k48CqEsuh2hg": {"lat": 14.60533524126381, "lng": 120.9802208501094, "links": [{"pano_id": "YWFPwvVfKRxFHiQ_o8Iqxg", "heading": 97.348045, "description": "Doroteo Jose St"}, {"pano_id": "yKotI-dXj-0XmJ99MAhyag", "heading": 279.15912, "description": "Doroteo Jose St"}, {"pano_id": "9LqKxqNq-UKeLogKKMvA5A", "heading": 279.12, "distance": 17.36, "virtual": true}]}, "nRGYsCK2adO2vKD-wo1nWA": {"lat": 14.60565004034613, "lng": 120.9784752838666, "links": [{"pano_id": "LblHKmaGEKOs2gY9oUqVvw", "heading": 107.13369, "description": "Luzon Bridge"}, {"pano_id": "GvY133NpoE_Dm1NobJMLfA", "heading": 294.25977, "description": "Luzon St"}]}, "BfNV3FDWMXhdOy__pAe2UQ": {"lat": 14.60476234963638, "lng": 120.9784345831557, "links": [{"pano_id": "H0S-pvOpvpR2fK0gMvN_TQ", "heading": 111.37523, "description": "Recto Ave"}]}, "8qXxvrYSv3OCSWOHFKSspg": {"lat": 14.60629557479446, "lng": 120.979601243927, "links": [{"pano_id": "pVCUktZElaqf0gHoBHabvg", "heading": 188.96648, "description": "Alonzo St"}, {"pano_id": "2XaP0-77IMupaCg_7Qwo6w", "heading": 8.937041, "description": "Alonzo St"}]}, "kuaDXF0_tXn7YL8Qu8kGcQ": {"lat": 14.60412139706577, "lng": 120.9800948984944, "links": [{"pano_id": "ISyU660W6WWqwJr2B74vog", "heading": 291.63483, "description": "Recto Ave"}, {"pano_id": "TKzqHdVeJRLGyoafMJdJhQ", "heading": 111.51975, "description": "Recto Ave"}, {"pano_id": "kOVj7mFkXWgDyhrfrvoUDQ", "heading": 319.42627, "description": "Severino Reyes St"}, {"pano_id": "KWwwzKV_Lbb_OvU8RfdfHA", "heading": 291.85, "distance": 15.85, "virtual": true}]}, "GvY133NpoE_Dm1NobJMLfA": {"lat": 14.6056850057739, "lng": 120.9783951078296, "links": [{"pano_id": "nRGYsCK2adO2vKD-wo1nWA", "heading": 114.25976, "description": "Luzon Bridge"}]}, "TKzqHdVeJRLGyoafMJdJhQ": {"lat": 14.60408332372731, "lng": 120.9801946794928, "links": [{"pano_id": "kuaDXF0_tXn7YL8Qu8kGcQ", "heading": 291.51974, "description": "Recto Ave"}]}, "kOVj7mFkXWgDyhrfrvoUDQ": {"lat": 14.60417411724295, "lng": 120.9800482464732, "links": [{"pano_id": "kuaDXF0_tXn7YL8Qu8kGcQ", "heading": 139.42627, "description": "Recto Ave"}, {"pano_id": "KWwwzKV_Lbb_OvU8RfdfHA", "heading": 270.21, "distance": 9.69, "virtual": true}, {"pano_id": "ISyU660W6WWqwJr2B74vog", "heading": 213.58, "distance": 3.68, "virtual": true}]}, "YWFPwvVfKRxFHiQ_o8Iqxg": {"lat": 14.6053311563018, "lng": 120.9802535852541, "links": [{"pano_id": "vnDfV1mBT3k48CqEsuh2hg", "heading": 277.34805, "description": "Doroteo Jose St"}, {"pano_id": "yKotI-dXj-0XmJ99MAhyag", "heading": 278.61, "distance": 11.69, "virtual": true}]}, "2XaP0-77IMupaCg_7Qwo6w": {"lat": 14.60638444328469, "lng": 120.9796156859774, "links": [{"pano_id": "8qXxvrYSv3OCSWOHFKSspg", "heading": 188.93704, "description": "Alonzo St"}]}};
+        const targetPanos = ["-T1C-bitt5iUVnwCKyeyKQ"];
+        const spawnPoints = ["TKzqHdVeJRLGyoafMJdJhQ", "GvY133NpoE_Dm1NobJMLfA", "YWFPwvVfKRxFHiQ_o8Iqxg", "2XaP0-77IMupaCg_7Qwo6w"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

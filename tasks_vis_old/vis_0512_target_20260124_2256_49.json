@@ -1,0 +1,121 @@
+{
+  "task_id": "nav_0512_target_20260124_1420_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_141848",
+  "spawn_point": "WA-4N-vJI1Lc7r4g6OUA6g",
+  "spawn_heading": 87.1,
+  "description": "Navigate to FCMB ATM. Head east along Lekki-Epe Expressway. Turn left at the Budo gas station onto the side road. Continue straight down this road, passing the GIGM terminal entrance on the left.",
+  "ground_truth": {
+    "target_name": "FCMB ATM",
+    "target_pano_id": "Wh7XlT4tCkEBZ2Yr9EYJfg",
+    "optimal_distance_meters": 161,
+    "route_description": "left→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Wh7XlT4tCkEBZ2Yr9EYJfg"
+  ],
+  "max_steps": 38,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "WA-4N-vJI1Lc7r4g6OUA6g",
+      "heading": 87.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "2gC47DsNtXIlpt4RI5Z7fA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "1sbIuesmLb9Xa5OCaSstBA",
+      "heading": 87.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "Uzr2m9dVcA9otxAoT8FBhg",
+      "heading": 87.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "z3Q--O9FZZ9E4RC0AQfGXw",
+      "heading": 87.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "b_Rk698dpYQzLmSmjTf0Mw",
+      "heading": 87.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "ls9yDEPSq2uqGBkpT1QSQQ",
+      "heading": 87.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "zSWBWyHnj5kXjaOjTI6LDA",
+      "heading": 87.7
+    },
+    {
+      "step_index": 8,
+      "pano_id": "CoGk10PexzhoBt5a9JGt3w",
+      "heading": 355.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "N8QNkrIRHrBwsYeoECfw-w",
+      "heading": 355.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Sus5FXbR01w_pZ82gwIG1Q",
+      "heading": 355.4
+    },
+    {
+      "step_index": 11,
+      "pano_id": "w8Ya0I2LJFAdlbk9YfOEYg",
+      "heading": 355.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "6xtHgyhsP-sjxZJzREXZ8g",
+      "heading": 281.7
+    },
+    {
+      "step_index": 13,
+      "pano_id": "HnrSB2SH1_qQDIsgqZ9_sA",
+      "heading": 267.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "u2qdS6L4ZqbwN_iF8up4Sg",
+      "heading": 267.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "8Vm0nytkKrR9CAuXWt8m9w",
+      "heading": 267.1
+    },
+    {
+      "step_index": 16,
+      "pano_id": "uj4g9OjsvaTbcjbESkeiXQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 17,
+      "pano_id": "MGWQQ_mH4yflc44foHrvOQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 18,
+      "pano_id": "Wh7XlT4tCkEBZ2Yr9EYJfg",
+      "heading": 267.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head east/Lekki - Epe Expy [68m] -> Turn left at the gas station [27m] -> Continue straight past GIGM terminal [66m]",
+  "agent_concise_description": "Head east along Lekki-Epe Expressway. Turn left at the Budo gas station onto the side road. Continue straight down this road, passing the GIGM terminal entrance on the left."
+}

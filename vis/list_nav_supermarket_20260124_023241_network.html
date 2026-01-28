@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_supermarket_20260124_023241</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_supermarket_20260124_023241</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"KrLqO7swFco2z37wZNwQow": {"lat": -1.287571213418722, "lng": 36.82817196087382, "links": [{"pano_id": "_nV1md5zP80fPuZFUxKYYw", "heading": 64.0121, "description": "Hakati Rd"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 244.05455, "description": "Hakati Rd"}]}, "_nV1md5zP80fPuZFUxKYYw": {"lat": -1.287529223630453, "lng": 36.82825812061048, "links": [{"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 31.742825, "description": "Hakati Rd"}, {"pano_id": "KrLqO7swFco2z37wZNwQow", "heading": 244.0121, "description": "Hakati Rd"}]}, "m-jmFIiCryIxBFmqRQa3cg": {"lat": -1.287612285281768, "lng": 36.82808752587699, "links": [{"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 244.01425, "description": "Hakati Rd"}, {"pano_id": "KrLqO7swFco2z37wZNwQow", "heading": 64.05455, "description": "Hakati Rd"}, {"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 244.0, "distance": 10.11, "virtual": true}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 233.23, "distance": 10.32, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 244.02, "distance": 10.21, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 279.87, "distance": 12.34, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 199.05, "distance": 14.46, "virtual": true}]}, "gg3-nRngKvjMU2w6Eq_zcQ": {"lat": -1.287648627678843, "lng": 36.82801294702509, "links": [{"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 243.90773, "description": "Mfangano Ln"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 64.01425, "description": "Hakati Rd"}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 179.26, "distance": 2.14, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 244.1, "distance": 0.98, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 327.84, "distance": 7.27, "virtual": true}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 244.04, "distance": 11.41, "virtual": true}, {"pano_id": "xfoqwlaTJy5ob8pJoTW5ag", "heading": 331.84, "distance": 17.03, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 159.65, "distance": 10.27, "virtual": true}]}, "1UAZ1GhemyfeiNexms97kQ": {"lat": -1.287458610002431, "lng": 36.82830181645372, "links": [{"pano_id": "_nV1md5zP80fPuZFUxKYYw", "heading": 211.74283, "description": "Hakati Rd"}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 12.815867, "description": "Hakati Rd"}, {"pano_id": "foIEzqWQH7fE2IEMIza4Fw", "heading": 358.04, "distance": 17.36, "virtual": true}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 27.75, "distance": 10.8, "virtual": true}, {"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 71.48, "distance": 14.86, "virtual": true}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 85.36, "distance": 16.43, "virtual": true}, {"pano_id": "6u_E-ki3Wu0SHYWGNk6sBg", "heading": 120.58, "distance": 16.38, "virtual": true}]}, "gCGoqSXAjNlo3qWUvD4BQQ": {"lat": -1.287372339464293, "lng": 36.82832144672074, "links": [{"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 192.81587, "description": "Hakati Rd"}, {"pano_id": "foIEzqWQH7fE2IEMIza4Fw", "heading": 340.30948, "description": "Mfangano St"}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 90.63, "distance": 2.85, "virtual": true}, {"pano_id": "uxDPl7LY_bYZ6ua0WCX0CQ", "heading": 338.26, "distance": 12.52, "virtual": true}, {"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 112.26, "distance": 12.87, "virtual": true}, {"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 110.54, "distance": 16.64, "virtual": true}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 120.21, "distance": 16.42, "virtual": true}]}, "Rn3NA4hwOxtrfDoGpq90gA": {"lat": -1.287652126279595, "lng": 36.82800580125008, "links": [{"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 63.907726, "description": "Hakati Rd"}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 154.79362, "description": "Mfangano Ln"}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 334.821, "description": "Mfangano Ln"}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 245.7768, "description": "Hakati Rd"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 64.0, "distance": 10.11, "virtual": true}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 244.05, "distance": 10.53, "virtual": true}, {"pano_id": "xfoqwlaTJy5ob8pJoTW5ag", "heading": 334.82, "distance": 17.02, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 154.71, "distance": 10.22, "virtual": true}]}, "BGpsg8XZVsuCtFtNRwUsbQ": {"lat": -1.287667826962144, "lng": 36.82801319343111, "links": [{"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 154.69534, "description": "Mfangano Ln"}, {"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 334.79364, "description": "Mfangano Ln"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 53.23, "distance": 10.32, "virtual": true}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 359.26, "distance": 2.14, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 331.83, "distance": 1.93, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 334.82, "distance": 9.16, "virtual": true}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 254.46, "distance": 10.68, "virtual": true}]}, "a2XwS-RUHMjkB7RmijHbtQ": {"lat": -1.287652495717073, "lng": 36.82800497989658, "links": [{"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 65.776794, "description": "Mfangano Ln"}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 244.03326, "description": "Hakati Rd"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 64.02, "distance": 10.21, "virtual": true}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 64.1, "distance": 0.98, "virtual": true}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 151.83, "distance": 1.93, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 335.61, "distance": 7.23, "virtual": true}, {"pano_id": "xfoqwlaTJy5ob8pJoTW5ag", "heading": 335.15, "distance": 17.01, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 154.15, "distance": 10.22, "virtual": true}]}, "PH3Bryazt584Pk0RlEyGkg": {"lat": -1.287593262884864, "lng": 36.82797812163231, "links": [{"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 154.82103, "description": "Mfangano Ln"}, {"pano_id": "xfoqwlaTJy5ob8pJoTW5ag", "heading": 334.8133, "description": "Mfangano Ln"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 99.87, "distance": 12.34, "virtual": true}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 147.84, "distance": 7.27, "virtual": true}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 154.82, "distance": 9.16, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 155.61, "distance": 7.23, "virtual": true}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 209.82, "distance": 12.85, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 154.76, "distance": 17.45, "virtual": true}]}, "foIEzqWQH7fE2IEMIza4Fw": {"lat": -1.287302584874987, "lng": 36.82829647767726, "links": [{"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 160.30948, "description": "Hakati Rd"}, {"pano_id": "uxDPl7LY_bYZ6ua0WCX0CQ", "heading": 334.33728, "description": "Mfangano St"}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 144.16142, "description": "Temple Rd"}, {"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 178.04, "distance": 17.36, "virtual": true}, {"pano_id": "KoAEXlrg2C1DGlXr-Ua_-g", "heading": 334.35, "distance": 14.32, "virtual": true}]}, "HNPjv85dm4kARcEVrKtFTg": {"lat": -1.287693566460345, "lng": 36.82792062684409, "links": [{"pano_id": "NCY-b1gfr5_qnkIo8zz-cQ", "heading": 244.03842, "description": "Hakati Rd"}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 64.03327, "description": "Hakati Rd"}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 64.04, "distance": 11.41, "virtual": true}, {"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 64.05, "distance": 10.53, "virtual": true}, {"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 74.46, "distance": 10.68, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 29.82, "distance": 12.85, "virtual": true}, {"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 108.51, "distance": 14.59, "virtual": true}]}, "xfoqwlaTJy5ob8pJoTW5ag": {"lat": -1.28751364178411, "lng": 36.82794066788964, "links": [{"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 154.8133, "description": "Mfangano Ln"}, {"pano_id": "dkExKc_ki6kf5UnRWq7L_A", "heading": 334.78595, "description": "Mfangano Ln"}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 151.84, "distance": 17.03, "virtual": true}, {"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 154.82, "distance": 17.02, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 155.15, "distance": 17.01, "virtual": true}]}, "KYKZ4-ohut7XlEoJgB4uqg": {"lat": -1.287372619648216, "lng": 36.82834707283551, "links": [{"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 118.13355, "description": "Temple Rd"}, {"pano_id": "foIEzqWQH7fE2IEMIza4Fw", "heading": 324.16144, "description": "Mfangano St"}, {"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 207.75, "distance": 10.8, "virtual": true}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 270.63, "distance": 2.85, "virtual": true}, {"pano_id": "uxDPl7LY_bYZ6ua0WCX0CQ", "heading": 327.3, "distance": 13.86, "virtual": true}, {"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 114.52, "distance": 14.0, "virtual": true}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 125.98, "distance": 14.01, "virtual": true}]}, "VydguthOMXudkoQBwpLf3w": {"lat": -1.287735214097244, "lng": 36.82804506193641, "links": [{"pano_id": "BGpsg8XZVsuCtFtNRwUsbQ", "heading": 334.69534, "description": "Mfangano Ln"}, {"pano_id": "zVnjYgIh0JJjSl5GT2ZguQ", "heading": 154.7032, "description": "Mfangano Ln"}, {"pano_id": "m-jmFIiCryIxBFmqRQa3cg", "heading": 19.05, "distance": 14.46, "virtual": true}, {"pano_id": "gg3-nRngKvjMU2w6Eq_zcQ", "heading": 339.65, "distance": 10.27, "virtual": true}, {"pano_id": "Rn3NA4hwOxtrfDoGpq90gA", "heading": 334.71, "distance": 10.22, "virtual": true}, {"pano_id": "a2XwS-RUHMjkB7RmijHbtQ", "heading": 334.15, "distance": 10.22, "virtual": true}, {"pano_id": "PH3Bryazt584Pk0RlEyGkg", "heading": 334.76, "distance": 17.45, "virtual": true}, {"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 288.51, "distance": 14.59, "virtual": true}]}, "uxDPl7LY_bYZ6ua0WCX0CQ": {"lat": -1.287267720183425, "lng": 36.8282797221302, "links": [{"pano_id": "KoAEXlrg2C1DGlXr-Ua_-g", "heading": 334.35748, "description": "Mfangano St"}, {"pano_id": "foIEzqWQH7fE2IEMIza4Fw", "heading": 154.33727, "description": "Mfangano St"}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 158.26, "distance": 12.52, "virtual": true}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 147.3, "distance": 13.86, "virtual": true}]}, "KoAEXlrg2C1DGlXr-Ua_-g": {"lat": -1.287186466717741, "lng": 36.828240707974, "links": [{"pano_id": "uxDPl7LY_bYZ6ua0WCX0CQ", "heading": 154.35748, "description": "Mfangano St"}, {"pano_id": "sawTvdQfYxVfIw7I8lbbhg", "heading": 334.33038, "description": "Mfangano St"}, {"pano_id": "foIEzqWQH7fE2IEMIza4Fw", "heading": 154.35, "distance": 14.32, "virtual": true}]}, "NCY-b1gfr5_qnkIo8zz-cQ": {"lat": -1.287733348442128, "lng": 36.82783890203231, "links": [{"pano_id": "HNPjv85dm4kARcEVrKtFTg", "heading": 64.03842, "description": "Hakati Rd"}, {"pano_id": "WboAXfzvfRcP5yTldLaVgg", "heading": 244.00624, "description": "Hakati Rd"}]}, "zVnjYgIh0JJjSl5GT2ZguQ": {"lat": -1.287815655612344, "lng": 36.82808309057292, "links": [{"pano_id": "VydguthOMXudkoQBwpLf3w", "heading": 334.7032, "description": "Mfangano Ln"}, {"pano_id": "nbS3Ko3Vqk9Jlr_bKrYi2Q", "heading": 154.71812, "description": "Mfangano Ln"}]}, "c-jQsHuXpSCYXyG0si96nA": {"lat": -1.287416175100501, "lng": 36.82842855067975, "links": [{"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 104.712425, "description": "Temple Road"}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 298.13354, "description": "Temple Rd"}, {"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 251.48, "distance": 14.86, "virtual": true}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 292.26, "distance": 12.87, "virtual": true}, {"pano_id": "2puMbeOfE-f2x_CZHigLKQ", "heading": 73.39, "distance": 12.95, "virtual": true}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 146.03, "distance": 4.09, "virtual": true}, {"pano_id": "6u_E-ki3Wu0SHYWGNk6sBg", "heading": 179.96, "distance": 13.05, "virtual": true}]}, "dkExKc_ki6kf5UnRWq7L_A": {"lat": -1.287427317950259, "lng": 36.82790001084484, "links": [{"pano_id": "xfoqwlaTJy5ob8pJoTW5ag", "heading": 154.78595, "description": "Mfangano Ln"}, {"pano_id": "mtOEpYPvMtzSSc8o4_3njQ", "heading": 334.84027, "description": "Mfangano Ln"}]}, "mtOEpYPvMtzSSc8o4_3njQ": {"lat": -1.287343403569309, "lng": 36.8278605858103, "links": [{"pano_id": "dkExKc_ki6kf5UnRWq7L_A", "heading": 154.84027, "description": "Mfangano Ln"}, {"pano_id": "Ke5VdDn_OnaAukscCVs4WA", "heading": 334.80148, "description": "Mfangano Ln"}]}, "nbS3Ko3Vqk9Jlr_bKrYi2Q": {"lat": -1.28789580365328, "lng": 36.82812095491939, "links": [{"pano_id": "zVnjYgIh0JJjSl5GT2ZguQ", "heading": 334.71814, "description": "Mfangano Ln"}, {"pano_id": "A7IqwROVk8-YFQjMSkZ1bQ", "heading": 154.7629, "description": "Mfangano Ln"}]}, "WboAXfzvfRcP5yTldLaVgg": {"lat": -1.287773067132003, "lng": 36.82775742353688, "links": [{"pano_id": "NCY-b1gfr5_qnkIo8zz-cQ", "heading": 64.00625, "description": "Hakati Rd"}, {"pano_id": "3n9piJf4XaghTwTDQXHeXg", "heading": 244.0371, "description": "Hakati Rd"}, {"pano_id": "k55IXsgdE-hO7Qbh4ChAJQ", "heading": 208.82, "distance": 11.02, "virtual": true}, {"pano_id": "rFKIb9Ov02clpUDPFbFMSA", "heading": 257.46, "distance": 9.26, "virtual": true}, {"pano_id": "w8q-filrdgupUZkXllLswA", "heading": 298.84, "distance": 15.45, "virtual": true}]}, "sawTvdQfYxVfIw7I8lbbhg": {"lat": -1.287106507608997, "lng": 36.82820226874309, "links": [{"pano_id": "NuhAbElSCyI0m96UQp_0iA", "heading": 334.3997, "description": "Mfangano St"}, {"pano_id": "KoAEXlrg2C1DGlXr-Ua_-g", "heading": 154.33037, "description": "Mfangano St"}, {"pano_id": "RjuXuds4HJ6mFDiXNc9Hug", "heading": 334.37, "distance": 17.69, "virtual": true}]}, "bPMJzbvyRQCUzeviugo_gg": {"lat": -1.287424864292013, "lng": 36.82846165102827, "links": [{"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 284.71243, "description": "Temple Rd"}, {"pano_id": "2puMbeOfE-f2x_CZHigLKQ", "heading": 61.86383, "description": "Temple Road"}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 209.97176, "description": "Temple Rd"}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 290.54, "distance": 16.64, "virtual": true}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 294.52, "distance": 14.0, "virtual": true}, {"pano_id": "6u_E-ki3Wu0SHYWGNk6sBg", "heading": 196.9, "distance": 12.63, "virtual": true}]}, "2puMbeOfE-f2x_CZHigLKQ": {"lat": -1.287382884929134, "lng": 36.82854017189489, "links": [{"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 241.86383, "description": "Temple Road"}, {"pano_id": "tLrT4VZscvzbur9Vxgz69Q", "heading": 61.83349, "description": "Temple Road"}, {"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 253.39, "distance": 12.95, "virtual": true}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 235.0, "distance": 12.36, "virtual": true}]}, "A7IqwROVk8-YFQjMSkZ1bQ": {"lat": -1.287974894616169, "lng": 36.82815824430017, "links": [{"pano_id": "a5122-yZPEYm5jy7UDMbCg", "heading": 152.93149, "description": "Mfangano Ln"}, {"pano_id": "nbS3Ko3Vqk9Jlr_bKrYi2Q", "heading": 334.7629, "description": "Mfangano Ln"}]}, "I7djdeYggYZRi9_vJKAPog": {"lat": -1.287446649642563, "lng": 36.82844908439646, "links": [{"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 29.971748, "description": "Temple Road"}, {"pano_id": "6u_E-ki3Wu0SHYWGNk6sBg", "heading": 193.24348, "description": "Temple Rd"}, {"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 265.36, "distance": 16.43, "virtual": true}, {"pano_id": "gCGoqSXAjNlo3qWUvD4BQQ", "heading": 300.21, "distance": 16.42, "virtual": true}, {"pano_id": "KYKZ4-ohut7XlEoJgB4uqg", "heading": 305.98, "distance": 14.01, "virtual": true}, {"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 326.03, "distance": 4.09, "virtual": true}, {"pano_id": "2puMbeOfE-f2x_CZHigLKQ", "heading": 55.0, "distance": 12.36, "virtual": true}]}, "3n9piJf4XaghTwTDQXHeXg": {"lat": -1.287808613214918, "lng": 36.82768440492975, "links": [{"pano_id": "WboAXfzvfRcP5yTldLaVgg", "heading": 64.03709, "description": "Hakati Rd"}, {"pano_id": "k55IXsgdE-hO7Qbh4ChAJQ", "heading": 153.83836, "description": "Tom Mboya St"}, {"pano_id": "rFKIb9Ov02clpUDPFbFMSA", "heading": 334.6, "distance": 2.15, "virtual": true}, {"pano_id": "9KNhZwZ4osDhNuHqjiheSA", "heading": 153.85, "distance": 16.25, "virtual": true}, {"pano_id": "w8q-filrdgupUZkXllLswA", "heading": 334.6, "distance": 12.62, "virtual": true}]}, "NuhAbElSCyI0m96UQp_0iA": {"lat": -1.287031955745322, "lng": 36.8281665399528, "links": [{"pano_id": "RjuXuds4HJ6mFDiXNc9Hug", "heading": 334.3474, "description": "Mfangano St"}, {"pano_id": "sawTvdQfYxVfIw7I8lbbhg", "heading": 154.39969, "description": "Mfangano St"}]}, "Ke5VdDn_OnaAukscCVs4WA": {"lat": -1.28725143434576, "lng": 36.82781730038351, "links": [{"pano_id": "mtOEpYPvMtzSSc8o4_3njQ", "heading": 154.8015, "description": "Mfangano Ln"}, {"pano_id": "R9RXXuq1zxxFMeVGo2TiTQ", "heading": 334.28226, "description": "Mfangano Ln"}]}, "6u_E-ki3Wu0SHYWGNk6sBg": {"lat": -1.287533526761099, "lng": 36.82842863281463, "links": [{"pano_id": "qlaZNPO7xNo0muqhuF-kwA", "heading": 169.80838, "description": "Mfangano St"}, {"pano_id": "I7djdeYggYZRi9_vJKAPog", "heading": 13.2434845, "description": "Temple Rd"}, {"pano_id": "1UAZ1GhemyfeiNexms97kQ", "heading": 300.58, "distance": 16.38, "virtual": true}, {"pano_id": "c-jQsHuXpSCYXyG0si96nA", "heading": 359.96, "distance": 13.05, "virtual": true}, {"pano_id": "bPMJzbvyRQCUzeviugo_gg", "heading": 16.9, "distance": 12.63, "virtual": true}]}, "a5122-yZPEYm5jy7UDMbCg": {"lat": -1.288059574739444, "lng": 36.82820152952691, "links": [{"pano_id": "wlS5rWZfXpdLZv8eTlJGOQ", "heading": 152.83575, "description": "Mfangano Ln"}, {"pano_id": "A7IqwROVk8-YFQjMSkZ1bQ", "heading": 332.9315, "description": "Mfangano Ln"}]}, "tLrT4VZscvzbur9Vxgz69Q": {"lat": -1.287341335775925, "lng": 36.82861778919659, "links": [{"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 61.866364, "description": "Temple Road"}, {"pano_id": "2puMbeOfE-f2x_CZHigLKQ", "heading": 241.83348, "description": "Temple Road"}, {"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 61.86, "distance": 13.42, "virtual": true}, {"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 51.06, "distance": 13.89, "virtual": true}, {"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 61.86, "distance": 15.58, "virtual": true}]}, "R9RXXuq1zxxFMeVGo2TiTQ": {"lat": -1.287169771069368, "lng": 36.82777795744038, "links": [{"pano_id": "uAmWr-fvCFM9OwuRyxNUEQ", "heading": 333.22543, "description": "Mfangano Ln"}, {"pano_id": "Ke5VdDn_OnaAukscCVs4WA", "heading": 154.28227, "description": "Mfangano Ln"}]}, "k55IXsgdE-hO7Qbh4ChAJQ": {"lat": -1.287859931976891, "lng": 36.82770962058741, "links": [{"pano_id": "rFKIb9Ov02clpUDPFbFMSA", "heading": 334.03, "description": "Tom Mboya St"}, {"pano_id": "9KNhZwZ4osDhNuHqjiheSA", "heading": 153.865, "description": "Tom Mboya St"}, {"pano_id": "3n9piJf4XaghTwTDQXHeXg", "heading": 333.83838, "description": "Hakati Rd"}, {"pano_id": "WboAXfzvfRcP5yTldLaVgg", "heading": 28.82, "distance": 11.02, "virtual": true}]}, "RjuXuds4HJ6mFDiXNc9Hug": {"lat": -1.286963049561518, "lng": 36.82813343947188, "links": [{"pano_id": "NuhAbElSCyI0m96UQp_0iA", "heading": 154.3474, "description": "Mfangano St"}, {"pano_id": "MOlu3-ZY3i4-Xtor8SzdRw", "heading": 334.34424, "description": "Mfangano St"}, {"pano_id": "sawTvdQfYxVfIw7I8lbbhg", "heading": 154.37, "distance": 17.69, "virtual": true}]}, "MOlu3-ZY3i4-Xtor8SzdRw": {"lat": -1.286879621543011, "lng": 36.82809335748006, "links": [{"pano_id": "RjuXuds4HJ6mFDiXNc9Hug", "heading": 154.34424, "description": "Mfangano St"}, {"pano_id": "FmVeTXJwil9W0vXHtl62Kg", "heading": 334.3886, "description": "Mfangano St"}]}, "uAmWr-fvCFM9OwuRyxNUEQ": {"lat": -1.287088726841329, "lng": 36.82773705389896, "links": [{"pano_id": "R9RXXuq1zxxFMeVGo2TiTQ", "heading": 153.22545, "description": "Mfangano Ln"}, {"pano_id": "-mXnbc0wHtUK10VCWHdh-Q", "heading": 333.2499, "description": "Mfangano Ln"}]}, "qlaZNPO7xNo0muqhuF-kwA": {"lat": -1.287618026350684, "lng": 36.82844382776553, "links": [{"pano_id": "3cjQjFcDWR6tzAk7HEhlsg", "heading": 151.81279, "description": "Mfangano St"}, {"pano_id": "6u_E-ki3Wu0SHYWGNk6sBg", "heading": 349.80838, "description": "Temple Rd"}]}, "01sgzmOJvzxtq5Fa-trO4A": {"lat": -1.287296419216161, "lng": 36.82870181291369, "links": [{"pano_id": "tLrT4VZscvzbur9Vxgz69Q", "heading": 241.86636, "description": "Temple Road"}, {"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 61.851887, "description": "Temple Road"}, {"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 21.36, "distance": 4.01, "virtual": true}, {"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 61.86, "distance": 4.99, "virtual": true}, {"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 42.83, "distance": 13.42, "virtual": true}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 347.29, "distance": 13.36, "virtual": true}]}, "rFKIb9Ov02clpUDPFbFMSA": {"lat": -1.287791149506226, "lng": 36.82767610922291, "links": [{"pano_id": "w8q-filrdgupUZkXllLswA", "heading": 334.6002, "description": "Tom Mboya St"}, {"pano_id": "k55IXsgdE-hO7Qbh4ChAJQ", "heading": 154.02998, "description": "Tom Mboya St"}, {"pano_id": "WboAXfzvfRcP5yTldLaVgg", "heading": 77.46, "distance": 9.26, "virtual": true}, {"pano_id": "3n9piJf4XaghTwTDQXHeXg", "heading": 154.6, "distance": 2.15, "virtual": true}]}, "9KNhZwZ4osDhNuHqjiheSA": {"lat": -1.287939762018545, "lng": 36.82774879929571, "links": [{"pano_id": "wpkSIQxlkSwXdLxPAHqdyg", "heading": 153.81717, "description": "Tom Mboya St"}, {"pano_id": "k55IXsgdE-hO7Qbh4ChAJQ", "heading": 333.86502, "description": "Tom Mboya St"}, {"pano_id": "3n9piJf4XaghTwTDQXHeXg", "heading": 333.85, "distance": 16.25, "virtual": true}]}, "wlS5rWZfXpdLZv8eTlJGOQ": {"lat": -1.288141666430968, "lng": 36.8282436648371, "links": [{"pano_id": "a5122-yZPEYm5jy7UDMbCg", "heading": 332.83575, "description": "Mfangano Ln"}, {"pano_id": "DZS-3rBbSDQfS1tQCtY5VQ", "heading": 152.8358, "description": "Mfangano Ln"}]}, "w8q-filrdgupUZkXllLswA": {"lat": -1.287706065345248, "lng": 36.82763569843959, "links": [{"pano_id": "rFKIb9Ov02clpUDPFbFMSA", "heading": 154.60019, "description": "Tom Mboya St"}, {"pano_id": "3GpHdetUK9m1pq28jY6FOw", "heading": 334.58243, "description": "Tom Mboya St"}, {"pano_id": "WboAXfzvfRcP5yTldLaVgg", "heading": 118.84, "distance": 15.45, "virtual": true}, {"pano_id": "3n9piJf4XaghTwTDQXHeXg", "heading": 154.6, "distance": 12.62, "virtual": true}]}, "2d9XKTzBZ1AeKWbCwdvd-A": {"lat": -1.287284425410943, "lng": 36.828724235649, "links": [{"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 61.85979, "description": "Temple Road"}, {"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 241.85188, "description": "Temple Road"}, {"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 336.7484, "description": ""}, {"pano_id": "tLrT4VZscvzbur9Vxgz69Q", "heading": 241.86, "distance": 13.42, "virtual": true}, {"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 37.92, "distance": 10.79, "virtual": true}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 335.09, "distance": 12.9, "virtual": true}]}, "wpkSIQxlkSwXdLxPAHqdyg": {"lat": -1.28801959078581, "lng": 36.82778806011881, "links": [{"pano_id": "D0v056qBM8b2VcIkM7aCKA", "heading": 153.87776, "description": "Tom Mboya St"}, {"pano_id": "9KNhZwZ4osDhNuHqjiheSA", "heading": 333.81717, "description": "Tom Mboya St"}]}, "3cjQjFcDWR6tzAk7HEhlsg": {"lat": -1.28769709006115, "lng": 36.82848620934177, "links": [{"pano_id": "C3nYdQNtder5u7A2ZS3baQ", "heading": 151.80313, "description": "Mfangano St"}, {"pano_id": "qlaZNPO7xNo0muqhuF-kwA", "heading": 331.81277, "description": "Mfangano St"}]}, "-mXnbc0wHtUK10VCWHdh-Q": {"lat": -1.287007270601777, "lng": 36.82769598606349, "links": [{"pano_id": "uAmWr-fvCFM9OwuRyxNUEQ", "heading": 153.24991, "description": "Mfangano Ln"}, {"pano_id": "4MgKAmeuDWKSgnLHPeWyFA", "heading": 333.22534, "description": "Mfangano Ln"}]}, "DZS-3rBbSDQfS1tQCtY5VQ": {"lat": -1.288223758232624, "lng": 36.82828580012321, "links": [{"pano_id": "thoIpCeugdaBnSb_G2-a5w", "heading": 152.8246, "description": "Mfangano Ln"}, {"pano_id": "wlS5rWZfXpdLZv8eTlJGOQ", "heading": 332.8358, "description": "Mfangano Ln"}]}, "FmVeTXJwil9W0vXHtl62Kg": {"lat": -1.286802365722687, "lng": 36.82805631447236, "links": [{"pano_id": "MqdDaJ6TapCna0Hdw_uhAw", "heading": 334.3342, "description": "Mfangano St"}, {"pano_id": "MOlu3-ZY3i4-Xtor8SzdRw", "heading": 154.38861, "description": "Mfangano St"}]}, "4MgKAmeuDWKSgnLHPeWyFA": {"lat": -1.286926226591948, "lng": 36.82765508247663, "links": [{"pano_id": "zrYpFLM4c5Yn2Q2xSFXpfg", "heading": 333.24692, "description": "Mfangano Ln"}, {"pano_id": "-mXnbc0wHtUK10VCWHdh-Q", "heading": 153.22536, "description": "Mfangano Ln"}]}, "thoIpCeugdaBnSb_G2-a5w": {"lat": -1.288304850837246, "lng": 36.82832744257531, "links": [{"pano_id": "DZS-3rBbSDQfS1tQCtY5VQ", "heading": 332.82462, "description": "Mfangano Ln"}, {"pano_id": "NQZ8PMnmhZuXD-OPZ_KWUg", "heading": 151.09633, "description": "Mfangano Ln"}]}, "D0v056qBM8b2VcIkM7aCKA": {"lat": -1.288111354861691, "lng": 36.82783307040911, "links": [{"pano_id": "wpkSIQxlkSwXdLxPAHqdyg", "heading": 333.87778, "description": "Tom Mboya St"}, {"pano_id": "9i0annWSrBRyPIrLD5q27w", "heading": 153.83548, "description": "Tom Mboya St"}]}, "C3nYdQNtder5u7A2ZS3baQ": {"lat": -1.287779031825805, "lng": 36.82853015145421, "links": [{"pano_id": "3cjQjFcDWR6tzAk7HEhlsg", "heading": 331.80313, "description": "Mfangano St"}, {"pano_id": "ivV2ucV8jMe_dhML7A4BKA", "heading": 151.81987, "description": "Mfangano St"}]}, "MqdDaJ6TapCna0Hdw_uhAw": {"lat": -1.286718291507849, "lng": 36.8280159038973, "links": [{"pano_id": "_3W44HNJ3pI5qaa6NHxP-Q", "heading": 334.40994, "description": "Mfangano St"}, {"pano_id": "FmVeTXJwil9W0vXHtl62Kg", "heading": 154.33421, "description": "Mfangano St"}]}, "mCX4Cd4QC5w0FQb559dqLg": {"lat": -1.287262829923038, "lng": 36.82871495444437, "links": [{"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 156.74841, "description": "Temple Road"}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 334.66937, "description": ""}, {"pano_id": "tLrT4VZscvzbur9Vxgz69Q", "heading": 231.06, "distance": 13.89, "virtual": true}, {"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 201.36, "distance": 4.01, "virtual": true}, {"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 115.15, "distance": 3.25, "virtual": true}, {"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 51.44, "distance": 9.8, "virtual": true}]}, "3GpHdetUK9m1pq28jY6FOw": {"lat": -1.287627097036278, "lng": 36.8275981623873, "links": [{"pano_id": "w8q-filrdgupUZkXllLswA", "heading": 154.58244, "description": "Tom Mboya St"}, {"pano_id": "gPy1MsuN7AGsl7S1O_6_fQ", "heading": 334.56494, "description": "Tom Mboya St"}]}, "zEG0dM_uhBQsEGvrqPUquA": {"lat": -1.28727524638692, "lng": 36.82874140176776, "links": [{"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 32.231407, "description": ""}, {"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 241.85979, "description": "Temple Road"}, {"pano_id": "tLrT4VZscvzbur9Vxgz69Q", "heading": 241.86, "distance": 15.58, "virtual": true}, {"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 241.86, "distance": 4.99, "virtual": true}, {"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 295.15, "distance": 3.25, "virtual": true}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 325.49, "distance": 12.96, "virtual": true}]}, "gPy1MsuN7AGsl7S1O_6_fQ": {"lat": -1.287545600951708, "lng": 36.82755939427823, "links": [{"pano_id": "3GpHdetUK9m1pq28jY6FOw", "heading": 154.56494, "description": "Tom Mboya St"}]}, "oKqjN72kBsIIXd1KXwufQQ": {"lat": -1.28720791432896, "lng": 36.82878386530754, "links": [{"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 212.23141, "description": "Temple Road"}, {"pano_id": "EIN9WocgwSsAtfPMv-Y_0w", "heading": 9.064312, "description": ""}, {"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 222.83, "distance": 13.42, "virtual": true}, {"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 217.92, "distance": 10.79, "virtual": true}, {"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 231.44, "distance": 9.8, "virtual": true}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 284.82, "distance": 12.48, "virtual": true}]}, "NQZ8PMnmhZuXD-OPZ_KWUg": {"lat": -1.28838694820551, "lng": 36.82837278107633, "links": [{"pano_id": "thoIpCeugdaBnSb_G2-a5w", "heading": 331.09634, "description": "Mfangano Ln"}, {"pano_id": "WmH47dPAXjPUQG1kJsYbCQ", "heading": 149.62137, "description": "Mfangano Ln"}]}, "zrYpFLM4c5Yn2Q2xSFXpfg": {"lat": -1.28684347770767, "lng": 36.82761335750924, "links": [{"pano_id": "4MgKAmeuDWKSgnLHPeWyFA", "heading": 153.24692, "description": "Mfangano Ln"}]}, "9i0annWSrBRyPIrLD5q27w": {"lat": -1.288187069459836, "lng": 36.8278702777999, "links": [{"pano_id": "D0v056qBM8b2VcIkM7aCKA", "heading": 333.83548, "description": "Tom Mboya St"}]}, "_3W44HNJ3pI5qaa6NHxP-Q": {"lat": -1.286640447363312, "lng": 36.82797861444458, "links": [{"pano_id": "MqdDaJ6TapCna0Hdw_uhAw", "heading": 154.40994, "description": "Mfangano St"}]}, "CqG-6XuNICB3kl2mJFn1sA": {"lat": -1.287179215849882, "lng": 36.8286753655761, "links": [{"pano_id": "mCX4Cd4QC5w0FQb559dqLg", "heading": 154.66937, "description": ""}, {"pano_id": "01sgzmOJvzxtq5Fa-trO4A", "heading": 167.29, "distance": 13.36, "virtual": true}, {"pano_id": "2d9XKTzBZ1AeKWbCwdvd-A", "heading": 155.09, "distance": 12.9, "virtual": true}, {"pano_id": "zEG0dM_uhBQsEGvrqPUquA", "heading": 145.49, "distance": 12.96, "virtual": true}, {"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 104.82, "distance": 12.48, "virtual": true}, {"pano_id": "EIN9WocgwSsAtfPMv-Y_0w", "heading": 63.1, "distance": 15.34, "virtual": true}]}, "ivV2ucV8jMe_dhML7A4BKA": {"lat": -1.287858272164075, "lng": 36.82857261511558, "links": [{"pano_id": "C3nYdQNtder5u7A2ZS3baQ", "heading": 331.81985, "description": "Mfangano St"}]}, "WmH47dPAXjPUQG1kJsYbCQ": {"lat": -1.288469175094306, "lng": 36.82842099427056, "links": [{"pano_id": "NQZ8PMnmhZuXD-OPZ_KWUg", "heading": 329.62137, "description": "Mfangano Ln"}]}, "EIN9WocgwSsAtfPMv-Y_0w": {"lat": -1.287116811375497, "lng": 36.82879840310954, "links": [{"pano_id": "oKqjN72kBsIIXd1KXwufQQ", "heading": 189.06432, "description": ""}, {"pano_id": "CqG-6XuNICB3kl2mJFn1sA", "heading": 243.1, "distance": 15.34, "virtual": true}]}};
+        const targetPanos = ["KrLqO7swFco2z37wZNwQow", "gCGoqSXAjNlo3qWUvD4BQQ", "tLrT4VZscvzbur9Vxgz69Q", "KoAEXlrg2C1DGlXr-Ua_-g", "oKqjN72kBsIIXd1KXwufQQ"];
+        const spawnPoints = ["_3W44HNJ3pI5qaa6NHxP-Q", "zrYpFLM4c5Yn2Q2xSFXpfg", "WmH47dPAXjPUQG1kJsYbCQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1569 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0134_target_20260124_2233_31",
+  "timestamp": "20260125_015615",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 46,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_015615_vis_0134_target_20260124_2233_31_20260125015615",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Currently heading southwest (211°) on the correct bearing for D92 road. Moving forward to progress along the route and locate the Fakih IVF center and Emarat gas station landmarks.",
+        "agent_vlm_duration_seconds": 9.018,
+        "agent_total_duration_seconds": 9.018
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 210.58192
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "rotation",
+        "heading": 300.58,
+        "pitch": 0.0,
+        "reason": "Need to verify landmarks before continuing. Rotating right to scan for the Fakih IVF center which should be visible on my right side along the D92 road.",
+        "agent_vlm_duration_seconds": 6.103,
+        "agent_total_duration_seconds": 6.103
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.81783
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.581923
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "rotation",
+        "heading": 210.58,
+        "pitch": 0.0,
+        "reason": "Rotating back to original southwest heading (210.58°) to resume navigation along D92 road and continue looking for landmarks ahead.",
+        "agent_vlm_duration_seconds": 5.887,
+        "agent_total_duration_seconds": 5.887
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.2,
+          "heading": 30.581923
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 210.81783
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward along D92 southwest to progress toward and locate the Fakih IVF center, gas station, and McDonald's destination.",
+        "agent_vlm_duration_seconds": 5.103,
+        "agent_total_duration_seconds": 5.103
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.81783
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.581923
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 300.82,
+        "pitch": 0.0,
+        "reason": "Rotating right to scan for the Fakih IVF center and other landmarks that should be visible on my right side along the D92 road.",
+        "agent_vlm_duration_seconds": 5.628,
+        "agent_total_duration_seconds": 5.629
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.83481
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.817822
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "rotation",
+        "heading": 210.82,
+        "pitch": 0.0,
+        "reason": "Rotating back left to southwest heading (210.82°) to resume navigation along D92 road and continue forward toward the landmarks.",
+        "agent_vlm_duration_seconds": 6.097,
+        "agent_total_duration_seconds": 6.097
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 30.817822
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.83481
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward along D92 southwest to continue progressing toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 6.874,
+        "agent_total_duration_seconds": 6.874
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.83481
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.817822
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward along D92 southwest to progress toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 4.697,
+        "agent_total_duration_seconds": 4.697
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.83487
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.834812
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "rotation",
+        "heading": 300.83,
+        "pitch": 0.0,
+        "reason": "Rotating right to actively search for the Fakih IVF center and other landmarks that should be visible on my right side.",
+        "agent_vlm_duration_seconds": 6.3,
+        "agent_total_duration_seconds": 6.3
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.84341
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.834866
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "rotation",
+        "heading": 210.83,
+        "pitch": 0.0,
+        "reason": "Rotating back left to southwest heading (210.83°) to resume forward navigation along D92 toward the landmarks.",
+        "agent_vlm_duration_seconds": 5.36,
+        "agent_total_duration_seconds": 5.36
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 30.834866
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.84341
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward along D92 southwest to continue progressing toward the destination. Committing to forward movement to reach the landmarks.",
+        "agent_vlm_duration_seconds": 7.944,
+        "agent_total_duration_seconds": 7.944
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.84341
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.834866
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward along D92 southwest to progress toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 6.403,
+        "agent_total_duration_seconds": 6.403
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.83481
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.843414
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward along D92 southwest to progress toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 5.887,
+        "agent_total_duration_seconds": 5.887
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.82608
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.8348
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward along D92 southwest to progress toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 3.922,
+        "agent_total_duration_seconds": 3.922
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86943
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.826077
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "rotation",
+        "heading": 300.87,
+        "pitch": 0.0,
+        "reason": "Rotating right to actively search for the Fakih IVF center and other landmarks that should be visible on my right side.",
+        "agent_vlm_duration_seconds": 5.068,
+        "agent_total_duration_seconds": 5.068
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86945
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.869429
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 210.87,
+        "pitch": 0.0,
+        "reason": "Rotating back left to southwest heading (210.87°) to resume forward navigation along D92 toward the landmarks.",
+        "agent_vlm_duration_seconds": 5.985,
+        "agent_total_duration_seconds": 5.985
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 30.869429
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 9.9,
+          "heading": 210.86945
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "rotation",
+        "heading": 210.87,
+        "pitch": 30.0,
+        "reason": "Rotating up to look for landmarks that might be visible above eye level, such as building signs or structures for the Fakih IVF center or McDonald's.",
+        "agent_vlm_duration_seconds": 6.136,
+        "agent_total_duration_seconds": 6.136
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86945
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.869429
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "rotation",
+        "heading": 210.87,
+        "pitch": 0.0,
+        "reason": "Rotating back to level view (pitch 0°) to see the road clearly and continue forward navigation along D92.",
+        "agent_vlm_duration_seconds": 7.453,
+        "agent_total_duration_seconds": 7.453
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86945
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.869429
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Moving forward along D92 southwest to continue progressing toward the landmarks and McDonald's destination.",
+        "agent_vlm_duration_seconds": 4.922,
+        "agent_total_duration_seconds": 4.922
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 210.86945
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.869429
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward along D92 southwest. The decreasing move distance suggests I may be approaching the landmarks or destination.",
+        "agent_vlm_duration_seconds": 5.311,
+        "agent_total_duration_seconds": 5.311
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 210.87842
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 30.86944
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The task requires continuing straight past the gas station, not turning left.",
+        "agent_vlm_duration_seconds": 6.546,
+        "agent_total_duration_seconds": 6.546
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 210.90659
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 30.878412
+        },
+        {
+          "id": 3,
+          "direction": "front-left 40°",
+          "distance": 17.7,
+          "heading": 171.03
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The task requires continuing straight past the gas station, not turning left.",
+        "agent_vlm_duration_seconds": 4.602,
+        "agent_total_duration_seconds": 4.602
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 210.87027
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 30.90659
+        },
+        {
+          "id": 3,
+          "direction": "front-left 70°",
+          "distance": 12.1,
+          "heading": 140.66
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The task requires continuing straight past the gas station, not turning.",
+        "agent_vlm_duration_seconds": 7.159,
+        "agent_total_duration_seconds": 7.159
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 211.57204
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 30.870274
+        },
+        {
+          "id": 3,
+          "direction": "left-back 26°",
+          "distance": 12.6,
+          "heading": 94.93
+        },
+        {
+          "id": 4,
+          "direction": "front-left 68°",
+          "distance": 12.2,
+          "heading": 143.01
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest using the shortest front move option to maintain the main road direction.",
+        "agent_vlm_duration_seconds": 6.775,
+        "agent_total_duration_seconds": 6.775
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 211.81891
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.5,
+          "heading": 211.5
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.8,
+          "heading": 211.56
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 31.572039
+        },
+        {
+          "id": 5,
+          "direction": "left-back 26°",
+          "distance": 12.7,
+          "heading": 95.12
+        },
+        {
+          "id": 6,
+          "direction": "front-left 69°",
+          "distance": 12.3,
+          "heading": 142.71
+        },
+        {
+          "id": 7,
+          "direction": "front-left 10°",
+          "distance": 13.0,
+          "heading": 201.23
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continuing straight forward along D92 southwest using the longer front move option to maintain progress on the main road.",
+        "agent_vlm_duration_seconds": 5.832,
+        "agent_total_duration_seconds": 5.832
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 5.2,
+          "heading": 211.02466
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.5,
+          "heading": 210.98
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 6.9,
+          "heading": 211.02
+        },
+        {
+          "id": 4,
+          "direction": "front-right 45°",
+          "distance": 14.9,
+          "heading": 257.13
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 31.818914
+        },
+        {
+          "id": 6,
+          "direction": "left-back 28°",
+          "distance": 13.1,
+          "heading": 93.56
+        },
+        {
+          "id": 7,
+          "direction": "front-left 71°",
+          "distance": 12.3,
+          "heading": 140.43
+        },
+        {
+          "id": 8,
+          "direction": "front-left 48°",
+          "distance": 3.2,
+          "heading": 164.07167
+        },
+        {
+          "id": 9,
+          "direction": "front-left 37°",
+          "distance": 12.7,
+          "heading": 175.17
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 6.242,
+        "agent_total_duration_seconds": 6.242
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 8.2,
+          "heading": 210.9382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.67
+        },
+        {
+          "id": 3,
+          "direction": "front-right 23°",
+          "distance": 5.2,
+          "heading": 234.03
+        },
+        {
+          "id": 4,
+          "direction": "right-back 26°",
+          "distance": 11.9,
+          "heading": 326.56
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 8.6,
+          "heading": 30.953514
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 30.96
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 15.5,
+          "heading": 30.98
+        },
+        {
+          "id": 8,
+          "direction": "left-back 80°",
+          "distance": 13.5,
+          "heading": 41.0
+        },
+        {
+          "id": 9,
+          "direction": "left-back 45°",
+          "distance": 16.2,
+          "heading": 76.42
+        },
+        {
+          "id": 10,
+          "direction": "left-back 35°",
+          "distance": 9.1,
+          "heading": 86.09
+        },
+        {
+          "id": 11,
+          "direction": "left",
+          "distance": 11.6,
+          "heading": 114.46
+        },
+        {
+          "id": 12,
+          "direction": "front-left 64°",
+          "distance": 8.5,
+          "heading": 146.95
+        },
+        {
+          "id": 13,
+          "direction": "front-left 53°",
+          "distance": 14.5,
+          "heading": 158.2
+        },
+        {
+          "id": 14,
+          "direction": "front-left 28°",
+          "distance": 16.5,
+          "heading": 183.06
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 5.77,
+        "agent_total_duration_seconds": 5.77
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 209.4078
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 5.6,
+          "heading": 9.01532
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 1.9,
+          "heading": 29.515821
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.67
+        },
+        {
+          "id": 5,
+          "direction": "left-back 64°",
+          "distance": 16.9,
+          "heading": 56.84
+        },
+        {
+          "id": 6,
+          "direction": "left-back 44°",
+          "distance": 16.2,
+          "heading": 76.34
+        },
+        {
+          "id": 7,
+          "direction": "left-back 39°",
+          "distance": 9.9,
+          "heading": 81.23
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 11.6,
+          "heading": 114.67
+        },
+        {
+          "id": 9,
+          "direction": "front-left 70°",
+          "distance": 12.2,
+          "heading": 140.28
+        },
+        {
+          "id": 10,
+          "direction": "front-left 59°",
+          "distance": 8.9,
+          "heading": 151.61
+        },
+        {
+          "id": 11,
+          "direction": "front-left 36°",
+          "distance": 16.0,
+          "heading": 174.45
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 6.169,
+        "agent_total_duration_seconds": 6.169
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.43823
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 29.4078
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 11.9,
+          "heading": 29.42
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.5,
+          "heading": 22.12
+        },
+        {
+          "id": 5,
+          "direction": "left-back 64°",
+          "distance": 17.9,
+          "heading": 55.07
+        },
+        {
+          "id": 6,
+          "direction": "left-back 44°",
+          "distance": 15.9,
+          "heading": 75.72
+        },
+        {
+          "id": 7,
+          "direction": "left-back 35°",
+          "distance": 9.2,
+          "heading": 84.32
+        },
+        {
+          "id": 8,
+          "direction": "left-back 27°",
+          "distance": 12.7,
+          "heading": 92.72
+        },
+        {
+          "id": 9,
+          "direction": "front-left 72°",
+          "distance": 9.6,
+          "heading": 137.77
+        },
+        {
+          "id": 10,
+          "direction": "front-left 69°",
+          "distance": 11.9,
+          "heading": 140.58
+        },
+        {
+          "id": 11,
+          "direction": "front-left 50°",
+          "distance": 14.3,
+          "heading": 159.74
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 7.852,
+        "agent_total_duration_seconds": 7.852
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.68045
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 3,
+          "direction": "left-back 64°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 4,
+          "direction": "left-back 38°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 5,
+          "direction": "left-back 28°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 7,
+          "direction": "front-left 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 5.516,
+        "agent_total_duration_seconds": 5.516
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.64697
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 3,
+          "direction": "left-back 45°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 5,
+          "direction": "front-left 49°",
+          "distance": 14.1,
+          "heading": 161.61
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 5.361,
+        "agent_total_duration_seconds": 5.361
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.63815
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.646975
+        },
+        {
+          "id": 3,
+          "direction": "left-back 45°",
+          "distance": 15.4,
+          "heading": 75.36
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.7,
+          "heading": 116.16
+        },
+        {
+          "id": 5,
+          "direction": "front-left 48°",
+          "distance": 13.9,
+          "heading": 162.36
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 4.755,
+        "agent_total_duration_seconds": 4.755
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.6558
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.63815
+        },
+        {
+          "id": 3,
+          "direction": "left-back 46°",
+          "distance": 15.2,
+          "heading": 74.97
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.4,
+          "heading": 116.45
+        },
+        {
+          "id": 5,
+          "direction": "front-left 48°",
+          "distance": 14.3,
+          "heading": 162.63
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 4.682,
+        "agent_total_duration_seconds": 4.682
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.70683
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.655806
+        },
+        {
+          "id": 3,
+          "direction": "left-back 46°",
+          "distance": 15.0,
+          "heading": 74.5
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.6,
+          "heading": 117.82
+        },
+        {
+          "id": 5,
+          "direction": "front-left 49°",
+          "distance": 14.6,
+          "heading": 162.01
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 5.036,
+        "agent_total_duration_seconds": 5.036
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.758
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.706827
+        },
+        {
+          "id": 3,
+          "direction": "left-back 45°",
+          "distance": 15.0,
+          "heading": 75.76
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 11.0,
+          "heading": 118.6
+        },
+        {
+          "id": 5,
+          "direction": "front-left 49°",
+          "distance": 14.9,
+          "heading": 161.25
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 4.809,
+        "agent_total_duration_seconds": 4.809
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.73296
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.758003
+        },
+        {
+          "id": 3,
+          "direction": "left-back 44°",
+          "distance": 15.2,
+          "heading": 77.17
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 11.4,
+          "heading": 119.08
+        },
+        {
+          "id": 5,
+          "direction": "front-left 50°",
+          "distance": 15.3,
+          "heading": 160.45
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest to progress toward the destination and landmarks.",
+        "agent_vlm_duration_seconds": 4.82,
+        "agent_total_duration_seconds": 4.82
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.74062
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.732958
+        },
+        {
+          "id": 3,
+          "direction": "left-back 43°",
+          "distance": 15.4,
+          "heading": 78.21
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 11.7,
+          "heading": 119.07
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 15.5,
+          "heading": 159.52
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The decreasing front move distance suggests I'm approaching the destination or landmarks.",
+        "agent_vlm_duration_seconds": 5.661,
+        "agent_total_duration_seconds": 5.661
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 210.80849
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 30.740612
+        },
+        {
+          "id": 3,
+          "direction": "left-back 41°",
+          "distance": 15.6,
+          "heading": 79.34
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 12.1,
+          "heading": 119.44
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The significantly decreasing front move distance suggests I'm very close to the destination or landmarks.",
+        "agent_vlm_duration_seconds": 6.3,
+        "agent_total_duration_seconds": 6.3
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 211.44785
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 30.808481
+        },
+        {
+          "id": 3,
+          "direction": "left-back 40°",
+          "distance": 15.7,
+          "heading": 81.09
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. Only front and back moves available, suggesting I'm very close to the endpoint or destination.",
+        "agent_vlm_duration_seconds": 6.994,
+        "agent_total_duration_seconds": 6.994
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 210.85281
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 31.447845
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. Only front and back moves available, suggesting I'm at a stable endpoint or junction.",
+        "agent_vlm_duration_seconds": 5.884,
+        "agent_total_duration_seconds": 5.884
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 212.36864
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 30.852816
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The increasing front move distance suggests I'm progressing along the road.",
+        "agent_vlm_duration_seconds": 5.395,
+        "agent_total_duration_seconds": 5.395
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 212.33563
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 32.368637
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The increasing front move distance suggests I'm progressing along the road.",
+        "agent_vlm_duration_seconds": 4.769,
+        "agent_total_duration_seconds": 4.769
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 210.58728
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 32.335632
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. Front and back moves are nearly equal, suggesting I'm on a stable straightforward section of road.",
+        "agent_vlm_duration_seconds": 6.055,
+        "agent_total_duration_seconds": 6.055
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 210.64128
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.587288
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. Front and back moves are nearly equal, suggesting I'm on a stable straightforward section of road.",
+        "agent_vlm_duration_seconds": 4.567,
+        "agent_total_duration_seconds": 4.567
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 210.7017
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.641275
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The decreasing front move distance suggests I'm approaching something significant.",
+        "agent_vlm_duration_seconds": 6.411,
+        "agent_total_duration_seconds": 6.411
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 210.69241
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 30.7017
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing straight forward along D92 southwest. The decreasing front move distance suggests I'm approaching something significant.",
+        "agent_vlm_duration_seconds": 4.49,
+        "agent_total_duration_seconds": 4.49
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.69821
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 30.69242
+        }
+      ]
+    }
+  ]
+}

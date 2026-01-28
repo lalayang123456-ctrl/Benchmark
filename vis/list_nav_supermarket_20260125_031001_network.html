@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_supermarket_20260125_031001</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_supermarket_20260125_031001</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"ksL-tJcLbIuMxRh2XEWnQg": {"lat": 13.08408629768997, "lng": 80.26601656031362, "links": [{"pano_id": "JZPy3EzGmduQivlL2KYUsQ", "heading": 123.95483, "description": "Barracks Rd"}, {"pano_id": "b1xftca01dlYxT12pcqQQA", "heading": 282.03677, "description": "Mactoom Sherif St"}, {"pano_id": "8OWcfm0FLWsp9gKkhRkzwQ", "heading": 89.33, "distance": 9.64, "virtual": true}, {"pano_id": "F6kmSAWteH-vfSfyzmGCMg", "heading": 39.73, "distance": 16.3, "virtual": true}]}, "JZPy3EzGmduQivlL2KYUsQ": {"lat": 13.08402933771632, "lng": 80.26610340530598, "links": [{"pano_id": "ksL-tJcLbIuMxRh2XEWnQg", "heading": 303.95483, "description": "Mactoom Sherif St"}, {"pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q", "heading": 181.89983, "description": "Barracks Rd"}, {"pano_id": "8OWcfm0FLWsp9gKkhRkzwQ", "heading": 2.0460136, "description": "Barracks Rd"}]}, "b1xftca01dlYxT12pcqQQA": {"lat": 13.08410527100298, "lng": 80.26592520711094, "links": [{"pano_id": "ZFsbFULnDlm1Pg3P7_vdtA", "heading": 279.43457, "description": "Mactoom Sherif St"}, {"pano_id": "ksL-tJcLbIuMxRh2XEWnQg", "heading": 102.03677, "description": "Mactoom Sherif St"}]}, "wZA0sQ-1YhGXbUQ2ED5x9Q": {"lat": 13.08393941957763, "lng": 80.26610034319219, "links": [{"pano_id": "JZPy3EzGmduQivlL2KYUsQ", "heading": 1.8998264, "description": "Barracks Rd"}, {"pano_id": "485OjpL363H9urFXNIOyqQ", "heading": 185.27913, "description": "Barracks Rd"}, {"pano_id": "8OWcfm0FLWsp9gKkhRkzwQ", "heading": 1.96, "distance": 16.45, "virtual": true}, {"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 191.24, "distance": 14.18, "virtual": true}, {"pano_id": "_yHSbCGobz1lTsHVeq8gcQ", "heading": 220.7, "distance": 17.69, "virtual": true}]}, "8OWcfm0FLWsp9gKkhRkzwQ": {"lat": 13.08408731590288, "lng": 80.26610553177383, "links": [{"pano_id": "JZPy3EzGmduQivlL2KYUsQ", "heading": 182.04602, "description": "Barracks Rd"}, {"pano_id": "F6kmSAWteH-vfSfyzmGCMg", "heading": 3.6068006, "description": "Barracks Rd"}, {"pano_id": "ksL-tJcLbIuMxRh2XEWnQg", "heading": 269.33, "distance": 9.64, "virtual": true}, {"pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q", "heading": 181.96, "distance": 16.45, "virtual": true}]}, "ZFsbFULnDlm1Pg3P7_vdtA": {"lat": 13.08411717964619, "lng": 80.26585163113586, "links": [{"pano_id": "EunovxhKTIGuCZEhybah7w", "heading": 279.42587, "description": "Mactoom Sherif St"}, {"pano_id": "b1xftca01dlYxT12pcqQQA", "heading": 99.43458, "description": "Mactoom Sherif St"}]}, "485OjpL363H9urFXNIOyqQ": {"lat": 13.08384885771231, "lng": 80.26609175226125, "links": [{"pano_id": "WT3KVBgrGDhg1LMr9tq53A", "heading": 183.33307, "description": "Barracks Rd"}, {"pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q", "heading": 5.2791343, "description": "Barracks Rd"}, {"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 205.51, "distance": 4.26, "virtual": true}, {"pano_id": "_yHSbCGobz1lTsHVeq8gcQ", "heading": 252.51, "distance": 11.12, "virtual": true}]}, "EunovxhKTIGuCZEhybah7w": {"lat": 13.08413620186262, "lng": 80.2657339945019, "links": [{"pano_id": "ZFsbFULnDlm1Pg3P7_vdtA", "heading": 99.42588, "description": "Mactoom Sherif St"}, {"pano_id": "rknuCxkSG5ISsgty0c3uwg", "heading": 279.39056, "description": "Mactoom Sherif St"}, {"pano_id": "ef258cePHPjMDtqIwyRv-w", "heading": 279.38, "distance": 16.99, "virtual": true}]}, "F6kmSAWteH-vfSfyzmGCMg": {"lat": 13.08419903828787, "lng": 80.2661127617641, "links": [{"pano_id": "NXRhgDM-VPrObGMTbqNQ7Q", "heading": 3.6885169, "description": "Barracks Rd"}, {"pano_id": "8OWcfm0FLWsp9gKkhRkzwQ", "heading": 183.6068, "description": "Barracks Rd"}, {"pano_id": "ksL-tJcLbIuMxRh2XEWnQg", "heading": 219.73, "distance": 16.3, "virtual": true}]}, "NXRhgDM-VPrObGMTbqNQ7Q": {"lat": 13.08429028630706, "lng": 80.26611880093198, "links": [{"pano_id": "F6kmSAWteH-vfSfyzmGCMg", "heading": 183.68852, "description": "Barracks Rd"}, {"pano_id": "-ntr7Pw8M5yQQh9J9wByvA", "heading": 3.8503647, "description": "Barracks Rd"}, {"pano_id": "pP0D5_-KS_9BRLHYkdvhtA", "heading": 3.17, "distance": 16.32, "virtual": true}, {"pano_id": "L2FFSyaqoB3zbkMQoy5yIQ", "heading": 341.55, "distance": 12.31, "virtual": true}]}, "WT3KVBgrGDhg1LMr9tq53A": {"lat": 13.0837706145841, "lng": 80.26608707403116, "links": [{"pano_id": "485OjpL363H9urFXNIOyqQ", "heading": 3.3330705, "description": "Barracks Rd"}, {"pano_id": "RbTJmxDW_CzqxfZjy_m0MQ", "heading": 181.55515, "description": "Barracks Rd"}, {"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 344.7295, "description": "Subbaiah St"}, {"pano_id": "_yHSbCGobz1lTsHVeq8gcQ", "heading": 297.96, "distance": 11.43, "virtual": true}]}, "rknuCxkSG5ISsgty0c3uwg": {"lat": 13.08415098614623, "lng": 80.2656422156986, "links": [{"pano_id": "ef258cePHPjMDtqIwyRv-w", "heading": 279.37338, "description": "Mactoom Sherif St"}, {"pano_id": "EunovxhKTIGuCZEhybah7w", "heading": 99.39055, "description": "Mactoom Sherif St"}]}, "aQAg08LmGfzWy6gR5f86gA": {"lat": 13.08381431343594, "lng": 80.26607482557299, "links": [{"pano_id": "WT3KVBgrGDhg1LMr9tq53A", "heading": 164.72948, "description": "Barracks Rd"}, {"pano_id": "_yHSbCGobz1lTsHVeq8gcQ", "heading": 273.26556, "description": "Subbaiah St"}, {"pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q", "heading": 11.24, "distance": 14.18, "virtual": true}, {"pano_id": "485OjpL363H9urFXNIOyqQ", "heading": 25.51, "distance": 4.26, "virtual": true}, {"pano_id": "RbTJmxDW_CzqxfZjy_m0MQ", "heading": 176.01, "distance": 15.08, "virtual": true}, {"pano_id": "MPd6VRtm1sunEffJqcKNWA", "heading": 274.88, "distance": 17.65, "virtual": true}]}, "-ntr7Pw8M5yQQh9J9wByvA": {"lat": 13.08438014989184, "lng": 80.26612501021681, "links": [{"pano_id": "pP0D5_-KS_9BRLHYkdvhtA", "heading": 2.0930388, "description": "Barracks Rd"}, {"pano_id": "NXRhgDM-VPrObGMTbqNQ7Q", "heading": 183.85037, "description": "Barracks Rd"}, {"pano_id": "L2FFSyaqoB3zbkMQoy5yIQ", "heading": 290.27707, "description": "Ramasamy St"}, {"pano_id": "X0laxymMOx4XHLOsjmXiRw", "heading": 281.62, "distance": 14.86, "virtual": true}, {"pano_id": "bzeuZX6ndmDj0CzLUXNoFA", "heading": 2.19, "distance": 16.36, "virtual": true}]}, "RbTJmxDW_CzqxfZjy_m0MQ": {"lat": 13.08367906421479, "lng": 80.2660845222692, "links": [{"pano_id": "WT3KVBgrGDhg1LMr9tq53A", "heading": 1.5551524, "description": "Barracks Rd"}, {"pano_id": "GbzyK8kPzRuktwkhXMLqDQ", "heading": 181.51344, "description": "Barracks Rd"}, {"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 356.01, "distance": 15.08, "virtual": true}]}, "ef258cePHPjMDtqIwyRv-w": {"lat": 13.08416112033079, "lng": 80.2655791868243, "links": [{"pano_id": "rknuCxkSG5ISsgty0c3uwg", "heading": 99.3734, "description": "Mactoom Sherif St"}, {"pano_id": "EunovxhKTIGuCZEhybah7w", "heading": 99.38, "distance": 16.99, "virtual": true}]}, "pP0D5_-KS_9BRLHYkdvhtA": {"lat": 13.08443682424386, "lng": 80.2661271366841, "links": [{"pano_id": "-ntr7Pw8M5yQQh9J9wByvA", "heading": 182.09303, "description": "Barracks Rd"}, {"pano_id": "bzeuZX6ndmDj0CzLUXNoFA", "heading": 2.2574017, "description": "Barracks Rd"}, {"pano_id": "NXRhgDM-VPrObGMTbqNQ7Q", "heading": 183.17, "distance": 16.32, "virtual": true}, {"pano_id": "L2FFSyaqoB3zbkMQoy5yIQ", "heading": 226.13, "distance": 6.66, "virtual": true}, {"pano_id": "X0laxymMOx4XHLOsjmXiRw", "heading": 257.38, "distance": 15.15, "virtual": true}]}, "_yHSbCGobz1lTsHVeq8gcQ": {"lat": 13.08381881370655, "lng": 80.26599384961041, "links": [{"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 93.265564, "description": "Subbaiah St"}, {"pano_id": "MPd6VRtm1sunEffJqcKNWA", "heading": 276.47928, "description": "Subbaiah St"}, {"pano_id": "wZA0sQ-1YhGXbUQ2ED5x9Q", "heading": 40.7, "distance": 17.69, "virtual": true}, {"pano_id": "485OjpL363H9urFXNIOyqQ", "heading": 72.51, "distance": 11.12, "virtual": true}, {"pano_id": "WT3KVBgrGDhg1LMr9tq53A", "heading": 117.96, "distance": 11.43, "virtual": true}]}, "L2FFSyaqoB3zbkMQoy5yIQ": {"lat": 13.08439533224936, "lng": 80.2660828210945, "links": [{"pano_id": "-ntr7Pw8M5yQQh9J9wByvA", "heading": 110.27706, "description": "Barracks Rd"}, {"pano_id": "X0laxymMOx4XHLOsjmXiRw", "heading": 277.4385, "description": "Ramasamy St"}, {"pano_id": "NXRhgDM-VPrObGMTbqNQ7Q", "heading": 161.55, "distance": 12.31, "virtual": true}, {"pano_id": "pP0D5_-KS_9BRLHYkdvhtA", "heading": 46.13, "distance": 6.66, "virtual": true}, {"pano_id": "bzeuZX6ndmDj0CzLUXNoFA", "heading": 19.51, "distance": 15.56, "virtual": true}]}, "GbzyK8kPzRuktwkhXMLqDQ": {"lat": 13.08358812566581, "lng": 80.26608205556587, "links": [{"pano_id": "RbTJmxDW_CzqxfZjy_m0MQ", "heading": 1.5134482, "description": "Barracks Rd"}, {"pano_id": "IjFGmUbldO8fh9D4ReI1Pw", "heading": 181.31755, "description": "Barracks Rd"}]}, "MPd6VRtm1sunEffJqcKNWA": {"lat": 13.08382781839343, "lng": 80.26591244827591, "links": [{"pano_id": "_yHSbCGobz1lTsHVeq8gcQ", "heading": 96.47927, "description": "Subbaiah St"}, {"pano_id": "jVV6HgoMyezoYXqyt6rQrw", "heading": 276.21332, "description": "Subbaiah St"}, {"pano_id": "aQAg08LmGfzWy6gR5f86gA", "heading": 94.88, "distance": 17.65, "virtual": true}]}, "X0laxymMOx4XHLOsjmXiRw": {"lat": 13.08440705789427, "lng": 80.26599061737501, "links": [{"pano_id": "EIQXaErsKUgdJDqHuWL5iA", "heading": 277.37924, "description": "Ramasamy St"}, {"pano_id": "L2FFSyaqoB3zbkMQoy5yIQ", "heading": 97.4385, "description": "Ramasamy St"}, {"pano_id": "-ntr7Pw8M5yQQh9J9wByvA", "heading": 101.62, "distance": 14.86, "virtual": true}, {"pano_id": "pP0D5_-KS_9BRLHYkdvhtA", "heading": 77.38, "distance": 15.15, "virtual": true}]}, "IjFGmUbldO8fh9D4ReI1Pw": {"lat": 13.08349806938701, "lng": 80.26607992909744, "links": [{"pano_id": "GbzyK8kPzRuktwkhXMLqDQ", "heading": 1.3175535, "description": "Barracks Rd"}, {"pano_id": "9HVGrs3Gzl5m4vV8sx5cTA", "heading": 180.32114, "description": "Barracks Rd"}]}, "bzeuZX6ndmDj0CzLUXNoFA": {"lat": 13.084527199954, "lng": 80.26613079420774, "links": [{"pano_id": "pP0D5_-KS_9BRLHYkdvhtA", "heading": 182.2574, "description": "Barracks Rd"}, {"pano_id": "dX5Tiyq1wzPCa0SX0GaiDw", "heading": 2.073802, "description": "Barracks Rd"}, {"pano_id": "-ntr7Pw8M5yQQh9J9wByvA", "heading": 182.19, "distance": 16.36, "virtual": true}, {"pano_id": "L2FFSyaqoB3zbkMQoy5yIQ", "heading": 199.51, "distance": 15.56, "virtual": true}]}, "dX5Tiyq1wzPCa0SX0GaiDw": {"lat": 13.08461643272167, "lng": 80.2661341114965, "links": [{"pano_id": "Qm3EC6PPWh-eUtLk2fqC1Q", "heading": 0.8945371, "description": "Barracks Rd"}, {"pano_id": "bzeuZX6ndmDj0CzLUXNoFA", "heading": 182.0738, "description": "Barracks Rd"}]}, "9HVGrs3Gzl5m4vV8sx5cTA": {"lat": 13.08340937830049, "lng": 80.26607941874501, "links": [{"pano_id": "jmr2dcd6lfE6LGf8psAKRw", "heading": 188.49525, "description": "Barracks Rd"}, {"pano_id": "IjFGmUbldO8fh9D4ReI1Pw", "heading": 0.32113358, "description": "Barracks Rd"}, {"pano_id": "0seyAE8JsFiFk1wgWtmvMA", "heading": 186.2, "distance": 15.35, "virtual": true}, {"pano_id": "lj7e7UtetSA2WvqdL72tqg", "heading": 180.31, "distance": 13.41, "virtual": true}]}, "EIQXaErsKUgdJDqHuWL5iA": {"lat": 13.0844188286025, "lng": 80.26589730778919, "links": [{"pano_id": "X0laxymMOx4XHLOsjmXiRw", "heading": 97.37926, "description": "Ramasamy St"}, {"pano_id": "jUppVqGVAd3lSejafkUmOQ", "heading": 277.42245, "description": "Ramasamy St"}]}, "jVV6HgoMyezoYXqyt6rQrw": {"lat": 13.08383768625727, "lng": 80.26581939378097, "links": [{"pano_id": "5Ta_czN0qCwhDI0_jkBdQQ", "heading": 277.1125, "description": "Subbaiah St"}, {"pano_id": "MPd6VRtm1sunEffJqcKNWA", "heading": 96.21333, "description": "Subbaiah St"}, {"pano_id": "5lYnsj_A9dJUiHDw20V1jA", "heading": 278.5, "distance": 14.07, "virtual": true}, {"pano_id": "NJOKIMLAibghzSbmuT429A", "heading": 277.11, "distance": 9.94, "virtual": true}]}, "jmr2dcd6lfE6LGf8psAKRw": {"lat": 13.08331896511057, "lng": 80.26606555416943, "links": [{"pano_id": "0seyAE8JsFiFk1wgWtmvMA", "heading": 181.72292, "description": "Barracks Rd"}, {"pano_id": "9HVGrs3Gzl5m4vV8sx5cTA", "heading": 8.495248, "description": "Barracks Rd"}, {"pano_id": "lj7e7UtetSA2WvqdL72tqg", "heading": 156.95573, "description": ""}, {"pano_id": "6ac0EdwdLaYZzT8JAehV9g", "heading": 177.04, "distance": 15.87, "virtual": true}]}, "jUppVqGVAd3lSejafkUmOQ": {"lat": 13.084430280432, "lng": 80.26580706022509, "links": [{"pano_id": "EIQXaErsKUgdJDqHuWL5iA", "heading": 97.42245, "description": "Ramasamy St"}, {"pano_id": "Jf5xQfJDz2Rm-GuNQ17V_w", "heading": 277.40332, "description": "Ramasamy St"}]}, "Qm3EC6PPWh-eUtLk2fqC1Q": {"lat": 13.08470663797937, "lng": 80.26613555749411, "links": [{"pano_id": "dX5Tiyq1wzPCa0SX0GaiDw", "heading": 180.89453, "description": "Barracks Rd"}, {"pano_id": "Xa_b2jxN_idCu6F1BiAWWw", "heading": 3.3350244, "description": "Barracks Rd"}]}, "5Ta_czN0qCwhDI0_jkBdQQ": {"lat": 13.08384875821417, "lng": 80.26572829554296, "links": [{"pano_id": "jVV6HgoMyezoYXqyt6rQrw", "heading": 97.11249, "description": "Subbaiah St"}, {"pano_id": "5lYnsj_A9dJUiHDw20V1jA", "heading": 281.84552, "description": "Subbaiah St"}, {"pano_id": "NJOKIMLAibghzSbmuT429A", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "6K75vOrCA_hAiM0Db5h3pw", "heading": 281.78, "distance": 14.13, "virtual": true}]}, "0seyAE8JsFiFk1wgWtmvMA": {"lat": 13.08327214046167, "lng": 80.26606410817061, "links": [{"pano_id": "6ac0EdwdLaYZzT8JAehV9g", "heading": 174.75786, "description": "Barracks Rd"}, {"pano_id": "jmr2dcd6lfE6LGf8psAKRw", "heading": 1.7229109, "description": "Barracks Rd"}, {"pano_id": "9HVGrs3Gzl5m4vV8sx5cTA", "heading": 6.2, "distance": 15.35, "virtual": true}, {"pano_id": "lj7e7UtetSA2WvqdL72tqg", "heading": 40.58, "distance": 2.44, "virtual": true}, {"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 177.45, "distance": 15.96, "virtual": true}]}, "Xa_b2jxN_idCu6F1BiAWWw": {"lat": 13.08479620890553, "lng": 80.26614091619093, "links": [{"pano_id": "tVcad0zBCzuoV9PiHP60og", "heading": 2.1104114, "description": "Barracks Rd"}, {"pano_id": "Qm3EC6PPWh-eUtLk2fqC1Q", "heading": 183.33502, "description": "Barracks Rd"}]}, "5lYnsj_A9dJUiHDw20V1jA": {"lat": 13.08385638679973, "lng": 80.26569095459355, "links": [{"pano_id": "NJOKIMLAibghzSbmuT429A", "heading": 101.84553, "description": ""}, {"pano_id": "6K75vOrCA_hAiM0Db5h3pw", "heading": 281.7465, "description": "Subbaiah St"}, {"pano_id": "5Ta_czN0qCwhDI0_jkBdQQ", "heading": 101.84553, "description": "Subbaiah St"}, {"pano_id": "jVV6HgoMyezoYXqyt6rQrw", "heading": 98.5, "distance": 14.07, "virtual": true}, {"pano_id": "lLXTbEhANYA-o5xNj2ed2g", "heading": 281.73, "distance": 16.66, "virtual": true}]}, "lj7e7UtetSA2WvqdL72tqg": {"lat": 13.08328877642911, "lng": 80.2660787382751, "links": [{"pano_id": "jmr2dcd6lfE6LGf8psAKRw", "heading": 336.95572, "description": "Barracks Rd"}, {"pano_id": "9HVGrs3Gzl5m4vV8sx5cTA", "heading": 0.31, "distance": 13.41, "virtual": true}, {"pano_id": "0seyAE8JsFiFk1wgWtmvMA", "heading": 220.58, "distance": 2.44, "virtual": true}, {"pano_id": "6ac0EdwdLaYZzT8JAehV9g", "heading": 182.79, "distance": 12.51, "virtual": true}, {"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 182.82, "distance": 17.81, "virtual": true}]}, "Jf5xQfJDz2Rm-GuNQ17V_w": {"lat": 13.08444199308009, "lng": 80.26571451596901, "links": [{"pano_id": "jUppVqGVAd3lSejafkUmOQ", "heading": 97.40331, "description": "Ramasamy St"}, {"pano_id": "GFkgCx3wVRa1TA96wM0R6A", "heading": 277.44382, "description": "Ramasamy St"}, {"pano_id": "S5izv_V2YZMQ9vV4i9759A", "heading": 277.41, "distance": 14.31, "virtual": true}]}, "NJOKIMLAibghzSbmuT429A": {"lat": 13.08384875821417, "lng": 80.26572829554296, "links": [{"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 183.80096, "description": "Stringers Rd"}, {"pano_id": "5lYnsj_A9dJUiHDw20V1jA", "heading": 281.84552, "description": "Subbaiah St"}, {"pano_id": "jVV6HgoMyezoYXqyt6rQrw", "heading": 97.11, "distance": 9.94, "virtual": true}, {"pano_id": "5Ta_czN0qCwhDI0_jkBdQQ", "heading": 0.0, "distance": 0.0, "virtual": true}, {"pano_id": "6K75vOrCA_hAiM0Db5h3pw", "heading": 281.78, "distance": 14.13, "virtual": true}]}, "6K75vOrCA_hAiM0Db5h3pw": {"lat": 13.08387469990437, "lng": 80.26560053669117, "links": [{"pano_id": "lLXTbEhANYA-o5xNj2ed2g", "heading": 281.70496, "description": "Subbaiah St"}, {"pano_id": "5lYnsj_A9dJUiHDw20V1jA", "heading": 101.7465, "description": "Subbaiah St"}, {"pano_id": "5Ta_czN0qCwhDI0_jkBdQQ", "heading": 101.78, "distance": 14.13, "virtual": true}, {"pano_id": "NJOKIMLAibghzSbmuT429A", "heading": 101.78, "distance": 14.13, "virtual": true}, {"pano_id": "e48ZWJx0yFYE-7CyyO9oZg", "heading": 281.73, "distance": 16.86, "virtual": true}]}, "6ac0EdwdLaYZzT8JAehV9g": {"lat": 13.08317642057375, "lng": 80.26607312439809, "links": [{"pano_id": "0seyAE8JsFiFk1wgWtmvMA", "heading": 354.75784, "description": "Barracks Rd"}, {"pano_id": "tDCBlNom1H1bHM-iIqT48Q", "heading": 183.49411, "description": "Barracks Rd"}, {"pano_id": "jmr2dcd6lfE6LGf8psAKRw", "heading": 357.04, "distance": 15.87, "virtual": true}, {"pano_id": "lj7e7UtetSA2WvqdL72tqg", "heading": 2.79, "distance": 12.51, "virtual": true}, {"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 182.89, "distance": 5.3, "virtual": true}]}, "GFkgCx3wVRa1TA96wM0R6A": {"lat": 13.08445358651848, "lng": 80.26562341761819, "links": [{"pano_id": "S5izv_V2YZMQ9vV4i9759A", "heading": 277.3482, "description": "Ramasamy St"}, {"pano_id": "Jf5xQfJDz2Rm-GuNQ17V_w", "heading": 97.44382, "description": "Ramasamy St"}, {"pano_id": "IglyoGttvWRcSH1SNNIK4A", "heading": 277.41, "distance": 14.44, "virtual": true}]}, "tVcad0zBCzuoV9PiHP60og": {"lat": 13.08488614056705, "lng": 80.26614431853795, "links": [{"pano_id": "Xa_b2jxN_idCu6F1BiAWWw", "heading": 182.11041, "description": "Barracks Rd"}, {"pano_id": "3opR1H4WusKW98HeDALD5Q", "heading": 1.9619415, "description": "Barracks Rd"}]}, "3opR1H4WusKW98HeDALD5Q": {"lat": 13.08497562797304, "lng": 80.26614746570883, "links": [{"pano_id": "tVcad0zBCzuoV9PiHP60og", "heading": 181.96194, "description": "Barracks Rd"}, {"pano_id": "Jmp9ubc938sHfXOaP1uOYg", "heading": 2.205302, "description": "Barracks Rd"}]}, "tDCBlNom1H1bHM-iIqT48Q": {"lat": 13.08307194032529, "lng": 80.26606657487446, "links": [{"pano_id": "6ac0EdwdLaYZzT8JAehV9g", "heading": 3.4941158, "description": "Barracks Rd"}, {"pano_id": "YXFHwR5lLDlNerM6c7M6xA", "heading": 184.06363, "description": "Barracks Rd"}, {"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 4.0025835, "description": "7th St"}, {"pano_id": "QD__BXTa7Zw83vnq8_nzvA", "heading": 185.13, "distance": 16.5, "virtual": true}]}, "S5izv_V2YZMQ9vV4i9759A": {"lat": 13.08445859746013, "lng": 80.2655835248455, "links": [{"pano_id": "GFkgCx3wVRa1TA96wM0R6A", "heading": 97.34821, "description": "Ramasamy St"}, {"pano_id": "IglyoGttvWRcSH1SNNIK4A", "heading": 277.42953, "description": "Ramasamy St"}, {"pano_id": "Jf5xQfJDz2Rm-GuNQ17V_w", "heading": 97.41, "distance": 14.31, "virtual": true}]}, "lLXTbEhANYA-o5xNj2ed2g": {"lat": 13.08388685280704, "lng": 80.26554031474214, "links": [{"pano_id": "6K75vOrCA_hAiM0Db5h3pw", "heading": 101.70496, "description": "Subbaiah St"}, {"pano_id": "e48ZWJx0yFYE-7CyyO9oZg", "heading": 281.7497, "description": "Subbaiah St"}, {"pano_id": "5lYnsj_A9dJUiHDw20V1jA", "heading": 101.73, "distance": 16.66, "virtual": true}]}, "zZ9K4u1bI2VHZOsd9uPYRg": {"lat": 13.08294214210462, "lng": 80.26566645756085, "links": [{"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 92.73276, "description": "Stringers Rd"}, {"pano_id": "UfhcPAnID-OqPlNTG6jRFw", "heading": 269.78766, "description": "Stringers Rd"}, {"pano_id": "NJOKIMLAibghzSbmuT429A", "heading": 3.8009684, "description": ""}, {"pano_id": "fPI5XcarMMMU6Yw9AiBjUQ", "heading": 269.97, "distance": 14.16, "virtual": true}, {"pano_id": "Yk3RkuhTu6i1jWuRZgDPFg", "heading": 92.72, "distance": 13.79, "virtual": true}, {"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 269.78, "distance": 8.56, "virtual": true}, {"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 267.78, "distance": 0.07, "virtual": true}]}, "fX_eVAt0MVuOQ_Gw3zXsFA": {"lat": 13.08312877497754, "lng": 80.26607065769444, "links": [{"pano_id": "8rcP10fKpgXjU1f808hTcQ", "heading": 90.3736, "description": "7th St"}, {"pano_id": "tDCBlNom1H1bHM-iIqT48Q", "heading": 184.00258, "description": "Barracks Rd"}, {"pano_id": "0seyAE8JsFiFk1wgWtmvMA", "heading": 357.45, "distance": 15.96, "virtual": true}, {"pano_id": "lj7e7UtetSA2WvqdL72tqg", "heading": 2.82, "distance": 17.81, "virtual": true}, {"pano_id": "6ac0EdwdLaYZzT8JAehV9g", "heading": 2.89, "distance": 5.3, "virtual": true}, {"pano_id": "YXFHwR5lLDlNerM6c7M6xA", "heading": 184.04, "distance": 17.0, "virtual": true}]}, "e48ZWJx0yFYE-7CyyO9oZg": {"lat": 13.0839055329388, "lng": 80.26544811043215, "links": [{"pano_id": "lLXTbEhANYA-o5xNj2ed2g", "heading": 101.74969, "description": "Subbaiah St"}, {"pano_id": "Mt0XTnFdnwsIhKX1siqpzQ", "heading": 279.87946, "description": ""}, {"pano_id": "6K75vOrCA_hAiM0Db5h3pw", "heading": 101.73, "distance": 16.86, "virtual": true}]}, "YXFHwR5lLDlNerM6c7M6xA": {"lat": 13.08297631122697, "lng": 80.26605960005652, "links": [{"pano_id": "QD__BXTa7Zw83vnq8_nzvA", "heading": 187.06404, "description": "Barracks Rd"}, {"pano_id": "tDCBlNom1H1bHM-iIqT48Q", "heading": 4.063634, "description": "Barracks Rd"}, {"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 4.04, "distance": 17.0, "virtual": true}, {"pano_id": "0Oj4xYaB2VOw3ALHMJ8uMQ", "heading": 183.25, "distance": 15.6, "virtual": true}, {"pano_id": "LWooiM4JvwVRWbuKXIdfHA", "heading": 236.04, "distance": 9.75, "virtual": true}]}, "Jmp9ubc938sHfXOaP1uOYg": {"lat": 13.08507244366859, "lng": 80.26615129334891, "links": [{"pano_id": "3opR1H4WusKW98HeDALD5Q", "heading": 182.2053, "description": "Barracks Rd"}, {"pano_id": "tGZ-bnWJ5vu98oGuelU5iA", "heading": 2.1091075, "description": "Barracks Rd"}]}, "I62xpYmTPgvE30b04F8OGA": {"lat": 13.08294056024568, "lng": 80.26570048121548, "links": [{"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 272.73276, "description": "Stringers Rd"}, {"pano_id": "Yk3RkuhTu6i1jWuRZgDPFg", "heading": 92.714294, "description": "Stringers Rd"}, {"pano_id": "UfhcPAnID-OqPlNTG6jRFw", "heading": 270.68, "distance": 12.22, "virtual": true}, {"pano_id": "fPI5XcarMMMU6Yw9AiBjUQ", "heading": 270.54, "distance": 17.85, "virtual": true}, {"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 270.67, "distance": 12.24, "virtual": true}, {"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 272.64, "distance": 3.76, "virtual": true}]}, "UfhcPAnID-OqPlNTG6jRFw": {"lat": 13.08294185777947, "lng": 80.265587692748, "links": [{"pano_id": "fPI5XcarMMMU6Yw9AiBjUQ", "heading": 270.23486, "description": "Stringers Rd"}, {"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 89.78767, "description": "Stringers Rd"}, {"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 90.68, "distance": 12.22, "virtual": true}, {"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 267.78, "distance": 0.03, "virtual": true}, {"pano_id": "Z5v0WarRJgwNS5OJVTOZBQ", "heading": 265.1, "distance": 16.34, "virtual": true}, {"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 89.81, "distance": 8.46, "virtual": true}]}, "IglyoGttvWRcSH1SNNIK4A": {"lat": 13.08447031965863, "lng": 80.2654912355232, "links": [{"pano_id": "S5izv_V2YZMQ9vV4i9759A", "heading": 97.42952, "description": "Ramasamy St"}, {"pano_id": "GFkgCx3wVRa1TA96wM0R6A", "heading": 97.4, "distance": 14.44, "virtual": true}]}, "8rcP10fKpgXjU1f808hTcQ": {"lat": 13.0831236752272, "lng": 80.2668736084673, "links": [{"pano_id": "fX_eVAt0MVuOQ_Gw3zXsFA", "heading": 270.3736, "description": "7th St"}, {"pano_id": "CzloB1bI_Z0Yyzq8PgE0JQ", "heading": 178.65076, "description": "Naval Hospital Rd"}]}, "QD__BXTa7Zw83vnq8_nzvA": {"lat": 13.08292416143491, "lng": 80.26605296547307, "links": [{"pano_id": "YXFHwR5lLDlNerM6c7M6xA", "heading": 7.0640483, "description": "Barracks Rd"}, {"pano_id": "0Oj4xYaB2VOw3ALHMJ8uMQ", "heading": 180.97147, "description": "Barracks Rd"}, {"pano_id": "tDCBlNom1H1bHM-iIqT48Q", "heading": 5.13, "distance": 16.5, "virtual": true}, {"pano_id": "LWooiM4JvwVRWbuKXIdfHA", "heading": 272.73, "distance": 7.38, "virtual": true}]}, "tGZ-bnWJ5vu98oGuelU5iA": {"lat": 13.08517142958515, "lng": 80.26615503593017, "links": [{"pano_id": "BQK8HgNlQE1TmINkbTK36g", "heading": 2.0854156, "description": "Barracks Rd"}, {"pano_id": "Jmp9ubc938sHfXOaP1uOYg", "heading": 182.1091, "description": "Barracks Rd"}, {"pano_id": "ej_F2t4k3ty7bIYRk-Vumw", "heading": 2.09, "distance": 17.95, "virtual": true}]}, "fPI5XcarMMMU6Yw9AiBjUQ": {"lat": 13.0829420652986, "lng": 80.26553572154087, "links": [{"pano_id": "Z5v0WarRJgwNS5OJVTOZBQ", "heading": 262.41116, "description": "Stringers Rd"}, {"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 90.24701, "description": "Stringers Rd"}, {"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 89.97, "distance": 14.16, "virtual": true}, {"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 90.54, "distance": 17.85, "virtual": true}, {"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 89.98, "distance": 14.09, "virtual": true}]}, "Yk3RkuhTu6i1jWuRZgDPFg": {"lat": 13.08293625921877, "lng": 80.26579362090006, "links": [{"pano_id": "dzyflLUp4iszNvYnROi64Q", "heading": 92.7506, "description": "Stringers Rd"}, {"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 272.7143, "description": "Stringers Rd"}, {"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 272.72, "distance": 13.79, "virtual": true}, {"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 272.69, "distance": 13.86, "virtual": true}]}, "Mt0XTnFdnwsIhKX1siqpzQ": {"lat": 13.08392095782595, "lng": 80.26535718191377, "links": [{"pano_id": "e48ZWJx0yFYE-7CyyO9oZg", "heading": 99.87947, "description": "Subbaiah St"}, {"pano_id": "7FEZX14g-W_RRr5ct1lnxA", "heading": 279.53006, "description": ""}]}, "BQK8HgNlQE1TmINkbTK36g": {"lat": 13.08525561420626, "lng": 80.26615818310064, "links": [{"pano_id": "ej_F2t4k3ty7bIYRk-Vumw", "heading": 2.0915062, "description": "Barracks Rd"}, {"pano_id": "tGZ-bnWJ5vu98oGuelU5iA", "heading": 182.08542, "description": "Barracks Rd"}]}, "nA11rHnSyoDhS-cGWXDRlA": {"lat": 13.08294184812746, "lng": 80.26558743757029, "links": [{"pano_id": "GMXpLO0yKdX2zCekbn02hQ", "heading": 89.79859, "description": "Stringers Rd"}, {"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 89.78, "distance": 8.56, "virtual": true}, {"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 90.67, "distance": 12.24, "virtual": true}, {"pano_id": "UfhcPAnID-OqPlNTG6jRFw", "heading": 87.78, "distance": 0.03, "virtual": true}, {"pano_id": "Z5v0WarRJgwNS5OJVTOZBQ", "heading": 265.09, "distance": 16.31, "virtual": true}]}, "0Oj4xYaB2VOw3ALHMJ8uMQ": {"lat": 13.08283621456483, "lng": 80.26605143441527, "links": [{"pano_id": "QD__BXTa7Zw83vnq8_nzvA", "heading": 0.97147274, "description": "Barracks Rd"}, {"pano_id": "YXFHwR5lLDlNerM6c7M6xA", "heading": 3.25, "distance": 15.6, "virtual": true}, {"pano_id": "LWooiM4JvwVRWbuKXIdfHA", "heading": 324.58, "distance": 12.43, "virtual": true}]}, "Z5v0WarRJgwNS5OJVTOZBQ": {"lat": 13.08292930502538, "lng": 80.26543739295049, "links": [{"pano_id": "fPI5XcarMMMU6Yw9AiBjUQ", "heading": 82.41118, "description": "Stringers Rd"}, {"pano_id": "UfhcPAnID-OqPlNTG6jRFw", "heading": 85.1, "distance": 16.34, "virtual": true}, {"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 85.09, "distance": 16.31, "virtual": true}]}, "7FEZX14g-W_RRr5ct1lnxA": {"lat": 13.08393585463607, "lng": 80.26526608317869, "links": [{"pano_id": "Mt0XTnFdnwsIhKX1siqpzQ", "heading": 99.53007, "description": ""}]}, "dzyflLUp4iszNvYnROi64Q": {"lat": 13.08293193241334, "lng": 80.26588608001077, "links": [{"pano_id": "Yk3RkuhTu6i1jWuRZgDPFg", "heading": 272.7506, "description": "Stringers Rd"}, {"pano_id": "LWooiM4JvwVRWbuKXIdfHA", "heading": 92.73981, "description": "Stringers Rd"}]}, "CzloB1bI_Z0Yyzq8PgE0JQ": {"lat": 13.08310256980005, "lng": 80.26687411881495, "links": [{"pano_id": "8rcP10fKpgXjU1f808hTcQ", "heading": 358.65076, "description": "7th St"}]}, "ej_F2t4k3ty7bIYRk-Vumw": {"lat": 13.08533274754034, "lng": 80.26616107509503, "links": [{"pano_id": "BQK8HgNlQE1TmINkbTK36g", "heading": 182.0915, "description": "Barracks Rd"}, {"pano_id": "tGZ-bnWJ5vu98oGuelU5iA", "heading": 182.09, "distance": 17.95, "virtual": true}]}, "LWooiM4JvwVRWbuKXIdfHA": {"lat": 13.0829273252601, "lng": 80.26598491843333, "links": [{"pano_id": "dzyflLUp4iszNvYnROi64Q", "heading": 272.7398, "description": "Stringers Rd"}, {"pano_id": "YXFHwR5lLDlNerM6c7M6xA", "heading": 56.04, "distance": 9.75, "virtual": true}, {"pano_id": "QD__BXTa7Zw83vnq8_nzvA", "heading": 92.73, "distance": 7.38, "virtual": true}, {"pano_id": "0Oj4xYaB2VOw3ALHMJ8uMQ", "heading": 144.58, "distance": 12.43, "virtual": true}]}, "GMXpLO0yKdX2zCekbn02hQ": {"lat": 13.08294211636618, "lng": 80.26566577708762, "links": [{"pano_id": "nA11rHnSyoDhS-cGWXDRlA", "heading": 269.79858, "description": "Stringers Rd"}, {"pano_id": "zZ9K4u1bI2VHZOsd9uPYRg", "heading": 87.78, "distance": 0.07, "virtual": true}, {"pano_id": "I62xpYmTPgvE30b04F8OGA", "heading": 92.64, "distance": 3.76, "virtual": true}, {"pano_id": "UfhcPAnID-OqPlNTG6jRFw", "heading": 269.81, "distance": 8.46, "virtual": true}, {"pano_id": "fPI5XcarMMMU6Yw9AiBjUQ", "heading": 269.98, "distance": 14.09, "virtual": true}, {"pano_id": "Yk3RkuhTu6i1jWuRZgDPFg", "heading": 92.69, "distance": 13.86, "virtual": true}]}};
+        const targetPanos = ["ksL-tJcLbIuMxRh2XEWnQg"];
+        const spawnPoints = ["ej_F2t4k3ty7bIYRk-Vumw", "LWooiM4JvwVRWbuKXIdfHA", "8rcP10fKpgXjU1f808hTcQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

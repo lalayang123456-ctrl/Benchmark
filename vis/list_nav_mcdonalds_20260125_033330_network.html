@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_mcdonalds_20260125_033330</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_mcdonalds_20260125_033330</h3>
+        <div>Total Panos: <strong>73</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"j5Fz27psK99VQhoTFEWJQQ": {"lat": -3.108114127389168, "lng": -60.0237175827424, "links": [{"pano_id": "eY1NsoPiIOuJ-wzyGAvk8Q", "heading": 174.49356, "description": "Av. Djalma Batista"}, {"pano_id": "BTmHECe8YRr8bFMOza9tIw", "heading": 354.4098, "description": "Av. Djalma Batista"}]}, "BTmHECe8YRr8bFMOza9tIw": {"lat": -3.108014233373773, "lng": -60.02372737462093, "links": [{"pano_id": "j5Fz27psK99VQhoTFEWJQQ", "heading": 174.40977, "description": "Av. Djalma Batista"}, {"pano_id": "-866KL-zdHNvHWDp9u01aw", "heading": 354.42682, "description": "Av. Djalma Batista"}]}, "eY1NsoPiIOuJ-wzyGAvk8Q": {"lat": -3.108206413599768, "lng": -60.0237086730157, "links": [{"pano_id": "j5Fz27psK99VQhoTFEWJQQ", "heading": 354.49356, "description": "Av. Djalma Batista"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 174.42949, "description": "Av. Djalma Batista"}]}, "_DbmPCvkGEAVtYucDzzm_Q": {"lat": -3.108295825416576, "lng": -60.0236999397198, "links": [{"pano_id": "eY1NsoPiIOuJ-wzyGAvk8Q", "heading": 354.42947, "description": "Av. Djalma Batista"}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 174.47981, "description": "Av. Djalma Batista"}, {"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 174.51, "distance": 10.74, "virtual": true}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 161.11, "distance": 11.5, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 176.37, "distance": 10.51, "virtual": true}, {"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 133.59, "distance": 17.66, "virtual": true}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 223.02, "distance": 14.63, "virtual": true}]}, "-866KL-zdHNvHWDp9u01aw": {"lat": -3.107918545432221, "lng": -60.02373672542452, "links": [{"pano_id": "BTmHECe8YRr8bFMOza9tIw", "heading": 174.42683, "description": "Av. Djalma Batista"}, {"pano_id": "lqgfRd4NIR8Ms7pg43tmbg", "heading": 354.45197, "description": "Av. Djalma Batista"}]}, "LSgG_sgUJN_uD4hZ7TvXmw": {"lat": -3.108381500361223, "lng": -60.02369164749997, "links": [{"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 174.72038, "description": "Av. Djalma Batista"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 354.47983, "description": "Av. Djalma Batista"}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 115.73, "distance": 3.11, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 176.54, "distance": 9.58, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 194.84, "distance": 0.99, "virtual": true}, {"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 102.6, "distance": 12.16, "virtual": true}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 263.89, "distance": 10.96, "virtual": true}]}, "lqgfRd4NIR8Ms7pg43tmbg": {"lat": -3.107816980144669, "lng": -60.02374660551956, "links": [{"pano_id": "9cWNvQSDK81h8GjZi21d1g", "heading": 353.8168, "description": "Av. Djalma Batista"}, {"pano_id": "-866KL-zdHNvHWDp9u01aw", "heading": 174.45197, "description": "Av. Djalma Batista"}]}, "uZjdwDe41w0dqmDh9WrTiA": {"lat": -3.108391985752816, "lng": -60.02369067713385, "links": [{"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 93.90522, "description": "R. Par\u00e1"}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 176.79416, "description": "Av. Djalma Batista"}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 354.72037, "description": "Av. Djalma Batista"}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 299.45352, "description": "R. Par\u00e1"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 354.51, "distance": 10.74, "virtual": true}, {"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 97.2, "distance": 11.86, "virtual": true}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 269.99, "distance": 11.01, "virtual": true}]}, "9cWNvQSDK81h8GjZi21d1g": {"lat": -3.107717786854407, "lng": -60.02375736776676, "links": [{"pano_id": "Gwkn0rZ3Eu_0R-l3gnd_cg", "heading": 353.384, "description": "Av. Djalma Batista"}, {"pano_id": "lqgfRd4NIR8Ms7pg43tmbg", "heading": 173.8168, "description": "Av. Djalma Batista"}]}, "Gwkn0rZ3Eu_0R-l3gnd_cg": {"lat": -3.107619818657378, "lng": -60.0237687475209, "links": [{"pano_id": "9cWNvQSDK81h8GjZi21d1g", "heading": 173.384, "description": "Av. Djalma Batista"}, {"pano_id": "QM3DRolIDOYbFyzZK7EA4w", "heading": 353.8412, "description": "Av. Djalma Batista"}]}, "N7bIfsGk2i2YKBAsDcEauw": {"lat": -3.108393639358558, "lng": -60.02366641798316, "links": [{"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 98.17341, "description": "R. Par\u00e1"}, {"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 273.9052, "description": "Av. Djalma Batista"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 341.11, "distance": 11.5, "virtual": true}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 295.73, "distance": 3.11, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 195.15, "distance": 8.51, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 277.25, "distance": 3.08, "virtual": true}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 270.76, "distance": 13.7, "virtual": true}]}, "fvwrrbHdnOvDJsvMjSJVhw": {"lat": -3.108467472832023, "lng": -60.02368644280907, "links": [{"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 356.79416, "description": "Av. Djalma Batista"}, {"pano_id": "yXM5Ojl_u2k2eBfqy2NK4w", "heading": 176.8517, "description": "Av. Djalma Batista"}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 356.54, "distance": 9.58, "virtual": true}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 15.15, "distance": 8.51, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 354.47, "distance": 8.64, "virtual": true}, {"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 58.55, "distance": 13.24, "virtual": true}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 306.17, "distance": 14.22, "virtual": true}]}, "kUTYCmItHTaMWvnzvAcNQg": {"lat": -3.10839014529921, "lng": -60.02369394109264, "links": [{"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 119.45352, "description": "Av. Djalma Batista"}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 268.88947, "description": "R. Par\u00e1"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 356.37, "distance": 10.51, "virtual": true}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 14.84, "distance": 0.99, "virtual": true}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 97.25, "distance": 3.08, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 174.47, "distance": 8.64, "virtual": true}, {"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 97.94, "distance": 12.24, "virtual": true}]}, "yXM5Ojl_u2k2eBfqy2NK4w": {"lat": -3.108565161323674, "lng": -60.02368106168815, "links": [{"pano_id": "Xp4bZFPG5HrM4a30MdqHxA", "heading": 177.55354, "description": "Av. Djalma Batista"}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 356.8517, "description": "Av. Djalma Batista"}]}, "LKXa3t-dKOjo_Ax-Y7P8ZQ": {"lat": -3.10840535469289, "lng": -60.02358473083851, "links": [{"pano_id": "Q-sBMiW4JS1zcVLb4awAIQ", "heading": 98.21478, "description": "R. Par\u00e1"}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 278.1734, "description": "R. Par\u00e1"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 313.59, "distance": 17.66, "virtual": true}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 282.6, "distance": 12.16, "virtual": true}, {"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 277.2, "distance": 11.86, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 238.55, "distance": 13.24, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 277.94, "distance": 12.24, "virtual": true}]}, "QM3DRolIDOYbFyzZK7EA4w": {"lat": -3.107523494810523, "lng": -60.02377915690922, "links": [{"pano_id": "Gwkn0rZ3Eu_0R-l3gnd_cg", "heading": 173.84117, "description": "Av. Djalma Batista"}, {"pano_id": "Ui3M0ighZyXx_bqCjFWlAg", "heading": 354.30707, "description": "Av. Djalma Batista"}]}, "d97E3fvaIlv8-IrylK19BA": {"lat": -3.108392001380512, "lng": -60.02378983094384, "links": [{"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 88.889465, "description": "R. Par\u00e1"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 43.02, "distance": 14.63, "virtual": true}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 83.89, "distance": 10.96, "virtual": true}, {"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 89.99, "distance": 11.01, "virtual": true}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 90.76, "distance": 13.7, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 126.17, "distance": 14.22, "virtual": true}]}, "T_F3VzaOvZHv0gFeufRgVg": {"lat": -3.108392113478584, "lng": -60.02379556492971, "links": [{"pano_id": "Lp2KSNxMPcOOD8tzAHELXg", "heading": 176.01329, "description": "Av. Djalma Batista"}, {"pano_id": "43oKtvGp4h9f3Vrz3pRMYA", "heading": 349.2982, "description": "Av. Djalma Batista"}, {"pano_id": "ptLbiJe5E6LiHPfdALg2Ow", "heading": 276.60532, "description": "R. Par\u00e1"}, {"pano_id": "d97E3fvaIlv8-IrylK19BA", "heading": 88.87837, "description": "R. Par\u00e1"}, {"pano_id": "_DbmPCvkGEAVtYucDzzm_Q", "heading": 44.76, "distance": 15.08, "virtual": true}, {"pano_id": "LSgG_sgUJN_uD4hZ7TvXmw", "heading": 84.16, "distance": 11.6, "virtual": true}, {"pano_id": "uZjdwDe41w0dqmDh9WrTiA", "heading": 89.93, "distance": 11.65, "virtual": true}, {"pano_id": "N7bIfsGk2i2YKBAsDcEauw", "heading": 90.68, "distance": 14.34, "virtual": true}, {"pano_id": "fvwrrbHdnOvDJsvMjSJVhw", "heading": 124.67, "distance": 14.73, "virtual": true}, {"pano_id": "kUTYCmItHTaMWvnzvAcNQg", "heading": 88.89, "distance": 11.29, "virtual": true}]}, "Q-sBMiW4JS1zcVLb4awAIQ": {"lat": -3.10841856710972, "lng": -60.02349307545062, "links": [{"pano_id": "LKXa3t-dKOjo_Ax-Y7P8ZQ", "heading": 278.21478, "description": "R. Par\u00e1"}, {"pano_id": "t3M8aouJGNkM5aw-D4A_MQ", "heading": 97.81868, "description": "R. Par\u00e1"}]}, "Xp4bZFPG5HrM4a30MdqHxA": {"lat": -3.108657937640875, "lng": -60.02367709200894, "links": [{"pano_id": "yXM5Ojl_u2k2eBfqy2NK4w", "heading": 357.55356, "description": "Av. Djalma Batista"}, {"pano_id": "-qp8tKEgBdD-CogLNf18ww", "heading": 178.48343, "description": "Av. Djalma Batista"}]}, "Ui3M0ighZyXx_bqCjFWlAg": {"lat": -3.107428949260743, "lng": -60.02378859593152, "links": [{"pano_id": "XLZODVMZt4KsiZAkUH7W9g", "heading": 354.29584, "description": "Av. Djalma Batista"}, {"pano_id": "QM3DRolIDOYbFyzZK7EA4w", "heading": 174.30705, "description": "Av. Djalma Batista"}, {"pano_id": "mt2ETKXX0HSaueNo82P0AQ", "heading": 354.34, "distance": 17.79, "virtual": true}]}, "t3M8aouJGNkM5aw-D4A_MQ": {"lat": -3.108431932554574, "lng": -60.02339559794033, "links": [{"pano_id": "Q-sBMiW4JS1zcVLb4awAIQ", "heading": 277.8187, "description": "R. Par\u00e1"}, {"pano_id": "2gprtmKzdj-g825nr48mzQ", "heading": 97.040245, "description": "R. Par\u00e1"}]}, "-qp8tKEgBdD-CogLNf18ww": {"lat": -3.108751095893271, "lng": -60.02367462198637, "links": [{"pano_id": "Xp4bZFPG5HrM4a30MdqHxA", "heading": 358.48343, "description": "Av. Djalma Batista"}, {"pano_id": "w_-SjS4B0EqpwL7cfP_27A", "heading": 178.53128, "description": "Av. Djalma Batista"}]}, "XLZODVMZt4KsiZAkUH7W9g": {"lat": -3.107335472789163, "lng": -60.02379794673932, "links": [{"pano_id": "Uzf9YQ3OqsOt37z88chvJA", "heading": 3.5043378, "description": "R. Rio Ituxi"}, {"pano_id": "Ui3M0ighZyXx_bqCjFWlAg", "heading": 174.29584, "description": "Av. Djalma Batista"}, {"pano_id": "mt2ETKXX0HSaueNo82P0AQ", "heading": 354.4105, "description": "Av. Djalma Batista"}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 354.56, "distance": 16.73, "virtual": true}]}, "2gprtmKzdj-g825nr48mzQ": {"lat": -3.108443583213283, "lng": -60.02330111980478, "links": [{"pano_id": "t3M8aouJGNkM5aw-D4A_MQ", "heading": 277.04025, "description": "R. Par\u00e1"}, {"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 97.02709, "description": "R. Par\u00e1"}, {"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 68.62, "distance": 9.41, "virtual": true}, {"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 139.87, "distance": 11.93, "virtual": true}, {"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 96.79, "distance": 10.73, "virtual": true}]}, "Uzf9YQ3OqsOt37z88chvJA": {"lat": -3.107236223355334, "lng": -60.02379185989266, "links": [{"pano_id": "XLZODVMZt4KsiZAkUH7W9g", "heading": 183.50433, "description": "Av. Djalma Batista"}, {"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 10.059847, "description": "R. Rio Ituxi"}, {"pano_id": "mt2ETKXX0HSaueNo82P0AQ", "heading": 200.45, "distance": 3.98, "virtual": true}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 338.07, "distance": 6.06, "virtual": true}, {"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 348.6, "distance": 16.31, "virtual": true}]}, "w_-SjS4B0EqpwL7cfP_27A": {"lat": -3.108843855223757, "lng": -60.02367224017893, "links": [{"pano_id": "cRwBVhxRV3bVtg5J0msWxA", "heading": 178.52061, "description": "Av. Djalma Batista"}, {"pano_id": "-qp8tKEgBdD-CogLNf18ww", "heading": 358.53128, "description": "Av. Djalma Batista"}]}, "mt2ETKXX0HSaueNo82P0AQ": {"lat": -3.107269768158233, "lng": -60.02380438644695, "links": [{"pano_id": "XLZODVMZt4KsiZAkUH7W9g", "heading": 174.41049, "description": "Av. Djalma Batista"}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 354.6731, "description": "Av. Djalma Batista"}, {"pano_id": "Ui3M0ighZyXx_bqCjFWlAg", "heading": 174.34, "distance": 17.79, "virtual": true}, {"pano_id": "Uzf9YQ3OqsOt37z88chvJA", "heading": 20.45, "distance": 3.98, "virtual": true}, {"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 12.99, "distance": 14.03, "virtual": true}]}, "6Wh3qYAiK_disD1eB-jt6w": {"lat": -3.107185688968417, "lng": -60.02381223759776, "links": [{"pano_id": "mt2ETKXX0HSaueNo82P0AQ", "heading": 174.6731, "description": "Av. Djalma Batista"}, {"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 354.70993, "description": "Av. Djalma Batista"}, {"pano_id": "XLZODVMZt4KsiZAkUH7W9g", "heading": 174.56, "distance": 16.73, "virtual": true}, {"pano_id": "Uzf9YQ3OqsOt37z88chvJA", "heading": 158.07, "distance": 6.06, "virtual": true}, {"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 42.99, "distance": 5.9, "virtual": true}, {"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 17.6, "distance": 15.48, "virtual": true}]}, "cRwBVhxRV3bVtg5J0msWxA": {"lat": -3.108935944955165, "lng": -60.02366985837154, "links": [{"pano_id": "3w9UQd4GYTddm08Y5Wqj3g", "heading": 178.44487, "description": "Av. Djalma Batista"}, {"pano_id": "w_-SjS4B0EqpwL7cfP_27A", "heading": 358.5206, "description": "Av. Djalma Batista"}]}, "oErckdPPb6rZTKKsmAhk7Q": {"lat": -3.10714684899045, "lng": -60.02377598116355, "links": [{"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 3.5969388, "description": "R. Rio Ituxi"}, {"pano_id": "Uzf9YQ3OqsOt37z88chvJA", "heading": 190.05984, "description": "R. Rio Ituxi"}, {"pano_id": "mt2ETKXX0HSaueNo82P0AQ", "heading": 192.99, "distance": 14.03, "virtual": true}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 222.99, "distance": 5.9, "virtual": true}, {"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 320.5, "distance": 7.84, "virtual": true}, {"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 340.24, "distance": 17.64, "virtual": true}]}, "Xrx16LpoUBypSZkj4cKyfA": {"lat": -3.108452291142833, "lng": -60.02323037151469, "links": [{"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 11.695535, "description": "Rua Rio Javari"}, {"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 96.10595, "description": "R. Par\u00e1"}, {"pano_id": "2gprtmKzdj-g825nr48mzQ", "heading": 277.0271, "description": "R. Par\u00e1"}, {"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 181.16998, "description": "Rua Rio Javari"}, {"pano_id": "iR71T8tF6scmJmDQ7QWu-g", "heading": 95.86, "distance": 13.7, "virtual": true}, {"pano_id": "Qc3y1Mo_qu08jHVWDrJMVg", "heading": 4.77, "distance": 16.84, "virtual": true}]}, "c0kbs5fbYWHT9gPQwAq3XQ": {"lat": -3.108412718393088, "lng": -60.0232221675383, "links": [{"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 191.69554, "description": "R. Par\u00e1"}, {"pano_id": "Qc3y1Mo_qu08jHVWDrJMVg", "heading": 2.2642546, "description": "Rua Rio Javari"}, {"pano_id": "2gprtmKzdj-g825nr48mzQ", "heading": 248.62, "distance": 9.41, "virtual": true}, {"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 184.91, "distance": 12.6, "virtual": true}, {"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 158.09, "distance": 5.07, "virtual": true}, {"pano_id": "iR71T8tF6scmJmDQ7QWu-g", "heading": 114.52, "distance": 13.97, "virtual": true}]}, "al9cG860p1MHSUov0RZxgg": {"lat": -3.108525612829294, "lng": -60.02323187116635, "links": [{"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 1.1699862, "description": "R. Par\u00e1"}, {"pano_id": "EXv0yoWxP6hsb5Vq-1vQtQ", "heading": 186.37251, "description": "Rua Rio Javari"}, {"pano_id": "2gprtmKzdj-g825nr48mzQ", "heading": 319.87, "distance": 11.93, "virtual": true}, {"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 4.91, "distance": 12.6, "virtual": true}, {"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 20.7, "distance": 8.4, "virtual": true}, {"pano_id": "iR71T8tF6scmJmDQ7QWu-g", "heading": 63.91, "distance": 15.36, "virtual": true}]}, "3w9UQd4GYTddm08Y5Wqj3g": {"lat": -3.1090235472256, "lng": -60.0236674765642, "links": [{"pano_id": "cRwBVhxRV3bVtg5J0msWxA", "heading": 358.44485, "description": "Av. Djalma Batista"}, {"pano_id": "O6a5FzLFFhqHiZ4YdyaPOw", "heading": 177.8038, "description": "Av. Djalma Batista"}]}, "DzpwPlTGf1-IFP5_LH_m5A": {"lat": -3.107092458868984, "lng": -60.02382088268569, "links": [{"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 354.69696, "description": "Av. Djalma Batista"}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 174.70995, "description": "Av. Djalma Batista"}, {"pano_id": "Uzf9YQ3OqsOt37z88chvJA", "heading": 168.6, "distance": 16.31, "virtual": true}, {"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 140.5, "distance": 7.84, "virtual": true}, {"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 52.1, "distance": 7.15, "virtual": true}, {"pano_id": "oxorlPGNMZQ40Aek3TsKvg", "heading": 22.88, "distance": 16.23, "virtual": true}]}, "4Ki-01O5At19JWf0CckNcQ": {"lat": -3.108454986069309, "lng": -60.0232051420835, "links": [{"pano_id": "iR71T8tF6scmJmDQ7QWu-g", "heading": 95.79746, "description": "R. Par\u00e1"}, {"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 276.10596, "description": "R. Par\u00e1"}, {"pano_id": "2gprtmKzdj-g825nr48mzQ", "heading": 276.79, "distance": 10.73, "virtual": true}, {"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 338.09, "distance": 5.07, "virtual": true}, {"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 200.7, "distance": 8.4, "virtual": true}, {"pano_id": "Qc3y1Mo_qu08jHVWDrJMVg", "heading": 355.31, "distance": 17.14, "virtual": true}]}, "TjhZ6G2jB8h1rYrhyg8Ofw": {"lat": -3.107052963688905, "lng": -60.02377007074818, "links": [{"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 183.59694, "description": "R. Rio Ituxi"}, {"pano_id": "oxorlPGNMZQ40Aek3TsKvg", "heading": 3.6092968, "description": "R. Rio Ituxi"}, {"pano_id": "6Wh3qYAiK_disD1eB-jt6w", "heading": 197.6, "distance": 15.48, "virtual": true}, {"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 232.1, "distance": 7.15, "virtual": true}, {"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 312.94, "distance": 9.04, "virtual": true}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 335.02, "distance": 17.88, "virtual": true}]}, "oxorlPGNMZQ40Aek3TsKvg": {"lat": -3.106958004224072, "lng": -60.02376407211793, "links": [{"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 3.5464873, "description": "R. Rio Ituxi"}, {"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 183.6093, "description": "R. Rio Ituxi"}, {"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 202.88, "distance": 16.23, "virtual": true}, {"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 238.89, "distance": 8.51, "virtual": true}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 304.51, "distance": 9.97, "virtual": true}]}, "1EL66liII5phzwjFMSQ3lg": {"lat": -3.106997560046124, "lng": -60.02382970420454, "links": [{"pano_id": "DzpwPlTGf1-IFP5_LH_m5A", "heading": 174.69698, "description": "Av. Djalma Batista"}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 354.7089, "description": "Av. Djalma Batista"}, {"pano_id": "oErckdPPb6rZTKKsmAhk7Q", "heading": 160.24, "distance": 17.64, "virtual": true}, {"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 132.94, "distance": 9.04, "virtual": true}, {"pano_id": "oxorlPGNMZQ40Aek3TsKvg", "heading": 58.89, "distance": 8.51, "virtual": true}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 27.92, "distance": 16.96, "virtual": true}]}, "EXv0yoWxP6hsb5Vq-1vQtQ": {"lat": -3.10862656792812, "lng": -60.02324316266168, "links": [{"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 6.3725076, "description": "Rua Rio Javari"}, {"pano_id": "OboKxy1DPPMUByXN0PTc2Q", "heading": 185.83054, "description": "Rua Rio Javari"}]}, "iR71T8tF6scmJmDQ7QWu-g": {"lat": -3.108464868526303, "lng": -60.02310766477969, "links": [{"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 275.79745, "description": "R. Par\u00e1"}, {"pano_id": "Dt79u5VJ3asZOYGE-1Mj0w", "heading": 95.8101, "description": "R. Par\u00e1"}, {"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 275.86, "distance": 13.7, "virtual": true}, {"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 294.52, "distance": 13.97, "virtual": true}, {"pano_id": "al9cG860p1MHSUov0RZxgg", "heading": 243.91, "distance": 15.36, "virtual": true}]}, "Qc3y1Mo_qu08jHVWDrJMVg": {"lat": -3.108301329148929, "lng": -60.02321775679852, "links": [{"pano_id": "4HaUGiVCxgHDdF5bmNwjvQ", "heading": 2.2811353, "description": "Rua Rio Javari"}, {"pano_id": "c0kbs5fbYWHT9gPQwAq3XQ", "heading": 182.26425, "description": "Rua Rio Javari"}, {"pano_id": "Xrx16LpoUBypSZkj4cKyfA", "heading": 184.77, "distance": 16.84, "virtual": true}, {"pano_id": "4Ki-01O5At19JWf0CckNcQ", "heading": 175.31, "distance": 17.14, "virtual": true}]}, "O6a5FzLFFhqHiZ4YdyaPOw": {"lat": -3.109120016691206, "lng": -60.02366377153062, "links": [{"pano_id": "3w9UQd4GYTddm08Y5Wqj3g", "heading": 357.8038, "description": "Av. Djalma Batista"}, {"pano_id": "OmQ4sJcIT78WvJM-4y5epQ", "heading": 177.88399, "description": "Av. Djalma Batista"}]}, "mrRZnk0gaijDBoHlluKq_Q": {"lat": -3.106907202067999, "lng": -60.023838084648, "links": [{"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 174.70888, "description": "Av. Djalma Batista"}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 354.67828, "description": "Av. Djalma Batista"}, {"pano_id": "TjhZ6G2jB8h1rYrhyg8Ofw", "heading": 155.02, "distance": 17.88, "virtual": true}, {"pano_id": "oxorlPGNMZQ40Aek3TsKvg", "heading": 124.51, "distance": 9.97, "virtual": true}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 60.9, "distance": 10.16, "virtual": true}, {"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 354.68, "distance": 16.79, "virtual": true}]}, "Dt79u5VJ3asZOYGE-1Mj0w": {"lat": -3.108474602367521, "lng": -60.02301186362434, "links": [{"pano_id": "iR71T8tF6scmJmDQ7QWu-g", "heading": 275.8101, "description": "R. Par\u00e1"}, {"pano_id": "zyctQIodYgDJ3WbX9CeM_w", "heading": 95.86378, "description": "R. Par\u00e1"}]}, "4HaUGiVCxgHDdF5bmNwjvQ": {"lat": -3.108217300443231, "lng": -60.02321440463637, "links": [{"pano_id": "YCuzqjCOY0TR6jfTrzkH9g", "heading": 2.3330667, "description": "Rua Rio Javari"}, {"pano_id": "Qc3y1Mo_qu08jHVWDrJMVg", "heading": 182.28113, "description": "Rua Rio Javari"}]}, "OboKxy1DPPMUByXN0PTc2Q": {"lat": -3.108727492979473, "lng": -60.02325348379493, "links": [{"pano_id": "tL2P47LIaWPuBDF50ce1-A", "heading": 184.42813, "description": "Rua Rio Javari"}, {"pano_id": "EXv0yoWxP6hsb5Vq-1vQtQ", "heading": 5.8305397, "description": "Rua Rio Javari"}]}, "8mS7Avn7fTbStYi8mTS0pA": {"lat": -3.106862779830061, "lng": -60.02375816170307, "links": [{"pano_id": "oxorlPGNMZQ40Aek3TsKvg", "heading": 183.5465, "description": "R. Rio Ituxi"}, {"pano_id": "1EL66liII5phzwjFMSQ3lg", "heading": 207.92, "distance": 16.96, "virtual": true}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 240.9, "distance": 10.16, "virtual": true}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 299.5, "distance": 11.32, "virtual": true}, {"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 318.47, "distance": 15.73, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 320.93, "distance": 16.8, "virtual": true}]}, "OmQ4sJcIT78WvJM-4y5epQ": {"lat": -3.109217761750592, "lng": -60.02366015471223, "links": [{"pano_id": "KEPjfD9cdCGw3sP4H9xZxg", "heading": 177.8048, "description": "Av. Djalma Batista"}, {"pano_id": "O6a5FzLFFhqHiZ4YdyaPOw", "heading": 357.884, "description": "Av. Djalma Batista"}]}, "YCuzqjCOY0TR6jfTrzkH9g": {"lat": -3.108126496086107, "lng": -60.02321069961516, "links": [{"pano_id": "6N8xCQrQvTNZHRBioYyVBQ", "heading": 2.2429435, "description": "Rua Rio Javari"}, {"pano_id": "4HaUGiVCxgHDdF5bmNwjvQ", "heading": 182.33307, "description": "Rua Rio Javari"}]}, "jX79MO96yZNxGbBNbBk2VQ": {"lat": -3.106812638512759, "lng": -60.02384690616798, "links": [{"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 354.67548, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 174.67828, "description": "Av. Djalma Batista"}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 119.5, "distance": 11.32, "virtual": true}, {"pano_id": "iS0Ny_pMs1ecbjL2zVKwdA", "heading": 301.26, "distance": 14.62, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 354.38, "distance": 7.51, "virtual": true}]}, "KEPjfD9cdCGw3sP4H9xZxg": {"lat": -3.109316573203879, "lng": -60.02365636146379, "links": [{"pano_id": "OmQ4sJcIT78WvJM-4y5epQ", "heading": 357.8048, "description": "Av. Djalma Batista"}, {"pano_id": "TwwD4URvxImNkSsljwYZAA", "heading": 177.85004, "description": "Av. Djalma Batista"}]}, "noRt0zvvsCamY0u8alUwTg": {"lat": -3.10677513501325, "lng": -60.02375260414904, "links": [{"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 183.62294, "description": "R. Rio Ituxi"}, {"pano_id": "B_nfBI18dL3r-GiLokkVEw", "heading": 37.60008, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 212.87, "distance": 17.49, "virtual": true}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 248.28, "distance": 11.27, "virtual": true}, {"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 280.41, "distance": 11.23, "virtual": true}, {"pano_id": "yoxInn6agyvoyexOXg_HlA", "heading": 280.47, "distance": 10.83, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 286.41, "distance": 11.68, "virtual": true}]}, "tL2P47LIaWPuBDF50ce1-A": {"lat": -3.108824177393482, "lng": -60.02326098205465, "links": [{"pano_id": "OboKxy1DPPMUByXN0PTc2Q", "heading": 4.4281383, "description": "Rua Rio Javari"}, {"pano_id": "jz_Nc0R3VBhO_7H8qzFtag", "heading": 184.45793, "description": "Rua Rio Javari"}]}, "zyctQIodYgDJ3WbX9CeM_w": {"lat": -3.108484408670605, "lng": -60.02291623896568, "links": [{"pano_id": "VZDRqtzblQ4hoG94ozXbfQ", "heading": 96.01879, "description": "R. Par\u00e1"}, {"pano_id": "Dt79u5VJ3asZOYGE-1Mj0w", "heading": 275.86377, "description": "R. Par\u00e1"}]}, "TwwD4URvxImNkSsljwYZAA": {"lat": -3.109415119714473, "lng": -60.02365265643051, "links": [{"pano_id": "WNP4SCgmRh3YygN8bMH6Uw", "heading": 177.85333, "description": "Av. Djalma Batista"}, {"pano_id": "KEPjfD9cdCGw3sP4H9xZxg", "heading": 357.85004, "description": "Av. Djalma Batista"}]}, "6N8xCQrQvTNZHRBioYyVBQ": {"lat": -3.108034288144514, "lng": -60.02320708280882, "links": [{"pano_id": "YCuzqjCOY0TR6jfTrzkH9g", "heading": 182.24295, "description": "Rua Rio Javari"}, {"pano_id": "uSyvYUYuczfSrhjsA1j17g", "heading": 2.3228087, "description": "Rua Rio Javari"}]}, "GTph4FjbFplPY0nZtoIfdg": {"lat": -3.106756875576592, "lng": -60.02385211086502, "links": [{"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 174.67548, "description": "Av. Djalma Batista"}, {"pano_id": "iS0Ny_pMs1ecbjL2zVKwdA", "heading": 276.62735, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 352.9578, "description": "Av. Djalma Batista"}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 174.68, "distance": 16.79, "virtual": true}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 138.47, "distance": 15.73, "virtual": true}, {"pano_id": "dqVJ0XWNCOhziXBMQLqhuw", "heading": 277.64, "distance": 17.67, "virtual": true}]}, "VZDRqtzblQ4hoG94ozXbfQ": {"lat": -3.10849442965834, "lng": -60.02282105544698, "links": [{"pano_id": "zyctQIodYgDJ3WbX9CeM_w", "heading": 276.0188, "description": "R. Par\u00e1"}, {"pano_id": "T8Z_5NwG2ImKGxvWks0RLQ", "heading": 95.98178, "description": "R. Par\u00e1"}]}, "jz_Nc0R3VBhO_7H8qzFtag": {"lat": -3.108915693594864, "lng": -60.02326812745545, "links": [{"pano_id": "jz4iBOA9tP9XC5TsYDDc8g", "heading": 184.37772, "description": "Rua Rio Javari"}, {"pano_id": "tL2P47LIaWPuBDF50ce1-A", "heading": 4.4579377, "description": "Rua Rio Javari"}]}, "T8Z_5NwG2ImKGxvWks0RLQ": {"lat": -3.108504333193081, "lng": -60.02272640128178, "links": [{"pano_id": "VZDRqtzblQ4hoG94ozXbfQ", "heading": 275.98178, "description": "R. Par\u00e1"}, {"pano_id": "tlOFMA_Egpejog2xonNlZA", "heading": 95.9689, "description": "R. Par\u00e1"}]}, "iS0Ny_pMs1ecbjL2zVKwdA": {"lat": -3.106744420219375, "lng": -60.02395946881315, "links": [{"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 96.62736, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "dqVJ0XWNCOhziXBMQLqhuw", "heading": 279.786, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 121.26, "distance": 14.62, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 90.57, "distance": 11.76, "virtual": true}]}, "WNP4SCgmRh3YygN8bMH6Uw": {"lat": -3.109509117271094, "lng": -60.0236491278275, "links": [{"pano_id": "TwwD4URvxImNkSsljwYZAA", "heading": 357.85333, "description": "Av. Djalma Batista"}, {"pano_id": "RIKveV9QwbNK3V3y2ha3dQ", "heading": 178.53448, "description": "Av. Djalma Batista"}]}, "uSyvYUYuczfSrhjsA1j17g": {"lat": -3.107943082324559, "lng": -60.0232033777878, "links": [{"pano_id": "6N8xCQrQvTNZHRBioYyVBQ", "heading": 182.32281, "description": "Rua Rio Javari"}, {"pano_id": "G41ih63PIyhrcUBj3RkZxA", "heading": 3.0192525, "description": "Rua Rio Javari"}]}, "yoxInn6agyvoyexOXg_HlA": {"lat": -3.106757432444484, "lng": -60.02384849404162, "links": [{"pano_id": "Pmr31zHqviOETQohSLfjjA", "heading": 98.2138, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 278.76556, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "mrRZnk0gaijDBoHlluKq_Q", "heading": 176.03, "distance": 16.69, "virtual": true}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 139.43, "distance": 15.42, "virtual": true}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 178.35, "distance": 6.14, "virtual": true}, {"pano_id": "noRt0zvvsCamY0u8alUwTg", "heading": 100.47, "distance": 10.83, "virtual": true}, {"pano_id": "iS0Ny_pMs1ecbjL2zVKwdA", "heading": 276.7, "distance": 12.41, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 337.24, "distance": 1.44, "virtual": true}]}, "d7nPKLy2AKh14tYyUfuLHA": {"lat": -3.106745466656667, "lng": -60.02385352230834, "links": [{"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 172.95781, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "8mS7Avn7fTbStYi8mTS0pA", "heading": 140.93, "distance": 16.8, "virtual": true}, {"pano_id": "jX79MO96yZNxGbBNbBk2VQ", "heading": 174.38, "distance": 7.51, "virtual": true}, {"pano_id": "iS0Ny_pMs1ecbjL2zVKwdA", "heading": 270.57, "distance": 11.76, "virtual": true}, {"pano_id": "dqVJ0XWNCOhziXBMQLqhuw", "heading": 273.56, "distance": 17.39, "virtual": true}]}, "jz4iBOA9tP9XC5TsYDDc8g": {"lat": -3.109007743087962, "lng": -60.0232751846418, "links": [{"pano_id": "jz_Nc0R3VBhO_7H8qzFtag", "heading": 4.377709, "description": "Rua Rio Javari"}, {"pano_id": "j6s6r4jUE5jD2zEs_juNyw", "heading": 184.12535, "description": "Rua Rio Javari"}]}, "j6s6r4jUE5jD2zEs_juNyw": {"lat": -3.109103002313977, "lng": -60.02328206539884, "links": [{"pano_id": "jz4iBOA9tP9XC5TsYDDc8g", "heading": 4.125349, "description": "Rua Rio Javari"}]}, "dqVJ0XWNCOhziXBMQLqhuw": {"lat": -3.106735745089691, "lng": -60.02400983974488, "links": [{"pano_id": "iS0Ny_pMs1ecbjL2zVKwdA", "heading": 99.786, "description": "Av. Jo\u00e3o Val\u00e9rio"}, {"pano_id": "GTph4FjbFplPY0nZtoIfdg", "heading": 97.64, "distance": 17.67, "virtual": true}, {"pano_id": "d7nPKLy2AKh14tYyUfuLHA", "heading": 93.56, "distance": 17.39, "virtual": true}]}, "RIKveV9QwbNK3V3y2ha3dQ": {"lat": -3.109602079165982, "lng": -60.02364674602052, "links": [{"pano_id": "WNP4SCgmRh3YygN8bMH6Uw", "heading": 358.5345, "description": "Av. Djalma Batista"}]}, "tlOFMA_Egpejog2xonNlZA": {"lat": -3.108514077094104, "lng": -60.0226330703987, "links": [{"pano_id": "T8Z_5NwG2ImKGxvWks0RLQ", "heading": 275.9689, "description": "R. Par\u00e1"}]}, "G41ih63PIyhrcUBj3RkZxA": {"lat": -3.107849560897324, "lng": -60.02319843775992, "links": [{"pano_id": "uSyvYUYuczfSrhjsA1j17g", "heading": 183.01926, "description": "Rua Rio Javari"}]}};
+        const targetPanos = ["EXv0yoWxP6hsb5Vq-1vQtQ", "j5Fz27psK99VQhoTFEWJQQ"];
+        const spawnPoints = ["KEPjfD9cdCGw3sP4H9xZxg", "dqVJ0XWNCOhziXBMQLqhuw", "jz_Nc0R3VBhO_7H8qzFtag", "RIKveV9QwbNK3V3y2ha3dQ", "T8Z_5NwG2ImKGxvWks0RLQ", "tlOFMA_Egpejog2xonNlZA"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

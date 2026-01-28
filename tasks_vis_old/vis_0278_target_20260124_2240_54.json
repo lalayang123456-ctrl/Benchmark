@@ -1,0 +1,81 @@
+{
+  "task_id": "nav_0278_target_20260124_1216_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_121407",
+  "spawn_point": "hhlkAk0iz5wwahBE7G7Ciw",
+  "spawn_heading": 356.1,
+  "description": "Navigate to Amae café (Café de especialidad). Head straight along the sidewalk, passing the sign for Centro Cultural Conde Duque. Cross the intersection towards the pharmacy with the green cross on the corner. Continue straight past the pharmacy to the end of the path.",
+  "ground_truth": {
+    "target_name": "Amae café (Café de especialidad)",
+    "target_pano_id": "ciwQ1g8kUcF1cwg-TUY8Rw",
+    "optimal_distance_meters": 89,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ciwQ1g8kUcF1cwg-TUY8Rw"
+  ],
+  "max_steps": 22,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "hhlkAk0iz5wwahBE7G7Ciw",
+      "heading": 356.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "KI6V1SDDdQM3fpkAaHloLA",
+      "heading": 356.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GnpPVSjTI2_VcxtgZerwAA",
+      "heading": 356.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "q5STm_hhL7jGDDvmOo0oNQ",
+      "heading": 3.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "GlkbWDMM54j1545gnQoHKQ",
+      "heading": 3.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Hsprhs9n03v8tN5hd-mxTg",
+      "heading": 355.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "o8XcoCQ9Ju_QYTRya06pyw",
+      "heading": 26.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "GCJmeu29kp-e71JXesyRDw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Bd6h6HkRHvqmYafgiAd1CA",
+      "heading": 29.5
+    },
+    {
+      "step_index": 9,
+      "pano_id": "_P-kA_dcdeLNU6rJduqIQw",
+      "heading": 28.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "ciwQ1g8kUcF1cwg-TUY8Rw",
+      "heading": 27.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [45m] -> Continue straight [44m]",
+  "agent_concise_description": "Head straight along the sidewalk, passing the sign for Centro Cultural Conde Duque. Cross the intersection towards the pharmacy with the green cross on the corner. Continue straight past the pharmacy to the end of the path."
+}

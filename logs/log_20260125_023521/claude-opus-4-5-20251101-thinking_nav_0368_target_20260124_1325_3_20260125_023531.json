@@ -1,0 +1,981 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0368_target_20260124_1325_3",
+  "timestamp": "20260125_023531",
+  "success": false,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023531_nav_0368_target_20260124_1325_3_20260125023531",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "rotation",
+        "heading": 89.0,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout for Burger King, which should be on the right (east) side according to the task description.",
+        "agent_vlm_duration_seconds": 9.06,
+        "agent_total_duration_seconds": 9.06
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 359.42453
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move left (north) to begin the first leg of the journey toward Burger King, which requires heading north for 87m.",
+        "agent_vlm_duration_seconds": 6.365,
+        "agent_total_duration_seconds": 6.365
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "left",
+          "distance": 9.6,
+          "heading": 359.42453
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.0m) to continue heading north. I'm only ~9.6m into the required 87m northward journey.",
+        "agent_vlm_duration_seconds": 5.369,
+        "agent_total_duration_seconds": 5.369
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 359.4956
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 179.42453
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move front (16.7m) to continue north efficiently. I'm at ~19.6m of the required 87m northward journey and need to reach 57m to see Burger King on the right.",
+        "agent_vlm_duration_seconds": 5.795,
+        "agent_total_duration_seconds": 5.795
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 359.44177
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.7,
+          "heading": 4.75
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 179.49562
+        },
+        {
+          "id": 4,
+          "direction": "front-left 16°",
+          "distance": 17.5,
+          "heading": 343.44
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (16.2m) to continue north. I'm at ~36.3m and approaching the 57m mark where Burger King should appear on the right side.",
+        "agent_vlm_duration_seconds": 8.648,
+        "agent_total_duration_seconds": 8.648
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.2,
+          "heading": 359.19
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 8.0,
+          "heading": 91.09978
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 17.1,
+          "heading": 91.1
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 6.9,
+          "heading": 192.34033
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 16.7,
+          "heading": 184.75
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 6.4,
+          "heading": 270.4612
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 15.8,
+          "heading": 270.33
+        },
+        {
+          "id": 8,
+          "direction": "front-left 15°",
+          "distance": 6.0,
+          "heading": 349.6438
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "rotation",
+        "heading": 89.0,
+        "pitch": 0.0,
+        "reason": "Rotate right to look east and confirm Burger King is visible on the right side. I'm at ~52.5m, very close to the 57m mark where it should appear.",
+        "agent_vlm_duration_seconds": 6.637,
+        "agent_total_duration_seconds": 6.637
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 4.3,
+          "heading": 4.5757875
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.7,
+          "heading": 1.16
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 184.6625
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.2,
+          "heading": 179.19
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 17.3,
+          "heading": 200.81
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "rotation",
+        "heading": 359.0,
+        "pitch": 0.0,
+        "reason": "Rotate back to north (heading 359°) to continue the northward journey. I've scouted eastward; now I need to reach 87m north before turning left.",
+        "agent_vlm_duration_seconds": 5.806,
+        "agent_total_duration_seconds": 5.806
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.4,
+          "heading": 184.6625
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 16.2,
+          "heading": 179.19
+        },
+        {
+          "id": 3,
+          "direction": "right-back 22°",
+          "distance": 17.3,
+          "heading": 200.81
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 4.3,
+          "heading": 4.5757875
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 14.7,
+          "heading": 1.16
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move front (14.7m) to continue north. I'm at ~52.5m and need to reach 87m before turning left for the final 68m leg.",
+        "agent_vlm_duration_seconds": 5.458,
+        "agent_total_duration_seconds": 5.458
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 4.3,
+          "heading": 4.5757875
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.7,
+          "heading": 1.16
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 184.6625
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.2,
+          "heading": 179.19
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 17.3,
+          "heading": 200.81
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move front (16.9m) to continue north. I'm at ~67.2m and need to reach 87m before turning left.",
+        "agent_vlm_duration_seconds": 7.044,
+        "agent_total_duration_seconds": 7.044
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 359.1853
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.9,
+          "heading": 351.98
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 16.7,
+          "heading": 0.15
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 179.75989
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.7,
+          "heading": 181.16
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move left (10.2m) to begin the left turn westward. I'm at ~84.1m north (close to the 87m mark) and this is the available left turn move to start the final 68m westward leg.",
+        "agent_vlm_duration_seconds": 8.902,
+        "agent_total_duration_seconds": 8.902
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 2.4,
+          "heading": 90.948555
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 90.56
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.2,
+          "heading": 162.13026
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.9,
+          "heading": 171.98
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.2,
+          "heading": 271.11838
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.6m) to continue west. I'm at ~10.2m of the required 68m westward journey toward Burger King.",
+        "agent_vlm_duration_seconds": 6.216,
+        "agent_total_duration_seconds": 6.216
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 271.06485
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.118385
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 12.6,
+          "heading": 91.09
+        },
+        {
+          "id": 4,
+          "direction": "left-back 61°",
+          "distance": 14.3,
+          "heading": 119.66
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.5m) to continue west. I'm at ~20.8m of the required 68m westward journey.",
+        "agent_vlm_duration_seconds": 4.177,
+        "agent_total_duration_seconds": 4.177
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 271.07352
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 91.06484
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.2m) to continue west. I'm at ~31.3m of the required 68m westward journey.",
+        "agent_vlm_duration_seconds": 4.672,
+        "agent_total_duration_seconds": 4.672
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 271.09454
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 91.07352
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (9.6m) to continue west. I'm at ~41.5m of the required 68m westward journey.",
+        "agent_vlm_duration_seconds": 6.067,
+        "agent_total_duration_seconds": 6.067
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 271.0807
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.094536
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (9.7m) to continue west. I'm at ~51.1m of the required 68m westward journey, getting close to the destination.",
+        "agent_vlm_duration_seconds": 3.796,
+        "agent_total_duration_seconds": 3.796
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 271.04922
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 91.08068
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.0m) to continue west. I'm at ~60.8m of the required 68m westward journey, very close to the destination.",
+        "agent_vlm_duration_seconds": 4.269,
+        "agent_total_duration_seconds": 4.269
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "rotation",
+        "heading": 181.0,
+        "pitch": 0.0,
+        "reason": "Rotate left to look south and confirm Burger King is visible. I've traveled approximately 155m total (87m north + 70.8m west) and should be at the destination.",
+        "agent_vlm_duration_seconds": 5.553,
+        "agent_total_duration_seconds": 5.553
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 271.09998
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 91.113266
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "rotation",
+        "heading": 1.0,
+        "pitch": 0.0,
+        "reason": "Rotate back to north to survey the surrounding area and locate Burger King. I've reached the target distance of approximately 155m.",
+        "agent_vlm_duration_seconds": 7.548,
+        "agent_total_duration_seconds": 7.548
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 271.09998
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 91.113266
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "rotation",
+        "heading": 91.0,
+        "pitch": 0.0,
+        "reason": "Rotate right to look east for Burger King. The task mentioned it was on the right when heading north, so it should be visible to the east at this location.",
+        "agent_vlm_duration_seconds": 5.697,
+        "agent_total_duration_seconds": 5.697
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 91.113266
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 271.09998
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (10.0m) to continue east toward Burger King. I'm at the target distance and facing east where the destination should be located.",
+        "agent_vlm_duration_seconds": 6.906,
+        "agent_total_duration_seconds": 6.906
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 91.113266
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 271.09998
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 1.0,
+        "pitch": 0.0,
+        "reason": "Rotate left to look north and survey the surrounding area for Burger King. I'm very close to the target location and need to confirm the destination.",
+        "agent_vlm_duration_seconds": 6.917,
+        "agent_total_duration_seconds": 6.917
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 91.0,
+        "pitch": 0.0,
+        "reason": "Rotate right to look east for Burger King. Based on the task description, it should be located to the east of my current position.",
+        "agent_vlm_duration_seconds": 6.723,
+        "agent_total_duration_seconds": 6.723
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 181.0,
+        "pitch": 0.0,
+        "reason": "Rotate back to look south and check if Burger King is visible in that direction. I've been searching the east direction without clear confirmation.",
+        "agent_vlm_duration_seconds": 9.324,
+        "agent_total_duration_seconds": 9.326
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 91.0,
+        "pitch": 0.0,
+        "reason": "Rotate left to look east from my current south-facing position. This will give me a fresh perspective on where Burger King should be located.",
+        "agent_vlm_duration_seconds": 6.459,
+        "agent_total_duration_seconds": 6.459
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 91.0,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for elevated signs or structures. Burger King signs are typically visible from above, which will help confirm I'm at the destination.",
+        "agent_vlm_duration_seconds": 6.286,
+        "agent_total_duration_seconds": 6.286
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (9.7m) to continue east and get closer to Burger King. I'm at the target distance and should be very close to the destination.",
+        "agent_vlm_duration_seconds": 6.609,
+        "agent_total_duration_seconds": 6.609
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move back (9.7m) to move west and return closer to the target distance of 155m. I've traveled too far east and need to reposition.",
+        "agent_vlm_duration_seconds": 5.606,
+        "agent_total_duration_seconds": 5.606
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 91.08068
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 271.04922
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 271.0,
+        "pitch": -30.0,
+        "reason": "Rotate down to look at ground level. I'm at the target distance and should look for Burger King's entrance or signage at ground level.",
+        "agent_vlm_duration_seconds": 6.425,
+        "agent_total_duration_seconds": 6.425
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 1.0,
+        "pitch": -30.0,
+        "reason": "Rotate right to look north at ground level. This will show me the area ahead and help me locate Burger King.",
+        "agent_vlm_duration_seconds": 6.06,
+        "agent_total_duration_seconds": 6.06
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 91.0,
+        "pitch": -30.0,
+        "reason": "Rotate right to look east at ground level. Burger King should be on the right (east) based on the task description, and I'm at the target distance.",
+        "agent_vlm_duration_seconds": 5.997,
+        "agent_total_duration_seconds": 5.997
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front (9.7m) to continue east and get closer to Burger King. I'm looking at ground level in the correct direction and should reach the destination.",
+        "agent_vlm_duration_seconds": 8.938,
+        "agent_total_duration_seconds": 8.938
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.049225
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 271.11328
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move back (9.7m) to move west and return to the target distance of 155m. I've traveled too far east again and need to reposition.",
+        "agent_vlm_duration_seconds": 8.514,
+        "agent_total_duration_seconds": 8.514
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 91.08068
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 271.04922
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "rotation",
+        "heading": 181.0,
+        "pitch": -30.0,
+        "reason": "Rotate left to look south at ground level. I'm at the target distance and need to find Burger King from a different perspective.",
+        "agent_vlm_duration_seconds": 5.962,
+        "agent_total_duration_seconds": 5.962
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "rotation",
+        "heading": 1.0,
+        "pitch": -30.0,
+        "reason": "Rotate back to look north at ground level. This will show me the area ahead and help me locate Burger King.",
+        "agent_vlm_duration_seconds": 5.529,
+        "agent_total_duration_seconds": 5.529
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    }
+  ]
+}

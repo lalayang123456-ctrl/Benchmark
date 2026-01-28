@@ -1,0 +1,96 @@
+{
+  "task_id": "nav_1178_target_20260125_0352_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260125_035137",
+  "spawn_point": "f6wxDjK_Kq-nUpvsHRvgzA",
+  "spawn_heading": 185.4,
+  "description": "Navigate to Burger King. Head straight along the street following the tram tracks, passing shops on the left and a high stone wall on the right. Continue forward towards the open square where a large stone obelisk becomes visible in the distance.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "cOCLASQPq0j87KJEho9V0g",
+    "optimal_distance_meters": 123,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "cOCLASQPq0j87KJEho9V0g"
+  ],
+  "max_steps": 28,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "f6wxDjK_Kq-nUpvsHRvgzA",
+      "heading": 185.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "cP3H5M5PqgBJXzaj0DdBZQ",
+      "heading": 185.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "s41YZmeQLZEWQLNI_x404g",
+      "heading": 185.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "TEfjmjWQBNN_rWNJ3kJUpg",
+      "heading": 185.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "P6wxUwDU2QRHcmdwxznagQ",
+      "heading": 185.7
+    },
+    {
+      "step_index": 5,
+      "pano_id": "-0XtF6l73kOocT31t7_u6Q",
+      "heading": 186.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "NZzPKUmv4hAkEB_ubkxfwA",
+      "heading": 187.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "YWhTj4Fm5qBSvvW9lxrXcg",
+      "heading": 187.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "YFQjFF6aACgSCaMrP6vgCA",
+      "heading": 187.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "plKGDe2JOeWdL5BQd5QROQ",
+      "heading": 187.3
+    },
+    {
+      "step_index": 10,
+      "pano_id": "0fqvNcfTeJsoknWbxIS4Mg",
+      "heading": 187.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "0ldYiG4HnqNHowVhnTLYag",
+      "heading": 191.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "Nm-I2QBAj6qQxnSUO8h4Nw",
+      "heading": 195.7
+    },
+    {
+      "step_index": 13,
+      "pano_id": "cOCLASQPq0j87KJEho9V0g",
+      "heading": 201.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [123m]",
+  "agent_concise_description": "Head straight along the street following the tram tracks, passing shops on the left and a high stone wall on the right. Continue forward towards the open square where a large stone obelisk becomes visible in the distance."
+}

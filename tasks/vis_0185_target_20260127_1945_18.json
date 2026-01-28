@@ -1,0 +1,36 @@
+{
+  "task_id": "nav_0185_target_20260124_1010_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260124_101012",
+  "spawn_point": "f3dMo_gAgZEJARQVYE2pdA",
+  "spawn_heading": 356.7,
+  "description": "Head straight along the street lined with covered sidewalks on both sides. Continue forward, keeping the large 'ROUND1' building with the bowling pin sign visible ahead on the left.",
+  "ground_truth": {
+    "target_name": "FamilyMart - Kawaramachi Takoyakushi",
+    "target_pano_id": "vX_tYmCQYGOrnDLxXjB0Qg",
+    "optimal_distance_meters": 6,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "vX_tYmCQYGOrnDLxXjB0Qg"
+  ],
+  "max_steps": 4,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "f3dMo_gAgZEJARQVYE2pdA",
+      "heading": 356.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "vX_tYmCQYGOrnDLxXjB0Qg",
+      "heading": 356.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 10m",
+  "agent_concise_description": "Head straight along the street lined with covered sidewalks on both sides. Continue forward, keeping the large 'ROUND1' building with the bowling pin sign visible ahead on the left."
+}

@@ -1,0 +1,1360 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0124_target_20260124_0402_10",
+  "timestamp": "20260125_023532",
+  "success": false,
+  "done_reason": "max_steps",
+  "total_steps": 30,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023532_nav_0124_target_20260124_0402_10_20260125023532",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Current heading 31°NE is already aligned with the required northeast direction toward Street 69B. Moving forward will progress along the first 142m leg of the route.",
+        "agent_vlm_duration_seconds": 5.36,
+        "agent_total_duration_seconds": 5.36
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.587288
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 210.64128
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Still in the first leg of the route heading northeast. Continue moving forward to progress toward Street 69B (142m segment).",
+        "agent_vlm_duration_seconds": 3.961,
+        "agent_total_duration_seconds": 3.961
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 32.335632
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.58728
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 20m covered of the 142m first leg. Continue moving forward on the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.566,
+        "agent_total_duration_seconds": 3.566
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 32.368637
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 212.33563
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 29m covered of the 142m first leg. Continue moving forward on the northeast heading.",
+        "agent_vlm_duration_seconds": 4.291,
+        "agent_total_duration_seconds": 4.291
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 30.852816
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 212.36864
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 39m covered of the 142m first leg. Continue moving forward on the northeast heading.",
+        "agent_vlm_duration_seconds": 3.053,
+        "agent_total_duration_seconds": 3.053
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 31.447845
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 210.85281
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 48m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.989,
+        "agent_total_duration_seconds": 3.989
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 30.808481
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 15.7,
+          "heading": 81.09
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 211.44785
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 58m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 5.217,
+        "agent_total_duration_seconds": 5.217
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.740612
+        },
+        {
+          "id": 2,
+          "direction": "front-right 49°",
+          "distance": 15.6,
+          "heading": 79.34
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 12.1,
+          "heading": 119.44
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 210.80849
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 68m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.727,
+        "agent_total_duration_seconds": 3.727
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.732958
+        },
+        {
+          "id": 2,
+          "direction": "front-right 47°",
+          "distance": 15.4,
+          "heading": 78.21
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 11.7,
+          "heading": 119.07
+        },
+        {
+          "id": 4,
+          "direction": "right-back 39°",
+          "distance": 15.5,
+          "heading": 159.52
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.74062
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 78m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 6.708,
+        "agent_total_duration_seconds": 6.708
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.758003
+        },
+        {
+          "id": 2,
+          "direction": "front-right 46°",
+          "distance": 15.2,
+          "heading": 77.17
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 11.4,
+          "heading": 119.08
+        },
+        {
+          "id": 4,
+          "direction": "right-back 40°",
+          "distance": 15.3,
+          "heading": 160.45
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.73296
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 88m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.492,
+        "agent_total_duration_seconds": 3.492
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.706827
+        },
+        {
+          "id": 2,
+          "direction": "front-right 45°",
+          "distance": 15.0,
+          "heading": 75.76
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 11.0,
+          "heading": 118.6
+        },
+        {
+          "id": 4,
+          "direction": "right-back 40°",
+          "distance": 14.9,
+          "heading": 161.25
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.758
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 98m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 4.91,
+        "agent_total_duration_seconds": 4.91
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.655806
+        },
+        {
+          "id": 2,
+          "direction": "front-right 44°",
+          "distance": 15.0,
+          "heading": 74.5
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.6,
+          "heading": 117.82
+        },
+        {
+          "id": 4,
+          "direction": "right-back 41°",
+          "distance": 14.6,
+          "heading": 162.01
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.70683
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 108m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.78,
+        "agent_total_duration_seconds": 3.781
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.63815
+        },
+        {
+          "id": 2,
+          "direction": "front-right 44°",
+          "distance": 15.2,
+          "heading": 74.97
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.4,
+          "heading": 116.45
+        },
+        {
+          "id": 4,
+          "direction": "right-back 42°",
+          "distance": 14.3,
+          "heading": 162.63
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.6558
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 118m covered of the 142m first leg. Continue straight ahead to maintain the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 3.5,
+        "agent_total_duration_seconds": 3.5
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.646975
+        },
+        {
+          "id": 2,
+          "direction": "front-right 45°",
+          "distance": 15.4,
+          "heading": 75.36
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.7,
+          "heading": 116.16
+        },
+        {
+          "id": 4,
+          "direction": "right-back 42°",
+          "distance": 13.9,
+          "heading": 162.36
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.63815
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 128m covered of the 142m first leg. Continue straight ahead to complete the northeast heading toward Street 69B.",
+        "agent_vlm_duration_seconds": 5.309,
+        "agent_total_duration_seconds": 5.309
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 2,
+          "direction": "front-right 45°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 4,
+          "direction": "right-back 41°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.64697
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "rotation",
+        "heading": 300.68,
+        "pitch": 0.0,
+        "reason": "Approximately 138m covered of the 142m first leg. Rotate left to identify the sharp left turn toward Street 69B.",
+        "agent_vlm_duration_seconds": 5.065,
+        "agent_total_duration_seconds": 5.065
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 2,
+          "direction": "front-right 26°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 3,
+          "direction": "front-right 52°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 4,
+          "direction": "front-right 62°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 6,
+          "direction": "right-back 40°",
+          "distance": 14.2,
+          "heading": 160.79
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.68045
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Completed the 142m northeast segment. Execute the sharp left turn for 17m using move 2 (right-back 26° at 17.1m).",
+        "agent_vlm_duration_seconds": 5.753,
+        "agent_total_duration_seconds": 5.753
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.438232
+        },
+        {
+          "id": 2,
+          "direction": "right-back 26°",
+          "distance": 17.1,
+          "heading": 56.26
+        },
+        {
+          "id": 3,
+          "direction": "right-back 52°",
+          "distance": 11.6,
+          "heading": 82.84
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 12.6,
+          "heading": 92.71
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 11.1,
+          "heading": 115.86
+        },
+        {
+          "id": 6,
+          "direction": "left-back 50°",
+          "distance": 14.2,
+          "heading": 160.79
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.68045
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "rotation",
+        "heading": 146.26,
+        "pitch": 0.0,
+        "reason": "Completed 142m northeast and 17m sharp left. Need to turn right for the final 25m leg. Rotate right to identify the correct turn direction.",
+        "agent_vlm_duration_seconds": 6.354,
+        "agent_total_duration_seconds": 6.354
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.0,
+          "heading": 64.28
+        },
+        {
+          "id": 2,
+          "direction": "front-right 57°",
+          "distance": 3.8,
+          "heading": 113.21
+        },
+        {
+          "id": 3,
+          "direction": "right-back 43°",
+          "distance": 10.2,
+          "heading": 189.16
+        },
+        {
+          "id": 4,
+          "direction": "right-back 50°",
+          "distance": 15.0,
+          "heading": 196.37
+        },
+        {
+          "id": 5,
+          "direction": "right-back 52°",
+          "distance": 8.5,
+          "heading": 198.51843
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.1,
+          "heading": 236.26
+        },
+        {
+          "id": 7,
+          "direction": "left-back 62°",
+          "distance": 9.2,
+          "heading": 264.32
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 8.9,
+          "heading": 331.61
+        },
+        {
+          "id": 9,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 340.72
+        },
+        {
+          "id": 10,
+          "direction": "front-left 70°",
+          "distance": 13.8,
+          "heading": 345.93
+        },
+        {
+          "id": 11,
+          "direction": "front-left 53°",
+          "distance": 16.5,
+          "heading": 3.06
+        },
+        {
+          "id": 12,
+          "direction": "front-left 26°",
+          "distance": 10.9,
+          "heading": 30.558796
+        },
+        {
+          "id": 13,
+          "direction": "front-left 12°",
+          "distance": 16.4,
+          "heading": 44.53
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Turned right to southeast heading (146°). Move forward on the final 25m leg with destination on the left using move 2 (front-right 50° at 15.0m).",
+        "agent_vlm_duration_seconds": 7.849,
+        "agent_total_duration_seconds": 7.849
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 43°",
+          "distance": 10.2,
+          "heading": 189.16
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 15.0,
+          "heading": 196.37
+        },
+        {
+          "id": 3,
+          "direction": "front-right 52°",
+          "distance": 8.5,
+          "heading": 198.51843
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 17.1,
+          "heading": 236.26
+        },
+        {
+          "id": 5,
+          "direction": "right-back 28°",
+          "distance": 9.2,
+          "heading": 264.32
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 8.9,
+          "heading": 331.61
+        },
+        {
+          "id": 7,
+          "direction": "left-back 76°",
+          "distance": 10.0,
+          "heading": 340.72
+        },
+        {
+          "id": 8,
+          "direction": "left-back 70°",
+          "distance": 13.8,
+          "heading": 345.93
+        },
+        {
+          "id": 9,
+          "direction": "left-back 53°",
+          "distance": 16.5,
+          "heading": 3.06
+        },
+        {
+          "id": 10,
+          "direction": "left-back 26°",
+          "distance": 10.9,
+          "heading": 30.558796
+        },
+        {
+          "id": 11,
+          "direction": "left-back 12°",
+          "distance": 16.4,
+          "heading": 44.53
+        },
+        {
+          "id": 12,
+          "direction": "left",
+          "distance": 7.0,
+          "heading": 64.28
+        },
+        {
+          "id": 13,
+          "direction": "front-left 33°",
+          "distance": 3.8,
+          "heading": 113.21
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Approximately 174m covered of 184m total. Complete the final ~10m leg using move 1 (front-right 16° at 10.1m) to reach the destination.",
+        "agent_vlm_duration_seconds": 5.031,
+        "agent_total_duration_seconds": 5.031
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 16°",
+          "distance": 10.1,
+          "heading": 212.15947
+        },
+        {
+          "id": 2,
+          "direction": "front-right 60°",
+          "distance": 15.6,
+          "heading": 256.05
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 11.1,
+          "heading": 295.86
+        },
+        {
+          "id": 4,
+          "direction": "right-back 53°",
+          "distance": 14.3,
+          "heading": 339.74
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 6.5,
+          "heading": 13.548488
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.0,
+          "heading": 16.37
+        },
+        {
+          "id": 7,
+          "direction": "left-back 75°",
+          "distance": 5.0,
+          "heading": 31.292055
+        },
+        {
+          "id": 8,
+          "direction": "left-back 75°",
+          "distance": 15.0,
+          "heading": 31.13
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "rotation",
+        "heading": 32.16,
+        "pitch": 0.0,
+        "reason": "Approximately 182m covered of 184m total. Rotate back to identify the destination (Emarat - Ameen) which should be very close.",
+        "agent_vlm_duration_seconds": 6.245,
+        "agent_total_duration_seconds": 6.245
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 211.82162
+        },
+        {
+          "id": 2,
+          "direction": "front-right 43°",
+          "distance": 15.4,
+          "heading": 255.36
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.9,
+          "heading": 295.98
+        },
+        {
+          "id": 4,
+          "direction": "right-back 39°",
+          "distance": 14.2,
+          "heading": 340.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 32.15947
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 16.3,
+          "heading": 24.88
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 15.0,
+          "heading": 31.87
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 302.16,
+        "pitch": 0.0,
+        "reason": "Completed approximately 184m total distance. Rotate left to identify the destination (Emarat - Ameen) which should be on the left side.",
+        "agent_vlm_duration_seconds": 5.343,
+        "agent_total_duration_seconds": 5.344
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 32.15947
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.3,
+          "heading": 24.88
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.0,
+          "heading": 31.87
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 211.82162
+        },
+        {
+          "id": 5,
+          "direction": "left-back 47°",
+          "distance": 15.4,
+          "heading": 255.36
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 10.9,
+          "heading": 295.98
+        },
+        {
+          "id": 7,
+          "direction": "front-left 51°",
+          "distance": 14.2,
+          "heading": 340.79
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 32.16,
+        "pitch": 0.0,
+        "reason": "Completed approximately 184m total distance. Rotate right to search for the destination (Emarat - Ameen).",
+        "agent_vlm_duration_seconds": 5.943,
+        "agent_total_duration_seconds": 5.943
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 295.98
+        },
+        {
+          "id": 2,
+          "direction": "front-right 39°",
+          "distance": 14.2,
+          "heading": 340.79
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 32.15947
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 16.3,
+          "heading": 24.88
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 15.0,
+          "heading": 31.87
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 211.82162
+        },
+        {
+          "id": 7,
+          "direction": "front-left 47°",
+          "distance": 15.4,
+          "heading": 255.36
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 6,
+        "reason": "Completed approximately 184m total distance. Move left to reach the destination (Emarat - Ameen) which should be on the left side.",
+        "agent_vlm_duration_seconds": 5.85,
+        "agent_total_duration_seconds": 5.85
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 32.15947
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.3,
+          "heading": 24.88
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.0,
+          "heading": 31.87
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 211.82162
+        },
+        {
+          "id": 5,
+          "direction": "left-back 47°",
+          "distance": 15.4,
+          "heading": 255.36
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 10.9,
+          "heading": 295.98
+        },
+        {
+          "id": 7,
+          "direction": "front-left 51°",
+          "distance": 14.2,
+          "heading": 340.79
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 25.98,
+        "pitch": 0.0,
+        "reason": "Exceeded 184m target distance. Rotate right to search for visual confirmation of the destination (Emarat - Ameen).",
+        "agent_vlm_duration_seconds": 5.68,
+        "agent_total_duration_seconds": 5.68
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 2,
+          "direction": "right-back 50°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 4,
+          "direction": "left-back 44°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 210.64697
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 115.98,
+        "pitch": 0.0,
+        "reason": "At or near the destination after traveling ~195m. Rotate right to search for visual confirmation of Emarat - Ameen.",
+        "agent_vlm_duration_seconds": 4.879,
+        "agent_total_duration_seconds": 4.879
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 4,
+          "direction": "right-back 46°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 210.64697
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 295.98,
+        "pitch": 0.0,
+        "reason": "At or near the destination after traveling ~195m. Rotate back to search for visual confirmation of Emarat - Ameen.",
+        "agent_vlm_duration_seconds": 5.118,
+        "agent_total_duration_seconds": 5.118
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 2,
+          "direction": "front-right 46°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 210.64697
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 5,
+          "direction": "front-left 40°",
+          "distance": 15.6,
+          "heading": 76.05
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Completed full route distance (~195m). Move left to reach the destination (Emarat - Ameen) which should be on the left side.",
+        "agent_vlm_duration_seconds": 6.545,
+        "agent_total_duration_seconds": 6.545
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 30.680454
+        },
+        {
+          "id": 2,
+          "direction": "right-back 50°",
+          "distance": 15.6,
+          "heading": 76.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 115.98
+        },
+        {
+          "id": 4,
+          "direction": "left-back 44°",
+          "distance": 14.1,
+          "heading": 161.61
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 210.64697
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 30.65,
+        "pitch": 0.0,
+        "reason": "Traveled ~205m, exceeding the 184m target. Rotate back to search for visual confirmation of Emarat - Ameen.",
+        "agent_vlm_duration_seconds": 8.529,
+        "agent_total_duration_seconds": 8.529
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 210.63815
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 30.646975
+        },
+        {
+          "id": 3,
+          "direction": "left-back 45°",
+          "distance": 15.4,
+          "heading": 75.36
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.7,
+          "heading": 116.16
+        },
+        {
+          "id": 5,
+          "direction": "front-left 48°",
+          "distance": 13.9,
+          "heading": 162.36
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 300.65,
+        "pitch": 0.0,
+        "reason": "Traveled ~215m, significantly exceeding the 184m target. Rotate left to search for visual confirmation of Emarat - Ameen.",
+        "agent_vlm_duration_seconds": 5.853,
+        "agent_total_duration_seconds": 5.853
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 30.646975
+        },
+        {
+          "id": 2,
+          "direction": "front-right 45°",
+          "distance": 15.4,
+          "heading": 75.36
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 10.7,
+          "heading": 116.16
+        },
+        {
+          "id": 4,
+          "direction": "right-back 42°",
+          "distance": 13.9,
+          "heading": 162.36
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 210.63815
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 300.65,
+        "pitch": 30.0,
+        "reason": "Completed route distance but haven't found clear visual confirmation. Look up to identify Emarat - Ameen building or signage.",
+        "agent_vlm_duration_seconds": 5.156,
+        "agent_total_duration_seconds": 5.156
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 30.646975
+        },
+        {
+          "id": 2,
+          "direction": "right-back 45°",
+          "distance": 15.4,
+          "heading": 75.36
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.7,
+          "heading": 116.16
+        },
+        {
+          "id": 4,
+          "direction": "left-back 48°",
+          "distance": 13.9,
+          "heading": 162.36
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 210.63815
+        }
+      ]
+    }
+  ]
+}

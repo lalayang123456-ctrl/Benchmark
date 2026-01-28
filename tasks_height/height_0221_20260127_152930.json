@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0221_20260127_152930",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your North-West (approx. 293\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "bWoAE6fJRH5jNdM-HTM1zQ",
+  "spawn_heading": 293.0886649767017,
+  "target_building": {
+    "lat": 47.3723063,
+    "lng": 8.537174799999999,
+    "height": 24.78,
+    "floors": 7,
+    "ground_elevation": 409.7810974121094,
+    "roof_elevation": 434.5606,
+    "name": "buildings/ChIJz4oxtwYKkEcR_uin4t4BWOQ",
+    "date": "2022-07-12"
+  },
+  "geofence_id": "list_height_0221_20260127_152930",
+  "ground_truth": {
+    "height_meters": 24.78
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T15:29:30.297426",
+    "bearing_deg": 293.0886649767017,
+    "city": "Zurich, Switzerland"
+  }
+}

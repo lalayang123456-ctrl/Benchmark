@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_transit_20260125_033221</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_transit_20260125_033221</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>8</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"_Nocdr2ozdOv_oYm_wwdTA": {"lat": -6.913982489138765, "lng": 107.608053944859, "links": [{"pano_id": "t2tkYGM_m7EtnMXg8Wd0jA", "heading": 313.04822, "description": "Jl. Babakan Ciamis"}, {"pano_id": "PRhIR6_p40R5xLI4mG6pGQ", "heading": 67.463745, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "WwVQkccIanaKSpf9C4mbeQ", "heading": 246.82571, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "-pzP9WqZFIcIxzSXinnsMQ", "heading": 245.67, "distance": 14.82, "virtual": true}]}, "t2tkYGM_m7EtnMXg8Wd0jA": {"lat": -6.913906868207878, "lng": 107.6079723949864, "links": [{"pano_id": "_Nocdr2ozdOv_oYm_wwdTA", "heading": 133.0482, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "uKpE16JazE7CzGpwRmb1vg", "heading": 329.2951, "description": "Jl. Babakan Ciamis"}, {"pano_id": "WwVQkccIanaKSpf9C4mbeQ", "heading": 156.61, "distance": 11.27, "virtual": true}, {"pano_id": "-pzP9WqZFIcIxzSXinnsMQ", "heading": 197.25, "distance": 15.2, "virtual": true}]}, "WwVQkccIanaKSpf9C4mbeQ": {"lat": -6.913999912660792, "lng": 107.6080129441448, "links": [{"pano_id": "_Nocdr2ozdOv_oYm_wwdTA", "heading": 66.825714, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "-pzP9WqZFIcIxzSXinnsMQ", "heading": 245.10097, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "t2tkYGM_m7EtnMXg8Wd0jA", "heading": 336.6, "distance": 11.27, "virtual": true}, {"pano_id": "PRhIR6_p40R5xLI4mG6pGQ", "heading": 67.25, "distance": 14.86, "virtual": true}]}, "PRhIR6_p40R5xLI4mG6pGQ": {"lat": -6.913948226042441, "lng": 107.6081371203356, "links": [{"pano_id": "_Nocdr2ozdOv_oYm_wwdTA", "heading": 247.46375, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "w7ggwLfVxa6wbQNTXzQ4ig", "heading": 71.5629, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "WwVQkccIanaKSpf9C4mbeQ", "heading": 247.25, "distance": 14.86, "virtual": true}]}, "-pzP9WqZFIcIxzSXinnsMQ": {"lat": -6.914037406684923, "lng": 107.6079315749043, "links": [{"pano_id": "B-cSgiGdUhZBDBKpcVgwBw", "heading": 245.1899, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "WwVQkccIanaKSpf9C4mbeQ", "heading": 65.10096, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "_Nocdr2ozdOv_oYm_wwdTA", "heading": 65.67, "distance": 14.82, "virtual": true}, {"pano_id": "t2tkYGM_m7EtnMXg8Wd0jA", "heading": 17.25, "distance": 15.2, "virtual": true}]}, "uKpE16JazE7CzGpwRmb1vg": {"lat": -6.913828518031226, "lng": 107.6079255241405, "links": [{"pano_id": "GnT-bUz2uQ6fJGvdcmrUNQ", "heading": 329.19064, "description": "Jl. Babakan Ciamis"}, {"pano_id": "t2tkYGM_m7EtnMXg8Wd0jA", "heading": 149.29509, "description": "Jl. Babakan Ciamis"}]}, "w7ggwLfVxa6wbQNTXzQ4ig": {"lat": -6.913920011612392, "lng": 107.6082223729679, "links": [{"pano_id": "amlHvW9afuGg21PXO6Wc6A", "heading": 74.38444, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "PRhIR6_p40R5xLI4mG6pGQ", "heading": 251.5629, "description": "Jl. Perintis Kemerdekaan"}]}, "GnT-bUz2uQ6fJGvdcmrUNQ": {"lat": -6.913750943202095, "lng": 107.6078789242324, "links": [{"pano_id": "uKpE16JazE7CzGpwRmb1vg", "heading": 149.19064, "description": "Jl. Babakan Ciamis"}, {"pano_id": "qlQwBoXmgA8dA7aBLCTPFg", "heading": 330.42276, "description": "Jl. Babakan Ciamis"}]}, "amlHvW9afuGg21PXO6Wc6A": {"lat": -6.913895079002179, "lng": 107.6083122314387, "links": [{"pano_id": "yWeqs68LdHkGNVwW5Svkgw", "heading": 79.40991, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "w7ggwLfVxa6wbQNTXzQ4ig", "heading": 254.38445, "description": "Jl. Perintis Kemerdekaan"}]}, "B-cSgiGdUhZBDBKpcVgwBw": {"lat": -6.914076198980479, "lng": 107.6078470448425, "links": [{"pano_id": "-pzP9WqZFIcIxzSXinnsMQ", "heading": 65.189896, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "dbK19-wQk0yJJfUr-umIUQ", "heading": 243.13536, "description": "Jl. Perintis Kemerdekaan"}]}, "qlQwBoXmgA8dA7aBLCTPFg": {"lat": -6.913672592920029, "lng": 107.6078341305298, "links": [{"pano_id": "7uUHePNLadvobbhnEsYAug", "heading": 333.25995, "description": "Jl. Babakan Ciamis"}, {"pano_id": "GnT-bUz2uQ6fJGvdcmrUNQ", "heading": 150.42276, "description": "Jl. Babakan Ciamis"}]}, "yWeqs68LdHkGNVwW5Svkgw": {"lat": -6.913877998405479, "lng": 107.6084042573808, "links": [{"pano_id": "tafMGqIyNQ0OwrTTFEgNyA", "heading": 82.17832, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "amlHvW9afuGg21PXO6Wc6A", "heading": 259.4099, "description": "Jl. Perintis Kemerdekaan"}]}, "dbK19-wQk0yJJfUr-umIUQ": {"lat": -6.914117662030104, "lng": 107.6077645919335, "links": [{"pano_id": "B-cSgiGdUhZBDBKpcVgwBw", "heading": 63.135357, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "iKJ0RblgjAfrdg2wFqK2OQ", "heading": 243.39012, "description": "Jl. Perintis Kemerdekaan"}]}, "iKJ0RblgjAfrdg2wFqK2OQ": {"lat": -6.914159162799369, "lng": 107.6076811456415, "links": [{"pano_id": "9fbatalzectqhW7SvEn3yA", "heading": 243.94736, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "dbK19-wQk0yJJfUr-umIUQ", "heading": 63.39012, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "Dlum6y9eU3XRiNYb6T2hhQ", "heading": 244.53, "distance": 10.18, "virtual": true}, {"pano_id": "cwmFEb3oO0DWf9wqKMdrHQ", "heading": 237.85, "distance": 12.71, "virtual": true}]}, "tafMGqIyNQ0OwrTTFEgNyA": {"lat": -6.913865374973908, "lng": 107.6084968252148, "links": [{"pano_id": "BN-_3Rj119w0cJ2cr4FI1A", "heading": 86.38561, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "yWeqs68LdHkGNVwW5Svkgw", "heading": 262.1783, "description": "Jl. Perintis Kemerdekaan"}]}, "7uUHePNLadvobbhnEsYAug": {"lat": -6.913585577518396, "lng": 107.6077899690036, "links": [{"pano_id": "qlQwBoXmgA8dA7aBLCTPFg", "heading": 153.25995, "description": "Jl. Babakan Ciamis"}, {"pano_id": "30RC4TeHT1D3ty6_S3Fp9g", "heading": 333.26297, "description": "Jl. Babakan Ciamis"}]}, "9fbatalzectqhW7SvEn3yA": {"lat": -6.914195891279999, "lng": 107.6076054660179, "links": [{"pano_id": "cwmFEb3oO0DWf9wqKMdrHQ", "heading": 221.9027, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "iKJ0RblgjAfrdg2wFqK2OQ", "heading": 63.94735, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "Dlum6y9eU3XRiNYb6T2hhQ", "heading": 250.65144, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 251.03, "distance": 11.04, "virtual": true}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 215.24, "distance": 17.04, "virtual": true}]}, "BN-_3Rj119w0cJ2cr4FI1A": {"lat": -6.913859609920152, "lng": 107.6085887609093, "links": [{"pano_id": "tafMGqIyNQ0OwrTTFEgNyA", "heading": 266.38562, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "aXneB9Iylg8XIPFEfD8b5Q", "heading": 87.258606, "description": "Jl. Perintis Kemerdekaan"}]}, "30RC4TeHT1D3ty6_S3Fp9g": {"lat": -6.913507271237518, "lng": 107.6077502326671, "links": [{"pano_id": "7uUHePNLadvobbhnEsYAug", "heading": 153.26295, "description": "Jl. Babakan Ciamis"}, {"pano_id": "U1-WxwYRzqKRswxij5Xrnw", "heading": 334.10287, "description": "Jl. Babakan Ciamis"}]}, "Dlum6y9eU3XRiNYb6T2hhQ": {"lat": -6.914198535715162, "lng": 107.6075978799948, "links": [{"pano_id": "9fbatalzectqhW7SvEn3yA", "heading": 70.65144, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 251.06686, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "iKJ0RblgjAfrdg2wFqK2OQ", "heading": 64.53, "distance": 10.18, "virtual": true}, {"pano_id": "cwmFEb3oO0DWf9wqKMdrHQ", "heading": 213.29, "distance": 2.85, "virtual": true}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 213.43, "distance": 16.32, "virtual": true}]}, "U1-WxwYRzqKRswxij5Xrnw": {"lat": -6.913430453948251, "lng": 107.6077126637726, "links": [{"pano_id": "30RC4TeHT1D3ty6_S3Fp9g", "heading": 154.10286, "description": "Jl. Babakan Ciamis"}, {"pano_id": "cmUJggpD9l1PUDzwAe5_5g", "heading": 334.1405, "description": "Jl. Babakan Ciamis"}]}, "aXneB9Iylg8XIPFEfD8b5Q": {"lat": -6.913855334221351, "lng": 107.6086787098116, "links": [{"pano_id": "BN-_3Rj119w0cJ2cr4FI1A", "heading": 267.2586, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "a_uQ_gQCLyiJsfIrR03fAg", "heading": 89.42041, "description": "Jl. Perintis Kemerdekaan"}]}, "cwmFEb3oO0DWf9wqKMdrHQ": {"lat": -6.914219969703135, "lng": 107.6075837013568, "links": [{"pano_id": "9fbatalzectqhW7SvEn3yA", "heading": 41.902695, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 213.46037, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "iKJ0RblgjAfrdg2wFqK2OQ", "heading": 57.85, "distance": 12.71, "virtual": true}, {"pano_id": "Dlum6y9eU3XRiNYb6T2hhQ", "heading": 33.29, "distance": 2.85, "virtual": true}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 263.54, "distance": 8.09, "virtual": true}]}, "a_uQ_gQCLyiJsfIrR03fAg": {"lat": -6.913854457206415, "lng": 107.6087660397482, "links": [{"pano_id": "aXneB9Iylg8XIPFEfD8b5Q", "heading": 269.4204, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 89.42881, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 77.08, "distance": 13.83, "virtual": true}, {"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 105.21, "distance": 14.1, "virtual": true}]}, "4_M5Q1IauyJiawejGhgCCw": {"lat": -6.914228150881796, "lng": 107.607510911673, "links": [{"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 250.19006, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "Dlum6y9eU3XRiNYb6T2hhQ", "heading": 71.066864, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "9fbatalzectqhW7SvEn3yA", "heading": 71.03, "distance": 11.04, "virtual": true}, {"pano_id": "cwmFEb3oO0DWf9wqKMdrHQ", "heading": 83.54, "distance": 8.09, "virtual": true}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 176.63, "distance": 10.35, "virtual": true}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 240.94, "distance": 16.05, "virtual": true}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 251.61, "distance": 15.45, "virtual": true}]}, "cmUJggpD9l1PUDzwAe5_5g": {"lat": -6.913349623723566, "lng": 107.607673198377, "links": [{"pano_id": "U1-WxwYRzqKRswxij5Xrnw", "heading": 154.1405, "description": "Jl. Babakan Ciamis"}, {"pano_id": "uP43mLhXDoVBsuFmjZMBFA", "heading": 335.4042, "description": "Jl. Babakan Ciamis"}]}, "2_3cR5-B_FkObr0VByqhIQ": {"lat": -6.914321032414041, "lng": 107.607516420569, "links": [{"pano_id": "cwmFEb3oO0DWf9wqKMdrHQ", "heading": 33.460373, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "LUIQnkTxOkQ93kSY8SmOYA", "heading": 199.09492, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "9fbatalzectqhW7SvEn3yA", "heading": 35.24, "distance": 17.04, "virtual": true}, {"pano_id": "Dlum6y9eU3XRiNYb6T2hhQ", "heading": 33.43, "distance": 16.32, "virtual": true}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 356.63, "distance": 10.35, "virtual": true}, {"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 303.82, "distance": 12.32, "virtual": true}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 279.82, "distance": 14.85, "virtual": true}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 289.65, "distance": 16.22, "virtual": true}]}, "qwHqJqwjS4iY882--bNg3g": {"lat": -6.913853569670126, "lng": 107.6088557177785, "links": [{"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 50.09345, "description": ""}, {"pano_id": "a_uQ_gQCLyiJsfIrR03fAg", "heading": 269.4288, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 135.68, "distance": 5.31, "virtual": true}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 48.59, "distance": 15.7, "virtual": true}, {"pano_id": "N596rVKCxVsAB4eBypI9gw", "heading": 135.47, "distance": 15.78, "virtual": true}]}, "kKvfI8jAGL3KlFcECl3bIQ": {"lat": -6.914259347490306, "lng": 107.6074236724499, "links": [{"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 225.46243, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 70.19006, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 254.39029, "description": "Jl. Kb. Jukut"}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 123.82, "distance": 12.32, "virtual": true}, {"pano_id": "LUIQnkTxOkQ93kSY8SmOYA", "heading": 156.86, "distance": 17.73, "virtual": true}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 252.29, "distance": 15.24, "virtual": true}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 228.88, "distance": 15.96, "virtual": true}]}, "uP43mLhXDoVBsuFmjZMBFA": {"lat": -6.913267167651036, "lng": 107.607635177944, "links": [{"pano_id": "q63vBQFyHKYLUl8Nu5A6bw", "heading": 348.00665, "description": "Jl. Babakan Ciamis"}, {"pano_id": "cmUJggpD9l1PUDzwAe5_5g", "heading": 155.40422, "description": "Jl. Babakan Ciamis"}, {"pano_id": "4T2KtWZVg19dz_Vgx099eA", "heading": 354.8, "distance": 14.62, "virtual": true}]}, "LUIQnkTxOkQ93kSY8SmOYA": {"lat": -6.914405976731352, "lng": 107.6074867989657, "links": [{"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 19.09492, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "ErppnkaeuoKpYjBBZwEbUg", "heading": 191.74612, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 336.86, "distance": 17.73, "virtual": true}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 316.51, "distance": 16.51, "virtual": true}]}, "loMBsgTv7u4zCLOhlXFUtg": {"lat": -6.91382665206681, "lng": 107.6088881391482, "links": [{"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 178.90671, "description": ""}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 47.961086, "description": ""}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 230.09344, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "a_uQ_gQCLyiJsfIrR03fAg", "heading": 257.08, "distance": 13.83, "virtual": true}, {"pano_id": "N596rVKCxVsAB4eBypI9gw", "heading": 152.27, "distance": 16.09, "virtual": true}, {"pano_id": "zREIryfpaixDr54hIHwRsA", "heading": 46.75, "distance": 14.19, "virtual": true}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 67.4, "distance": 17.64, "virtual": true}]}, "q63vBQFyHKYLUl8Nu5A6bw": {"lat": -6.913176854143196, "lng": 107.6076158516452, "links": [{"pano_id": "4L7X21UXRKTUIrVcnMFy0Q", "heading": 5.8629026, "description": "Jl. Babakan Ciamis"}, {"pano_id": "uP43mLhXDoVBsuFmjZMBFA", "heading": 168.00664, "description": "Jl. Babakan Ciamis"}, {"pano_id": "4T2KtWZVg19dz_Vgx099eA", "heading": 10.127491, "description": ""}, {"pano_id": "498jUtlWIdAdDeySuIgY2g", "heading": 31.8, "distance": 15.02, "virtual": true}]}, "HJ-ku4V7yfeyGCNx7_gklw": {"lat": -6.91429825133493, "lng": 107.6073838458573, "links": [{"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 45.46243, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 231.0248, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 60.94, "distance": 16.05, "virtual": true}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 99.82, "distance": 14.85, "virtual": true}, {"pano_id": "LUIQnkTxOkQ93kSY8SmOYA", "heading": 136.51, "distance": 16.51, "virtual": true}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 347.67, "distance": 2.99, "virtual": true}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 268.26, "distance": 10.12, "virtual": true}]}, "bqmA8ZfQIADGybAJUqi2Eg": {"lat": -6.914271996696925, "lng": 107.6073780660349, "links": [{"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 74.39029, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 251.20038, "description": "Jl. Kb. Jukut"}, {"pano_id": "4_M5Q1IauyJiawejGhgCCw", "heading": 71.61, "distance": 15.45, "virtual": true}, {"pano_id": "2_3cR5-B_FkObr0VByqhIQ", "heading": 109.65, "distance": 16.22, "virtual": true}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 167.67, "distance": 2.99, "virtual": true}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 217.55, "distance": 11.47, "virtual": true}]}, "ErppnkaeuoKpYjBBZwEbUg": {"lat": -6.914496091164432, "lng": 107.6074679242262, "links": [{"pano_id": "9PHT9Z-3KrzWQWvc4Um5FQ", "heading": 187.46017, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "LUIQnkTxOkQ93kSY8SmOYA", "heading": 11.74612, "description": "Jl. Perintis Kemerdekaan"}]}, "4T2KtWZVg19dz_Vgx099eA": {"lat": -6.913136198998162, "lng": 107.6076231667395, "links": [{"pano_id": "498jUtlWIdAdDeySuIgY2g", "heading": 40.758686, "description": ""}, {"pano_id": "q63vBQFyHKYLUl8Nu5A6bw", "heading": 190.12749, "description": "Jl. Babakan Ciamis"}, {"pano_id": "uP43mLhXDoVBsuFmjZMBFA", "heading": 174.8, "distance": 14.62, "virtual": true}, {"pano_id": "4L7X21UXRKTUIrVcnMFy0Q", "heading": 0.61, "distance": 3.73, "virtual": true}, {"pano_id": "ec4W8bFWXqoZzrOF9-3jOQ", "heading": 18.22, "distance": 14.06, "virtual": true}]}, "HtlTWh-tPfGhyt_8JJvofA": {"lat": -6.914301020905055, "lng": 107.6072921814999, "links": [{"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 248.89302, "description": "Jl. Kb. Jukut"}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 71.200386, "description": "Jl. Kb. Jukut"}, {"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 72.29, "distance": 15.24, "virtual": true}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 88.26, "distance": 10.12, "virtual": true}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 156.97, "distance": 6.37, "virtual": true}, {"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 199.24, "distance": 14.09, "virtual": true}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 248.87, "distance": 15.33, "virtual": true}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 254.13, "distance": 16.93, "virtual": true}]}, "9PHT9Z-3KrzWQWvc4Um5FQ": {"lat": -6.914585781447575, "lng": 107.6074560936486, "links": [{"pano_id": "eSij9_t6Ae4f2sSeuhLYpg", "heading": 187.52405, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "ErppnkaeuoKpYjBBZwEbUg", "heading": 7.460174, "description": "Jl. Perintis Kemerdekaan"}]}, "T4eDwVwnBq7g7PvCrfq5VQ": {"lat": -6.913887724355712, "lng": 107.6088893131812, "links": [{"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 358.9067, "description": ""}, {"pano_id": "N596rVKCxVsAB4eBypI9gw", "heading": 135.35721, "description": ""}, {"pano_id": "a_uQ_gQCLyiJsfIrR03fAg", "heading": 285.21, "distance": 14.1, "virtual": true}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 315.68, "distance": 5.31, "virtual": true}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 29.63, "distance": 16.31, "virtual": true}]}, "95MNjnc-CBzN6sFPWn7skQ": {"lat": -6.913760205915282, "lng": 107.6089623741653, "links": [{"pano_id": "zREIryfpaixDr54hIHwRsA", "heading": 42.542915, "description": "Jl. Wastukencana"}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 227.96109, "description": ""}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 94.29474, "description": ""}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 228.59, "distance": 15.7, "virtual": true}, {"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 209.63, "distance": 16.31, "virtual": true}, {"pano_id": "WRMZJRWuhakTMso9huooaw", "heading": 13.02, "distance": 12.65, "virtual": true}, {"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 119.99, "distance": 16.65, "virtual": true}]}, "S3qyohvivbnjn17L-SkcVA": {"lat": -6.914353740819681, "lng": 107.607314758925, "links": [{"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 223.79572, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "HJ-ku4V7yfeyGCNx7_gklw", "heading": 51.0248, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "kKvfI8jAGL3KlFcECl3bIQ", "heading": 48.88, "distance": 15.96, "virtual": true}, {"pano_id": "bqmA8ZfQIADGybAJUqi2Eg", "heading": 37.55, "distance": 11.47, "virtual": true}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 336.97, "distance": 6.37, "virtual": true}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 276.78, "distance": 13.61, "virtual": true}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 271.15, "distance": 16.79, "virtual": true}]}, "4L7X21UXRKTUIrVcnMFy0Q": {"lat": -6.913102641941832, "lng": 107.6076235279787, "links": [{"pano_id": "ec4W8bFWXqoZzrOF9-3jOQ", "heading": 24.349176, "description": "Jl. Babakan Ciamis"}, {"pano_id": "q63vBQFyHKYLUl8Nu5A6bw", "heading": 185.8629, "description": "Jl. Babakan Ciamis"}, {"pano_id": "4T2KtWZVg19dz_Vgx099eA", "heading": 180.61, "distance": 3.73, "virtual": true}, {"pano_id": "498jUtlWIdAdDeySuIgY2g", "heading": 57.43, "distance": 8.39, "virtual": true}]}, "N596rVKCxVsAB4eBypI9gw": {"lat": -6.913954718834199, "lng": 107.6089559621374, "links": [{"pano_id": "bfFg1I67JdC1f2R4fQsl6Q", "heading": 81.43206, "description": ""}, {"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 315.3572, "description": ""}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 315.47, "distance": 15.78, "virtual": true}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 332.27, "distance": 16.09, "virtual": true}]}, "JaWCorHtT51CfHoi-GZuXA": {"lat": -6.91433929592483, "lng": 107.6071922989939, "links": [{"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 248.7854, "description": "Jl. Kb. Jukut"}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 68.89303, "description": "Jl. Kb. Jukut"}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 265.91623, "description": ""}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 96.78, "distance": 13.61, "virtual": true}, {"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 144.82, "distance": 11.07, "virtual": true}, {"pano_id": "Zd7V9BGcsbxWHcZ2DstnRg", "heading": 242.92, "distance": 14.04, "virtual": true}, {"pano_id": "pb12PlTp43ZB-eR_KXCI3A", "heading": 284.03, "distance": 14.76, "virtual": true}]}, "zREIryfpaixDr54hIHwRsA": {"lat": -6.91373920198728, "lng": 107.6089817908702, "links": [{"pano_id": "WRMZJRWuhakTMso9huooaw", "heading": 4.0511827, "description": "Jl. Wastukencana"}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 222.54292, "description": ""}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 226.75, "distance": 14.19, "virtual": true}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 116.32, "distance": 6.64, "virtual": true}, {"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 130.95, "distance": 16.26, "virtual": true}]}, "eSij9_t6Ae4f2sSeuhLYpg": {"lat": -6.914673343954925, "lng": 107.607444443691, "links": [{"pano_id": "9PHT9Z-3KrzWQWvc4Um5FQ", "heading": 7.5240545, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "oq-wI5W--uADAXLk-_D41w", "heading": 187.47104, "description": "Jl. Perintis Kemerdekaan"}]}, "498jUtlWIdAdDeySuIgY2g": {"lat": -6.913062035712707, "lng": 107.6076875576392, "links": [{"pano_id": "4T2KtWZVg19dz_Vgx099eA", "heading": 220.75868, "description": ""}, {"pano_id": "q63vBQFyHKYLUl8Nu5A6bw", "heading": 211.8, "distance": 15.02, "virtual": true}, {"pano_id": "4L7X21UXRKTUIrVcnMFy0Q", "heading": 237.43, "distance": 8.39, "virtual": true}, {"pano_id": "ec4W8bFWXqoZzrOF9-3jOQ", "heading": 332.05, "distance": 5.79, "virtual": true}]}, "ec4W8bFWXqoZzrOF9-3jOQ": {"lat": -6.913016069439071, "lng": 107.6076629933671, "links": [{"pano_id": "4L7X21UXRKTUIrVcnMFy0Q", "heading": 204.34918, "description": "Jl. Babakan Ciamis"}, {"pano_id": "4T2KtWZVg19dz_Vgx099eA", "heading": 198.22, "distance": 14.06, "virtual": true}, {"pano_id": "498jUtlWIdAdDeySuIgY2g", "heading": 152.05, "distance": 5.79, "virtual": true}]}, "AkD9oG7-O4TMjz8bb4zzsg": {"lat": -6.913765672957554, "lng": 107.6090357060999, "links": [{"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 140.63316, "description": ""}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 274.29474, "description": ""}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 247.4, "distance": 17.64, "virtual": true}, {"pano_id": "zREIryfpaixDr54hIHwRsA", "heading": 296.32, "distance": 6.64, "virtual": true}, {"pano_id": "WRMZJRWuhakTMso9huooaw", "heading": 337.94, "distance": 13.96, "virtual": true}, {"pano_id": "E8yoAnYml84AJD5j58ZxJQ", "heading": 130.93, "distance": 17.39, "virtual": true}]}, "G4pUwKf3R5T81f1Kflqu4Q": {"lat": -6.914420689070644, "lng": 107.6072500971846, "links": [{"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 43.79572, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "bAnqu6q9S7Rz6obxxx7wdA", "heading": 204.7586, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 19.24, "distance": 14.09, "virtual": true}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 324.82, "distance": 11.07, "virtual": true}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 308.88, "distance": 12.4, "virtual": true}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 306.69, "distance": 14.52, "virtual": true}]}, "42_jHPRoLT3OO5lALLQr2Q": {"lat": -6.912961227129565, "lng": 107.6076984851287, "links": [{"pano_id": "zfS5VeD9IbhchWBWWYKv5A", "heading": 34.01676, "description": "Jl. Babakan Ciamis"}, {"pano_id": "ec4W8bFWXqoZzrOF9-3jOQ", "heading": 212.71893, "description": "Jl. Babakan Ciamis"}, {"pano_id": "4L7X21UXRKTUIrVcnMFy0Q", "heading": 207.75, "distance": 17.77, "virtual": true}, {"pano_id": "498jUtlWIdAdDeySuIgY2g", "heading": 186.14, "distance": 11.27, "virtual": true}]}, "eQXnlCfXvdXASR_9bfwx5g": {"lat": -6.914350710431288, "lng": 107.607162677426, "links": [{"pano_id": "Zd7V9BGcsbxWHcZ2DstnRg", "heading": 240.97557, "description": "Jl. Kb. Jukut"}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 68.78541, "description": "Jl. Kb. Jukut"}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 68.87, "distance": 15.33, "virtual": true}, {"pano_id": "S3qyohvivbnjn17L-SkcVA", "heading": 91.15, "distance": 16.79, "virtual": true}, {"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 128.88, "distance": 12.4, "virtual": true}, {"pano_id": "bAnqu6q9S7Rz6obxxx7wdA", "heading": 162.05, "distance": 17.72, "virtual": true}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 294.14, "distance": 2.18, "virtual": true}, {"pano_id": "pb12PlTp43ZB-eR_KXCI3A", "heading": 293.69, "distance": 12.06, "virtual": true}]}, "--ngZds3hqJTPMe_Jp56HA": {"lat": -6.913965103586375, "lng": 107.6089721276727, "links": [{"pano_id": "2dlpF-NnZX4EddjYFzRAww", "heading": 183.61916, "description": "Jl. Braga"}, {"pano_id": "N596rVKCxVsAB4eBypI9gw", "heading": 302.90717, "description": ""}, {"pano_id": "qwHqJqwjS4iY882--bNg3g", "heading": 313.98, "distance": 17.86, "virtual": true}, {"pano_id": "loMBsgTv7u4zCLOhlXFUtg", "heading": 328.94, "distance": 17.97, "virtual": true}, {"pano_id": "T4eDwVwnBq7g7PvCrfq5VQ", "heading": 313.27, "distance": 12.55, "virtual": true}, {"pano_id": "bfFg1I67JdC1f2R4fQsl6Q", "heading": 73.19, "distance": 9.82, "virtual": true}]}, "oq-wI5W--uADAXLk-_D41w": {"lat": -6.914761535057862, "lng": 107.6074327937338, "links": [{"pano_id": "eSij9_t6Ae4f2sSeuhLYpg", "heading": 7.4710317, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "giTp8DSfqybXThZXkuGwMA", "heading": 187.46869, "description": "Jl. Perintis Kemerdekaan"}]}, "bfFg1I67JdC1f2R4fQsl6Q": {"lat": -6.913939563409729, "lng": 107.6090572902568, "links": [{"pano_id": "N596rVKCxVsAB4eBypI9gw", "heading": 261.43207, "description": ""}, {"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 18.764526, "description": ""}, {"pano_id": "E8yoAnYml84AJD5j58ZxJQ", "heading": 53.56, "distance": 13.37, "virtual": true}]}, "WRMZJRWuhakTMso9huooaw": {"lat": -6.913649326303535, "lng": 107.6089882028986, "links": [{"pano_id": "zREIryfpaixDr54hIHwRsA", "heading": 184.05118, "description": "Jl. Wastukencana"}, {"pano_id": "9bh2KAHEbBLpyl-lAG3OXA", "heading": 4.1367235, "description": "Jl. Wastukencana"}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 193.02, "distance": 12.65, "virtual": true}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 157.94, "distance": 13.96, "virtual": true}]}, "bAnqu6q9S7Rz6obxxx7wdA": {"lat": -6.914502335093331, "lng": 107.6072121671206, "links": [{"pano_id": "ojMV2a1MvyLZfqmup0eWhA", "heading": 201.471, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 24.758604, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 342.05, "distance": 17.72, "virtual": true}, {"pano_id": "Y6b2mZhxWNtbaTVZPIWb-g", "heading": 198.95, "distance": 15.47, "virtual": true}]}, "24S29xD4w0xAa9ukS4XMYg": {"lat": -6.91383506254686, "lng": 107.6090930531315, "links": [{"pano_id": "bfFg1I67JdC1f2R4fQsl6Q", "heading": 198.76453, "description": ""}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 320.63315, "description": ""}, {"pano_id": "E8yoAnYml84AJD5j58ZxJQ", "heading": 118.38591, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "95MNjnc-CBzN6sFPWn7skQ", "heading": 299.99, "distance": 16.65, "virtual": true}, {"pano_id": "zREIryfpaixDr54hIHwRsA", "heading": 310.95, "distance": 16.26, "virtual": true}, {"pano_id": "qRynSwVAdyk45jeQHbQ4nA", "heading": 106.56, "distance": 16.92, "virtual": true}]}, "ojMV2a1MvyLZfqmup0eWhA": {"lat": -6.914588950497569, "lng": 107.6071778494482, "links": [{"pano_id": "Y6b2mZhxWNtbaTVZPIWb-g", "heading": 193.88646, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "bAnqu6q9S7Rz6obxxx7wdA", "heading": 21.470995, "description": "Jl. Perintis Kemerdekaan"}]}, "Zd7V9BGcsbxWHcZ2DstnRg": {"lat": -6.914396774630806, "lng": 107.6070790506998, "links": [{"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 60.97557, "description": "Jl. Kb. Jukut"}, {"pano_id": "GZn0Y1dRykLE2RW_vWROQA", "heading": 219.86984, "description": "Jl. Kb. Jukut"}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 62.92, "distance": 14.04, "virtual": true}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 50.27, "distance": 9.41, "virtual": true}, {"pano_id": "pb12PlTp43ZB-eR_KXCI3A", "heading": 349.68, "distance": 10.13, "virtual": true}]}, "9bh2KAHEbBLpyl-lAG3OXA": {"lat": -6.913560075775995, "lng": 107.6089947052375, "links": [{"pano_id": "tLmM1ClyU-YwHBNsMU7UUA", "heading": 4.072338, "description": "Jl. Wastukencana"}, {"pano_id": "WRMZJRWuhakTMso9huooaw", "heading": 184.13672, "description": "Jl. Wastukencana"}]}, "oyDlvo7TfM7-5YnwtI0kdQ": {"lat": -6.914342675577603, "lng": 107.6071446154959, "links": [{"pano_id": "pb12PlTp43ZB-eR_KXCI3A", "heading": 293.58545, "description": ""}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 85.91624, "description": "Jl. Kb. Jukut"}, {"pano_id": "HtlTWh-tPfGhyt_8JJvofA", "heading": 74.13, "distance": 16.93, "virtual": true}, {"pano_id": "G4pUwKf3R5T81f1Kflqu4Q", "heading": 126.69, "distance": 14.52, "virtual": true}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 114.14, "distance": 2.18, "virtual": true}, {"pano_id": "Zd7V9BGcsbxWHcZ2DstnRg", "heading": 230.27, "distance": 9.41, "virtual": true}, {"pano_id": "GZn0Y1dRykLE2RW_vWROQA", "heading": 225.38, "distance": 17.67, "virtual": true}]}, "giTp8DSfqybXThZXkuGwMA": {"lat": -6.914852489530276, "lng": 107.6074207825382, "links": [{"pano_id": "MNl-z66MX2N8epiFNYvsrw", "heading": 187.46236, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "oq-wI5W--uADAXLk-_D41w", "heading": 7.468694, "description": "Jl. Perintis Kemerdekaan"}]}, "E8yoAnYml84AJD5j58ZxJQ": {"lat": -6.913868151867535, "lng": 107.6091547350704, "links": [{"pano_id": "qRynSwVAdyk45jeQHbQ4nA", "heading": 96.92426, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 298.38593, "description": ""}, {"pano_id": "AkD9oG7-O4TMjz8bb4zzsg", "heading": 310.93, "distance": 17.39, "virtual": true}, {"pano_id": "bfFg1I67JdC1f2R4fQsl6Q", "heading": 233.56, "distance": 13.37, "virtual": true}]}, "qRynSwVAdyk45jeQHbQ4nA": {"lat": -6.913878429950458, "lng": 107.6092399880222, "links": [{"pano_id": "E8yoAnYml84AJD5j58ZxJQ", "heading": 276.92426, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "24S29xD4w0xAa9ukS4XMYg", "heading": 286.56, "distance": 16.92, "virtual": true}]}, "tLmM1ClyU-YwHBNsMU7UUA": {"lat": -6.913466890740856, "lng": 107.609001388197, "links": [{"pano_id": "9bh2KAHEbBLpyl-lAG3OXA", "heading": 184.07234, "description": "Jl. Wastukencana"}, {"pano_id": "OEOdT1gqMAvau3P2tkoHXg", "heading": 4.089808, "description": "Jl. Wastukencana"}]}, "Y6b2mZhxWNtbaTVZPIWb-g": {"lat": -6.914633917572617, "lng": 107.6071666510507, "links": [{"pano_id": "ojMV2a1MvyLZfqmup0eWhA", "heading": 13.886458, "description": "Jl. Perintis Kemerdekaan"}, {"pano_id": "bAnqu6q9S7Rz6obxxx7wdA", "heading": 18.95, "distance": 15.47, "virtual": true}]}, "GZn0Y1dRykLE2RW_vWROQA": {"lat": -6.914454307966529, "lng": 107.6070306447448, "links": [{"pano_id": "Zd7V9BGcsbxWHcZ2DstnRg", "heading": 39.869843, "description": "Jl. Kb. Jukut"}, {"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 45.38, "distance": 17.67, "virtual": true}, {"pano_id": "pb12PlTp43ZB-eR_KXCI3A", "heading": 12.17, "distance": 16.74, "virtual": true}]}, "pb12PlTp43ZB-eR_KXCI3A": {"lat": -6.914307135304015, "lng": 107.6070626143484, "links": [{"pano_id": "oyDlvo7TfM7-5YnwtI0kdQ", "heading": 113.58546, "description": ""}, {"pano_id": "JaWCorHtT51CfHoi-GZuXA", "heading": 104.03, "distance": 14.76, "virtual": true}, {"pano_id": "eQXnlCfXvdXASR_9bfwx5g", "heading": 113.69, "distance": 12.06, "virtual": true}, {"pano_id": "Zd7V9BGcsbxWHcZ2DstnRg", "heading": 169.68, "distance": 10.13, "virtual": true}, {"pano_id": "GZn0Y1dRykLE2RW_vWROQA", "heading": 192.17, "distance": 16.74, "virtual": true}]}, "MNl-z66MX2N8epiFNYvsrw": {"lat": -6.914945575493634, "lng": 107.607408500414, "links": [{"pano_id": "giTp8DSfqybXThZXkuGwMA", "heading": 7.462355, "description": "Jl. Perintis Kemerdekaan"}]}, "OEOdT1gqMAvau3P2tkoHXg": {"lat": -6.913375358944211, "lng": 107.6090079808464, "links": [{"pano_id": "tLmM1ClyU-YwHBNsMU7UUA", "heading": 184.08981, "description": "Jl. Wastukencana"}]}};
+        const targetPanos = ["t2tkYGM_m7EtnMXg8Wd0jA", "_Nocdr2ozdOv_oYm_wwdTA", "30RC4TeHT1D3ty6_S3Fp9g"];
+        const spawnPoints = ["4L7X21UXRKTUIrVcnMFy0Q", "eSij9_t6Ae4f2sSeuhLYpg", "AkD9oG7-O4TMjz8bb4zzsg", "GZn0Y1dRykLE2RW_vWROQA", "MNl-z66MX2N8epiFNYvsrw", "ec4W8bFWXqoZzrOF9-3jOQ", "OEOdT1gqMAvau3P2tkoHXg", "giTp8DSfqybXThZXkuGwMA"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

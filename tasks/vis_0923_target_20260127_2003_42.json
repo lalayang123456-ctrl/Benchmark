@@ -1,0 +1,106 @@
+{
+  "task_id": "nav_0923_target_20260125_0322_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260125_032158",
+  "spawn_point": "53ZNW40DfdGgmMHinj--xA",
+  "spawn_heading": 228.2,
+  "description": "Head straight along the narrow residential road flanked by tall apartment buildings. Continue forward, passing the 'INVITRO' sign and the 'OZON' storefront on your left. Stop at the intersection at the end of the straight path.",
+  "ground_truth": {
+    "target_name": "Pizza Hut",
+    "target_pano_id": "ThRs3YPla0rzlZ2C6VyyxA",
+    "optimal_distance_meters": 141,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ThRs3YPla0rzlZ2C6VyyxA"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "53ZNW40DfdGgmMHinj--xA",
+      "heading": 228.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Qg5b41XC0If4a4DHscngPA",
+      "heading": 228.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GuRjthJgUljhC5csDUJuKQ",
+      "heading": 228.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "mSgZIXqkhL-Sbn67bUlirA",
+      "heading": 228.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "PXj6izhmNlOABbt_CGxuvw",
+      "heading": 228.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "sUK6uuZ8zupSMePNLCGw1w",
+      "heading": 228.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "c4lduH5aFd9CmwRJF6kAKQ",
+      "heading": 228.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "VvsdOM-ANFSOC7_hV0655Q",
+      "heading": 228.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "HjJr5Olo4BXtR8JnHrKIrg",
+      "heading": 239.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "WWuR3zL5hQclpCBAOPLT7w",
+      "heading": 274.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Ss1WuolS0khz-WgnAqw2sw",
+      "heading": 286.0
+    },
+    {
+      "step_index": 11,
+      "pano_id": "8FICEWas74t8-Rwf2NbkQw",
+      "heading": 290.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "mX5m7P9YTreepuZLoRrEgg",
+      "heading": 290.2
+    },
+    {
+      "step_index": 13,
+      "pano_id": "_MlNJvX3Jb-YETmWbi-g-A",
+      "heading": 290.4
+    },
+    {
+      "step_index": 14,
+      "pano_id": "GTLiyEYeBZPH8Sa9CZnBaw",
+      "heading": 290.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "ThRs3YPla0rzlZ2C6VyyxA",
+      "heading": 267.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 141m -> Stop",
+  "agent_concise_description": "Head straight along the narrow residential road flanked by tall apartment buildings. Continue forward, passing the 'INVITRO' sign and the 'OZON' storefront on your left. Stop at the intersection at the end of the straight path."
+}

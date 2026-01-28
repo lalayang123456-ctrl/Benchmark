@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0042_20260126_154000",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your West (approx. 288\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "f8_L9eUv5kgTOOJgAY9-QA",
+  "spawn_heading": 288.3146167278661,
+  "target_building": {
+    "lat": 53.481901400000005,
+    "lng": -2.2358302,
+    "height": 3.91,
+    "floors": 1,
+    "ground_elevation": 55.06047058105469,
+    "roof_elevation": 58.97419,
+    "name": "buildings/ChIJL1pkIr-xe0gR2Eyxm0V9Kdk",
+    "date": "2021-07-09"
+  },
+  "geofence_id": "list_height_0042_20260126_154000",
+  "ground_truth": {
+    "height_meters": 3.91
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T15:40:00.720951",
+    "bearing_deg": 288.3146167278661,
+    "city": "Manchester, UK"
+  }
+}

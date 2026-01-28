@@ -1,0 +1,191 @@
+{
+  "task_id": "nav_0052_target_20260124_0245_10",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "jefmUudt6Zk_ESJWVYNtXQ",
+  "spawn_heading": 16.1,
+  "description": "Navigate to Burger King. The route proceeds straight along the road with a median on the left and commercial buildings on the right. You will pass landmarks such as the 'Prime Children's Clinic' and several billboards before driving past the large LuLu Mall building on your right. The path ends on the main road alongside the mall, without turning into the complex entrance.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+    "optimal_distance_meters": 339,
+    "route_description": "right→right→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "FjDSnVpBhOJ27rRtr05m6g"
+  ],
+  "max_steps": 66,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "jefmUudt6Zk_ESJWVYNtXQ",
+      "heading": 16.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "weoGaxyp_cGsWeFrXHzsHA",
+      "heading": 16.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "pH9Y1ju_sVzbK1XmAJANUw",
+      "heading": 15.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "O19Fwxo1spzyieggD1OUsw",
+      "heading": 13.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "lXgOkyn21-ZiGermsmKqBw",
+      "heading": 13.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "pa95H4_xYxQUzvFUak4Lng",
+      "heading": 14.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "ba0tXMacxtlvX4ozL7XdGw",
+      "heading": 16.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "pTDpBf_Z7OIUtqRZLoOa4Q",
+      "heading": 24.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Ui8GSajyN9lnfFwjplHlKQ",
+      "heading": 28.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "vcQH7zmHFzFUXZyU9sbuMA",
+      "heading": 28.8
+    },
+    {
+      "step_index": 10,
+      "pano_id": "CY6kpeLzhTDy_L34FzdSYg",
+      "heading": 29.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Vk8hTJ0U26y4a4HiCMXs9A",
+      "heading": 29.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "84FI-hWEACuZ8za8rAUyvg",
+      "heading": 31.0
+    },
+    {
+      "step_index": 13,
+      "pano_id": "27CORRj0mnU31QLoG_lK3w",
+      "heading": 32.0
+    },
+    {
+      "step_index": 14,
+      "pano_id": "NKQlHyEROHEaQ8gste7AXQ",
+      "heading": 31.5
+    },
+    {
+      "step_index": 15,
+      "pano_id": "X-U-Jtu6P2yJnmHHMM2CRw",
+      "heading": 25.1
+    },
+    {
+      "step_index": 16,
+      "pano_id": "z50v2haMggbOqBpvBA53qA",
+      "heading": 22.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "e1TIosSi0WYp1aiqxxY7og",
+      "heading": 22.7
+    },
+    {
+      "step_index": 18,
+      "pano_id": "pKvpjZ03_gXfoqC6rCssDQ",
+      "heading": 22.7
+    },
+    {
+      "step_index": 19,
+      "pano_id": "UhTo-hWYLKHm4kK1wKSvWg",
+      "heading": 30.1
+    },
+    {
+      "step_index": 20,
+      "pano_id": "i_G0cdMOyMl81qgBVs60nw",
+      "heading": 31.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "NksYiD7yBb1D-FRoSepDrQ",
+      "heading": 31.4
+    },
+    {
+      "step_index": 22,
+      "pano_id": "ndsW5MKWfxIL56lKGUmLIw",
+      "heading": 31.4
+    },
+    {
+      "step_index": 23,
+      "pano_id": "0YNdIZmyb-BFmmEXAsVuGw",
+      "heading": 29.7
+    },
+    {
+      "step_index": 24,
+      "pano_id": "GJiP00oo5j04FwbkJEHvNQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 25,
+      "pano_id": "ExvqUMRAxZixH6r3-wgO7Q",
+      "heading": 29.4
+    },
+    {
+      "step_index": 26,
+      "pano_id": "hjG1RQkbRDmWY4YCWEpQEQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 27,
+      "pano_id": "6K6KOiFoxzU6sLLC_b2jRw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 28,
+      "pano_id": "YvDbrR5chni0HQ8XAwwNqw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 29,
+      "pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+      "heading": 29.4
+    },
+    {
+      "step_index": 30,
+      "pano_id": "LjGAqNgqg1CtvhRHRnfy7w",
+      "heading": 29.4
+    },
+    {
+      "step_index": 31,
+      "pano_id": "H5qd1vVz12mSgHMgNTogkw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 32,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 29.8
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight passing LuLu Mall on the right [339m]",
+  "agent_concise_description": "The route proceeds straight along the road with a median on the left and commercial buildings on the right. You will pass landmarks such as the 'Prime Children's Clinic' and several billboards before driving past the large LuLu Mall building on your right. The path ends on the main road alongside the mall, without turning into the complex entrance."
+}

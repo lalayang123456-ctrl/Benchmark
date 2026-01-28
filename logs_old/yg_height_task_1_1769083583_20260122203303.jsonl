@@ -1,0 +1,1 @@
+{"event": "session_start", "session_id": "yg_height_task_1_1769083583_20260122203303", "agent_id": "yg", "task_id": "height_task_1_1769083583", "mode": "human", "timestamp": "2026-01-22T20:33:03.731361", "initial_state": {"pano_id": null, "heading": 0, "pitch": 0, "fov": 120, "lat": null, "lng": null, "capture_date": null}, "task_description": ""}

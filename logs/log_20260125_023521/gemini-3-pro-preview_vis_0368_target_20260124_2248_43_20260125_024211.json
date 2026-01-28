@@ -1,0 +1,1037 @@
+{
+  "agent": "gemini-3-pro-preview",
+  "task_id": "vis_0368_target_20260124_2248_43",
+  "timestamp": "20260125_024211",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 34,
+  "session_id": "gemini-3-pro-preview_20260125_024211_vis_0368_target_20260124_2248_43_20260125024211",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "The task instructs to head straight along the street, and there is only one available move forward.",
+        "agent_vlm_duration_seconds": 8.349,
+        "agent_total_duration_seconds": 8.349
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 359.42453
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "The task requires continuing straight along the street, so I will take the forward move.",
+        "agent_vlm_duration_seconds": 5.25,
+        "agent_total_duration_seconds": 5.25
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 359.4956
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 179.42453
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "I need to continue straight along the street to reach the intersection with the white gate. Move 2 takes me further along the current path.",
+        "agent_vlm_duration_seconds": 7.392,
+        "agent_total_duration_seconds": 7.392
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 359.44177
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.7,
+          "heading": 4.75
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 179.49562
+        },
+        {
+          "id": 4,
+          "direction": "front-left 16°",
+          "distance": 17.5,
+          "heading": 343.44
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.287,
+        "agent_total_duration_seconds": 9.287
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 16.2,
+          "heading": 359.19
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 8.0,
+          "heading": 91.09978
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 17.1,
+          "heading": 91.1
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 6.9,
+          "heading": 192.34033
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 16.7,
+          "heading": 184.75
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 6.4,
+          "heading": 270.4612
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 15.8,
+          "heading": 270.33
+        },
+        {
+          "id": 8,
+          "direction": "front-left 15°",
+          "distance": 6.0,
+          "heading": 349.6438
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.684,
+        "agent_total_duration_seconds": 8.684
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 4.3,
+          "heading": 4.5757875
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.7,
+          "heading": 1.16
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 184.6625
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.2,
+          "heading": 179.19
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 17.3,
+          "heading": 200.81
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.434,
+        "agent_total_duration_seconds": 8.434
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 359.7599
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 4.3,
+          "heading": 184.57579
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 14.7,
+          "heading": 184.64
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.503,
+        "agent_total_duration_seconds": 8.503
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 359.1853
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.9,
+          "heading": 351.98
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 16.7,
+          "heading": 0.15
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 179.75989
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.7,
+          "heading": 181.16
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 7.611,
+        "agent_total_duration_seconds": 7.611
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 6.8,
+          "heading": 1.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 50°",
+          "distance": 10.4,
+          "heading": 49.03
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 179.18532
+        },
+        {
+          "id": 4,
+          "direction": "front-left 60°",
+          "distance": 14.3,
+          "heading": 299.66
+        },
+        {
+          "id": 5,
+          "direction": "front-left 17°",
+          "distance": 7.2,
+          "heading": 342.13025
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.558,
+        "agent_total_duration_seconds": 8.558
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 7.6,
+          "heading": 90.434425
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 17.7,
+          "heading": 90.44
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 6.8,
+          "heading": 181.54
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 16.7,
+          "heading": 180.15
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 2.4,
+          "heading": 270.94855
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 12.6,
+          "heading": 271.09
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.503,
+        "agent_total_duration_seconds": 8.503
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 90.442276
+        },
+        {
+          "id": 2,
+          "direction": "right-back 49°",
+          "distance": 10.4,
+          "heading": 229.03
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.6,
+          "heading": 270.43442
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 270.56
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.92,
+        "agent_total_duration_seconds": 9.92
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 91.0142
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 270.44226
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.7,
+          "heading": 270.44
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 7.562,
+        "agent_total_duration_seconds": 7.562
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 91.19794
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 271.0142
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.575,
+        "agent_total_duration_seconds": 8.575
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 91.265564
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 271.19794
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.969,
+        "agent_total_duration_seconds": 8.969
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 91.23019
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 271.26556
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.093,
+        "agent_total_duration_seconds": 8.093
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 91.22668
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 271.2302
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.386,
+        "agent_total_duration_seconds": 9.386
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 91.218445
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 271.22668
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 10.022,
+        "agent_total_duration_seconds": 10.022
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 91.22201
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 271.21844
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 7.786,
+        "agent_total_duration_seconds": 7.787
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 271.22202
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.225,
+        "agent_total_duration_seconds": 8.225
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 271.21844
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.22201
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.366,
+        "agent_total_duration_seconds": 8.366
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 271.22668
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 91.218445
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.406,
+        "agent_total_duration_seconds": 9.406
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 271.2302
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.22668
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.423,
+        "agent_total_duration_seconds": 8.423
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 271.26556
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 91.23019
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.934,
+        "agent_total_duration_seconds": 8.934
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 271.19794
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 91.265564
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.703,
+        "agent_total_duration_seconds": 9.703
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 271.0142
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 91.19794
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.423,
+        "agent_total_duration_seconds": 9.423
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 270.44226
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.7,
+          "heading": 270.44
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 91.0142
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.313,
+        "agent_total_duration_seconds": 9.313
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.6,
+          "heading": 270.43442
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 270.56
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 90.442276
+        },
+        {
+          "id": 4,
+          "direction": "front-left 41°",
+          "distance": 10.4,
+          "heading": 229.03
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.649,
+        "agent_total_duration_seconds": 9.649
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 2.4,
+          "heading": 270.94855
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 12.6,
+          "heading": 271.09
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.6,
+          "heading": 90.434425
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.7,
+          "heading": 90.44
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 6.8,
+          "heading": 181.54
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 16.7,
+          "heading": 180.15
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 10.229,
+        "agent_total_duration_seconds": 10.229
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 271.11838
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 2.4,
+          "heading": 90.948555
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 90.56
+        },
+        {
+          "id": 4,
+          "direction": "left-back 19°",
+          "distance": 7.2,
+          "heading": 162.13026
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 16.9,
+          "heading": 171.98
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.012,
+        "agent_total_duration_seconds": 9.012
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 271.06485
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.118385
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 12.6,
+          "heading": 91.09
+        },
+        {
+          "id": 4,
+          "direction": "left-back 61°",
+          "distance": 14.3,
+          "heading": 119.66
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.908,
+        "agent_total_duration_seconds": 9.908
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 271.07352
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 91.06484
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.153,
+        "agent_total_duration_seconds": 9.153
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 271.09454
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 91.07352
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.206,
+        "agent_total_duration_seconds": 9.206
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.6,
+          "heading": 271.0807
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.094536
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 8.866,
+        "agent_total_duration_seconds": 8.866
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 271.04922
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.6,
+          "heading": 91.08068
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Failed to parse response, using fallback.",
+        "agent_vlm_duration_seconds": 9.55,
+        "agent_total_duration_seconds": 9.55
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 271.11328
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 91.049225
+        }
+      ]
+    }
+  ]
+}

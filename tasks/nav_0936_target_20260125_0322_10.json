@@ -1,0 +1,53 @@
+{
+  "task_id": "nav_0936_target_20260125_0322_10",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_supermarket_20260125_032234",
+  "spawn_point": "yBMoxDW5dIaUTZDYTZfKpg",
+  "spawn_heading": 208.4,
+  "description": "Navigate to Buckeye Rd & 4th Av. Head east/S Montezuma Ave Destination will be on the right for 53m. Total distance: approximately 53 m.",
+  "ground_truth": {
+    "target_name": "Buckeye Rd & 4th Av",
+    "target_pano_id": "4m65RB8VxEMh77vV_wdadQ",
+    "optimal_distance_meters": 53,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "4m65RB8VxEMh77vV_wdadQ"
+  ],
+  "max_steps": 12,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "yBMoxDW5dIaUTZDYTZfKpg",
+      "heading": 208.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "AQuOGHC1dzWg2FZ4OWtKYA",
+      "heading": 208.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "YYTKVZRDaQpMBNd4q8xQGQ",
+      "heading": 89.8
+    },
+    {
+      "step_index": 3,
+      "pano_id": "yH5hOozrtRsDQN4YR0XgKQ",
+      "heading": 89.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "AZ68mNPAQ_O_cj0jU1hsZw",
+      "heading": 89.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "4m65RB8VxEMh77vV_wdadQ",
+      "heading": 89.8
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

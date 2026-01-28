@@ -1,0 +1,93 @@
+{
+  "task_id": "nav_0214_target_20260124_1151_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_mcdonalds_20260124_114931",
+  "spawn_point": "8OpxeKTASJr4GUKkirV1xw",
+  "spawn_heading": 16.0,
+  "description": "Navigate to McDonald's. Head north Destination will be on the left for 133m. Total distance: approximately 133 m.",
+  "ground_truth": {
+    "target_name": "McDonald's",
+    "target_pano_id": "s5x362pMmEsIg8p0N4vx1g",
+    "optimal_distance_meters": 133,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "s5x362pMmEsIg8p0N4vx1g"
+  ],
+  "max_steps": 28,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "8OpxeKTASJr4GUKkirV1xw",
+      "heading": 16.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "ZO3MtfKmrRXXHdgKLhvDXA",
+      "heading": 16.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "w0_Dnak1GZ0SXbaW2PWlVQ",
+      "heading": 15.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "H1g3hcaf5dTcV2-joM0c4A",
+      "heading": 15.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "k5yWmueFwysM6p-VeTvetA",
+      "heading": 16.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "T5IkBFESJEiuzN_yVEZkuQ",
+      "heading": 16.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "Bvy-WqsDu7TGeu_k-5ezXw",
+      "heading": 13.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "UKEPws0jLJZ1vUoZobvCog",
+      "heading": 12.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "kuIyU9a72IYXlB9zcTVUXQ",
+      "heading": 15.6
+    },
+    {
+      "step_index": 9,
+      "pano_id": "JWp_YV5zIFdzMYHG8hzGdg",
+      "heading": 15.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg",
+      "heading": 15.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "6UTaYSsZN68gCzM28xfF_w",
+      "heading": 14.9
+    },
+    {
+      "step_index": 12,
+      "pano_id": "-DednUZDE8mfYlujsH247w",
+      "heading": 14.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "s5x362pMmEsIg8p0N4vx1g",
+      "heading": 14.8
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

@@ -1,0 +1,301 @@
+{
+  "task_id": "nav_0065_target_20260124_0245_23",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "wDFqrW4wZZEdjF6_eDQe5A",
+  "spawn_heading": 213.3,
+  "description": "Head straight along the main road, keeping the large Lulu Mall complex on your left. Continue past the mall and turn left into the driveway of the Felix Square building. Proceed forward to the building entrance ramp.",
+  "ground_truth": {
+    "target_name": "Studio coffee",
+    "target_pano_id": "QeWn_L0JlAV-j-pjYUkbJw",
+    "optimal_distance_meters": 521,
+    "route_description": "left→left→right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "QeWn_L0JlAV-j-pjYUkbJw"
+  ],
+  "max_steps": 110,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "wDFqrW4wZZEdjF6_eDQe5A",
+      "heading": 213.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "m_iV4WJ_gjmxZjpMDZIsKQ",
+      "heading": 213.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "z6pRtlbZYZbiqaEMmtgySA",
+      "heading": 213.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "mdowBheArOyE6y12QZ6MJg",
+      "heading": 213.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "2geEamJqiZ2cQpQ-HR2Bxg",
+      "heading": 214.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "3XlpgTsw9sV7nTkgKhORIA",
+      "heading": 211.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "R_GT9NqnWMBLK-0BYUHswA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "FBy42OsVimhsuwPThtBAdQ",
+      "heading": 209.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "KCMzZ8ItwGSJtVOzGK6yQA",
+      "heading": 209.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "xMC3bA_YDAyDnWD9eECDiQ",
+      "heading": 209.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "tCcldFeEz83aMFccmU9IKg",
+      "heading": 209.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "wEtaoJs3d835bxJzflKS8Q",
+      "heading": 209.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "dSyZvZpQPa7Z32K2QtnY1A",
+      "heading": 209.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "ILyQxXuoIXMEOgR5ewKbRQ",
+      "heading": 210.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "0tGt2ssLYSXBZtMxFNb8Vg",
+      "heading": 210.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Pg3VH3J7pLRL04_2ackNUw",
+      "heading": 210.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "iKG7gYOkiAgAP031LrCF6g",
+      "heading": 210.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 210.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "H5qd1vVz12mSgHMgNTogkw",
+      "heading": 209.8
+    },
+    {
+      "step_index": 19,
+      "pano_id": "LjGAqNgqg1CtvhRHRnfy7w",
+      "heading": 209.4
+    },
+    {
+      "step_index": 20,
+      "pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+      "heading": 209.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "YvDbrR5chni0HQ8XAwwNqw",
+      "heading": 209.4
+    },
+    {
+      "step_index": 22,
+      "pano_id": "6K6KOiFoxzU6sLLC_b2jRw",
+      "heading": 209.4
+    },
+    {
+      "step_index": 23,
+      "pano_id": "hjG1RQkbRDmWY4YCWEpQEQ",
+      "heading": 209.4
+    },
+    {
+      "step_index": 24,
+      "pano_id": "ExvqUMRAxZixH6r3-wgO7Q",
+      "heading": 209.4
+    },
+    {
+      "step_index": 25,
+      "pano_id": "GJiP00oo5j04FwbkJEHvNQ",
+      "heading": 209.4
+    },
+    {
+      "step_index": 26,
+      "pano_id": "0YNdIZmyb-BFmmEXAsVuGw",
+      "heading": 209.4
+    },
+    {
+      "step_index": 27,
+      "pano_id": "ndsW5MKWfxIL56lKGUmLIw",
+      "heading": 209.7
+    },
+    {
+      "step_index": 28,
+      "pano_id": "NksYiD7yBb1D-FRoSepDrQ",
+      "heading": 211.4
+    },
+    {
+      "step_index": 29,
+      "pano_id": "i_G0cdMOyMl81qgBVs60nw",
+      "heading": 211.4
+    },
+    {
+      "step_index": 30,
+      "pano_id": "UhTo-hWYLKHm4kK1wKSvWg",
+      "heading": 211.4
+    },
+    {
+      "step_index": 31,
+      "pano_id": "pKvpjZ03_gXfoqC6rCssDQ",
+      "heading": 210.1
+    },
+    {
+      "step_index": 32,
+      "pano_id": "e1TIosSi0WYp1aiqxxY7og",
+      "heading": 202.7
+    },
+    {
+      "step_index": 33,
+      "pano_id": "z50v2haMggbOqBpvBA53qA",
+      "heading": 202.7
+    },
+    {
+      "step_index": 34,
+      "pano_id": "X-U-Jtu6P2yJnmHHMM2CRw",
+      "heading": 202.7
+    },
+    {
+      "step_index": 35,
+      "pano_id": "NKQlHyEROHEaQ8gste7AXQ",
+      "heading": 205.1
+    },
+    {
+      "step_index": 36,
+      "pano_id": "27CORRj0mnU31QLoG_lK3w",
+      "heading": 211.5
+    },
+    {
+      "step_index": 37,
+      "pano_id": "84FI-hWEACuZ8za8rAUyvg",
+      "heading": 212.0
+    },
+    {
+      "step_index": 38,
+      "pano_id": "Vk8hTJ0U26y4a4HiCMXs9A",
+      "heading": 211.0
+    },
+    {
+      "step_index": 39,
+      "pano_id": "CY6kpeLzhTDy_L34FzdSYg",
+      "heading": 209.5
+    },
+    {
+      "step_index": 40,
+      "pano_id": "vcQH7zmHFzFUXZyU9sbuMA",
+      "heading": 209.5
+    },
+    {
+      "step_index": 41,
+      "pano_id": "Ui8GSajyN9lnfFwjplHlKQ",
+      "heading": 208.8
+    },
+    {
+      "step_index": 42,
+      "pano_id": "pTDpBf_Z7OIUtqRZLoOa4Q",
+      "heading": 208.1
+    },
+    {
+      "step_index": 43,
+      "pano_id": "ba0tXMacxtlvX4ozL7XdGw",
+      "heading": 204.1
+    },
+    {
+      "step_index": 44,
+      "pano_id": "pa95H4_xYxQUzvFUak4Lng",
+      "heading": 196.8
+    },
+    {
+      "step_index": 45,
+      "pano_id": "lXgOkyn21-ZiGermsmKqBw",
+      "heading": 194.0
+    },
+    {
+      "step_index": 46,
+      "pano_id": "O19Fwxo1spzyieggD1OUsw",
+      "heading": 193.3
+    },
+    {
+      "step_index": 47,
+      "pano_id": "pH9Y1ju_sVzbK1XmAJANUw",
+      "heading": 193.0
+    },
+    {
+      "step_index": 48,
+      "pano_id": "Dq-P3p7Hc9OFtVo0Q0P7uQ",
+      "heading": 109.1
+    },
+    {
+      "step_index": 49,
+      "pano_id": "d0xBrJ0ZhRJxu5Cw3MGBdA",
+      "heading": 106.7
+    },
+    {
+      "step_index": 50,
+      "pano_id": "_cuiB8N9s42xqOsgueFNPQ",
+      "heading": 98.1
+    },
+    {
+      "step_index": 51,
+      "pano_id": "5k3XV4jstrC1OXDdwt9hJA",
+      "heading": 98.1
+    },
+    {
+      "step_index": 52,
+      "pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA",
+      "heading": 110.8
+    },
+    {
+      "step_index": 53,
+      "pano_id": "G90Rnd4BUpX2SsCqj2t7qw",
+      "heading": 111.4
+    },
+    {
+      "step_index": 54,
+      "pano_id": "QeWn_L0JlAV-j-pjYUkbJw",
+      "heading": 111.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [470m] -> Turn Left -> Head Straight [30m] -> Stop",
+  "agent_concise_description": "Head straight along the main road, keeping the large Lulu Mall complex on your left. Continue past the mall and turn left into the driveway of the Felix Square building. Proceed forward to the building entrance ramp."
+}

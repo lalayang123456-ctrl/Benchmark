@@ -1,0 +1,41 @@
+{
+  "task_id": "nav_0456_target_20260124_1353_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_135109",
+  "spawn_point": "EmaT0r7GuEUwLO0cGA4j2Q",
+  "spawn_heading": 181.2,
+  "description": "Head straight along the road, keeping the blue building with the large 'XL' logo on your right. The destination, Apotek Cempaka Putih, is the yellow kiosk with a vertical sign located on the left side of the street.",
+  "ground_truth": {
+    "target_name": "Apotek Cempaka Putih",
+    "target_pano_id": "jdMDfY9uBfIe8XBilVhn5g",
+    "optimal_distance_meters": 36,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "jdMDfY9uBfIe8XBilVhn5g"
+  ],
+  "max_steps": 6,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "EmaT0r7GuEUwLO0cGA4j2Q",
+      "heading": 181.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "mMMyRCFEJ0MzjeUKUHfHTA",
+      "heading": 181.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "jdMDfY9uBfIe8XBilVhn5g",
+      "heading": 181.2
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 36m -> Stop",
+  "agent_concise_description": "Head straight along the road, keeping the blue building with the large 'XL' logo on your right. The destination, Apotek Cempaka Putih, is the yellow kiosk with a vertical sign located on the left side of the street."
+}

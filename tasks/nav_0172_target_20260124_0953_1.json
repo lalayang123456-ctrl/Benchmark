@@ -1,0 +1,103 @@
+{
+  "task_id": "nav_0172_target_20260124_0953_1",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_095326",
+  "spawn_point": "XL6XMmiz9ufOs_8K3U4QLw",
+  "spawn_heading": 350.2,
+  "description": "Navigate to Giant Ferris Wheel nORIA Sapporo Susukino. Head north for 41m. At 南4西5（交差点）, continue for 43m. Turn right at S 4 West 5 Destination will be on the left for 76m. Total distance: approximately 160 m.",
+  "ground_truth": {
+    "target_name": "Giant Ferris Wheel nORIA Sapporo Susukino",
+    "target_pano_id": "8z9-5DpCmlF4dS5CTzm8HA",
+    "optimal_distance_meters": 160,
+    "route_description": "straight→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "8z9-5DpCmlF4dS5CTzm8HA"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "XL6XMmiz9ufOs_8K3U4QLw",
+      "heading": 350.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "qhEIopEDXEVetDSTcSIBJw",
+      "heading": 350.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "FlRhzjqwaFCbWSvJwdlnqA",
+      "heading": 350.3
+    },
+    {
+      "step_index": 3,
+      "pano_id": "HyT4IvtkSnnOfRgD1O3hKg",
+      "heading": 350.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "albK65JFoPx1FeudiMaYdA",
+      "heading": 350.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "-bAn1p9oqd6pql0plPK7LA",
+      "heading": 349.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "eszPvzP_2879B2vUJ_RZYg",
+      "heading": 349.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "LJ7VLgKTYBKJC_vn3oANzw",
+      "heading": 349.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "EhKmf6U_WQBhYsSyPwoO8w",
+      "heading": 349.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "HqgJbR2ihgcbyey67h6CPA",
+      "heading": 21.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "pyhiRl_YGZoD5lxqBpAbDQ",
+      "heading": 79.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "nl4nVJA3xocdf_nskReKpw",
+      "heading": 79.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "FhEms4peh6qiLpsYa_Byng",
+      "heading": 79.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "kvAEHzwHX33Jut9F5_shaQ",
+      "heading": 79.5
+    },
+    {
+      "step_index": 14,
+      "pano_id": "oJDx6ign8fALqd-sRmCCSA",
+      "heading": 79.5
+    },
+    {
+      "step_index": 15,
+      "pano_id": "8z9-5DpCmlF4dS5CTzm8HA",
+      "heading": 79.6
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

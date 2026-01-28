@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_supermarket_20260125_032234</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_supermarket_20260125_032234</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"EDNsBkEb7dTCU8l41xOWiw": {"lat": 33.43738790194449, "lng": -112.0804775680537, "links": [{"pano_id": "2n5lMUNOxI4dKbVLnMDwnQ", "heading": 179.87122, "description": "S 5th Ave"}]}, "GHRuqlFtsRVacAnLWjjBOQ": {"lat": 33.43747870905025, "lng": -112.0804777499863, "links": [{"pano_id": "RDDSvrDhHFCWUKk4Tsd0rQ", "heading": 359.862, "description": "S 5th Ave"}, {"pano_id": "EDNsBkEb7dTCU8l41xOWiw", "heading": 179.9042, "description": "S 5th Ave"}, {"pano_id": "2n5lMUNOxI4dKbVLnMDwnQ", "heading": 179.89, "distance": 17.61, "virtual": true}]}, "2n5lMUNOxI4dKbVLnMDwnQ": {"lat": 33.43732035399493, "lng": -112.0804773861212, "links": [{"pano_id": "EDNsBkEb7dTCU8l41xOWiw", "heading": 359.87122, "description": "S 5th Ave"}, {"pano_id": "5ALrc2uag_MZFrUjQPySRg", "heading": 179.77046, "description": "S 5th Ave"}]}, "5ALrc2uag_MZFrUjQPySRg": {"lat": 33.43722561266992, "lng": -112.0804769312897, "links": [{"pano_id": "2n5lMUNOxI4dKbVLnMDwnQ", "heading": 359.77048, "description": "S 5th Ave"}, {"pano_id": "tUVEqkGVr-M_UNYh6fzHag", "heading": 179.70581, "description": "S 5th Ave"}]}, "tUVEqkGVr-M_UNYh6fzHag": {"lat": 33.43703341555837, "lng": -112.0804757487279, "links": [{"pano_id": "x1wGV6fyBQ3c7mvvtfMCNw", "heading": 288.39023, "description": "W Buckeye Rd"}, {"pano_id": "Q1HEo24C2xAhsxl81Up8hw", "heading": 180, "description": "S 5th Ave"}, {"pano_id": "5ALrc2uag_MZFrUjQPySRg", "heading": 359.7058, "description": "S 5th Ave"}, {"pano_id": "LO-kuk7QABj4WLrWDyZvWQ", "heading": 56.412697, "description": "W Buckeye Rd"}, {"pano_id": "Ex8b3zdDV0vdbGVvR-Y8Hg", "heading": 74.32, "distance": 15.61, "virtual": true}]}, "x1wGV6fyBQ3c7mvvtfMCNw": {"lat": 33.43707066640967, "lng": -112.0806100149723, "links": [{"pano_id": "tUVEqkGVr-M_UNYh6fzHag", "heading": 108.39021, "description": "S 5th Ave"}, {"pano_id": "P9_alLAnMD1wnxrQ0T_sjA", "heading": 269.7986, "description": "W Buckeye Rd"}]}, "Q1HEo24C2xAhsxl81Up8hw": {"lat": 33.436933140253, "lng": -112.0804757487279, "links": [{"pano_id": "__NyRNvvNuM3ihE1_59ycw", "heading": 180.03654, "description": "S 5th Ave"}, {"pano_id": "tUVEqkGVr-M_UNYh6fzHag", "heading": -16.725353, "description": "S 5th Ave"}, {"pano_id": "eEJB6axybkdsons2ZXxnbA", "heading": 247.48534, "description": ""}, {"pano_id": "LO-kuk7QABj4WLrWDyZvWQ", "heading": 22.39, "distance": 16.6, "virtual": true}]}, "LO-kuk7QABj4WLrWDyZvWQ": {"lat": 33.43707117313442, "lng": -112.0804076149737, "links": [{"pano_id": "Ex8b3zdDV0vdbGVvR-Y8Hg", "heading": 89.86213, "description": "W Buckeye Rd"}, {"pano_id": "tUVEqkGVr-M_UNYh6fzHag", "heading": 236.4127, "description": "S 5th Ave"}, {"pano_id": "Q1HEo24C2xAhsxl81Up8hw", "heading": 202.39, "distance": 16.6, "virtual": true}]}, "Ex8b3zdDV0vdbGVvR-Y8Hg": {"lat": 33.43707136163951, "lng": -112.0803137377552, "links": [{"pano_id": "LO-kuk7QABj4WLrWDyZvWQ", "heading": 269.86212, "description": "W Buckeye Rd"}, {"pano_id": "Fe-gaVd0-cqCgmcVbLa9wg", "heading": 89.85056, "description": "W Buckeye Rd"}, {"pano_id": "tUVEqkGVr-M_UNYh6fzHag", "heading": 254.32, "distance": 15.61, "virtual": true}]}, "P9_alLAnMD1wnxrQ0T_sjA": {"lat": 33.43707031820826, "lng": -112.0807287259749, "links": [{"pano_id": "x1wGV6fyBQ3c7mvvtfMCNw", "heading": 89.79861, "description": "W Buckeye Rd"}, {"pano_id": "Nh1BE3GzKxyUUOzEYav01g", "heading": 269.55075, "description": "W Buckeye Rd"}]}, "__NyRNvvNuM3ihE1_59ycw": {"lat": 33.43681414280281, "lng": -112.0804758396942, "links": [{"pano_id": "Q1HEo24C2xAhsxl81Up8hw", "heading": 0.036550082, "description": "S 5th Ave"}, {"pano_id": "zDRBPFXxPIM2Oftub9XaMA", "heading": 180.05247, "description": "S 5th Ave"}, {"pano_id": "eEJB6axybkdsons2ZXxnbA", "heading": 312.52, "distance": 13.48, "virtual": true}]}, "eEJB6axybkdsons2ZXxnbA": {"lat": 33.43689607327745, "lng": -112.0805829070184, "links": [{"pano_id": "Q1HEo24C2xAhsxl81Up8hw", "heading": 67.48534, "description": "S 5th Ave"}, {"pano_id": "__NyRNvvNuM3ihE1_59ycw", "heading": 132.52, "distance": 13.48, "virtual": true}]}, "zDRBPFXxPIM2Oftub9XaMA": {"lat": 33.43673125417716, "lng": -112.0804759306605, "links": [{"pano_id": "__NyRNvvNuM3ihE1_59ycw", "heading": 0.05247247, "description": "S 5th Ave"}, {"pano_id": "f2L2GE2L8GwRn5-Ztb9vfQ", "heading": 180.04951, "description": "S 5th Ave"}]}, "Nh1BE3GzKxyUUOzEYav01g": {"lat": 33.43706951110463, "lng": -112.080852076252, "links": [{"pano_id": "1pIVRDnsN-56VpkD2oPjuw", "heading": 269.33545, "description": "W Buckeye Rd"}, {"pano_id": "P9_alLAnMD1wnxrQ0T_sjA", "heading": 89.55076, "description": "W Buckeye Rd"}]}, "Fe-gaVd0-cqCgmcVbLa9wg": {"lat": 33.43707166792519, "lng": -112.0801730128869, "links": [{"pano_id": "Ex8b3zdDV0vdbGVvR-Y8Hg", "heading": 269.85056, "description": "W Buckeye Rd"}, {"pano_id": "hH4YO-aO5jJPmVxbOkXpXg", "heading": 89.81801, "description": "W Buckeye Rd"}]}, "1pIVRDnsN-56VpkD2oPjuw": {"lat": 33.43706846065539, "lng": -112.0809605990202, "links": [{"pano_id": "Nh1BE3GzKxyUUOzEYav01g", "heading": 89.33544, "description": "W Buckeye Rd"}, {"pano_id": "GFH7XQRVnTg1QTPoIXgMdg", "heading": 268.35352, "description": "W Buckeye Rd"}]}, "f2L2GE2L8GwRn5-Ztb9vfQ": {"lat": 33.43664340456195, "lng": -112.0804760216268, "links": [{"pano_id": "zDRBPFXxPIM2Oftub9XaMA", "heading": 0.049509324, "description": "S 5th Ave"}, {"pano_id": "p-zJOnr-WVK__f6uTnGnpQ", "heading": 180.43523, "description": "S 5th Ave"}]}, "hH4YO-aO5jJPmVxbOkXpXg": {"lat": 33.43707193991333, "lng": -112.0800704028939, "links": [{"pano_id": "Fe-gaVd0-cqCgmcVbLa9wg", "heading": 269.818, "description": "W Buckeye Rd"}, {"pano_id": "1QvPu00kbiKxqebx3BcO9A", "heading": 89.876526, "description": "W Buckeye Rd"}]}, "p-zJOnr-WVK__f6uTnGnpQ": {"lat": 33.43655346728559, "lng": -112.0804768403234, "links": [{"pano_id": "Ai_LvSGGckMSb_G3XBE2Xw", "heading": 180.48045, "description": "S 5th Ave"}, {"pano_id": "f2L2GE2L8GwRn5-Ztb9vfQ", "heading": 0.43523303, "description": "S 5th Ave"}]}, "GFH7XQRVnTg1QTPoIXgMdg": {"lat": 33.43706579640266, "lng": -112.0810716688391, "links": [{"pano_id": "PVUr1Hm-cVkyugntCoz9jg", "heading": 265.6881, "description": "W Buckeye Rd"}, {"pano_id": "1pIVRDnsN-56VpkD2oPjuw", "heading": 88.35351, "description": "W Buckeye Rd"}]}, "1QvPu00kbiKxqebx3BcO9A": {"lat": 33.43707212754903, "lng": -112.0799660645367, "links": [{"pano_id": "ThPFhCOQs5uqV49lt9WTlA", "heading": 89.84281, "description": "W Buckeye Rd"}, {"pano_id": "hH4YO-aO5jJPmVxbOkXpXg", "heading": 269.87653, "description": "W Buckeye Rd"}]}, "PVUr1Hm-cVkyugntCoz9jg": {"lat": 33.4370588422385, "lng": -112.0811821928554, "links": [{"pano_id": "I83p86jNdxpuMh0YEMFdGA", "heading": 263.73996, "description": "W Buckeye Rd"}, {"pano_id": "GFH7XQRVnTg1QTPoIXgMdg", "heading": 85.68811, "description": "W Buckeye Rd"}]}, "ThPFhCOQs5uqV49lt9WTlA": {"lat": 33.43707238120372, "lng": -112.0798552675666, "links": [{"pano_id": "XV4V8InKhy_Ze_DIF1o10g", "heading": 89.821, "description": "W Buckeye Rd"}, {"pano_id": "1QvPu00kbiKxqebx3BcO9A", "heading": 269.8428, "description": "W Buckeye Rd"}]}, "Ai_LvSGGckMSb_G3XBE2Xw": {"lat": 33.43646294367314, "lng": -112.0804777499863, "links": [{"pano_id": "BmcSulXxBllC3ov-a0eXoQ", "heading": 180.43445, "description": "S 5th Ave"}, {"pano_id": "p-zJOnr-WVK__f6uTnGnpQ", "heading": 0.48045844, "description": "S 5th Ave"}]}, "XV4V8InKhy_Ze_DIF1o10g": {"lat": 33.43707267978976, "lng": -112.0797407409724, "links": [{"pano_id": "ThPFhCOQs5uqV49lt9WTlA", "heading": 269.82098, "description": "W Buckeye Rd"}, {"pano_id": "9zVh4w8WXKN8HVAMGVWMqg", "heading": 89.82989, "description": "W Buckeye Rd"}]}, "BmcSulXxBllC3ov-a0eXoQ": {"lat": 33.4363728435804, "lng": -112.080478568683, "links": [{"pano_id": "pFIL8pt6fvwzEqRxms16BA", "heading": 180.47534, "description": "S 5th Ave"}, {"pano_id": "Ai_LvSGGckMSb_G3XBE2Xw", "heading": 0.43444747, "description": "S 5th Ave"}]}, "I83p86jNdxpuMh0YEMFdGA": {"lat": 33.43704873321522, "lng": -112.0812926259004, "links": [{"pano_id": "PVUr1Hm-cVkyugntCoz9jg", "heading": 83.73995, "description": "W Buckeye Rd"}, {"pano_id": "pNk90LAgD8F-zLimFz-wNw", "heading": 261.13083, "description": "W Buckeye Rd"}]}, "9zVh4w8WXKN8HVAMGVWMqg": {"lat": 33.43707301042, "lng": -112.0796072933773, "links": [{"pano_id": "XV4V8InKhy_Ze_DIF1o10g", "heading": 269.8299, "description": "W Buckeye Rd"}, {"pano_id": "AQuOGHC1dzWg2FZ4OWtKYA", "heading": 89.83708, "description": "W Buckeye Rd"}]}, "pNk90LAgD8F-zLimFz-wNw": {"lat": 33.43703387902772, "lng": -112.0814066975908, "links": [{"pano_id": "9KUSkx6k3nNdQZpGQJYpdw", "heading": 259.34946, "description": "W Buckeye Rd"}, {"pano_id": "I83p86jNdxpuMh0YEMFdGA", "heading": 81.13083, "description": "W Buckeye Rd"}]}, "pFIL8pt6fvwzEqRxms16BA": {"lat": 33.4362813438817, "lng": -112.0804794783459, "links": [{"pano_id": "BmcSulXxBllC3ov-a0eXoQ", "heading": 0.47533432, "description": "S 5th Ave"}, {"pano_id": "5qDt1GfJpnkOLZltCR35Aw", "heading": 180.42941, "description": "S 5th Ave"}]}, "5qDt1GfJpnkOLZltCR35Aw": {"lat": 33.43619018637467, "lng": -112.0804802970425, "links": [{"pano_id": "pFIL8pt6fvwzEqRxms16BA", "heading": 0.42940903, "description": "S 5th Ave"}, {"pano_id": "830qc_HSyENzss7OK2fPcA", "heading": 180.38142, "description": "S 5th Ave"}, {"pano_id": "gKOxPaoxixhUtXFV8AnOYQ", "heading": 123.12, "distance": 12.49, "virtual": true}]}, "9KUSkx6k3nNdQZpGQJYpdw": {"lat": 33.43701620584303, "lng": -112.0815193138158, "links": [{"pano_id": "pNk90LAgD8F-zLimFz-wNw", "heading": 79.349464, "description": "W Buckeye Rd"}, {"pano_id": "FrqhBpMey95-NwPnOfwmFQ", "heading": 256.64902, "description": "W Buckeye Rd"}]}, "AQuOGHC1dzWg2FZ4OWtKYA": {"lat": 33.43707334261468, "lng": -112.0794672961992, "links": [{"pano_id": "yBMoxDW5dIaUTZDYTZfKpg", "heading": 28.397793, "description": "S 4th Ave"}, {"pano_id": "9zVh4w8WXKN8HVAMGVWMqg", "heading": 269.83707, "description": "W Buckeye Rd"}, {"pano_id": "YYTKVZRDaQpMBNd4q8xQGQ", "heading": 89.844185, "description": "W Buckeye Rd"}, {"pano_id": "f7EIgIVZvq1nNEj7QV0PkQ", "heading": 155.66917, "description": "S 4th Ave"}, {"pano_id": "9VrJ0cCRTy1Euo1hlUt7jw", "heading": 12.35, "distance": 17.16, "virtual": true}]}, "f7EIgIVZvq1nNEj7QV0PkQ": {"lat": 33.43699829911623, "lng": -112.0794266342493, "links": [{"pano_id": "AQuOGHC1dzWg2FZ4OWtKYA", "heading": 335.66916, "description": "W Buckeye Rd"}, {"pano_id": "gBm-24t1jxd3HXZ5oKhdKg", "heading": 179.90839, "description": "S 4th Ave"}, {"pano_id": "yBMoxDW5dIaUTZDYTZfKpg", "heading": 2.49, "distance": 16.68, "virtual": true}, {"pano_id": "YYTKVZRDaQpMBNd4q8xQGQ", "heading": 47.83, "distance": 12.48, "virtual": true}]}, "yBMoxDW5dIaUTZDYTZfKpg": {"lat": 33.43714817935662, "lng": -112.0794188111447, "links": [{"pano_id": "9VrJ0cCRTy1Euo1hlUt7jw", "heading": 354.40378, "description": "S 4th Ave"}, {"pano_id": "AQuOGHC1dzWg2FZ4OWtKYA", "heading": 208.3978, "description": "W Buckeye Rd"}, {"pano_id": "f7EIgIVZvq1nNEj7QV0PkQ", "heading": 182.49, "distance": 16.68, "virtual": true}, {"pano_id": "YYTKVZRDaQpMBNd4q8xQGQ", "heading": 134.18, "distance": 11.89, "virtual": true}]}, "YYTKVZRDaQpMBNd4q8xQGQ": {"lat": 33.437073661153, "lng": -112.0793269351478, "links": [{"pano_id": "yH5hOozrtRsDQN4YR0XgKQ", "heading": 89.85125, "description": "W Buckeye Rd"}, {"pano_id": "AQuOGHC1dzWg2FZ4OWtKYA", "heading": 269.84418, "description": "W Buckeye Rd"}, {"pano_id": "f7EIgIVZvq1nNEj7QV0PkQ", "heading": 227.83, "distance": 12.48, "virtual": true}, {"pano_id": "yBMoxDW5dIaUTZDYTZfKpg", "heading": 314.18, "distance": 11.89, "virtual": true}]}, "FrqhBpMey95-NwPnOfwmFQ": {"lat": 33.43699381212736, "lng": -112.0816323848668, "links": [{"pano_id": "9KUSkx6k3nNdQZpGQJYpdw", "heading": 76.64901, "description": "W Buckeye Rd"}, {"pano_id": "9g42-Qw4stOLWhq6DUbFyQ", "heading": 256.06253, "description": "W Buckeye Rd"}]}, "830qc_HSyENzss7OK2fPcA": {"lat": 33.43609896442513, "lng": -112.0804810247729, "links": [{"pano_id": "gKOxPaoxixhUtXFV8AnOYQ", "heading": 72.49218, "description": "W Yavapai St"}, {"pano_id": "td3k25qvb88adB-Znqn1nA", "heading": 180.18901, "description": "S 5th Ave"}, {"pano_id": "5qDt1GfJpnkOLZltCR35Aw", "heading": 0.3814292, "description": "S 5th Ave"}]}, "gBm-24t1jxd3HXZ5oKhdKg": {"lat": 33.43690334345715, "lng": -112.0794264523166, "links": [{"pano_id": "f7EIgIVZvq1nNEj7QV0PkQ", "heading": 359.9084, "description": "S 4th Ave"}, {"pano_id": "zJOOWFdY0xBEr2jyyw6c1g", "heading": 179.8635, "description": "S 4th Ave"}]}, "9VrJ0cCRTy1Euo1hlUt7jw": {"lat": 33.43722410205992, "lng": -112.0794277258453, "links": [{"pano_id": "RMyAciZF12QyTbYq6KCi4Q", "heading": 359.66367, "description": "S 4th Ave"}, {"pano_id": "yBMoxDW5dIaUTZDYTZfKpg", "heading": 174.40378, "description": "S 4th Ave"}, {"pano_id": "AQuOGHC1dzWg2FZ4OWtKYA", "heading": 192.35, "distance": 17.16, "virtual": true}]}, "9g42-Qw4stOLWhq6DUbFyQ": {"lat": 33.43697086661994, "lng": -112.0817431817565, "links": [{"pano_id": "YbJDU3ERYu9ef48bd2QtHg", "heading": 255.87747, "description": "W Buckeye Rd"}, {"pano_id": "FrqhBpMey95-NwPnOfwmFQ", "heading": 76.06253, "description": "W Buckeye Rd"}]}, "yH5hOozrtRsDQN4YR0XgKQ": {"lat": 33.43707396603337, "lng": -112.079186210223, "links": [{"pano_id": "AZ68mNPAQ_O_cj0jU1hsZw", "heading": 89.8456, "description": "W Buckeye Rd"}, {"pano_id": "YYTKVZRDaQpMBNd4q8xQGQ", "heading": 269.85126, "description": "W Buckeye Rd"}]}, "ClE-EhMSrlZixwjErv9e0g": {"lat": 33.43708439699451, "lng": -112.0815330497201, "links": [{"pano_id": "hLrXzTnchQh-cduHewgnaA", "heading": 0.5262381, "description": "S 6th Ave"}, {"pano_id": "FrqhBpMey95-NwPnOfwmFQ", "heading": 222.46169, "description": "W Buckeye Rd"}, {"pano_id": "pNk90LAgD8F-zLimFz-wNw", "heading": 115.6, "distance": 13.0, "virtual": true}, {"pano_id": "9KUSkx6k3nNdQZpGQJYpdw", "heading": 170.46, "distance": 7.69, "virtual": true}]}, "td3k25qvb88adB-Znqn1nA": {"lat": 33.43600691566552, "lng": -112.080481388638, "links": [{"pano_id": "72QSCGAtPW1C2EREK303lA", "heading": 126.1657, "description": ""}, {"pano_id": "830qc_HSyENzss7OK2fPcA", "heading": 0.18900383, "description": "S 5th Ave"}, {"pano_id": "0M6_HwqsjipfTBIAKfBIRQ", "heading": 180.23788, "description": "S 5th Ave"}, {"pano_id": "gKOxPaoxixhUtXFV8AnOYQ", "heading": 37.92, "distance": 17.18, "virtual": true}]}, "gKOxPaoxixhUtXFV8AnOYQ": {"lat": 33.43612882530218, "lng": -112.0803675898034, "links": [{"pano_id": "T-PD9GwNrO_R5lqdQKk08g", "heading": 90.210335, "description": "W Yavapai St"}, {"pano_id": "830qc_HSyENzss7OK2fPcA", "heading": 252.49219, "description": "S 5th Ave"}, {"pano_id": "5qDt1GfJpnkOLZltCR35Aw", "heading": 303.12, "distance": 12.49, "virtual": true}, {"pano_id": "td3k25qvb88adB-Znqn1nA", "heading": 217.92, "distance": 17.18, "virtual": true}]}, "0M6_HwqsjipfTBIAKfBIRQ": {"lat": 33.4359155004699, "lng": -112.0804818434695, "links": [{"pano_id": "FzkV5Ht2dYHDNw8PZ5uleQ", "heading": 180.28365, "description": "S 5th Ave"}, {"pano_id": "td3k25qvb88adB-Znqn1nA", "heading": 0.23789194, "description": "S 5th Ave"}, {"pano_id": "72QSCGAtPW1C2EREK303lA", "heading": 89.6, "distance": 13.82, "virtual": true}]}, "RMyAciZF12QyTbYq6KCi4Q": {"lat": 33.43734049013334, "lng": -112.0794285445423, "links": [{"pano_id": "MfKly-aFaefjmGyidxWLZg", "heading": 359.73312, "description": "S 4th Ave"}, {"pano_id": "9VrJ0cCRTy1Euo1hlUt7jw", "heading": 179.66368, "description": "S 4th Ave"}]}, "AZ68mNPAQ_O_cj0jU1hsZw": {"lat": 33.43707428066461, "lng": -112.0790463039872, "links": [{"pano_id": "4m65RB8VxEMh77vV_wdadQ", "heading": 89.82567, "description": "W Buckeye Rd"}, {"pano_id": "yH5hOozrtRsDQN4YR0XgKQ", "heading": 269.84558, "description": "W Buckeye Rd"}]}, "YbJDU3ERYu9ef48bd2QtHg": {"lat": 33.436946801669, "lng": -112.0818577992233, "links": [{"pano_id": "9g42-Qw4stOLWhq6DUbFyQ", "heading": 75.87747, "description": "W Buckeye Rd"}, {"pano_id": "IkZdhhoKSA5LvC8XHjDhTQ", "heading": 254.69495, "description": "W Buckeye Rd"}]}, "zJOOWFdY0xBEr2jyyw6c1g": {"lat": 33.43680775405924, "lng": -112.0794261794176, "links": [{"pano_id": "gBm-24t1jxd3HXZ5oKhdKg", "heading": 359.8635, "description": "S 4th Ave"}, {"pano_id": "lhdEdqB9Sz7IUKw6_WbldA", "heading": 179.90784, "description": "S 4th Ave"}]}, "T-PD9GwNrO_R5lqdQKk08g": {"lat": 33.43612839559337, "lng": -112.0802273197698, "links": [{"pano_id": "gKOxPaoxixhUtXFV8AnOYQ", "heading": 270.21033, "description": "W Yavapai St"}, {"pano_id": "8cBghl7b7S14z06P6tWsmw", "heading": 90.215675, "description": "W Yavapai St"}]}, "72QSCGAtPW1C2EREK303lA": {"lat": 33.43591635740666, "lng": -112.0803329316441, "links": [{"pano_id": "qwz5rAupDLhlJs-VM8qV_w", "heading": 141.60384, "description": ""}, {"pano_id": "td3k25qvb88adB-Znqn1nA", "heading": 306.1657, "description": "S 5th Ave"}, {"pano_id": "0M6_HwqsjipfTBIAKfBIRQ", "heading": 269.6, "distance": 13.82, "virtual": true}, {"pano_id": "FzkV5Ht2dYHDNw8PZ5uleQ", "heading": 233.33, "distance": 17.29, "virtual": true}, {"pano_id": "cV13zkrhtF_tnjo9RUHVoQ", "heading": 159.31, "distance": 17.61, "virtual": true}]}, "qwz5rAupDLhlJs-VM8qV_w": {"lat": 33.43585265718202, "lng": -112.0802724390552, "links": [{"pano_id": "cV13zkrhtF_tnjo9RUHVoQ", "heading": 176.29547, "description": ""}, {"pano_id": "72QSCGAtPW1C2EREK303lA", "heading": 321.60382, "description": ""}]}, "IkZdhhoKSA5LvC8XHjDhTQ": {"lat": 33.43692193518052, "lng": -112.0819666858117, "links": [{"pano_id": "YbJDU3ERYu9ef48bd2QtHg", "heading": 74.69495, "description": "W Buckeye Rd"}, {"pano_id": "mjJlBnEVVUX9J_tv5poCww", "heading": 255.42563, "description": "W Buckeye Rd"}]}, "8cBghl7b7S14z06P6tWsmw": {"lat": 33.4361280709853, "lng": -112.0801239820486, "links": [{"pano_id": "T-PD9GwNrO_R5lqdQKk08g", "heading": 270.21567, "description": "W Yavapai St"}, {"pano_id": "WcMME3r6gJWan-klLbzT7g", "heading": 90.217255, "description": "W Yavapai St"}]}, "FzkV5Ht2dYHDNw8PZ5uleQ": {"lat": 33.43582349893168, "lng": -112.0804823892672, "links": [{"pano_id": "akMw9DHfdhi51F_Y2jyL5w", "heading": 180.2381, "description": "S 5th Ave"}, {"pano_id": "0M6_HwqsjipfTBIAKfBIRQ", "heading": 0.28365058, "description": "S 5th Ave"}, {"pano_id": "72QSCGAtPW1C2EREK303lA", "heading": 53.33, "distance": 17.29, "virtual": true}]}, "MfKly-aFaefjmGyidxWLZg": {"lat": 33.43742197562752, "lng": -112.0794289993739, "links": [{"pano_id": "RMyAciZF12QyTbYq6KCi4Q", "heading": 179.73312, "description": "S 4th Ave"}, {"pano_id": "KpUPsfPuQSsT6ORrHuNp-Q", "heading": 359.8958, "description": "S 4th Ave"}]}, "lhdEdqB9Sz7IUKw6_WbldA": {"lat": 33.43671336750502, "lng": -112.079425997485, "links": [{"pano_id": "uJCc2hl9aPIiLO4_S1GYmA", "heading": 179.90573, "description": "S 4th Ave"}, {"pano_id": "zJOOWFdY0xBEr2jyyw6c1g", "heading": 359.90784, "description": "S 4th Ave"}]}, "4m65RB8VxEMh77vV_wdadQ": {"lat": 33.43707463196945, "lng": -112.0789079441715, "links": [{"pano_id": "6X6NQ-dA8Oqv1jyfVFVw9A", "heading": 89.85839, "description": "W Buckeye Rd"}, {"pano_id": "AZ68mNPAQ_O_cj0jU1hsZw", "heading": 269.82568, "description": "W Buckeye Rd"}]}, "uJCc2hl9aPIiLO4_S1GYmA": {"lat": 33.43662109536194, "lng": -112.0794258155523, "links": [{"pano_id": "lhdEdqB9Sz7IUKw6_WbldA", "heading": 359.90573, "description": "S 4th Ave"}]}, "mjJlBnEVVUX9J_tv5poCww": {"lat": 33.43689931656897, "lng": -112.0820709331174, "links": [{"pano_id": "ET-jeuH5R-aUDN0GJlPjag", "heading": 260.19678, "description": "W Buckeye Rd"}, {"pano_id": "IkZdhhoKSA5LvC8XHjDhTQ", "heading": 75.42562, "description": "W Buckeye Rd"}]}, "cV13zkrhtF_tnjo9RUHVoQ": {"lat": 33.43576824117744, "lng": -112.0802658894816, "links": [{"pano_id": "gbB9wxvwQ3a-yUhbITPCmw", "heading": 179.49112, "description": ""}, {"pano_id": "qwz5rAupDLhlJs-VM8qV_w", "heading": 356.29547, "description": ""}, {"pano_id": "72QSCGAtPW1C2EREK303lA", "heading": 339.31, "distance": 17.61, "virtual": true}]}, "WcMME3r6gJWan-klLbzT7g": {"lat": 33.43612773046922, "lng": -112.0800163689065, "links": [{"pano_id": "yY-W8XTFZP71pdRo1SRLIw", "heading": 90.20798, "description": "W Yavapai St"}, {"pano_id": "8cBghl7b7S14z06P6tWsmw", "heading": 270.21725, "description": "W Yavapai St"}]}, "KpUPsfPuQSsT6ORrHuNp-Q": {"lat": 33.43750546378621, "lng": -112.0794291813066, "links": [{"pano_id": "MfKly-aFaefjmGyidxWLZg", "heading": 179.89581, "description": "S 4th Ave"}, {"pano_id": "FsKiVa4hLUVCcW7meOsxGQ", "heading": 1.9702129, "description": "S 4th Ave"}]}, "akMw9DHfdhi51F_Y2jyL5w": {"lat": 33.43573216489454, "lng": -112.0804828440987, "links": [{"pano_id": "FzkV5Ht2dYHDNw8PZ5uleQ", "heading": 0.23810382, "description": "S 5th Ave"}, {"pano_id": "bpFTdGeKb-fU1sC4nDfUWA", "heading": 180.18985, "description": "S 5th Ave"}]}, "6X6NQ-dA8Oqv1jyfVFVw9A": {"lat": 33.43707491114129, "lng": -112.0787725862377, "links": [{"pano_id": "l1zpose6otaB4fvQX8bfxA", "heading": 89.8368, "description": "W Buckeye Rd"}, {"pano_id": "4m65RB8VxEMh77vV_wdadQ", "heading": 269.8584, "description": "W Buckeye Rd"}]}, "bpFTdGeKb-fU1sC4nDfUWA": {"lat": 33.4356405224316, "lng": -112.0804832079639, "links": [{"pano_id": "akMw9DHfdhi51F_Y2jyL5w", "heading": 0.18984258, "description": "S 5th Ave"}]}, "ET-jeuH5R-aUDN0GJlPjag": {"lat": 33.43688381290538, "lng": -112.082178455203, "links": [{"pano_id": "mjJlBnEVVUX9J_tv5poCww", "heading": 80.19677, "description": "W Buckeye Rd"}]}, "l1zpose6otaB4fvQX8bfxA": {"lat": 33.43707522293448, "lng": -112.078641412749, "links": [{"pano_id": "6X6NQ-dA8Oqv1jyfVFVw9A", "heading": 269.8368, "description": "W Buckeye Rd"}]}, "gbB9wxvwQ3a-yUhbITPCmw": {"lat": 33.43568277310482, "lng": -112.0802649798186, "links": [{"pano_id": "cV13zkrhtF_tnjo9RUHVoQ", "heading": 359.49112, "description": ""}]}, "FsKiVa4hLUVCcW7meOsxGQ": {"lat": 33.43759321477023, "lng": -112.0794291813066, "links": [{"pano_id": "KpUPsfPuQSsT6ORrHuNp-Q", "heading": 180, "description": "S 4th Ave"}]}, "yY-W8XTFZP71pdRo1SRLIw": {"lat": 33.43612740036475, "lng": -112.079907391265, "links": [{"pano_id": "WcMME3r6gJWan-klLbzT7g", "heading": 270.20798, "description": "W Yavapai St"}]}};
+        const targetPanos = ["EDNsBkEb7dTCU8l41xOWiw", "6X6NQ-dA8Oqv1jyfVFVw9A", "IkZdhhoKSA5LvC8XHjDhTQ", "4m65RB8VxEMh77vV_wdadQ"];
+        const spawnPoints = ["uJCc2hl9aPIiLO4_S1GYmA", "yBMoxDW5dIaUTZDYTZfKpg", "AQuOGHC1dzWg2FZ4OWtKYA", "lhdEdqB9Sz7IUKw6_WbldA", "bpFTdGeKb-fU1sC4nDfUWA", "ET-jeuH5R-aUDN0GJlPjag"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{
+  "task_id": "nav_0588_target_20260124_1504_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260124_150242",
+  "spawn_point": "ZsDDbLVeKzUjovbWhdcj3Q",
+  "spawn_heading": 264.1,
+  "description": "Navigate to Sheetal Cinema (Kurla-W). Head west for 51m. Turn right onto Lal Bahadur Shastri Marg Partial restricted usage road Pass by Sunlight Hotel (on the right in 34m) Destination will be on the right for 96m. Total distance: approximately 147 m.",
+  "ground_truth": {
+    "target_name": "Sheetal Cinema (Kurla-W)",
+    "target_pano_id": "pxLOJh1qosdfguE_b2h-Ew",
+    "optimal_distance_meters": 147,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "pxLOJh1qosdfguE_b2h-Ew"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ZsDDbLVeKzUjovbWhdcj3Q",
+      "heading": 264.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "bFi2j9ZpUDDJIaQG6IWpKw",
+      "heading": 264.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "RxnGYVFdzxR0ysZ3Jd03SQ",
+      "heading": 265.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "GWsU0cisjHzE1frKaFGN_A",
+      "heading": 270.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "vaJDc_rOa75G6QOGhcTkFg",
+      "heading": 277.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "LMnc5GVd_utxSpbs-87tIw",
+      "heading": 288.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "l2L1OTNG4uEEmmETk20oxg",
+      "heading": 210.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "RucpKdH0--ad3o-KmhG7yA",
+      "heading": 30.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "DX6rS6p54rhm7DgCnZmVNg",
+      "heading": 30.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "mtj_vbWwLOcz8lFERL4ilQ",
+      "heading": 30.3
+    },
+    {
+      "step_index": 10,
+      "pano_id": "ICGajKDC0FE5xSd6Z0zrqA",
+      "heading": 30.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "NSLa9wpdQ_4UxVDCyMvQHg",
+      "heading": 28.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "QNSUvjta7HYL6OvqEhRUsQ",
+      "heading": 26.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "eVR9rE5fSOi87HP6dZcJUg",
+      "heading": 26.5
+    },
+    {
+      "step_index": 14,
+      "pano_id": "wf4YqTwSbbaK1kUbbQm5Dg",
+      "heading": 26.5
+    },
+    {
+      "step_index": 15,
+      "pano_id": "pxLOJh1qosdfguE_b2h-Ew",
+      "heading": 12.1
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

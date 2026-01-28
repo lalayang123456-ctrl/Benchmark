@@ -1,0 +1,76 @@
+{
+  "task_id": "nav_0195_target_20260124_1117_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_111649",
+  "spawn_point": "zP5i8vsFDqkLxn8iXHWAag",
+  "spawn_heading": 181.0,
+  "description": "Head south on 14th St NW towards the intersection. Turn right at the corner with the PNC Bank onto K St NW. Continue straight past the Sabrett food cart; the destination is on the street near the 1400K building.",
+  "ground_truth": {
+    "target_name": "K St & 14th St Nw Wb",
+    "target_pano_id": "LmTaGPaqCeAeJA4UEWaXFg",
+    "optimal_distance_meters": 79,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "LmTaGPaqCeAeJA4UEWaXFg"
+  ],
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "zP5i8vsFDqkLxn8iXHWAag",
+      "heading": 181.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "tXsONRosInV61WISGAEDRg",
+      "heading": 181.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Q_XR1YyEnIVCNuQALFeNaA",
+      "heading": 181.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "C_qNxsdTcwCCP9hXNF8WmQ",
+      "heading": 172.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "ohafgrgrsforUDavTrGQUw",
+      "heading": 113.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "-bOpUuCe8z35fXoSdfdrdQ",
+      "heading": 219.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "f5ThXWYdqOzKYUQm8WK6qg",
+      "heading": 180.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "AW-LaWsKYJcthOusqX6FpA",
+      "heading": 295.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "8hsPiUqEqzS8AchMYVC_iQ",
+      "heading": 270.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "LmTaGPaqCeAeJA4UEWaXFg",
+      "heading": 270.4
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 57m -> Turn Right -> Head Straight 22m",
+  "agent_concise_description": "Head south on 14th St NW towards the intersection. Turn right at the corner with the PNC Bank onto K St NW. Continue straight past the Sabrett food cart; the destination is on the street near the 1400K building."
+}

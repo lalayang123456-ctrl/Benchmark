@@ -1,0 +1,91 @@
+{
+  "task_id": "nav_0321_target_20260124_1238_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_123648",
+  "spawn_point": "pnpZRYCy6FI3ETxn3zkApw",
+  "spawn_heading": 92.2,
+  "description": "Proceed straight along the tree-lined road. As you approach the white church (Gereja Katolik Kristus Raja) on your left, follow the road as it curves to the left. The destination is the landscaped park island located at the intersection.",
+  "ground_truth": {
+    "target_name": "Taman Persimpangan",
+    "target_pano_id": "jLvgMtMySIk2QM9aDMlOAQ",
+    "optimal_distance_meters": 72,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "jLvgMtMySIk2QM9aDMlOAQ"
+  ],
+  "max_steps": 26,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "pnpZRYCy6FI3ETxn3zkApw",
+      "heading": 92.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "b7xZNJVGo8zTs8ED3HAccQ",
+      "heading": 92.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "RNXbQAUlmrSQoqDJYm8_Kg",
+      "heading": 92.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "vpcSA0gtG4XlC5q9nYa1Jg",
+      "heading": 96.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "CU7rPHqZm5h5AYp8xL_gJA",
+      "heading": 100.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "djJQgu08ZL3LnaMHMYo8aQ",
+      "heading": 101.9
+    },
+    {
+      "step_index": 6,
+      "pano_id": "TcyqfLb7_Uu-6KarLgq6iQ",
+      "heading": 113.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "yScJyG94LuKyMUTC9yjNjg",
+      "heading": 121.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Km9mJNBvhdndyGLllAGoFw",
+      "heading": 124.8
+    },
+    {
+      "step_index": 9,
+      "pano_id": "Zr6beWuJQRin6rmuuAZyDg",
+      "heading": 128.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "XEDAYKqZY5h66YkUyf1flg",
+      "heading": 141.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "sYf55fXHjVKKYUu_DbHPLw",
+      "heading": 350.4
+    },
+    {
+      "step_index": 12,
+      "pano_id": "jLvgMtMySIk2QM9aDMlOAQ",
+      "heading": 51.3
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 50m -> Curve Left 20m -> Stop",
+  "agent_concise_description": "Proceed straight along the tree-lined road. As you approach the white church (Gereja Katolik Kristus Raja) on your left, follow the road as it curves to the left. The destination is the landscaped park island located at the intersection."
+}

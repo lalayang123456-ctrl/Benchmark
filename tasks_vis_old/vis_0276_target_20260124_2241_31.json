@@ -1,0 +1,76 @@
+{
+  "task_id": "nav_0276_target_20260124_1216_10",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_121407",
+  "spawn_point": "N0hM4gVF9s1YzJM94mWNUA",
+  "spawn_heading": 108.2,
+  "description": "Navigate to Amae café (Café de especialidad). Walk straight along the sidewalk, passing a wall with graffiti and a building with black railings. Turn left at the corner marked by a Pharmacy (Farmacia). Continue down the street, passing a blue mailbox, ending near Fruteria San Miguel.",
+  "ground_truth": {
+    "target_name": "Amae café (Café de especialidad)",
+    "target_pano_id": "ciwQ1g8kUcF1cwg-TUY8Rw",
+    "optimal_distance_meters": 86,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ciwQ1g8kUcF1cwg-TUY8Rw"
+  ],
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "N0hM4gVF9s1YzJM94mWNUA",
+      "heading": 108.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "icL36EdDXnX3AiXlyXutng",
+      "heading": 108.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "7YvlhF93xwxPnVmRi1o3KQ",
+      "heading": 108.3
+    },
+    {
+      "step_index": 3,
+      "pano_id": "RpK8nwT3ZtHLHM8YYWQAbA",
+      "heading": 108.3
+    },
+    {
+      "step_index": 4,
+      "pano_id": "-nZeA1alih8jxSK_7Zr6qg",
+      "heading": 108.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "zOwJENMRX-mlOTn_lLNmNg",
+      "heading": 108.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "GCJmeu29kp-e71JXesyRDw",
+      "heading": 57.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "Bd6h6HkRHvqmYafgiAd1CA",
+      "heading": 29.5
+    },
+    {
+      "step_index": 8,
+      "pano_id": "_P-kA_dcdeLNU6rJduqIQw",
+      "heading": 28.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "ciwQ1g8kUcF1cwg-TUY8Rw",
+      "heading": 27.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [52m] -> Turn Left [34m]",
+  "agent_concise_description": "Walk straight along the sidewalk, passing a wall with graffiti and a building with black railings. Turn left at the corner marked by a Pharmacy (Farmacia). Continue down the street, passing a blue mailbox, ending near Fruteria San Miguel."
+}

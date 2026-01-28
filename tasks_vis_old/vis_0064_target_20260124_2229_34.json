@@ -1,0 +1,56 @@
+{
+  "task_id": "nav_0064_target_20260124_0245_22",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "5Dbq6dlMfDbfK4V3uDXUJg",
+  "spawn_heading": 191.0,
+  "description": "Navigate to Studio coffee. Head south along the road, passing the large blue glass building and the barrier gate. Turn left towards the entrance of the FELIX building. The route ends at the base of the building's ramp.",
+  "ground_truth": {
+    "target_name": "Studio coffee",
+    "target_pano_id": "QeWn_L0JlAV-j-pjYUkbJw",
+    "optimal_distance_meters": 49,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "QeWn_L0JlAV-j-pjYUkbJw"
+  ],
+  "max_steps": 12,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "5Dbq6dlMfDbfK4V3uDXUJg",
+      "heading": 191.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "0o534f6DrjXcpV7GQLkyeA",
+      "heading": 191.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "H61WiTmcoKCqyZIwO69U8Q",
+      "heading": 191.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "4Ip6_CRZ1J9OKnWqMA2ikA",
+      "heading": 144.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "G90Rnd4BUpX2SsCqj2t7qw",
+      "heading": 111.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "QeWn_L0JlAV-j-pjYUkbJw",
+      "heading": 111.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head south [25m] -> Turn Left [24m]",
+  "agent_concise_description": "Head south along the road, passing the large blue glass building and the barrier gate. Turn left towards the entrance of the FELIX building. The route ends at the base of the building's ramp."
+}

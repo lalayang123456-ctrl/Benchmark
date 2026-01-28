@@ -1,0 +1,123 @@
+{
+  "task_id": "nav_0808_target_20260125_0312_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260125_031147",
+  "spawn_point": "vOdSLFeSkbDhJd_PGg0dJQ",
+  "spawn_heading": 118.0,
+  "description": "Navigate to Domino's Pizza Thomson. Head southeast for 124m. Turn right for 6m. Slight left to stay for 46m. Total distance: approximately 176 m.",
+  "ground_truth": {
+    "target_name": "Domino's Pizza Thomson",
+    "target_pano_id": "Wl_pZlwPlgN2yq9OdwGEDg",
+    "optimal_distance_meters": 176,
+    "route_description": "right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Wl_pZlwPlgN2yq9OdwGEDg"
+  ],
+  "max_steps": 40,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "vOdSLFeSkbDhJd_PGg0dJQ",
+      "heading": 118.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "qF2WX5T5yR21TeeBdYbDUQ",
+      "heading": 118.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "w5gm1Z6096n6dw8yH9ctZg",
+      "heading": 134.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "P-zU12MwgOTfPwJoqUwHyw",
+      "heading": 134.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "PvlmQ4xzYL8V_G-r3zxYQw",
+      "heading": 134.7
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Nbd__H-jxVgvDpn4zjzp7g",
+      "heading": 134.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "F75RoANYgNK1SPAloYmxrg",
+      "heading": 134.7
+    },
+    {
+      "step_index": 7,
+      "pano_id": "btJD9P1IzADzgrEIISZuDQ",
+      "heading": 134.7
+    },
+    {
+      "step_index": 8,
+      "pano_id": "-kyV6ppWRByFTLUX4iD56g",
+      "heading": 134.7
+    },
+    {
+      "step_index": 9,
+      "pano_id": "pKDwHhefWBRJIZJqdxtFmQ",
+      "heading": 134.7
+    },
+    {
+      "step_index": 10,
+      "pano_id": "xA1l0fgWtAngwJNB7qHw2Q",
+      "heading": 134.7
+    },
+    {
+      "step_index": 11,
+      "pano_id": "h-BgTo3c8Jim5c2S1oiE1A",
+      "heading": 135.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "wwiW1ILqfaAOadh97mCAtw",
+      "heading": 126.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "-8Xou670V5QDmNGDez88-w",
+      "heading": 132.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "w70ZDvXJTOyn18wW6QSWwA",
+      "heading": 162.0
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Ns1VxXEtOg1AJdGuRZpzTg",
+      "heading": 133.5
+    },
+    {
+      "step_index": 16,
+      "pano_id": "kLroqUnSbBRiW6Zm4CntYw",
+      "heading": 151.2
+    },
+    {
+      "step_index": 17,
+      "pano_id": "uy34Bg0uPffmC4ypzru7tw",
+      "heading": 172.2
+    },
+    {
+      "step_index": 18,
+      "pano_id": "mYOChm91DGBV-3zWWgCLQw",
+      "heading": 188.1
+    },
+    {
+      "step_index": 19,
+      "pano_id": "Wl_pZlwPlgN2yq9OdwGEDg",
+      "heading": 212.3
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

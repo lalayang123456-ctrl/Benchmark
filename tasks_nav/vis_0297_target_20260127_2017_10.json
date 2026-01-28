@@ -1,0 +1,86 @@
+{
+  "task_id": "nav_0297_target_20260124_1221_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_122042",
+  "spawn_point": "ydocabfn8rgDkoP-4xX0hQ",
+  "spawn_heading": 248.9,
+  "description": "Head straight along the street, passing the Fitness First on the right. Turn left onto the cobblestone pedestrian lane and continue past the Pearly Gates Bar. Proceed into the open plaza; the destination is on the right under the green awning.",
+  "ground_truth": {
+    "target_name": "Starbucks",
+    "target_pano_id": "LwQpx_i7L5uqVnh_xRSF9Q",
+    "optimal_distance_meters": 149,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "LwQpx_i7L5uqVnh_xRSF9Q"
+  ],
+  "max_steps": 24,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ydocabfn8rgDkoP-4xX0hQ",
+      "heading": 248.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Ps5EDP8CS65KyjdVRV-srg",
+      "heading": 248.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GVtc6EPaK1rsS0wSSz23qw",
+      "heading": 249.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "5qEBgmt8nEC1mM9a8-2HJg",
+      "heading": 249.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "LosU6VQl5dSSIIdYNZCAZw",
+      "heading": 250.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "NiNTtcgcJcFdkxzDuf7kwQ",
+      "heading": 196.9
+    },
+    {
+      "step_index": 6,
+      "pano_id": "ZF8OxJ9dQVc5XYq52CY1xA",
+      "heading": 160.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "4Vd-hF2CzilNH41EevOJnA",
+      "heading": 164.8
+    },
+    {
+      "step_index": 8,
+      "pano_id": "RVR5QrjXrsg85Rr7RQm9rQ",
+      "heading": 195.0
+    },
+    {
+      "step_index": 9,
+      "pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ",
+      "heading": 288.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "EKW-O-g8zRT-SghPQWJLIQ",
+      "heading": 287.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "LwQpx_i7L5uqVnh_xRSF9Q",
+      "heading": 287.5
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 48m -> Turn Left -> Head Straight 101m -> Stop",
+  "agent_concise_description": "Head straight along the street, passing the Fitness First on the right. Turn left onto the cobblestone pedestrian lane and continue past the Pearly Gates Bar. Proceed into the open plaza; the destination is on the right under the green awning."
+}

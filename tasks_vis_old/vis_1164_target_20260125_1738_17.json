@@ -1,0 +1,81 @@
+{
+  "task_id": "nav_1164_target_20260125_0349_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_034833",
+  "spawn_point": "rBIgYnhuJ_IAAARIXnBZqw",
+  "spawn_heading": 229.3,
+  "description": "Navigate to Town Hall. Start in the Town Hall station concourse and walk through the ticket barrier area, following signs for George St. Continue straight down the long corridor and ascend the stairs at the end to exit the station. The path concludes at the street level entrance.",
+  "ground_truth": {
+    "target_name": "Town Hall",
+    "target_pano_id": "VbWxgLnTqmQAAARIXnBZtA",
+    "optimal_distance_meters": 184,
+    "route_description": "right→straight→right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "VbWxgLnTqmQAAARIXnBZtA"
+  ],
+  "max_steps": 22,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "rBIgYnhuJ_IAAARIXnBZqw",
+      "heading": 229.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "l0Bqr3QwvHEAAARIXnBZqg",
+      "heading": 229.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "_YNxhtzTx5wAAARIXnBZqQ",
+      "heading": 6.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "5bJ6Vnn1aUAAAARIXnBZlg",
+      "heading": 276.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "So51C5vegm8AAARIXnBZlw",
+      "heading": 6.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "7eh8PsMTzuoAAARIXnBZmA",
+      "heading": 3.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "vi54pz9ciVYAAARIXnBZjA",
+      "heading": 92.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "anllEwV8YoIAAARIXnBZjQ",
+      "heading": 5.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "Xka7QtQIEEYAAARIXnBZjg",
+      "heading": 3.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "5Co0bCGPLycAAARIXnBZjw",
+      "heading": 93.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "VbWxgLnTqmQAAARIXnBZtA",
+      "heading": 2.8
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Turn right [10m] -> Head straight [115m] -> Turn right [21m]",
+  "agent_concise_description": "Start in the Town Hall station concourse and walk through the ticket barrier area, following signs for George St. Continue straight down the long corridor and ascend the stairs at the end to exit the station. The path concludes at the street level entrance."
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "nav_0608_target_20260124_1510_18",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_150900",
+  "spawn_point": "ZhUgmXCkAb3iALUYDpdA7Q",
+  "spawn_heading": 281.0,
+  "description": "Navigate to 河原町駅東（バス）. The route involves a very short walk along a street with a parking lot on the left and residential houses on the right. Simply proceed forward for a few meters to reach the destination vicinity.",
+  "ground_truth": {
+    "target_name": "河原町駅東（バス）",
+    "target_pano_id": "7INDD6x1yd5Y8qAeDWXPzQ",
+    "optimal_distance_meters": 8,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "7INDD6x1yd5Y8qAeDWXPzQ"
+  ],
+  "max_steps": 4,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ZhUgmXCkAb3iALUYDpdA7Q",
+      "heading": 281.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "7INDD6x1yd5Y8qAeDWXPzQ",
+      "heading": 281.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head west [8m]",
+  "agent_concise_description": "The route involves a very short walk along a street with a parking lot on the left and residential houses on the right. Simply proceed forward for a few meters to reach the destination vicinity."
+}

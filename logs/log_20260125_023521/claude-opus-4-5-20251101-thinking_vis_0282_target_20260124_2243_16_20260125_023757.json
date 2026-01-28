@@ -1,0 +1,2509 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0282_target_20260124_2243_16",
+  "timestamp": "20260125_023757",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 54,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023757_vis_0282_target_20260124_2243_16_20260125023757",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Task requires walking straight along the sidewalk; moving forward on the available path to begin navigating toward the pharmacy and subsequent landmarks.",
+        "agent_vlm_duration_seconds": 7.125,
+        "agent_total_duration_seconds": 7.125
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue walking straight along the sidewalk toward the pharmacy; move_id 2 covers more distance (14.6m) to progress efficiently toward the landmarks.",
+        "agent_vlm_duration_seconds": 5.268,
+        "agent_total_duration_seconds": 5.268
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.6,
+          "heading": 351.47
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 176.14323
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "The sidewalk curves right; move_id 1 (front-right 17°, 16.5m) maintains forward progress while following the natural path toward the intersection and landmarks.",
+        "agent_vlm_duration_seconds": 7.401,
+        "agent_total_duration_seconds": 7.401
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "front-right 20°",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "front-right 34°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "right-back 78°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "rotation",
+        "heading": 98.29,
+        "pitch": 0.0,
+        "reason": "At the large intersection with many move options; rotate right to scout for the Shell gas station visible on the corner before deciding which direction to cross.",
+        "agent_vlm_duration_seconds": 6.719,
+        "agent_total_duration_seconds": 6.719
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 188.29,
+        "pitch": 0.0,
+        "reason": "Haven't located the Shell gas station yet; rotate South to continue scouting for it at the intersection corner.",
+        "agent_vlm_duration_seconds": 6.531,
+        "agent_total_duration_seconds": 6.531
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 4,
+          "direction": "left-back 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 6,
+          "direction": "front-left 72°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 7,
+          "direction": "front-left 71°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 8,
+          "direction": "front-left 71°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 9,
+          "direction": "front-left 67°",
+          "distance": 15.9,
+          "heading": 31.76
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "rotation",
+        "heading": 278.29,
+        "pitch": 0.0,
+        "reason": "Still searching for the Shell gas station; rotate West to check the remaining direction at the intersection.",
+        "agent_vlm_duration_seconds": 5.778,
+        "agent_total_duration_seconds": 5.778
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 3,
+          "direction": "right-back 46°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 5,
+          "direction": "left-back 72°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 6,
+          "direction": "left-back 71°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 7,
+          "direction": "left-back 71°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 8,
+          "direction": "left-back 67°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 9,
+          "direction": "front-left 13°",
+          "distance": 3.3,
+          "heading": 175.54152
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "rotation",
+        "heading": 278.29,
+        "pitch": 30.0,
+        "reason": "Haven't visually confirmed the Shell gas station yet; look up to check for signage or elevated views that might reveal its location at the intersection.",
+        "agent_vlm_duration_seconds": 9.558,
+        "agent_total_duration_seconds": 9.558
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 46°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 3,
+          "direction": "right-back 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 5,
+          "direction": "right-back 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 6,
+          "direction": "right-back 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 7,
+          "direction": "left-back 13°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 9,
+          "direction": "left",
+          "distance": 16.5,
+          "heading": 188.29
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 8.29,
+        "pitch": 0.0,
+        "reason": "Haven't found the pharmacy, fruit shop, or scaffolding yet; look back North to reassess the path and determine if I need to backtrack to find these landmarks.",
+        "agent_vlm_duration_seconds": 5.722,
+        "agent_total_duration_seconds": 5.722
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 46°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 3,
+          "direction": "right-back 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 5,
+          "direction": "right-back 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 6,
+          "direction": "right-back 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 7,
+          "direction": "left-back 13°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 9,
+          "direction": "left",
+          "distance": 16.5,
+          "heading": 188.29
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Backtrack North to retrace the path and find the pharmacy, fruit shop, and scaffolding landmarks that should be along the sidewalk before the intersection.",
+        "agent_vlm_duration_seconds": 8.154,
+        "agent_total_duration_seconds": 8.154
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "The sidewalk curves right (Northeast); move forward-right to follow the path and search for the pharmacy, fruit shop, and scaffolding landmarks.",
+        "agent_vlm_duration_seconds": 6.64,
+        "agent_total_duration_seconds": 6.64
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 58°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 74°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right-back 23°",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "rotation",
+        "heading": 147.38,
+        "pitch": 0.0,
+        "reason": "At a tight junction with very short moves; rotate right to scout for landmarks like the pharmacy, fruit shop, or scaffolding.",
+        "agent_vlm_duration_seconds": 6.406,
+        "agent_total_duration_seconds": 6.406
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 31°",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 2,
+          "direction": "front-right 37°",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 3,
+          "direction": "right-back 60°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 4,
+          "direction": "right-back 62°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 237.37628
+        },
+        {
+          "id": 6,
+          "direction": "left-back 61°",
+          "distance": 15.9,
+          "heading": 266.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 28°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 8,
+          "direction": "front-left 28°",
+          "distance": 13.1,
+          "heading": 28.91
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "rotation",
+        "heading": 327.38,
+        "pitch": 0.0,
+        "reason": "Still searching for landmarks; rotate back (Northwest) to check that direction from this junction.",
+        "agent_vlm_duration_seconds": 6.393,
+        "agent_total_duration_seconds": 6.393
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 60°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 2,
+          "direction": "front-right 62°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 7.5,
+          "heading": 237.37628
+        },
+        {
+          "id": 4,
+          "direction": "right-back 29°",
+          "distance": 15.9,
+          "heading": 266.66
+        },
+        {
+          "id": 5,
+          "direction": "left-back 28°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 6,
+          "direction": "left-back 28°",
+          "distance": 13.1,
+          "heading": 28.91
+        },
+        {
+          "id": 7,
+          "direction": "front-left 59°",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 8,
+          "direction": "front-left 53°",
+          "distance": 9.1,
+          "heading": 94.07
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "At a constrained junction; move forward-right (Move_id 2) to continue exploring and find the landmarks along the sidewalk.",
+        "agent_vlm_duration_seconds": 8.808,
+        "agent_total_duration_seconds": 8.808
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 62°",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 2,
+          "direction": "front-right 62°",
+          "distance": 13.1,
+          "heading": 28.91
+        },
+        {
+          "id": 3,
+          "direction": "right-back 31°",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 4,
+          "direction": "right-back 37°",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 5,
+          "direction": "left-back 30°",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 6,
+          "direction": "left-back 28°",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 7.5,
+          "heading": 237.37628
+        },
+        {
+          "id": 8,
+          "direction": "front-left 61°",
+          "distance": 15.9,
+          "heading": 266.66
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Exited the constrained junction; move forward to continue along the sidewalk toward the landmarks.",
+        "agent_vlm_duration_seconds": 9.398,
+        "agent_total_duration_seconds": 9.398
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 27.677458
+        },
+        {
+          "id": 2,
+          "direction": "right-back 48°",
+          "distance": 12.4,
+          "heading": 167.35
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 13.0,
+          "heading": 208.9061
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 13.1,
+          "heading": 208.91
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 12.5,
+          "heading": 203.58
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "On a narrow path with limited options; continue forward to determine if this leads to the landmarks or if I need to backtrack to the intersection.",
+        "agent_vlm_duration_seconds": 6.776,
+        "agent_total_duration_seconds": 6.776
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 27.64024
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 207.67746
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "This narrow corridor doesn't match the task description of a sidewalk with shops; backtrack to return to the main intersection and explore other directions.",
+        "agent_vlm_duration_seconds": 6.291,
+        "agent_total_duration_seconds": 6.291
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 27.684437
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 207.64024
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue backtracking Southwest to exit this narrow corridor and return to the main intersection.",
+        "agent_vlm_duration_seconds": 5.221,
+        "agent_total_duration_seconds": 5.221
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 207.67746
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.6,
+          "heading": 27.64024
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Exited the narrow corridor and back at the junction; move forward Southwest to return to the main intersection.",
+        "agent_vlm_duration_seconds": 5.29,
+        "agent_total_duration_seconds": 5.29
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 13.0,
+          "heading": 208.9061
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.1,
+          "heading": 208.91
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 12.5,
+          "heading": 203.58
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 27.677458
+        },
+        {
+          "id": 5,
+          "direction": "front-left 40°",
+          "distance": 12.4,
+          "heading": 167.35
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "rotation",
+        "heading": 118.91,
+        "pitch": 0.0,
+        "reason": "Back at the constrained junction; rotate left to scout the Southeast direction and understand the layout before choosing a new path.",
+        "agent_vlm_duration_seconds": 6.873,
+        "agent_total_duration_seconds": 6.873
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 0.2,
+          "heading": 209.54291
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 6.7,
+          "heading": 209.37
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.3,
+          "heading": 207.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 28°",
+          "distance": 7.7,
+          "heading": 236.78
+        },
+        {
+          "id": 5,
+          "direction": "front-right 57°",
+          "distance": 16.0,
+          "heading": 266.14
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.0,
+          "heading": 28.906097
+        },
+        {
+          "id": 7,
+          "direction": "left-back 24°",
+          "distance": 1.3,
+          "heading": 95.01
+        },
+        {
+          "id": 8,
+          "direction": "left-back 24°",
+          "distance": 9.0,
+          "heading": 95.06
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "rotation",
+        "heading": 28.91,
+        "pitch": 0.0,
+        "reason": "Scouting the junction; rotate left to see the Northeast direction and determine the best path back to the main intersection.",
+        "agent_vlm_duration_seconds": 8.282,
+        "agent_total_duration_seconds": 8.282
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 0.2,
+          "heading": 209.54291
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 6.7,
+          "heading": 209.37
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 15.3,
+          "heading": 207.52
+        },
+        {
+          "id": 4,
+          "direction": "right-back 28°",
+          "distance": 7.7,
+          "heading": 236.78
+        },
+        {
+          "id": 5,
+          "direction": "right-back 57°",
+          "distance": 16.0,
+          "heading": 266.14
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 13.0,
+          "heading": 28.906097
+        },
+        {
+          "id": 7,
+          "direction": "front-left 24°",
+          "distance": 1.3,
+          "heading": 95.01
+        },
+        {
+          "id": 8,
+          "direction": "front-left 24°",
+          "distance": 9.0,
+          "heading": 95.06
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 8,
+        "reason": "Avoid the dead-end Northeast path; move left-back (Move_id 8) Northwest to find a new route to the main intersection.",
+        "agent_vlm_duration_seconds": 5.806,
+        "agent_total_duration_seconds": 5.806
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 13.0,
+          "heading": 28.906097
+        },
+        {
+          "id": 2,
+          "direction": "front-right 66°",
+          "distance": 1.3,
+          "heading": 95.01
+        },
+        {
+          "id": 3,
+          "direction": "front-right 66°",
+          "distance": 9.0,
+          "heading": 95.06
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 0.2,
+          "heading": 209.54291
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 6.7,
+          "heading": 209.37
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 207.52
+        },
+        {
+          "id": 7,
+          "direction": "left-back 62°",
+          "distance": 7.7,
+          "heading": 236.78
+        },
+        {
+          "id": 8,
+          "direction": "left-back 33°",
+          "distance": 16.0,
+          "heading": 266.14
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward-right to continue exploring Northwest and escape the junction area.",
+        "agent_vlm_duration_seconds": 6.171,
+        "agent_total_duration_seconds": 6.171
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 22°",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left-back 68°",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left-back 66°",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 31°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Another narrow dead-end corridor; backtrack to return to the junction and navigate back to the main intersection to find the Shell station.",
+        "agent_vlm_duration_seconds": 6.837,
+        "agent_total_duration_seconds": 6.837
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 288.25333
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 108.25782
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 288.26,
+        "pitch": 0.0,
+        "reason": "Back at the junction; rotate back (West) to scout and determine the best path to return to the main intersection.",
+        "agent_vlm_duration_seconds": 5.791,
+        "agent_total_duration_seconds": 5.791
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "Move right-back (North) to navigate back toward the main intersection where I can find the Shell gas station.",
+        "agent_vlm_duration_seconds": 5.001,
+        "agent_total_duration_seconds": 5.001
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "right-back 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "right-back 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 356.79,
+        "pitch": 0.0,
+        "reason": "At a junction with tight corners; rotate left (North) to scout and determine if I'm near the main intersection.",
+        "agent_vlm_duration_seconds": 6.563,
+        "agent_total_duration_seconds": 6.563
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 3,
+          "direction": "right-back 35°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 4,
+          "direction": "right-back 42°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 5,
+          "direction": "right-back 65°",
+          "distance": 8.7,
+          "heading": 241.94
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 9,
+          "direction": "front-left 63°",
+          "distance": 12.5,
+          "heading": 23.58
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward-right (Northeast) to continue toward the main intersection.",
+        "agent_vlm_duration_seconds": 8.079,
+        "agent_total_duration_seconds": 8.079
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 27°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 4,
+          "direction": "left-back 55°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 5,
+          "direction": "left-back 48°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 6,
+          "direction": "left-back 25°",
+          "distance": 8.7,
+          "heading": 241.94
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 9,
+          "direction": "left",
+          "distance": 17.3,
+          "heading": 266.79
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward Northeast to determine if this path leads to the main intersection.",
+        "agent_vlm_duration_seconds": 5.172,
+        "agent_total_duration_seconds": 5.172
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 27.677458
+        },
+        {
+          "id": 2,
+          "direction": "right-back 54°",
+          "distance": 12.4,
+          "heading": 167.35
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 13.0,
+          "heading": 208.9061
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 13.1,
+          "heading": 208.91
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 12.5,
+          "heading": 203.58
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Back at the dead-end narrow corridor; backtrack immediately and return to the main intersection to systematically find the Shell gas station.",
+        "agent_vlm_duration_seconds": 9.218,
+        "agent_total_duration_seconds": 9.218
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.6,
+          "heading": 27.64024
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 207.67746
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward Southwest to return to the main intersection where I can systematically search for the Shell gas station.",
+        "agent_vlm_duration_seconds": 7.31,
+        "agent_total_duration_seconds": 7.31
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 13.0,
+          "heading": 208.9061
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.1,
+          "heading": 208.91
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 12.5,
+          "heading": 203.58
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 27.677458
+        },
+        {
+          "id": 5,
+          "direction": "front-left 40°",
+          "distance": 12.4,
+          "heading": 167.35
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move forward Southwest (Move_id 3) to reach the main intersection.",
+        "agent_vlm_duration_seconds": 7.289,
+        "agent_total_duration_seconds": 7.29
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 0.2,
+          "heading": 209.54291
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 6.7,
+          "heading": 209.37
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.3,
+          "heading": 207.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 28°",
+          "distance": 7.7,
+          "heading": 236.78
+        },
+        {
+          "id": 5,
+          "direction": "front-right 57°",
+          "distance": 16.0,
+          "heading": 266.14
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.0,
+          "heading": 28.906097
+        },
+        {
+          "id": 7,
+          "direction": "left-back 24°",
+          "distance": 1.3,
+          "heading": 95.01
+        },
+        {
+          "id": 8,
+          "direction": "left-back 24°",
+          "distance": 9.0,
+          "heading": 95.06
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "move",
+        "move_id": 9,
+        "reason": "At the main intersection; move forward-left (South/Southeast) to explore a new direction toward the Shell gas station.",
+        "agent_vlm_duration_seconds": 8.852,
+        "agent_total_duration_seconds": 8.852
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 27°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 2,
+          "direction": "right-back 66°",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 7,
+          "direction": "front-left 32°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 8,
+          "direction": "front-left 26°",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 9,
+          "direction": "front-left 19°",
+          "distance": 16.5,
+          "heading": 188.29
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Move forward-left (Southeast) to explore a new direction from the main intersection.",
+        "agent_vlm_duration_seconds": 5.719,
+        "agent_total_duration_seconds": 5.719
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "left-back 73°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "front-left 29°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "front-left 17°",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward South-Southeast to explore this path, which may be the main street with shops or leading to the Shell gas station.",
+        "agent_vlm_duration_seconds": 5.154,
+        "agent_total_duration_seconds": 5.154
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 176.14323
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 351.47
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Dead-end path; backtrack to return to the main intersection and try a different direction.",
+        "agent_vlm_duration_seconds": 6.801,
+        "agent_total_duration_seconds": 6.801
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move forward North to explore this direction from the main intersection, which may be the main street with shops.",
+        "agent_vlm_duration_seconds": 6.895,
+        "agent_total_duration_seconds": 6.895
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.6,
+          "heading": 351.47
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 176.14323
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward-right (Northeast) to explore this new direction from the junction.",
+        "agent_vlm_duration_seconds": 4.722,
+        "agent_total_duration_seconds": 4.722
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "front-right 20°",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "front-right 34°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "right-back 78°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "action": {
+        "type": "rotation",
+        "heading": 98.29,
+        "pitch": 0.0,
+        "reason": "At a major intersection with many options; rotate right (East) to scout for the Shell gas station or shops.",
+        "agent_vlm_duration_seconds": 5.787,
+        "agent_total_duration_seconds": 5.787
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move right (South) to explore what may be the main street with shops and the Shell gas station.",
+        "agent_vlm_duration_seconds": 8.306,
+        "agent_total_duration_seconds": 8.306
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 4,
+          "direction": "left-back 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 6,
+          "direction": "front-left 72°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 7,
+          "direction": "front-left 71°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 8,
+          "direction": "front-left 71°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 9,
+          "direction": "front-left 67°",
+          "distance": 15.9,
+          "heading": 31.76
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "rotation",
+        "heading": 98.29,
+        "pitch": 0.0,
+        "reason": "At the same location as Step 33; rotate left (East) to scout a direction I haven't fully explored.",
+        "agent_vlm_duration_seconds": 5.773,
+        "agent_total_duration_seconds": 5.773
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "left-back 73°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "front-left 29°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "front-left 17°",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move left (North) to explore this direction, which may lead to the main street with shops and the Shell gas station.",
+        "agent_vlm_duration_seconds": 6.3,
+        "agent_total_duration_seconds": 6.3
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 61°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 2,
+          "direction": "front-right 73°",
+          "distance": 14.6,
+          "heading": 171.47
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 5,
+          "direction": "front-left 73°",
+          "distance": 5.0,
+          "heading": 25.34
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "At the same major intersection as Step 38; move forward (North) to explore a direction I haven't tried yet.",
+        "agent_vlm_duration_seconds": 6.756,
+        "agent_total_duration_seconds": 6.757
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "At a new location; move forward-right (East/Northeast) to explore this direction.",
+        "agent_vlm_duration_seconds": 4.929,
+        "agent_total_duration_seconds": 4.929
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 58°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 74°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right-back 23°",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward-right (Southeast) to continue exploring this path.",
+        "agent_vlm_duration_seconds": 5.503,
+        "agent_total_duration_seconds": 5.503
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 18°",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.8,
+          "heading": 257.5
+        },
+        {
+          "id": 4,
+          "direction": "left-back 73°",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 5,
+          "direction": "left-back 72°",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 6,
+          "direction": "left-back 72°",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 12.4,
+          "heading": 347.35
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward (East) to continue on this linear path, which may be the main street.",
+        "agent_vlm_duration_seconds": 4.35,
+        "agent_total_duration_seconds": 4.35
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 95.41431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 275.05
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward (East) on this linear path to reach the main street or Shell station.",
+        "agent_vlm_duration_seconds": 5.137,
+        "agent_total_duration_seconds": 5.137
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.61873
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 275.4143
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "action": {
+        "type": "rotation",
+        "heading": 5.62,
+        "pitch": 0.0,
+        "reason": "Dead-end path; rotate left (North) to scout before backtracking.",
+        "agent_vlm_duration_seconds": 6.823,
+        "agent_total_duration_seconds": 6.823
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "At a dead-end; move left (West) to explore this direction.",
+        "agent_vlm_duration_seconds": 8.069,
+        "agent_total_duration_seconds": 8.069
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "left",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward (West) to continue on this linear path.",
+        "agent_vlm_duration_seconds": 5.385,
+        "agent_total_duration_seconds": 5.385
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 275.4143
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.61873
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move forward (West) on this linear path, taking the longest option to make good progress.",
+        "agent_vlm_duration_seconds": 6.12,
+        "agent_total_duration_seconds": 6.12
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 275.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 95.41431
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "At a major junction; move forward (West) to continue exploring this direction.",
+        "agent_vlm_duration_seconds": 6.24,
+        "agent_total_duration_seconds": 6.24
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 7,
+          "direction": "front-left 63°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 8,
+          "direction": "front-left 57°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 9,
+          "direction": "front-left 33°",
+          "distance": 8.7,
+          "heading": 241.94
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward-right (Northwest) to continue exploring from this junction.",
+        "agent_vlm_duration_seconds": 5.005,
+        "agent_total_duration_seconds": 5.005
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 21°",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left-back 69°",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left-back 66°",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 32°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward (West-Northwest) to continue on this linear path.",
+        "agent_vlm_duration_seconds": 4.559,
+        "agent_total_duration_seconds": 4.559
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 288.25333
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 108.25782
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward (West-Northwest) on this linear path.",
+        "agent_vlm_duration_seconds": 6.088,
+        "agent_total_duration_seconds": 6.088
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 288.2618
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 108.25332
+        }
+      ]
+    }
+  ]
+}

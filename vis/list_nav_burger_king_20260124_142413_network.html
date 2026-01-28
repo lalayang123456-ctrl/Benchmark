@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260124_142413</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260124_142413</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"s1h7wDA-tbDan8CoFkAAlQ": {"lat": 35.39234100690149, "lng": -97.52967856156867, "links": [{"pano_id": "y8hY-19VqnaOFgrJVWdgbg", "heading": 241.43033, "description": ""}, {"pano_id": "1-87dqK0WNOtuo7ejOCbHQ", "heading": 213.64, "distance": 16.24, "virtual": true}]}, "y8hY-19VqnaOFgrJVWdgbg": {"lat": 35.39220722645072, "lng": -97.52997993325349, "links": [{"pano_id": "sopT6OXHcaEdCM5DgJEpNA", "heading": 82.481705, "description": ""}, {"pano_id": "69CNyWQLsLpyEkeVNpxr8Q", "heading": 232.37657, "description": "S Western Ave"}, {"pano_id": "s1h7wDA-tbDan8CoFkAAlQ", "heading": 61.43032, "description": ""}, {"pano_id": "SBDs_cPlf9opyLEgK044DA", "heading": 276.2, "distance": 11.3, "virtual": true}, {"pano_id": "f0IsFqv7cg7tC5AKD9lFUA", "heading": 318.6, "distance": 16.12, "virtual": true}]}, "sopT6OXHcaEdCM5DgJEpNA": {"lat": 35.39221911327643, "lng": -97.52986944943153, "links": [{"pano_id": "y8hY-19VqnaOFgrJVWdgbg", "heading": 262.4817, "description": ""}, {"pano_id": "1-87dqK0WNOtuo7ejOCbHQ", "heading": 89.76087, "description": ""}]}, "69CNyWQLsLpyEkeVNpxr8Q": {"lat": 35.39212908363933, "lng": -97.53010430007053, "links": [{"pano_id": "y8hY-19VqnaOFgrJVWdgbg", "heading": 52.376564, "description": ""}, {"pano_id": "7iSyL63FDUhSwcVi51YwJA", "heading": 178.54395, "description": "S Western Ave"}, {"pano_id": "SBDs_cPlf9opyLEgK044DA", "heading": 0.21653432, "description": "S Western Ave"}]}, "1-87dqK0WNOtuo7ejOCbHQ": {"lat": 35.39221942508018, "lng": -97.52977780666451, "links": [{"pano_id": "sopT6OXHcaEdCM5DgJEpNA", "heading": 269.76086, "description": ""}, {"pano_id": "s1h7wDA-tbDan8CoFkAAlQ", "heading": 33.64, "distance": 16.24, "virtual": true}]}, "7iSyL63FDUhSwcVi51YwJA": {"lat": 35.39203102383425, "lng": -97.53010124254477, "links": [{"pano_id": "D9RzcG2W_0Bvwpx1tPHz_Q", "heading": 179.50081, "description": "S Western Ave"}, {"pano_id": "69CNyWQLsLpyEkeVNpxr8Q", "heading": 358.54395, "description": "S Western Ave"}]}, "SBDs_cPlf9opyLEgK044DA": {"lat": 35.39221820875166, "lng": -97.53010388689137, "links": [{"pano_id": "f0IsFqv7cg7tC5AKD9lFUA", "heading": 3.0381079, "description": "S Western Ave"}, {"pano_id": "69CNyWQLsLpyEkeVNpxr8Q", "heading": 180.21654, "description": "S Western Ave"}, {"pano_id": "y8hY-19VqnaOFgrJVWdgbg", "heading": 96.2, "distance": 11.3, "virtual": true}]}, "f0IsFqv7cg7tC5AKD9lFUA": {"lat": 35.39231594115909, "lng": -97.53009752393254, "links": [{"pano_id": "SBDs_cPlf9opyLEgK044DA", "heading": 183.0381, "description": "S Western Ave"}, {"pano_id": "3yO13IryIdahNAgQx7TCpg", "heading": 356.6285, "description": "S Western Ave"}, {"pano_id": "y8hY-19VqnaOFgrJVWdgbg", "heading": 138.6, "distance": 16.12, "virtual": true}]}, "D9RzcG2W_0Bvwpx1tPHz_Q": {"lat": 35.39193824251418, "lng": -97.53010025091483, "links": [{"pano_id": "5jCChLFn7-S7cdipt39quQ", "heading": 186.34904, "description": "S Western Ave"}, {"pano_id": "7iSyL63FDUhSwcVi51YwJA", "heading": 359.5008, "description": "S Western Ave"}, {"pano_id": "bNp5cmCxfSXsraE_nbzJSw", "heading": 179.49, "distance": 15.24, "virtual": true}]}, "3yO13IryIdahNAgQx7TCpg": {"lat": 35.3924108516477, "lng": -97.53010438270636, "links": [{"pano_id": "f0IsFqv7cg7tC5AKD9lFUA", "heading": 176.62852, "description": "S Western Ave"}, {"pano_id": "uABLhGhdL9Bsv8arf5Ozfg", "heading": 3.8232765, "description": "S Western Ave"}]}, "5jCChLFn7-S7cdipt39quQ": {"lat": 35.391868011782, "lng": -97.53010983667156, "links": [{"pano_id": "D9RzcG2W_0Bvwpx1tPHz_Q", "heading": 6.3490453, "description": "S Western Ave"}, {"pano_id": "bNp5cmCxfSXsraE_nbzJSw", "heading": 172.31099, "description": "S Western Ave"}, {"pano_id": "RfkZT_-kcrrkP1C5x7XyWw", "heading": 141.06, "distance": 14.72, "virtual": true}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 217.61, "distance": 13.41, "virtual": true}]}, "bNp5cmCxfSXsraE_nbzJSw": {"lat": 35.39180115016256, "lng": -97.53009876346992, "links": [{"pano_id": "RfkZT_-kcrrkP1C5x7XyWw", "heading": 115.94368, "description": "W I-240 Service Road"}, {"pano_id": "5jCChLFn7-S7cdipt39quQ", "heading": 352.31097, "description": "S Western Ave"}, {"pano_id": "7viITM1-HEUh2fwIuPWsgQ", "heading": 179.89064, "description": "S Western Ave"}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 250.84785, "description": "W I-240 Service Road"}, {"pano_id": "D9RzcG2W_0Bvwpx1tPHz_Q", "heading": 359.49, "distance": 15.24, "virtual": true}]}, "uABLhGhdL9Bsv8arf5Ozfg": {"lat": 35.39250258299266, "lng": -97.53009686284595, "links": [{"pano_id": "RAuqRpo3TFPHZ5YMKFIHWw", "heading": 358.0456, "description": "S Western Ave"}, {"pano_id": "3yO13IryIdahNAgQx7TCpg", "heading": 183.82327, "description": "S Western Ave"}]}, "7viITM1-HEUh2fwIuPWsgQ": {"lat": 35.39169526084476, "lng": -97.53009851556246, "links": [{"pano_id": "du2GDedRMGbBBFzr6nUHGQ", "heading": 180.88177, "description": "S Western Ave"}, {"pano_id": "bNp5cmCxfSXsraE_nbzJSw", "heading": 359.89066, "description": "S Western Ave"}, {"pano_id": "RfkZT_-kcrrkP1C5x7XyWw", "heading": 46.66, "distance": 11.31, "virtual": true}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 312.97, "distance": 12.59, "virtual": true}]}, "RfkZT_-kcrrkP1C5x7XyWw": {"lat": 35.39176506548313, "lng": -97.53000778148478, "links": [{"pano_id": "bNp5cmCxfSXsraE_nbzJSw", "heading": 295.9437, "description": "S Western Ave"}, {"pano_id": "63pehARjkWkt-Ziwi-XqZg", "heading": 94.08865, "description": "W I-240 Service Road"}, {"pano_id": "5jCChLFn7-S7cdipt39quQ", "heading": 321.06, "distance": 14.72, "virtual": true}, {"pano_id": "7viITM1-HEUh2fwIuPWsgQ", "heading": 226.66, "distance": 11.31, "virtual": true}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 272.69, "distance": 17.46, "virtual": true}]}, "dq_hbIjLMnUzwo6YfV5-ew": {"lat": 35.39177244308927, "lng": -97.53020015770338, "links": [{"pano_id": "vGlJDkSHoWK_rtxK4HXWWA", "heading": 265.2214, "description": "W I-240 Service Road"}, {"pano_id": "bNp5cmCxfSXsraE_nbzJSw", "heading": 70.84785, "description": "S Western Ave"}, {"pano_id": "5jCChLFn7-S7cdipt39quQ", "heading": 37.61, "distance": 13.41, "virtual": true}, {"pano_id": "7viITM1-HEUh2fwIuPWsgQ", "heading": 132.97, "distance": 12.59, "virtual": true}, {"pano_id": "RfkZT_-kcrrkP1C5x7XyWw", "heading": 92.69, "distance": 17.46, "virtual": true}, {"pano_id": "P4Q7_5_NwvMNYItq5ploxQ", "heading": 245.43, "distance": 17.37, "virtual": true}, {"pano_id": "NHyGAfreNfKLuI6x_M4M1w", "heading": 217.47, "distance": 15.98, "virtual": true}]}, "RAuqRpo3TFPHZ5YMKFIHWw": {"lat": 35.39259734100474, "lng": -97.53010082936562, "links": [{"pano_id": "uABLhGhdL9Bsv8arf5Ozfg", "heading": 178.0456, "description": "S Western Ave"}, {"pano_id": "NqKAOrzv-BmD32esLtN8_A", "heading": 0.9179459, "description": "S Western Ave"}]}, "63pehARjkWkt-Ziwi-XqZg": {"lat": 35.39175895954483, "lng": -97.52990299947399, "links": [{"pano_id": "RfkZT_-kcrrkP1C5x7XyWw", "heading": 274.08865, "description": "W I-240 Service Road"}, {"pano_id": "b2gj1Jf2bWz3hro_hwYJ6w", "heading": 90.66382, "description": "W I-240 Service Road"}]}, "NqKAOrzv-BmD32esLtN8_A": {"lat": 35.39268563301483, "lng": -97.53009909401324, "links": [{"pano_id": "RAuqRpo3TFPHZ5YMKFIHWw", "heading": 180.91795, "description": "S Western Ave"}, {"pano_id": "FcuoH22vNybrHCKKmJv-fQ", "heading": 356.65082, "description": "S Western Ave"}]}, "vGlJDkSHoWK_rtxK4HXWWA": {"lat": 35.39176453641993, "lng": -97.53031617867123, "links": [{"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 85.2214, "description": "W I-240 Service Road"}, {"pano_id": "y_jCVjZl6GjqZ52OAKu3GA", "heading": 273.95856, "description": "W I-240 Service Road"}, {"pano_id": "P4Q7_5_NwvMNYItq5ploxQ", "heading": 219.78, "distance": 8.25, "virtual": true}, {"pano_id": "NHyGAfreNfKLuI6x_M4M1w", "heading": 176.15, "distance": 11.83, "virtual": true}]}, "du2GDedRMGbBBFzr6nUHGQ": {"lat": 35.39160772166814, "lng": -97.53010016827899, "links": [{"pano_id": "7viITM1-HEUh2fwIuPWsgQ", "heading": 0.8817692, "description": "S Western Ave"}, {"pano_id": "j1OfV9BtSDMLDHy3nXyU5A", "heading": 181.74614, "description": "S Western Ave"}, {"pano_id": "ItGoV0XkV6xp2Nk2kqBPvw", "heading": 251.55, "distance": 17.52, "virtual": true}]}, "FcuoH22vNybrHCKKmJv-fQ": {"lat": 35.39278808260161, "lng": -97.53010644860221, "links": [{"pano_id": "hBVkFkNAoTt_VJq09lPGbw", "heading": 283.16977, "description": ""}, {"pano_id": "NqKAOrzv-BmD32esLtN8_A", "heading": 176.6508, "description": "S Western Ave"}, {"pano_id": "gQpM1k6CM0jzflx_mw5xtQ", "heading": 359.16278, "description": "S Western Ave"}]}, "j1OfV9BtSDMLDHy3nXyU5A": {"lat": 35.39151049139071, "lng": -97.53010380425553, "links": [{"pano_id": "LP7TVwvkN2_Dh5TXChWWyg", "heading": 181.65892, "description": "S Western Ave"}, {"pano_id": "du2GDedRMGbBBFzr6nUHGQ", "heading": 1.7461392, "description": "S Western Ave"}, {"pano_id": "ItGoV0XkV6xp2Nk2kqBPvw", "heading": 287.91, "distance": 17.12, "virtual": true}]}, "y_jCVjZl6GjqZ52OAKu3GA": {"lat": 35.39177097425846, "lng": -97.53043029920055, "links": [{"pano_id": "P4Q7_5_NwvMNYItq5ploxQ", "heading": 144.3467, "description": ""}, {"pano_id": "RiJ9WTdvDpiJt5GZaB9UMg", "heading": 266.5054, "description": "W I-240 Service Road"}, {"pano_id": "vGlJDkSHoWK_rtxK4HXWWA", "heading": 93.95856, "description": "W I-240 Service Road"}, {"pano_id": "NHyGAfreNfKLuI6x_M4M1w", "heading": 138.35, "distance": 16.76, "virtual": true}]}, "b2gj1Jf2bWz3hro_hwYJ6w": {"lat": 35.39175796438083, "lng": -97.52979763917368, "links": [{"pano_id": "4R3GOBFHhM_MWZiEqH1ptQ", "heading": 89.96972, "description": "W I-240 Service Road"}, {"pano_id": "63pehARjkWkt-Ziwi-XqZg", "heading": 270.66382, "description": "W I-240 Service Road"}]}, "4R3GOBFHhM_MWZiEqH1ptQ": {"lat": 35.39175801180284, "lng": -97.52968756881963, "links": [{"pano_id": "b2gj1Jf2bWz3hro_hwYJ6w", "heading": 269.96973, "description": "W I-240 Service Road"}, {"pano_id": "g4ENpePoKmGCnHbPTbXGhA", "heading": 90.1241, "description": "W I-240 Service Road"}]}, "P4Q7_5_NwvMNYItq5ploxQ": {"lat": 35.3917074903944, "lng": -97.5303744371366, "links": [{"pano_id": "NHyGAfreNfKLuI6x_M4M1w", "heading": 131.97192, "description": ""}, {"pano_id": "y_jCVjZl6GjqZ52OAKu3GA", "heading": 324.34668, "description": "W I-240 Service Road"}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 65.43, "distance": 17.37, "virtual": true}, {"pano_id": "vGlJDkSHoWK_rtxK4HXWWA", "heading": 39.78, "distance": 8.25, "virtual": true}, {"pano_id": "RiJ9WTdvDpiJt5GZaB9UMg", "heading": 292.94, "distance": 16.52, "virtual": true}]}, "gQpM1k6CM0jzflx_mw5xtQ": {"lat": 35.39287566895674, "lng": -97.53010801868312, "links": [{"pano_id": "phvNKA6EpHidkhXjqEXcog", "heading": 0.12616698, "description": "S Western Ave"}, {"pano_id": "FcuoH22vNybrHCKKmJv-fQ", "heading": 179.16278, "description": "S Western Ave"}, {"pano_id": "hBVkFkNAoTt_VJq09lPGbw", "heading": 238.08, "distance": 13.34, "virtual": true}]}, "hBVkFkNAoTt_VJq09lPGbw": {"lat": 35.39281221540089, "lng": -97.53023296418239, "links": [{"pano_id": "ZrS4-CRaiIyMXD_rfO4-WQ", "heading": 270.7663, "description": ""}, {"pano_id": "FcuoH22vNybrHCKKmJv-fQ", "heading": 103.169754, "description": "S Western Ave"}, {"pano_id": "gQpM1k6CM0jzflx_mw5xtQ", "heading": 58.08, "distance": 13.34, "virtual": true}, {"pano_id": "BZB3m0cnNMVusz45jvG4EQ", "heading": 313.21, "distance": 15.37, "virtual": true}, {"pano_id": "Fjm8wTuaUQy413c0_62mZQ", "heading": 225.75, "distance": 14.63, "virtual": true}]}, "RiJ9WTdvDpiJt5GZaB9UMg": {"lat": 35.39176539989473, "lng": -97.53054227137287, "links": [{"pano_id": "y_jCVjZl6GjqZ52OAKu3GA", "heading": 86.50539, "description": "W I-240 Service Road"}, {"pano_id": "PXdgjiomAAKhOPTPgS0QSA", "heading": 260.7433, "description": "W I-240 Service Road"}, {"pano_id": "P4Q7_5_NwvMNYItq5ploxQ", "heading": 112.94, "distance": 16.52, "virtual": true}]}, "LP7TVwvkN2_Dh5TXChWWyg": {"lat": 35.39141977587216, "lng": -97.53010702705306, "links": [{"pano_id": "NpzlhESTDo1xkvDJZlrhNQ", "heading": 182.28209, "description": "S Western Ave"}, {"pano_id": "j1OfV9BtSDMLDHy3nXyU5A", "heading": 1.6589159, "description": "S Western Ave"}, {"pano_id": "wB2QwPTRCcAflVXUn34CoQ", "heading": 266.23, "distance": 14.86, "virtual": true}]}, "g4ENpePoKmGCnHbPTbXGhA": {"lat": 35.39175779892185, "lng": -97.52956700397067, "links": [{"pano_id": "4R3GOBFHhM_MWZiEqH1ptQ", "heading": 270.12408, "description": "W I-240 Service Road"}, {"pano_id": "pIjswKPgfy2uCA4fJwSWGQ", "heading": 90.68264, "description": "W I-240 Service Road"}]}, "NHyGAfreNfKLuI6x_M4M1w": {"lat": 35.39165834638458, "lng": -97.53030741924663, "links": [{"pano_id": "ItGoV0XkV6xp2Nk2kqBPvw", "heading": 169.03697, "description": ""}, {"pano_id": "P4Q7_5_NwvMNYItq5ploxQ", "heading": 311.97192, "description": ""}, {"pano_id": "dq_hbIjLMnUzwo6YfV5-ew", "heading": 37.47, "distance": 15.98, "virtual": true}, {"pano_id": "vGlJDkSHoWK_rtxK4HXWWA", "heading": 356.15, "distance": 11.83, "virtual": true}, {"pano_id": "y_jCVjZl6GjqZ52OAKu3GA", "heading": 318.35, "distance": 16.76, "virtual": true}]}, "ZrS4-CRaiIyMXD_rfO4-WQ": {"lat": 35.39281336602103, "lng": -97.53033849041812, "links": [{"pano_id": "Fjm8wTuaUQy413c0_62mZQ", "heading": 185.05168, "description": ""}, {"pano_id": "hBVkFkNAoTt_VJq09lPGbw", "heading": 90.76631, "description": ""}, {"pano_id": "jqhsOHuMa9A_eqIehu4i8A", "heading": 269.80585, "description": ""}, {"pano_id": "BZB3m0cnNMVusz45jvG4EQ", "heading": 351.07047, "description": ""}]}, "phvNKA6EpHidkhXjqEXcog": {"lat": 35.39296744508237, "lng": -97.5301077707756, "links": [{"pano_id": "ZTqmpzGRC4_Zu-pvapAJOQ", "heading": 0.04123798, "description": "S Western Ave"}, {"pano_id": "gQpM1k6CM0jzflx_mw5xtQ", "heading": 180.12616, "description": "S Western Ave"}]}, "PXdgjiomAAKhOPTPgS0QSA": {"lat": 35.39175080828745, "lng": -97.53065209517777, "links": [{"pano_id": "ZYZ7c8CsI_ge9yyrewuHyQ", "heading": 270.04837, "description": "W I-240 Service Road"}, {"pano_id": "RiJ9WTdvDpiJt5GZaB9UMg", "heading": 80.74327, "description": "W I-240 Service Road"}]}, "NpzlhESTDo1xkvDJZlrhNQ": {"lat": 35.39124904108404, "lng": -97.53011537327305, "links": [{"pano_id": "LP7TVwvkN2_Dh5TXChWWyg", "heading": 2.2820916, "description": "S Western Ave"}, {"pano_id": "1kUgtk36nj_gccPzkWXVJA", "heading": 180.19992, "description": "S Western Ave"}, {"pano_id": "N2gRnMeTAoOi8qBt8b3D4g", "heading": 275.2, "distance": 15.08, "virtual": true}]}, "jqhsOHuMa9A_eqIehu4i8A": {"lat": 35.39281308479384, "lng": -97.5304402981842, "links": [{"pano_id": "ZrS4-CRaiIyMXD_rfO4-WQ", "heading": 89.805855, "description": ""}, {"pano_id": "uAaEuKutXkrXXuiUD6-Lgw", "heading": 269.598, "description": ""}, {"pano_id": "BZB3m0cnNMVusz45jvG4EQ", "heading": 36.08, "distance": 12.9, "virtual": true}, {"pano_id": "Fjm8wTuaUQy413c0_62mZQ", "heading": 141.11, "distance": 13.24, "virtual": true}]}, "pIjswKPgfy2uCA4fJwSWGQ": {"lat": 35.39175668966609, "lng": -97.52945280223085, "links": [{"pano_id": "g4ENpePoKmGCnHbPTbXGhA", "heading": 270.68265, "description": "W I-240 Service Road"}, {"pano_id": "gcqYrsOI80M3m8ltU3UFUw", "heading": 91.012085, "description": "SW 74th St"}, {"pano_id": "2WZiJKnIYoVXJcRAn7yoDQ", "heading": 136.88, "distance": 11.06, "virtual": true}]}, "ZYZ7c8CsI_ge9yyrewuHyQ": {"lat": 35.39175088632731, "lng": -97.53076547253177, "links": [{"pano_id": "u4dh_cyrK8MhBGTa8yz4fw", "heading": 269.82056, "description": "W I-240 Service Road"}, {"pano_id": "PXdgjiomAAKhOPTPgS0QSA", "heading": 90.04838, "description": "W I-240 Service Road"}, {"pano_id": "3cZOlRL6BeOBPIKwjCtd6Q", "heading": 326.99417, "description": ""}]}, "BZB3m0cnNMVusz45jvG4EQ": {"lat": 35.39290683087081, "lng": -97.53035650509308, "links": [{"pano_id": "ZrS4-CRaiIyMXD_rfO4-WQ", "heading": 171.07047, "description": ""}, {"pano_id": "QwkSbo7md0aPIR9Ed78-7Q", "heading": 358.0626, "description": ""}, {"pano_id": "hBVkFkNAoTt_VJq09lPGbw", "heading": 133.21, "distance": 15.37, "virtual": true}, {"pano_id": "jqhsOHuMa9A_eqIehu4i8A", "heading": 216.08, "distance": 12.9, "virtual": true}]}, "Fjm8wTuaUQy413c0_62mZQ": {"lat": 35.39272039365336, "lng": -97.53034857202464, "links": [{"pano_id": "rg1Lox4r1b5rbd0168ckNQ", "heading": 177.89156, "description": ""}, {"pano_id": "ZrS4-CRaiIyMXD_rfO4-WQ", "heading": 5.051679, "description": ""}, {"pano_id": "hBVkFkNAoTt_VJq09lPGbw", "heading": 45.75, "distance": 14.63, "virtual": true}, {"pano_id": "jqhsOHuMa9A_eqIehu4i8A", "heading": 321.11, "distance": 13.24, "virtual": true}]}, "1kUgtk36nj_gccPzkWXVJA": {"lat": 35.39115251068414, "lng": -97.53011578645228, "links": [{"pano_id": "NpzlhESTDo1xkvDJZlrhNQ", "heading": 0.19992557, "description": "S Western Ave"}, {"pano_id": "JNzJicUTA9Bx91DCxNU9oA", "heading": 182.83742, "description": "SW 74th St"}, {"pano_id": "X5UbtZenept2HKuRlt0ybQ", "heading": 220.01, "distance": 16.97, "virtual": true}, {"pano_id": "EeaPUL2-nxgMGvH5aH9sCg", "heading": 140.75, "distance": 16.5, "virtual": true}, {"pano_id": "SExQrtL0yxEVZ7ngmVoplg", "heading": 285.16, "distance": 17.96, "virtual": true}]}, "ZTqmpzGRC4_Zu-pvapAJOQ": {"lat": 35.39306104100898, "lng": -97.53010768813976, "links": [{"pano_id": "phvNKA6EpHidkhXjqEXcog", "heading": 180.04124, "description": "S Western Ave"}, {"pano_id": "q9ur03JaETpPLjFXz7_hXA", "heading": 0.040695403, "description": "S Western Ave"}]}, "ItGoV0XkV6xp2Nk2kqBPvw": {"lat": 35.39155784204763, "lng": -97.53028353742484, "links": [{"pano_id": "wB2QwPTRCcAflVXUn34CoQ", "heading": 175.88078, "description": ""}, {"pano_id": "NHyGAfreNfKLuI6x_M4M1w", "heading": 349.037, "description": ""}, {"pano_id": "du2GDedRMGbBBFzr6nUHGQ", "heading": 71.55, "distance": 17.52, "virtual": true}, {"pano_id": "j1OfV9BtSDMLDHy3nXyU5A", "heading": 107.91, "distance": 17.12, "virtual": true}]}, "q9ur03JaETpPLjFXz7_hXA": {"lat": 35.39315588470365, "lng": -97.53010760550393, "links": [{"pano_id": "ZTqmpzGRC4_Zu-pvapAJOQ", "heading": 180.0407, "description": "S Western Ave"}, {"pano_id": "s4erjjHA2J02P-RkzgfCxA", "heading": 359.95468, "description": "S Western Ave"}]}, "3cZOlRL6BeOBPIKwjCtd6Q": {"lat": 35.39186009489543, "lng": -97.53085248895064, "links": [{"pano_id": "ZYZ7c8CsI_ge9yyrewuHyQ", "heading": 146.99416, "description": "W I-240 Service Road"}, {"pano_id": "u4dh_cyrK8MhBGTa8yz4fw", "heading": 191.34, "distance": 12.42, "virtual": true}, {"pano_id": "Mi2pUYgPIVySLJM43hcLrQ", "heading": 226.01, "distance": 17.72, "virtual": true}]}, "u4dh_cyrK8MhBGTa8yz4fw": {"lat": 35.39175059536883, "lng": -97.53087942852892, "links": [{"pano_id": "Mi2pUYgPIVySLJM43hcLrQ", "heading": 269.26404, "description": "W I-240 Service Road"}, {"pano_id": "ZYZ7c8CsI_ge9yyrewuHyQ", "heading": 89.82055, "description": "W I-240 Service Road"}, {"pano_id": "3cZOlRL6BeOBPIKwjCtd6Q", "heading": 11.34, "distance": 12.42, "virtual": true}]}, "uAaEuKutXkrXXuiUD6-Lgw": {"lat": 35.39281246372328, "lng": -97.5305488822817, "links": [{"pano_id": "jqhsOHuMa9A_eqIehu4i8A", "heading": 89.598, "description": ""}, {"pano_id": "_ZFw5btUtyEULAVlL6zD6g", "heading": 269.66797, "description": ""}]}, "wB2QwPTRCcAflVXUn34CoQ": {"lat": 35.39141098362376, "lng": -97.53027056356663, "links": [{"pano_id": "N2gRnMeTAoOi8qBt8b3D4g", "heading": 183.27194, "description": ""}, {"pano_id": "ItGoV0XkV6xp2Nk2kqBPvw", "heading": 355.88077, "description": ""}, {"pano_id": "LP7TVwvkN2_Dh5TXChWWyg", "heading": 86.23, "distance": 14.86, "virtual": true}]}, "rg1Lox4r1b5rbd0168ckNQ": {"lat": 35.39262341542875, "lng": -97.53034419231015, "links": [{"pano_id": "Fjm8wTuaUQy413c0_62mZQ", "heading": 357.89154, "description": ""}, {"pano_id": "BPtUfLbIFpo8BdeFO_qelw", "heading": 179.50348, "description": ""}]}, "gcqYrsOI80M3m8ltU3UFUw": {"lat": 35.39175466178236, "lng": -97.52931199224106, "links": [{"pano_id": "pIjswKPgfy2uCA4fJwSWGQ", "heading": 271.0121, "description": "W I-240 Service Road"}, {"pano_id": "SMfmh6MldD9GzWi9qLZ0uw", "heading": 90.39737, "description": "SW 74th St"}, {"pano_id": "2WZiJKnIYoVXJcRAn7yoDQ", "heading": 213.57, "distance": 9.42, "virtual": true}]}, "JNzJicUTA9Bx91DCxNU9oA": {"lat": 35.39103425965851, "lng": -97.53012297577133, "links": [{"pano_id": "1kUgtk36nj_gccPzkWXVJA", "heading": 2.837422, "description": "S Western Ave"}, {"pano_id": "X5UbtZenept2HKuRlt0ybQ", "heading": 270.82993, "description": "SW 74th St"}, {"pano_id": "EeaPUL2-nxgMGvH5aH9sCg", "heading": 88.09874, "description": "SW 74th St"}, {"pano_id": "aA6jLYnYe6KIe3uhTdaw_g", "heading": 176.87717, "description": "S Western Ave"}]}, "N2gRnMeTAoOi8qBt8b3D4g": {"lat": 35.39126132911052, "lng": -97.53028105834346, "links": [{"pano_id": "wB2QwPTRCcAflVXUn34CoQ", "heading": 3.2719445, "description": ""}, {"pano_id": "SExQrtL0yxEVZ7ngmVoplg", "heading": 197.62209, "description": ""}, {"pano_id": "NpzlhESTDo1xkvDJZlrhNQ", "heading": 95.2, "distance": 15.08, "virtual": true}]}, "SMfmh6MldD9GzWi9qLZ0uw": {"lat": 35.39175409505642, "lng": -97.5292117561965, "links": [{"pano_id": "2WZiJKnIYoVXJcRAn7yoDQ", "heading": 241.43103, "description": ""}, {"pano_id": "FuuPuoZM2GCuOhnvB6MPfQ", "heading": 91.932106, "description": "W I-240 Service Road"}, {"pano_id": "gcqYrsOI80M3m8ltU3UFUw", "heading": 270.39737, "description": "SW 74th St"}]}, "X5UbtZenept2HKuRlt0ybQ": {"lat": 35.39103559660704, "lng": -97.53023618698595, "links": [{"pano_id": "JNzJicUTA9Bx91DCxNU9oA", "heading": 90.82993, "description": "SW 74th St"}, {"pano_id": "jdXFBrffldtdpFF6_grtjA", "heading": 270.78674, "description": "SW 74th St"}, {"pano_id": "1kUgtk36nj_gccPzkWXVJA", "heading": 40.01, "distance": 16.97, "virtual": true}, {"pano_id": "aA6jLYnYe6KIe3uhTdaw_g", "heading": 133.26, "distance": 14.84, "virtual": true}]}, "BPtUfLbIFpo8BdeFO_qelw": {"lat": 35.39253013566226, "lng": -97.53034320067673, "links": [{"pano_id": "rg1Lox4r1b5rbd0168ckNQ", "heading": 359.50348, "description": ""}]}, "QwkSbo7md0aPIR9Ed78-7Q": {"lat": 35.39299644594935, "lng": -97.53036022371924, "links": [{"pano_id": "BZB3m0cnNMVusz45jvG4EQ", "heading": 178.06259, "description": ""}]}, "_ZFw5btUtyEULAVlL6zD6g": {"lat": 35.39281191874847, "lng": -97.53066424274252, "links": [{"pano_id": "uAaEuKutXkrXXuiUD6-Lgw", "heading": 89.66798, "description": ""}]}, "aA6jLYnYe6KIe3uhTdaw_g": {"lat": 35.39094412124007, "lng": -97.53011694335414, "links": [{"pano_id": "JNzJicUTA9Bx91DCxNU9oA", "heading": 356.87717, "description": "SW 74th St"}, {"pano_id": "eacanJQIQklOXPtDeqgkIA", "heading": 180.36803, "description": "S Western Ave"}, {"pano_id": "X5UbtZenept2HKuRlt0ybQ", "heading": 313.26, "distance": 14.84, "virtual": true}, {"pano_id": "EeaPUL2-nxgMGvH5aH9sCg", "heading": 45.43, "distance": 14.81, "virtual": true}]}, "EeaPUL2-nxgMGvH5aH9sCg": {"lat": 35.39103757154158, "lng": -97.53000059217771, "links": [{"pano_id": "JNzJicUTA9Bx91DCxNU9oA", "heading": 268.09875, "description": "SW 74th St"}, {"pano_id": "qo-2xyidb_ChpPHd5N_cRQ", "heading": 88.01225, "description": "SW 74th St"}, {"pano_id": "1kUgtk36nj_gccPzkWXVJA", "heading": 320.75, "distance": 16.5, "virtual": true}, {"pano_id": "aA6jLYnYe6KIe3uhTdaw_g", "heading": 225.43, "distance": 14.81, "virtual": true}]}, "qo-2xyidb_ChpPHd5N_cRQ": {"lat": 35.3910409523661, "lng": -97.52988110104542, "links": [{"pano_id": "vGdYBkGZ0fjAEiLl4e6P6g", "heading": 87.96159, "description": "SW 74th St"}, {"pano_id": "EeaPUL2-nxgMGvH5aH9sCg", "heading": 268.01224, "description": "SW 74th St"}]}, "SExQrtL0yxEVZ7ngmVoplg": {"lat": 35.39119473547124, "lng": -97.53030700606625, "links": [{"pano_id": "N2gRnMeTAoOi8qBt8b3D4g", "heading": 17.622091, "description": ""}, {"pano_id": "1kUgtk36nj_gccPzkWXVJA", "heading": 105.16, "distance": 17.96, "virtual": true}, {"pano_id": "jdXFBrffldtdpFF6_grtjA", "heading": 190.04, "distance": 17.84, "virtual": true}]}, "eacanJQIQklOXPtDeqgkIA": {"lat": 35.39082875769416, "lng": -97.53011785234848, "links": [{"pano_id": "aA6jLYnYe6KIe3uhTdaw_g", "heading": 0.3680307, "description": "S Western Ave"}]}, "s4erjjHA2J02P-RkzgfCxA": {"lat": 35.39324106775281, "lng": -97.53010768813976, "links": [{"pano_id": "q9ur03JaETpPLjFXz7_hXA", "heading": 179.9547, "description": "S Western Ave"}]}, "FuuPuoZM2GCuOhnvB6MPfQ": {"lat": 35.39175127033166, "lng": -97.52910904125787, "links": [{"pano_id": "SMfmh6MldD9GzWi9qLZ0uw", "heading": 271.9321, "description": "SW 74th St"}]}, "Mi2pUYgPIVySLJM43hcLrQ": {"lat": 35.39174940464019, "lng": -97.53099313680315, "links": [{"pano_id": "u4dh_cyrK8MhBGTa8yz4fw", "heading": 89.264046, "description": "W I-240 Service Road"}, {"pano_id": "3cZOlRL6BeOBPIKwjCtd6Q", "heading": 46.01, "distance": 17.72, "virtual": true}]}, "jdXFBrffldtdpFF6_grtjA": {"lat": 35.3910367733214, "lng": -97.53034130004602, "links": [{"pano_id": "X5UbtZenept2HKuRlt0ybQ", "heading": 90.78675, "description": "SW 74th St"}, {"pano_id": "SExQrtL0yxEVZ7ngmVoplg", "heading": 10.04, "distance": 17.84, "virtual": true}]}, "2WZiJKnIYoVXJcRAn7yoDQ": {"lat": 35.39168410728432, "lng": -97.52936942351096, "links": [{"pano_id": "SMfmh6MldD9GzWi9qLZ0uw", "heading": 61.431026, "description": "SW 74th St"}, {"pano_id": "pIjswKPgfy2uCA4fJwSWGQ", "heading": 316.88, "distance": 11.06, "virtual": true}, {"pano_id": "gcqYrsOI80M3m8ltU3UFUw", "heading": 33.57, "distance": 9.42, "virtual": true}]}, "vGdYBkGZ0fjAEiLl4e6P6g": {"lat": 35.39104434989037, "lng": -97.5297640065469, "links": [{"pano_id": "qo-2xyidb_ChpPHd5N_cRQ", "heading": 267.96158, "description": "SW 74th St"}]}};
+        const targetPanos = ["1-87dqK0WNOtuo7ejOCbHQ", "s1h7wDA-tbDan8CoFkAAlQ", "uAaEuKutXkrXXuiUD6-Lgw"];
+        const spawnPoints = ["Mi2pUYgPIVySLJM43hcLrQ", "eacanJQIQklOXPtDeqgkIA", "X5UbtZenept2HKuRlt0ybQ", "s4erjjHA2J02P-RkzgfCxA", "3cZOlRL6BeOBPIKwjCtd6Q", "j1OfV9BtSDMLDHy3nXyU5A"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

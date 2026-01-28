@@ -1,0 +1,138 @@
+{
+  "task_id": "nav_0793_target_20260124_1631_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_163004",
+  "spawn_point": "BulCvf3qdHIepmB7EmAZfQ",
+  "spawn_heading": 241.7,
+  "description": "Navigate to Café Coffee Day. Head southwest toward Mavani Greenville Rd Pass by Om Sai Sahara Footwear (on the left) Destination will be on the left for 215m. Total distance: approximately 215 m.",
+  "ground_truth": {
+    "target_name": "Café Coffee Day",
+    "target_pano_id": "E7FTT8dU2H6CEm4s1UzSVw",
+    "optimal_distance_meters": 215,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "E7FTT8dU2H6CEm4s1UzSVw"
+  ],
+  "max_steps": 46,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "BulCvf3qdHIepmB7EmAZfQ",
+      "heading": 241.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "9pJo8DGL3pGT92fOOQI42A",
+      "heading": 241.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "vgAYj1V9IGYed7jVE5EY1A",
+      "heading": 242.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "gOumzhNzTvm45i_bN5qV-g",
+      "heading": 243.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "tjRIUviYfVssK7HvY9mMjQ",
+      "heading": 243.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Pt_6yTJu7g3BoRFD2QBXCA",
+      "heading": 242.9
+    },
+    {
+      "step_index": 6,
+      "pano_id": "V1GODWYL0GF2pUFVpCpW8A",
+      "heading": 243.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "jWM_7mxafapNdK-WhpYM7g",
+      "heading": 243.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "APkr2PprxJHebNmtwIrHCg",
+      "heading": 242.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "IIbSiYSM8OQ8eysX43Seuw",
+      "heading": 242.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "TnTO2mBrB2DupCy4cfW1kg",
+      "heading": 242.9
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Yh2jFBBylzOC29LhqaY6Jg",
+      "heading": 243.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "vfrUWIFfhFBoJQooN7TMtg",
+      "heading": 242.9
+    },
+    {
+      "step_index": 13,
+      "pano_id": "7kfJbT07bMTkk3WVscqSdg",
+      "heading": 242.9
+    },
+    {
+      "step_index": 14,
+      "pano_id": "qtxEymsUpDxr-IPutVV-jA",
+      "heading": 242.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "uDQOJ2Wu2ND7izPZqEXKQg",
+      "heading": 243.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "AywAsiLej2Ye59FcPU6CMQ",
+      "heading": 242.9
+    },
+    {
+      "step_index": 17,
+      "pano_id": "LRdqPJrpEGn-IUvywEwscg",
+      "heading": 243.0
+    },
+    {
+      "step_index": 18,
+      "pano_id": "wEAVWysMHmywCEdyQ2veJA",
+      "heading": 242.9
+    },
+    {
+      "step_index": 19,
+      "pano_id": "Jw-keJ0o4EJdivauceI06Q",
+      "heading": 245.8
+    },
+    {
+      "step_index": 20,
+      "pano_id": "V3K22k6rfOtZF_4v9tULmA",
+      "heading": 244.5
+    },
+    {
+      "step_index": 21,
+      "pano_id": "D2GCZZWmjZf_1w5hMAeOOA",
+      "heading": 244.5
+    },
+    {
+      "step_index": 22,
+      "pano_id": "E7FTT8dU2H6CEm4s1UzSVw",
+      "heading": 241.4
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

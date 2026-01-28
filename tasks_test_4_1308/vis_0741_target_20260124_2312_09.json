@@ -1,0 +1,216 @@
+{
+  "task_id": "nav_0741_target_20260124_1604_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_160317",
+  "spawn_point": "SwKZBUryUVbRr4wz_ANBcA",
+  "spawn_heading": 313.4,
+  "description": "Navigate to Luen Hing Street Sitting-out Area. Head northwest and turn left at the intersection near the Anchors Kindergarten building. Continue straight for 187 meters, passing a Wellcome supermarket, then turn right at the corner with Gloria Creative. The Luen Hing Street Sitting-out Area will be on your right.",
+  "ground_truth": {
+    "target_name": "Luen Hing Street Sitting-out Area",
+    "target_pano_id": "Z1TYh7sc29nE_9_VsKt9RA",
+    "optimal_distance_meters": 223,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Z1TYh7sc29nE_9_VsKt9RA"
+  ],
+  "max_steps": 76,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "SwKZBUryUVbRr4wz_ANBcA",
+      "heading": 313.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "V8xaUmBPpLRCH7Nm8y8Ztw",
+      "heading": 313.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "xw2ODkfgUbaK0DaJ3zk_3w",
+      "heading": 313.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "SG8PfWz2xYg-R3jeDj6bfQ",
+      "heading": 314.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "2K5s-39OCajI1GEGSGf1JA",
+      "heading": 314.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "i-JPJU6BnDrlQAMIKAnMYg",
+      "heading": 317.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "HdB7qZn2CFI50LFhCvKdpg",
+      "heading": 317.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "sOVgHXi3_53J13t0SdEP6A",
+      "heading": 322.8
+    },
+    {
+      "step_index": 8,
+      "pano_id": "_Kd9lyDpjCoYQtYBjqVHQg",
+      "heading": 323.7
+    },
+    {
+      "step_index": 9,
+      "pano_id": "NiMGZSESTJ5z0sdDuokKrw",
+      "heading": 293.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "qO8TwFYVj5Jafse6refP6w",
+      "heading": 284.8
+    },
+    {
+      "step_index": 11,
+      "pano_id": "MqjUBi3hjXr4RRqiLPxWQg",
+      "heading": 279.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "gwNBhZy0PMDMzkfObHY7XQ",
+      "heading": 275.4
+    },
+    {
+      "step_index": 13,
+      "pano_id": "-eN0DnVmnzCUD2381Tk6OQ",
+      "heading": 260.0
+    },
+    {
+      "step_index": 14,
+      "pano_id": "wUftQWzX7bAnbU4ENWQ48w",
+      "heading": 246.2
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Z-pmRt9K27mHul129aY4gw",
+      "heading": 233.8
+    },
+    {
+      "step_index": 16,
+      "pano_id": "RXv8rmPnuYPipTQzSwRcLw",
+      "heading": 223.5
+    },
+    {
+      "step_index": 17,
+      "pano_id": "Mx_YHo0_XcORa5vlKhN9Ng",
+      "heading": 223.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "1a2ySUSK_kbUefH-ql08mg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 19,
+      "pano_id": "ezpO-rhMv19sbEEQEW-pbg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 20,
+      "pano_id": "Ji-InoIemh9HFmdaht6cmg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 21,
+      "pano_id": "QuSSqOLSlrETkr2DyqwdEA",
+      "heading": 223.2
+    },
+    {
+      "step_index": 22,
+      "pano_id": "t7hR6yy1WGSMH8nrFgbpkg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 23,
+      "pano_id": "U42Ts92qNjJdBmtfY3jcOw",
+      "heading": 223.2
+    },
+    {
+      "step_index": 24,
+      "pano_id": "YAO1jEU4Hw8VeeMNE45Z3w",
+      "heading": 223.2
+    },
+    {
+      "step_index": 25,
+      "pano_id": "hcA4zciN4eNU4Hn9YhwPFg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 26,
+      "pano_id": "KwQwINvz0O3LjONC16ZtJg",
+      "heading": 223.2
+    },
+    {
+      "step_index": 27,
+      "pano_id": "e3i10Prc3XwyAxU8P9Eu-A",
+      "heading": 228.7
+    },
+    {
+      "step_index": 28,
+      "pano_id": "6k1YZiHXk69gcGOb5u2VKQ",
+      "heading": 207.8
+    },
+    {
+      "step_index": 29,
+      "pano_id": "QTJ1BPE1CArMJGyzkQaLpw",
+      "heading": 160.3
+    },
+    {
+      "step_index": 30,
+      "pano_id": "med7MTRmBJJX5gjzVze_Lw",
+      "heading": 160.4
+    },
+    {
+      "step_index": 31,
+      "pano_id": "5D7f_8WiWeaDZVK-E2tscg",
+      "heading": 160.3
+    },
+    {
+      "step_index": 32,
+      "pano_id": "Wub2rlM19EwuB2OJx5BWcA",
+      "heading": 160.3
+    },
+    {
+      "step_index": 33,
+      "pano_id": "Es1xoc3ddZvnfKvZzHMIvQ",
+      "heading": 145.1
+    },
+    {
+      "step_index": 34,
+      "pano_id": "KCf0dxcg7AKQG5-LIFj_VQ",
+      "heading": 144.4
+    },
+    {
+      "step_index": 35,
+      "pano_id": "NH20Lc6PKkf-LOcoZz_PnA",
+      "heading": 143.7
+    },
+    {
+      "step_index": 36,
+      "pano_id": "I6Hfw74eDkgAdBq5dxY9Bg",
+      "heading": 138.5
+    },
+    {
+      "step_index": 37,
+      "pano_id": "Z1TYh7sc29nE_9_VsKt9RA",
+      "heading": 138.6
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head northwest [19m] -> Turn Left [187m] -> Turn Right [17m]",
+  "agent_concise_description": "Head northwest and turn left at the intersection near the Anchors Kindergarten building. Continue straight for 187 meters, passing a Wellcome supermarket, then turn right at the corner with Gloria Creative. The Luen Hing Street Sitting-out Area will be on your right."
+}

@@ -1,0 +1,40 @@
+# VLN Benchmark Platform - Python Dependencies
+
+# Web Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Data Validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Environment Variables
+python-dotenv>=1.0.0
+
+# Image Processing
+opencv-python>=4.8.0
+numpy>=1.25.0
+Pillow>=10.0.0
+py360convert>=0.1.0
+
+# HTTP Requests
+requests>=2.31.0
+aiohttp>=3.9.0
+
+# Selenium for Maps JS API
+selenium>=4.15.0
+webdriver-manager>=4.0.1
+
+# Database
+# SQLite is built-in, no extra package needed
+
+# Distance Calculation
+geopy>=2.4.0
+
+# Testing
+pytest>=7.4.0
+httpx>=0.25.0
+
+# Optional: For async improvements
+aiofiles>=23.2.0

@@ -1,0 +1,2385 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0282_target_20260124_1216_16",
+  "timestamp": "20260125_023531",
+  "success": true,
+  "done_reason": "stopped",
+  "total_steps": 50,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023531_nav_0282_target_20260124_1216_16_20260125023531",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Current heading 356°N aligns with the first instruction to head north. Moving forward on the available path to begin the 45m northward leg.",
+        "agent_vlm_duration_seconds": 8.197,
+        "agent_total_duration_seconds": 8.197
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continuing northward on the first leg of the route. Move 2 (14.6m front) covers more distance while maintaining the correct heading of 356°N.",
+        "agent_vlm_duration_seconds": 5.667,
+        "agent_total_duration_seconds": 5.667
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.6,
+          "heading": 351.47
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 176.14323
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing northward to complete the first 45m leg. Move 1 (front-right 17°, 16.5m) maintains northerly direction and brings total distance to ~41m, nearly reaching the 45m target.",
+        "agent_vlm_duration_seconds": 7.045,
+        "agent_total_duration_seconds": 7.045
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "front-right 20°",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "front-right 34°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "right-back 78°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Completing the first 45m northbound leg and beginning the second 122m leg. Move 1 (front 9.4m) continues straight north at heading 8°N, the correct direction.",
+        "agent_vlm_duration_seconds": 6.146,
+        "agent_total_duration_seconds": 6.146
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "Continuing the second 122m leg. Move 4 (front-right 74°, 15.8m) is the most substantial forward option available, following the path's natural curvature while maintaining progress.",
+        "agent_vlm_duration_seconds": 6.562,
+        "agent_total_duration_seconds": 6.562
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 58°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 74°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right-back 23°",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward on the available path. Move 1 (front-right 18°, 9.8m) is the only forward option; the heading has shifted to 78°E, indicating the path has curved right from the initial northbound direction.",
+        "agent_vlm_duration_seconds": 7.639,
+        "agent_total_duration_seconds": 7.639
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 18°",
+          "distance": 9.8,
+          "heading": 95.04381
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 13.2,
+          "heading": 247.79
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.8,
+          "heading": 257.5
+        },
+        {
+          "id": 4,
+          "direction": "left-back 73°",
+          "distance": 9.1,
+          "heading": 274.07
+        },
+        {
+          "id": 5,
+          "direction": "left-back 72°",
+          "distance": 7.8,
+          "heading": 275.06665
+        },
+        {
+          "id": 6,
+          "direction": "left-back 72°",
+          "distance": 9.0,
+          "heading": 275.06
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 12.4,
+          "heading": 347.35
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing forward on the available path. Move 1 (front 10.5m) is the only forward option; heading is now 95°E (due east), indicating the path has turned right from the initial northbound direction.",
+        "agent_vlm_duration_seconds": 5.812,
+        "agent_total_duration_seconds": 5.812
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 95.41431
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 275.05
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing eastbound on the second leg. Move 1 (front 9.8m) maintains forward progress at heading 95°E; total distance is now 86.5m with ~80.5m remaining in the 122m continuation leg.",
+        "agent_vlm_duration_seconds": 5.849,
+        "agent_total_duration_seconds": 5.849
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 95.61873
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 275.4143
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "rotation",
+        "heading": 5.6,
+        "pitch": 0.0,
+        "reason": "Dead end detected with only backward move available. Rotating left to heading 5.6°N (northbound) to explore available paths and find the correct route forward.",
+        "agent_vlm_duration_seconds": 9.67,
+        "agent_total_duration_seconds": 9.67
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Found available path after rotation. Move 1 (left 9.8m) from heading 6°N is the only forward option; this represents a westbound turn in the navigation graph.",
+        "agent_vlm_duration_seconds": 8.103,
+        "agent_total_duration_seconds": 8.103
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "left",
+          "distance": 9.8,
+          "heading": 275.61874
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing westbound on the available path. Move 1 (front 10.5m) maintains forward progress at heading 276°W; total distance is now 106.1m with ~60.9m remaining in the 122m continuation leg.",
+        "agent_vlm_duration_seconds": 6.71,
+        "agent_total_duration_seconds": 6.71
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.5,
+          "heading": 275.4143
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 95.61873
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Approaching completion of the 122m second leg. Move 2 (front 17.6m) covers maximum distance and brings total to 134.2m, completing the second leg and positioning for the next right turn.",
+        "agent_vlm_duration_seconds": 7.794,
+        "agent_total_duration_seconds": 7.794
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 275.04382
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 275.05
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 95.41431
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "rotation",
+        "heading": 185.05,
+        "pitch": 0.0,
+        "reason": "Completed second leg (122m). Now need to turn right for 50m. Current heading 275°W requires a right turn to southbound (~185°S). Rotating left to heading 185.05°S to find available paths for the right turn.",
+        "agent_vlm_duration_seconds": 7.623,
+        "agent_total_duration_seconds": 7.623
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 4,
+          "direction": "right-back 19°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 95.05
+        },
+        {
+          "id": 7,
+          "direction": "front-left 63°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 8,
+          "direction": "front-left 57°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 9,
+          "direction": "front-left 33°",
+          "distance": 8.7,
+          "heading": 241.94
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Starting third leg - turn right for 50m. Move 1 (front-right 27°, 15.9m) maintains southbound direction at heading 185°S while following the available path.",
+        "agent_vlm_duration_seconds": 8.81,
+        "agent_total_duration_seconds": 8.81
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 27°",
+          "distance": 15.9,
+          "heading": 211.76
+        },
+        {
+          "id": 2,
+          "direction": "front-right 33°",
+          "distance": 7.3,
+          "heading": 218.52
+        },
+        {
+          "id": 3,
+          "direction": "front-right 57°",
+          "distance": 8.7,
+          "heading": 241.94
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 1.4,
+          "heading": 268.32416
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 1.3,
+          "heading": 275.01
+        },
+        {
+          "id": 6,
+          "direction": "right",
+          "distance": 17.3,
+          "heading": 266.79
+        },
+        {
+          "id": 7,
+          "direction": "left-back 71°",
+          "distance": 12.5,
+          "heading": 23.58
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 7.8,
+          "heading": 95.06665
+        },
+        {
+          "id": 9,
+          "direction": "left",
+          "distance": 17.6,
+          "heading": 95.05
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 9,
+        "reason": "Continuing third leg with path curvature. Move 9 (front-left 23°, 16.5m) is the longest forward option; brings third leg progress to 32.4m of the 50m target.",
+        "agent_vlm_duration_seconds": 7.36,
+        "agent_total_duration_seconds": 7.36
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 23°",
+          "distance": 15.4,
+          "heading": 324.68
+        },
+        {
+          "id": 2,
+          "direction": "right-back 62°",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 7,
+          "direction": "front-left 36°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 9,
+          "direction": "front-left 23°",
+          "distance": 16.5,
+          "heading": 188.29
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Nearing completion of third leg (turn right 50m). Move 5 (front-left 17°, 14.6m) brings third leg progress to 47m, nearly reaching the 50m target.",
+        "agent_vlm_duration_seconds": 6.638,
+        "agent_total_duration_seconds": 6.638
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "left-back 73°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "front-left 29°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "front-left 17°",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Completing third leg (turn right 50m). Move 1 (front 9.9m) brings total to 191.1m, exceeding the 50m right-turn target and positioning for the next left turn.",
+        "agent_vlm_duration_seconds": 6.31,
+        "agent_total_duration_seconds": 6.31
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 176.14323
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 351.47
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "rotation",
+        "heading": 86.14,
+        "pitch": 0.0,
+        "reason": "Dead end detected with only backward move available. Completed third leg (50m right turn). Now need to turn left for 10m. Rotating left to heading 86.14°E to find available paths for the left turn.",
+        "agent_vlm_duration_seconds": 6.313,
+        "agent_total_duration_seconds": 6.313
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Starting fourth leg - turn left for 10m. Move 1 (left 9.9m) from heading 86°E represents the left turn, bringing northbound direction and nearly completing the 10m target.",
+        "agent_vlm_duration_seconds": 6.652,
+        "agent_total_duration_seconds": 6.652
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "left",
+          "distance": 9.9,
+          "heading": 356.14322
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Completed fourth leg (turn left 10m). Now heading north at 356°N. Move 2 (front 14.6m) continues northbound, positioning for the final right turn of 26m.",
+        "agent_vlm_duration_seconds": 7.048,
+        "agent_total_duration_seconds": 7.048
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 356.68896
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.6,
+          "heading": 351.47
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 176.14323
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Starting final leg - turn right for 26m. Move 1 (front-right 17°, 16.5m) represents the right turn from northbound heading 351°N, covering substantial distance toward the 26m target.",
+        "agent_vlm_duration_seconds": 7.14,
+        "agent_total_duration_seconds": 7.141
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 17°",
+          "distance": 16.5,
+          "heading": 8.29
+        },
+        {
+          "id": 2,
+          "direction": "front-right 20°",
+          "distance": 13.3,
+          "heading": 11.41
+        },
+        {
+          "id": 3,
+          "direction": "front-right 34°",
+          "distance": 5.0,
+          "heading": 25.34
+        },
+        {
+          "id": 4,
+          "direction": "right-back 78°",
+          "distance": 4.5,
+          "heading": 159.57582
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 14.6,
+          "heading": 171.47
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Completing final leg (turn right 26m). Move 1 (front 9.4m) brings fifth leg progress to 25.9m (essentially 26m), completing the specified route and approaching the Shell destination.",
+        "agent_vlm_duration_seconds": 7.598,
+        "agent_total_duration_seconds": 7.598
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 3.99
+        },
+        {
+          "id": 2,
+          "direction": "front-right 18°",
+          "distance": 8.7,
+          "heading": 26.111132
+        },
+        {
+          "id": 3,
+          "direction": "front-right 19°",
+          "distance": 15.3,
+          "heading": 27.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 19°",
+          "distance": 15.2,
+          "heading": 27.5
+        },
+        {
+          "id": 5,
+          "direction": "front-right 23°",
+          "distance": 15.9,
+          "heading": 31.76
+        },
+        {
+          "id": 6,
+          "direction": "right-back 77°",
+          "distance": 3.3,
+          "heading": 175.54152
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 11.8,
+          "heading": 181.11
+        },
+        {
+          "id": 8,
+          "direction": "back",
+          "distance": 16.5,
+          "heading": 188.29
+        },
+        {
+          "id": 9,
+          "direction": "front-left 44°",
+          "distance": 15.4,
+          "heading": 324.68
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "move",
+        "move_id": 8,
+        "reason": "Approaching Shell destination. Total distance is 241.5m, need ~11.5m more to reach 253m. Move 8 (front-left 76°, 10.0m) brings total to 251.5m, completing the final approach.",
+        "agent_vlm_duration_seconds": 7.465,
+        "agent_total_duration_seconds": 7.465
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 53°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 58°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 74°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right-back 23°",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 7,
+          "direction": "back",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 76°",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Nearly at destination. Total distance is 251.5m, need 1.5m more to reach 253m. Move 1 (front 10.1m) is the only forward option, bringing total to 261.6m and completing the approach to Shell.",
+        "agent_vlm_duration_seconds": 7.139,
+        "agent_total_duration_seconds": 7.139
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "right-back 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "right-back 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 18.26,
+        "pitch": 0.0,
+        "reason": "Exceeded 253m target (now at 261.6m). Before moving further, rotating right to heading 18.26°N to look for the Shell destination landmark.",
+        "agent_vlm_duration_seconds": 7.974,
+        "agent_total_duration_seconds": 7.974
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 288.25333
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 108.25782
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 108.26,
+        "pitch": 0.0,
+        "reason": "Looking for Shell destination. Rotating right to heading 108.26°E to search for visual landmarks indicating the Shell location.",
+        "agent_vlm_duration_seconds": 5.165,
+        "agent_total_duration_seconds": 5.165
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 108.25782
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 9.9,
+          "heading": 288.25333
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continuing search for Shell destination. Move 1 (front 10.1m) continues eastbound at heading 108°E, bringing total distance to 271.7m.",
+        "agent_vlm_duration_seconds": 5.544,
+        "agent_total_duration_seconds": 5.544
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 108.25782
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 288.25333
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 18.26,
+        "pitch": 0.0,
+        "reason": "Multiple path options available. Still searching for Shell destination. Rotating left to heading 18.26°N to look for visual landmarks indicating Shell location.",
+        "agent_vlm_duration_seconds": 6.679,
+        "agent_total_duration_seconds": 6.679
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 198.26,
+        "pitch": 0.0,
+        "reason": "At junction with multiple path options. Still searching for Shell destination. Rotating back to heading 198.26°S to look for visual landmarks indicating Shell location.",
+        "agent_vlm_duration_seconds": 6.237,
+        "agent_total_duration_seconds": 6.237
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 2,
+          "direction": "front-right 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 3,
+          "direction": "front-right 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 6,
+          "direction": "right-back 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 288.2578
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 108.26,
+        "pitch": 0.0,
+        "reason": "No forward path available southbound. Rotating left to heading 108.26°E to continue searching for the Shell destination.",
+        "agent_vlm_duration_seconds": 10.091,
+        "agent_total_duration_seconds": 10.091
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "left-back 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "left-back 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "left-back 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "front-left 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "rotation",
+        "heading": 108.26,
+        "pitch": 30.0,
+        "reason": "Searching for Shell destination. Looking up (pitch 30°) at heading 108.26°E to identify Shell signage or landmarks that may be above current view level.",
+        "agent_vlm_duration_seconds": 7.06,
+        "agent_total_duration_seconds": 7.06
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "rotation",
+        "heading": 108.26,
+        "pitch": -30.0,
+        "reason": "Looking up didn't reveal Shell. Rotating down (pitch -30°) at heading 108.26°E to search for Shell at ground level or entrance.",
+        "agent_vlm_duration_seconds": 6.047,
+        "agent_total_duration_seconds": 6.047
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Looking down didn't reveal Shell. Moving forward with Move 1 (front 10.0m) eastbound to continue searching for the Shell destination.",
+        "agent_vlm_duration_seconds": 8.436,
+        "agent_total_duration_seconds": 8.436
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 3,
+          "direction": "front-right 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 5,
+          "direction": "front-left 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 6,
+          "direction": "front-left 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 7,
+          "direction": "front-left 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "rotation",
+        "heading": 108.22,
+        "pitch": 0.0,
+        "reason": "Approaching destination area - available moves are much shorter. Rotating to level pitch (0°) at heading 108.22°E to get normal perspective and identify Shell location.",
+        "agent_vlm_duration_seconds": 7.03,
+        "agent_total_duration_seconds": 7.03
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 7,
+          "direction": "front-left 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "action": {
+        "type": "rotation",
+        "heading": 198.22,
+        "pitch": 0.0,
+        "reason": "Very close to destination - Move 1 is only 3.5m. Rotating right to heading 198.22°S to search for Shell location before proceeding.",
+        "agent_vlm_duration_seconds": 8.226,
+        "agent_total_duration_seconds": 8.226
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 7,
+          "direction": "front-left 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "action": {
+        "type": "rotation",
+        "heading": 18.22,
+        "pitch": 0.0,
+        "reason": "At junction with multiple short moves available. Rotating back to heading 18.22°N to search for Shell destination in northbound direction.",
+        "agent_vlm_duration_seconds": 6.287,
+        "agent_total_duration_seconds": 6.287
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 2,
+          "direction": "left-back 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 3,
+          "direction": "left-back 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 4,
+          "direction": "left-back 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 5,
+          "direction": "left-back 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 7,
+          "direction": "front-left 16°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "front-left 14°",
+          "distance": 9.4,
+          "heading": 183.99
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "rotation",
+        "heading": 288.22,
+        "pitch": 0.0,
+        "reason": "At central junction - Move 5 (right 3.5m) matches the short distances from other headings. Rotating left to heading 288.22°W to search for Shell destination.",
+        "agent_vlm_duration_seconds": 6.634,
+        "agent_total_duration_seconds": 6.634
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 39°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 2,
+          "direction": "front-right 39°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 3,
+          "direction": "front-right 44°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 4,
+          "direction": "front-right 59°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 6,
+          "direction": "right-back 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 7,
+          "direction": "right-back 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 288.21613
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "action": {
+        "type": "rotation",
+        "heading": 288.22,
+        "pitch": 30.0,
+        "reason": "At junction with only one forward option (Move 1, front 10.0m westbound). Looking up (pitch 30°) at heading 288.22°W to search for Shell signage or landmarks.",
+        "agent_vlm_duration_seconds": 6.439,
+        "agent_total_duration_seconds": 6.439
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 2,
+          "direction": "right-back 39°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 3,
+          "direction": "right-back 39°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 4,
+          "direction": "right-back 44°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 5,
+          "direction": "right-back 59°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 7,
+          "direction": "left-back 16°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "left-back 14°",
+          "distance": 9.4,
+          "heading": 183.99
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Looking up didn't reveal Shell. Moving forward with Move 1 (front 10.0m) westbound to continue navigating toward the Shell destination.",
+        "agent_vlm_duration_seconds": 5.962,
+        "agent_total_duration_seconds": 5.962
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 2,
+          "direction": "right-back 39°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 3,
+          "direction": "right-back 39°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 4,
+          "direction": "right-back 44°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 5,
+          "direction": "right-back 59°",
+          "distance": 15.8,
+          "heading": 77.5
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 7,
+          "direction": "left-back 16°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 8,
+          "direction": "left-back 14°",
+          "distance": 9.4,
+          "heading": 183.99
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "rotation",
+        "heading": 288.22,
+        "pitch": 0.0,
+        "reason": "Moved away from junction. Returning to level pitch (0°) at heading 288.22°W to get normal perspective and identify the Shell destination.",
+        "agent_vlm_duration_seconds": 6.702,
+        "agent_total_duration_seconds": 6.702
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "right-back 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "right-back 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "action": {
+        "type": "rotation",
+        "heading": 18.22,
+        "pitch": 0.0,
+        "reason": "Well past target distance (291.7m vs 253m). Looking right to heading 18.22°N to search for Shell destination or reconsider navigation strategy.",
+        "agent_vlm_duration_seconds": 7.096,
+        "agent_total_duration_seconds": 7.096
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "right-back 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "right-back 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "right-back 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "left-back 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "action": {
+        "type": "rotation",
+        "heading": 198.22,
+        "pitch": 0.0,
+        "reason": "Looking northbound shows path turns right (southeast/east). Rotating back to heading 198.22°S to search for Shell or determine if destination was passed.",
+        "agent_vlm_duration_seconds": 7.312,
+        "agent_total_duration_seconds": 7.312
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 68°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 2,
+          "direction": "front-right 68°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 3,
+          "direction": "front-right 69°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 4,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 5,
+          "direction": "right",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 6,
+          "direction": "right-back 36°",
+          "distance": 15.4,
+          "heading": 144.68
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 288.2578
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "action": {
+        "type": "rotation",
+        "heading": 198.22,
+        "pitch": 30.0,
+        "reason": "At junction with no straight-ahead option. Looking up (pitch 30°) at heading 198.22°S to search for Shell signage or landmarks at this location.",
+        "agent_vlm_duration_seconds": 6.75,
+        "agent_total_duration_seconds": 6.75
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "left-back 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "left-back 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "left-back 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "front-left 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "rotation",
+        "heading": 198.22,
+        "pitch": -30.0,
+        "reason": "Looking up didn't reveal Shell. Rotating down (pitch -30°) at heading 198.22°S to search for Shell at ground level or entrance markers.",
+        "agent_vlm_duration_seconds": 6.921,
+        "agent_total_duration_seconds": 6.921
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "left-back 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "left-back 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "left-back 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "front-left 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "action": {
+        "type": "move",
+        "move_id": 5,
+        "reason": "Extensive exploration at junction without finding Shell. Moving with Move 5 (left 10.0m) westbound to explore different areas and locate the Shell destination.",
+        "agent_vlm_duration_seconds": 7.027,
+        "agent_total_duration_seconds": 7.027
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 288.2578
+        },
+        {
+          "id": 2,
+          "direction": "left-back 22°",
+          "distance": 16.0,
+          "heading": 86.14
+        },
+        {
+          "id": 3,
+          "direction": "left-back 22°",
+          "distance": 15.9,
+          "heading": 86.66
+        },
+        {
+          "id": 4,
+          "direction": "left-back 21°",
+          "distance": 17.3,
+          "heading": 86.79
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 108.216125
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 13.6,
+          "heading": 110.39
+        },
+        {
+          "id": 7,
+          "direction": "front-left 54°",
+          "distance": 15.4,
+          "heading": 144.68
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "rotation",
+        "heading": 108.22,
+        "pitch": 0.0,
+        "reason": "Back at central junction after moving westbound. Returning to level pitch (0°) at heading 108.22°E to examine this critical location at normal eye level for Shell destination.",
+        "agent_vlm_duration_seconds": 7.185,
+        "agent_total_duration_seconds": 7.187
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 7,
+          "direction": "front-left 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "At central junction. Move 1 (front 3.5m) is very short - may lead to Shell destination. Moving eastbound to investigate.",
+        "agent_vlm_duration_seconds": 6.588,
+        "agent_total_duration_seconds": 6.588
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 3.5,
+          "heading": 116.54
+        },
+        {
+          "id": 2,
+          "direction": "front-right 74°",
+          "distance": 12.7,
+          "heading": 181.81
+        },
+        {
+          "id": 3,
+          "direction": "front-right 76°",
+          "distance": 9.4,
+          "heading": 183.99
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 288.21613
+        },
+        {
+          "id": 5,
+          "direction": "front-left 51°",
+          "distance": 7.5,
+          "heading": 57.376286
+        },
+        {
+          "id": 6,
+          "direction": "front-left 51°",
+          "distance": 7.7,
+          "heading": 56.78
+        },
+        {
+          "id": 7,
+          "direction": "front-left 46°",
+          "distance": 8.7,
+          "heading": 61.94
+        },
+        {
+          "id": 8,
+          "direction": "front-left 31°",
+          "distance": 15.8,
+          "heading": 77.5
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "action": {
+        "type": "rotation",
+        "heading": 26.54,
+        "pitch": 0.0,
+        "reason": "Moved southeast from junction. Heading now 117°SE. Rotating left to heading 26.54°NE to search for Shell destination in this new area.",
+        "agent_vlm_duration_seconds": 7.094,
+        "agent_total_duration_seconds": 7.094
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 8.7,
+          "heading": 206.11113
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 11.6,
+          "heading": 197.86
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 3.5,
+          "heading": 296.54
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 13.6,
+          "heading": 290.39
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 6.5,
+          "heading": 29.363491
+        },
+        {
+          "id": 6,
+          "direction": "left",
+          "distance": 6.7,
+          "heading": 29.37
+        },
+        {
+          "id": 7,
+          "direction": "front-left 78°",
+          "distance": 7.3,
+          "heading": 38.52
+        },
+        {
+          "id": 8,
+          "direction": "front-left 49°",
+          "distance": 13.2,
+          "heading": 67.79
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Looking northeast with forward options available. Moving with Move 1 (front 6.5m) northeastbound to continue searching for Shell destination.",
+        "agent_vlm_duration_seconds": 6.032,
+        "agent_total_duration_seconds": 6.032
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 6.5,
+          "heading": 29.363491
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 6.7,
+          "heading": 29.37
+        },
+        {
+          "id": 3,
+          "direction": "front-right 12°",
+          "distance": 7.3,
+          "heading": 38.52
+        },
+        {
+          "id": 4,
+          "direction": "front-right 41°",
+          "distance": 13.2,
+          "heading": 67.79
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 8.7,
+          "heading": 206.11113
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 11.6,
+          "heading": 197.86
+        },
+        {
+          "id": 7,
+          "direction": "left",
+          "distance": 3.5,
+          "heading": 296.54
+        },
+        {
+          "id": 8,
+          "direction": "left",
+          "distance": 13.6,
+          "heading": 290.39
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "action": {
+        "type": "stop",
+        "answer": "Shell",
+        "reason": "Move 1 is only 0.2m - essentially at destination. Reached Shell location after navigating the specified route.",
+        "agent_vlm_duration_seconds": 6.872,
+        "agent_total_duration_seconds": 6.872
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 0.2,
+          "heading": 29.542904
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 13.1,
+          "heading": 28.91
+        },
+        {
+          "id": 3,
+          "direction": "front-right 59°",
+          "distance": 1.4,
+          "heading": 88.32416
+        },
+        {
+          "id": 4,
+          "direction": "front-right 65°",
+          "distance": 9.1,
+          "heading": 94.07
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 6.5,
+          "heading": 209.3635
+        },
+        {
+          "id": 6,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 207.5
+        },
+        {
+          "id": 7,
+          "direction": "left-back 62°",
+          "distance": 7.5,
+          "heading": 237.37628
+        },
+        {
+          "id": 8,
+          "direction": "left-back 33°",
+          "distance": 15.9,
+          "heading": 266.66
+        }
+      ]
+    }
+  ]
+}

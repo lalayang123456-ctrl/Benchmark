@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_transit_20260124_150242</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_transit_20260124_150242</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>7</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"GHkjLK7zZcOi3wA4vvG_MA": {"lat": 19.08223377086364, "lng": 72.8820656171187, "links": [{"pano_id": "7ctbUBmA3nDIfijY3zZC9g", "heading": 204.69696, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "FSnBvssO8ZlGELFEcd_9jg", "heading": 25.485796, "description": "Lal Bahadur Shastri Marg"}]}, "FSnBvssO8ZlGELFEcd_9jg": {"lat": 19.08231972823996, "lng": 72.88210897292596, "links": [{"pano_id": "MTSNPb3tP5VjALpBaoEL2g", "heading": 25.606264, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "GHkjLK7zZcOi3wA4vvG_MA", "heading": 205.4858, "description": "Lal Bahadur Shastri Marg"}]}, "7ctbUBmA3nDIfijY3zZC9g": {"lat": 19.08215486337534, "lng": 72.88202721882966, "links": [{"pano_id": "GHkjLK7zZcOi3wA4vvG_MA", "heading": 24.696964, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Og_sC8Oz2A9G5-PwnSKG-w", "heading": 204.65486, "description": "Lal Bahadur Shastri Marg"}]}, "MTSNPb3tP5VjALpBaoEL2g": {"lat": 19.08240202293251, "lng": 72.88215070626322, "links": [{"pano_id": "FSnBvssO8ZlGELFEcd_9jg", "heading": 205.60626, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "poFt5XUYoyR6dOEt46LGsA", "heading": 25.25656, "description": "Lal Bahadur Shastri Marg"}]}, "Og_sC8Oz2A9G5-PwnSKG-w": {"lat": 19.08207320459343, "lng": 72.8819875586186, "links": [{"pano_id": "lQFEDy-cjhz8dLwLdIBu3A", "heading": 204.64369, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "7ctbUBmA3nDIfijY3zZC9g", "heading": 24.654858, "description": "Lal Bahadur Shastri Marg"}]}, "lQFEDy-cjhz8dLwLdIBu3A": {"lat": 19.08198649031614, "lng": 72.88194546470565, "links": [{"pano_id": "pxLOJh1qosdfguE_b2h-Ew", "heading": 188.48782, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Og_sC8Oz2A9G5-PwnSKG-w", "heading": 24.643694, "description": "Lal Bahadur Shastri Marg"}]}, "poFt5XUYoyR6dOEt46LGsA": {"lat": 19.08248508130344, "lng": 72.88219216918293, "links": [{"pano_id": "MTSNPb3tP5VjALpBaoEL2g", "heading": 205.25656, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "bKRxQ_RoVzc02x0f_ZkIIw", "heading": 25.439114, "description": "Lal Bahadur Shastri Marg"}]}, "bKRxQ_RoVzc02x0f_ZkIIw": {"lat": 19.08257139819724, "lng": 72.8822356151042, "links": [{"pano_id": "n1x08B2z0x4FuCDUp9x0jw", "heading": 24.387848, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "poFt5XUYoyR6dOEt46LGsA", "heading": 205.43912, "description": "Lal Bahadur Shastri Marg"}]}, "pxLOJh1qosdfguE_b2h-Ew": {"lat": 19.08189744411974, "lng": 72.88193140335407, "links": [{"pano_id": "wf4YqTwSbbaK1kUbbQm5Dg", "heading": 192.07318, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "lQFEDy-cjhz8dLwLdIBu3A", "heading": 8.48783, "description": "Lal Bahadur Shastri Marg"}]}, "wf4YqTwSbbaK1kUbbQm5Dg": {"lat": 19.08181022573167, "lng": 72.88191166337836, "links": [{"pano_id": "pxLOJh1qosdfguE_b2h-Ew", "heading": 12.073186, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "eVR9rE5fSOi87HP6dZcJUg", "heading": 206.50334, "description": "Lal Bahadur Shastri Marg"}]}, "n1x08B2z0x4FuCDUp9x0jw": {"lat": 19.08265594962066, "lng": 72.88227617664188, "links": [{"pano_id": "0AhH6NxW176hriZUE1HVoA", "heading": 23.991343, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "bKRxQ_RoVzc02x0f_ZkIIw", "heading": 204.38785, "description": "Lal Bahadur Shastri Marg"}]}, "0AhH6NxW176hriZUE1HVoA": {"lat": 19.08273978419581, "lng": 72.882315656532, "links": [{"pano_id": "n1x08B2z0x4FuCDUp9x0jw", "heading": 203.99135, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "7OOHaZbRSkXfh7sQkui23w", "heading": 24.44136, "description": "Lal Bahadur Shastri Marg"}]}, "eVR9rE5fSOi87HP6dZcJUg": {"lat": 19.08172600751718, "lng": 72.88186722589286, "links": [{"pano_id": "wf4YqTwSbbaK1kUbbQm5Dg", "heading": 26.503338, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "QNSUvjta7HYL6OvqEhRUsQ", "heading": 206.49231, "description": "Lal Bahadur Shastri Marg"}]}, "QNSUvjta7HYL6OvqEhRUsQ": {"lat": 19.08164465409507, "lng": 72.8818243207267, "links": [{"pano_id": "NSLa9wpdQ_4UxVDCyMvQHg", "heading": 206.51328, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "eVR9rE5fSOi87HP6dZcJUg", "heading": 26.492304, "description": "Lal Bahadur Shastri Marg"}]}, "7OOHaZbRSkXfh7sQkui23w": {"lat": 19.08282600021283, "lng": 72.88235711942335, "links": [{"pano_id": "EGFHsftDkKuXyJmS7RAjLw", "heading": 27.852905, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "0AhH6NxW176hriZUE1HVoA", "heading": 204.44136, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hl9O--MoMpzeCgZp-ALDwA", "heading": 355.66, "distance": 15.15, "virtual": true}]}, "NSLa9wpdQ_4UxVDCyMvQHg": {"lat": 19.08156320442092, "lng": 72.88178132541596, "links": [{"pano_id": "ICGajKDC0FE5xSd6Z0zrqA", "heading": 208.07004, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "QNSUvjta7HYL6OvqEhRUsQ", "heading": 26.513283, "description": "Lal Bahadur Shastri Marg"}]}, "EGFHsftDkKuXyJmS7RAjLw": {"lat": 19.08290789169834, "lng": 72.88240290886897, "links": [{"pano_id": "-MPSLl_GMUpGlaXMeVaVzQ", "heading": 28.632889, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "7OOHaZbRSkXfh7sQkui23w", "heading": 207.8529, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "_CEUsJ_Eo1n5YE7dPAOxTg", "heading": 354.45, "distance": 14.8, "virtual": true}, {"pano_id": "hl9O--MoMpzeCgZp-ALDwA", "heading": 315.21, "distance": 8.46, "virtual": true}]}, "-MPSLl_GMUpGlaXMeVaVzQ": {"lat": 19.08298715195867, "lng": 72.88244869830591, "links": [{"pano_id": "EGFHsftDkKuXyJmS7RAjLw", "heading": 208.63289, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "GImQgsvGFeV1uKKlq1zxxQ", "heading": 28.632862, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "SS0xSvy0pW5pmtphKz1yHg", "heading": 353.64, "distance": 14.89, "virtual": true}, {"pano_id": "_CEUsJ_Eo1n5YE7dPAOxTg", "heading": 313.46, "distance": 8.6, "virtual": true}, {"pano_id": "hl9O--MoMpzeCgZp-ALDwA", "heading": 255.37, "distance": 11.13, "virtual": true}]}, "ICGajKDC0FE5xSd6Z0zrqA": {"lat": 19.08148349566613, "lng": 72.88173634708478, "links": [{"pano_id": "NSLa9wpdQ_4UxVDCyMvQHg", "heading": 28.070044, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "mtj_vbWwLOcz8lFERL4ilQ", "heading": 210.29497, "description": "Lal Bahadur Shastri Marg"}]}, "GImQgsvGFeV1uKKlq1zxxQ": {"lat": 19.08306641225035, "lng": 72.88249448773415, "links": [{"pano_id": "PFZBb5O2TMBPESjjcX0tAw", "heading": 28.62192, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "-MPSLl_GMUpGlaXMeVaVzQ", "heading": 208.63286, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "rxvkfRA_X-QmqmXIppLVDQ", "heading": 354.38, "distance": 15.58, "virtual": true}, {"pano_id": "SS0xSvy0pW5pmtphKz1yHg", "heading": 312.8, "distance": 8.8, "virtual": true}, {"pano_id": "_CEUsJ_Eo1n5YE7dPAOxTg", "heading": 255.31, "distance": 11.43, "virtual": true}]}, "mtj_vbWwLOcz8lFERL4ilQ": {"lat": 19.08140111588093, "lng": 72.88168541970569, "links": [{"pano_id": "DX6rS6p54rhm7DgCnZmVNg", "heading": 210.29897, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "ICGajKDC0FE5xSd6Z0zrqA", "heading": 30.294973, "description": "Lal Bahadur Shastri Marg"}]}, "PFZBb5O2TMBPESjjcX0tAw": {"lat": 19.08314492801889, "lng": 72.88253982647046, "links": [{"pano_id": "N9_65_IYTx7wd3sW-zbdpw", "heading": 28.65748, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "GImQgsvGFeV1uKKlq1zxxQ", "heading": 208.62192, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 354.46, "distance": 16.0, "virtual": true}, {"pano_id": "rxvkfRA_X-QmqmXIppLVDQ", "heading": 317.14, "distance": 9.25, "virtual": true}, {"pano_id": "SS0xSvy0pW5pmtphKz1yHg", "heading": 256.24, "distance": 11.56, "virtual": true}]}, "DX6rS6p54rhm7DgCnZmVNg": {"lat": 19.08132181060533, "lng": 72.88163638519248, "links": [{"pano_id": "mtj_vbWwLOcz8lFERL4ilQ", "heading": 30.298958, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "RucpKdH0--ad3o-KmhG7yA", "heading": 210.28578, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "l2L1OTNG4uEEmmETk20oxg", "heading": 210.3, "distance": 14.14, "virtual": true}, {"pano_id": "LMnc5GVd_utxSpbs-87tIw", "heading": 210.19, "distance": 12.09, "virtual": true}, {"pano_id": "vaJDc_rOa75G6QOGhcTkFg", "heading": 164.45, "distance": 14.24, "virtual": true}]}, "N9_65_IYTx7wd3sW-zbdpw": {"lat": 19.08322317211502, "lng": 72.88258507506164, "links": [{"pano_id": "PFZBb5O2TMBPESjjcX0tAw", "heading": 208.65749, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 28.597996, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 354.67, "distance": 16.51, "virtual": true}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 318.92, "distance": 9.59, "virtual": true}, {"pano_id": "rxvkfRA_X-QmqmXIppLVDQ", "heading": 260.13, "distance": 11.21, "virtual": true}]}, "RucpKdH0--ad3o-KmhG7yA": {"lat": 19.08124465129558, "lng": 72.88158870272429, "links": [{"pano_id": "l2L1OTNG4uEEmmETk20oxg", "heading": 210.32663, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "DX6rS6p54rhm7DgCnZmVNg", "heading": 30.28579, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "LMnc5GVd_utxSpbs-87tIw", "heading": 209.75, "distance": 2.16, "virtual": true}, {"pano_id": "jS6m72UVwUSaEqNbqMtDFg", "heading": 210.92, "distance": 16.22, "virtual": true}, {"pano_id": "vaJDc_rOa75G6QOGhcTkFg", "heading": 120.2, "distance": 10.21, "virtual": true}]}, "l2L1OTNG4uEEmmETk20oxg": {"lat": 19.08121203231883, "lng": 72.88156851203547, "links": [{"pano_id": "LMnc5GVd_utxSpbs-87tIw", "heading": 30.938871, "description": "Sonapur Ln"}, {"pano_id": "RucpKdH0--ad3o-KmhG7yA", "heading": 30.326628, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "jS6m72UVwUSaEqNbqMtDFg", "heading": 211.1247, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "DX6rS6p54rhm7DgCnZmVNg", "heading": 30.3, "distance": 14.14, "virtual": true}, {"pano_id": "vaJDc_rOa75G6QOGhcTkFg", "heading": 97.86, "distance": 11.05, "virtual": true}]}, "TzHwRyf_IxzELLLM67zWdg": {"lat": 19.08329973455997, "lng": 72.88262924200498, "links": [{"pano_id": "N9_65_IYTx7wd3sW-zbdpw", "heading": 208.59799, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 28.647703, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 28.67, "distance": 9.95, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 356.35, "distance": 11.91, "virtual": true}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 322.06, "distance": 10.04, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 346.08, "distance": 13.82, "virtual": true}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 263.29, "distance": 11.02, "virtual": true}]}, "Bma8giFH_m9TP1ZyhC7UbQ": {"lat": 19.08337380024165, "lng": 72.88267205689132, "links": [{"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 208.6477, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 28.988, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 33.41, "distance": 9.0, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 304.81, "distance": 6.4, "virtual": true}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 268.31, "distance": 10.68, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 303.51, "distance": 9.38, "virtual": true}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 351.12, "distance": 13.07, "virtual": true}]}, "LMnc5GVd_utxSpbs-87tIw": {"lat": 19.08122780698226, "lng": 72.88157851724309, "links": [{"pano_id": "l2L1OTNG4uEEmmETk20oxg", "heading": 210.93887, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "vaJDc_rOa75G6QOGhcTkFg", "heading": 108.256935, "description": "Sonapur Ln"}, {"pano_id": "DX6rS6p54rhm7DgCnZmVNg", "heading": 30.19, "distance": 12.09, "virtual": true}, {"pano_id": "RucpKdH0--ad3o-KmhG7yA", "heading": 29.75, "distance": 2.16, "virtual": true}, {"pano_id": "jS6m72UVwUSaEqNbqMtDFg", "heading": 211.1, "distance": 14.07, "virtual": true}]}, "jS6m72UVwUSaEqNbqMtDFg": {"lat": 19.0811194874134, "lng": 72.8815093821514, "links": [{"pano_id": "l2L1OTNG4uEEmmETk20oxg", "heading": 31.124697, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "nJosm7RCPkBerMzhhQ9PDg", "heading": 215.18605, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "RucpKdH0--ad3o-KmhG7yA", "heading": 30.92, "distance": 16.22, "virtual": true}, {"pano_id": "LMnc5GVd_utxSpbs-87tIw", "heading": 31.1, "distance": 14.07, "virtual": true}]}, "nJosm7RCPkBerMzhhQ9PDg": {"lat": 19.08104735825896, "lng": 72.8814555703388, "links": [{"pano_id": "iW2QXasVECvzQxUrYFjONg", "heading": 215.17638, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "jS6m72UVwUSaEqNbqMtDFg", "heading": 35.18605, "description": "Lal Bahadur Shastri Marg"}]}, "vaJDc_rOa75G6QOGhcTkFg": {"lat": 19.08119844136151, "lng": 72.88167271039349, "links": [{"pano_id": "LMnc5GVd_utxSpbs-87tIw", "heading": 288.25693, "description": "Sonapur Ln"}, {"pano_id": "GWsU0cisjHzE1frKaFGN_A", "heading": 97.37943, "description": "Sonapur Ln"}, {"pano_id": "DX6rS6p54rhm7DgCnZmVNg", "heading": 344.45, "distance": 14.24, "virtual": true}, {"pano_id": "RucpKdH0--ad3o-KmhG7yA", "heading": 300.2, "distance": 10.21, "virtual": true}, {"pano_id": "l2L1OTNG4uEEmmETk20oxg", "heading": 277.86, "distance": 11.05, "virtual": true}]}, "Mgkby9d3GEu5O1LrV8uYbQ": {"lat": 19.08337825899699, "lng": 72.88267467085255, "links": [{"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 299.7286, "description": ""}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 33.70304, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 208.988, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 208.67, "distance": 9.95, "virtual": true}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 265.77, "distance": 10.98, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 300.05, "distance": 9.36, "virtual": true}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 349.54, "distance": 12.63, "virtual": true}]}, "iW2QXasVECvzQxUrYFjONg": {"lat": 19.08096239172717, "lng": 72.88139220398462, "links": [{"pano_id": "nJosm7RCPkBerMzhhQ9PDg", "heading": 35.176373, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "_LqG1Vzss-qVlr1Fc8BPdA", "heading": 215.1336, "description": "Lal Bahadur Shastri Marg"}]}, "4Af7-s2lOE2o4078E0sRrQ": {"lat": 19.08344134865079, "lng": 72.8827191983258, "links": [{"pano_id": "2A7RbnODHW5lMIFMo97BmQ", "heading": 37.617634, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 213.70303, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 213.41, "distance": 9.0, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 249.31, "distance": 10.91, "virtual": true}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 243.4, "distance": 17.48, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 259.67, "distance": 12.99, "virtual": true}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 307.78, "distance": 8.82, "virtual": true}, {"pano_id": "1WRL4364FK_YjJ7cqG2nKQ", "heading": 0.08, "distance": 14.18, "virtual": true}]}, "GWsU0cisjHzE1frKaFGN_A": {"lat": 19.08118664767978, "lng": 72.88176906679347, "links": [{"pano_id": "vaJDc_rOa75G6QOGhcTkFg", "heading": 277.37943, "description": "Sonapur Ln"}, {"pano_id": "RxnGYVFdzxR0ysZ3Jd03SQ", "heading": 90.5598, "description": "Sonapur Ln"}]}, "IV6qHyFgYLch2xzC440Hew": {"lat": 19.08340666705434, "lng": 72.88262203107601, "links": [{"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 233.77644, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 119.72861, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 176.35, "distance": 11.91, "virtual": true}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 124.81, "distance": 6.4, "virtual": true}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 69.31, "distance": 10.91, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 300.74, "distance": 2.99, "virtual": true}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 217.69, "distance": 16.65, "virtual": true}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 19.28, "distance": 9.81, "virtual": true}]}, "OxA2MMUItHC2_AAHTJTjqw": {"lat": 19.08337097519679, "lng": 72.88257047292757, "links": [{"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 27.422064, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 207.35669, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 53.77645, "description": ""}, {"pano_id": "N9_65_IYTx7wd3sW-zbdpw", "heading": 174.67, "distance": 16.51, "virtual": true}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 142.06, "distance": 10.04, "virtual": true}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 88.31, "distance": 10.68, "virtual": true}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 85.77, "distance": 10.98, "virtual": true}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 63.4, "distance": 17.48, "virtual": true}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 33.2, "distance": 15.81, "virtual": true}]}, "RxnGYVFdzxR0ysZ3Jd03SQ": {"lat": 19.08118575544939, "lng": 72.88186569356564, "links": [{"pano_id": "GWsU0cisjHzE1frKaFGN_A", "heading": 270.55978, "description": "Sonapur Ln"}, {"pano_id": "bFi2j9ZpUDDJIaQG6IWpKw", "heading": 85.09094, "description": "Sonapur Ln"}]}, "_LqG1Vzss-qVlr1Fc8BPdA": {"lat": 19.08089423796533, "lng": 72.88134145680704, "links": [{"pano_id": "MoK5oQGsYHddh77oe9V5qQ", "heading": 215.17973, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "iW2QXasVECvzQxUrYFjONg", "heading": 35.13361, "description": "Lal Bahadur Shastri Marg"}]}, "2A7RbnODHW5lMIFMo97BmQ": {"lat": 19.08351275873815, "lng": 72.88277742654763, "links": [{"pano_id": "PZogReZGRBjDrLW9FyHRdg", "heading": 41.020256, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 217.61763, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 259.03, "distance": 13.33, "virtual": true}, {"pano_id": "1WRL4364FK_YjJ7cqG2nKQ", "heading": 315.66, "distance": 8.73, "virtual": true}, {"pano_id": "hXGflfZUaHwaFOpHR9hN8Q", "heading": 3.1, "distance": 14.52, "virtual": true}]}, "PZogReZGRBjDrLW9FyHRdg": {"lat": 19.08358101021176, "lng": 72.88284025171856, "links": [{"pano_id": "2A7RbnODHW5lMIFMo97BmQ", "heading": 221.02026, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hZ0pNqXflx-MXsfQBLC70g", "heading": 44.219234, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "1WRL4364FK_YjJ7cqG2nKQ", "heading": 263.95, "distance": 12.77, "virtual": true}, {"pano_id": "hXGflfZUaHwaFOpHR9hN8Q", "heading": 319.89, "distance": 9.03, "virtual": true}, {"pano_id": "lYNl67Xg87-oLmtO0s2slg", "heading": 4.23, "distance": 14.5, "virtual": true}]}, "MoK5oQGsYHddh77oe9V5qQ": {"lat": 19.08081181971825, "lng": 72.88127998330228, "links": [{"pano_id": "_LqG1Vzss-qVlr1Fc8BPdA", "heading": 35.179737, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "M_AcAoikByay7voZWpFQ1A", "heading": 216.15622, "description": "Lal Bahadur Shastri Marg"}]}, "bFi2j9ZpUDDJIaQG6IWpKw": {"lat": 19.08119339381519, "lng": 72.88195979646699, "links": [{"pano_id": "RxnGYVFdzxR0ysZ3Jd03SQ", "heading": 265.09094, "description": "Sonapur Ln"}, {"pano_id": "ZsDDbLVeKzUjovbWhdcj3Q", "heading": 84.07143, "description": "Sonapur Ln"}, {"pano_id": "GtEsGa1eLT_e8j2cPiq6Dg", "heading": 84.52, "distance": 12.51, "virtual": true}, {"pano_id": "ykW9wloiryDUv9EZeIygCw", "heading": 84.03, "distance": 9.88, "virtual": true}]}, "TF-gJR5h2xjZ0be6ZOI3rQ": {"lat": 19.08342039337522, "lng": 72.8825976040525, "links": [{"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 36.899395, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 207.42206, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 166.08, "distance": 13.82, "virtual": true}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 123.51, "distance": 9.38, "virtual": true}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 120.05, "distance": 9.36, "virtual": true}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 79.67, "distance": 12.99, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 120.74, "distance": 2.99, "virtual": true}, {"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 207.38, "distance": 16.56, "virtual": true}]}, "j2f4g2wnsnyLf-m47UN3hQ": {"lat": 19.08328816161342, "lng": 72.88252513419701, "links": [{"pano_id": "rxvkfRA_X-QmqmXIppLVDQ", "heading": 207.41754, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 27.356691, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "PFZBb5O2TMBPESjjcX0tAw", "heading": 174.46, "distance": 16.0, "virtual": true}, {"pano_id": "N9_65_IYTx7wd3sW-zbdpw", "heading": 138.92, "distance": 9.59, "virtual": true}, {"pano_id": "TzHwRyf_IxzELLLM67zWdg", "heading": 83.29, "distance": 11.02, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 37.69, "distance": 16.65, "virtual": true}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 27.38, "distance": 16.56, "virtual": true}]}, "M_AcAoikByay7voZWpFQ1A": {"lat": 19.08073674403762, "lng": 72.88122193499309, "links": [{"pano_id": "MoK5oQGsYHddh77oe9V5qQ", "heading": 36.156223, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "4WQy6dysYM75qT6F1T5djg", "heading": 216.24947, "description": "Lal Bahadur Shastri Marg"}]}, "rxvkfRA_X-QmqmXIppLVDQ": {"lat": 19.08320589147042, "lng": 72.88247997573126, "links": [{"pano_id": "j2f4g2wnsnyLf-m47UN3hQ", "heading": 27.417547, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "SS0xSvy0pW5pmtphKz1yHg", "heading": 207.38133, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "GImQgsvGFeV1uKKlq1zxxQ", "heading": 174.38, "distance": 15.58, "virtual": true}, {"pano_id": "PFZBb5O2TMBPESjjcX0tAw", "heading": 137.14, "distance": 9.25, "virtual": true}, {"pano_id": "N9_65_IYTx7wd3sW-zbdpw", "heading": 80.13, "distance": 11.21, "virtual": true}]}, "_vaeB_bjQbr6izqGZnVm1g": {"lat": 19.08348994166467, "lng": 72.88265285779586, "links": [{"pano_id": "1WRL4364FK_YjJ7cqG2nKQ", "heading": 38.52805, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TF-gJR5h2xjZ0be6ZOI3rQ", "heading": 216.8994, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Bma8giFH_m9TP1ZyhC7UbQ", "heading": 171.12, "distance": 13.07, "virtual": true}, {"pano_id": "Mgkby9d3GEu5O1LrV8uYbQ", "heading": 169.54, "distance": 12.63, "virtual": true}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 127.78, "distance": 8.82, "virtual": true}, {"pano_id": "IV6qHyFgYLch2xzC440Hew", "heading": 199.28, "distance": 9.81, "virtual": true}, {"pano_id": "OxA2MMUItHC2_AAHTJTjqw", "heading": 213.2, "distance": 15.81, "virtual": true}, {"pano_id": "2A7RbnODHW5lMIFMo97BmQ", "heading": 79.03, "distance": 13.33, "virtual": true}]}, "ZsDDbLVeKzUjovbWhdcj3Q": {"lat": 19.08120203624474, "lng": 72.88204786016419, "links": [{"pano_id": "bFi2j9ZpUDDJIaQG6IWpKw", "heading": 264.07144, "description": "Sonapur Ln"}, {"pano_id": "GtEsGa1eLT_e8j2cPiq6Dg", "heading": 85.809654, "description": "Sonapur Ln"}, {"pano_id": "WH0JTe42z1r0F9S5w0Ed5A", "heading": 86.22, "distance": 12.98, "virtual": true}, {"pano_id": "ykW9wloiryDUv9EZeIygCw", "heading": 83.28, "distance": 0.57, "virtual": true}]}, "hZ0pNqXflx-MXsfQBLC70g": {"lat": 19.08365208994651, "lng": 72.88291344257138, "links": [{"pano_id": "L-_m-0RyplAUM8N2NZuLmg", "heading": 51.047306, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "PZogReZGRBjDrLW9FyHRdg", "heading": 224.21924, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hXGflfZUaHwaFOpHR9hN8Q", "heading": 265.77, "distance": 13.54, "virtual": true}, {"pano_id": "lYNl67Xg87-oLmtO0s2slg", "heading": 314.74, "distance": 9.32, "virtual": true}, {"pano_id": "K9W9LuJ7-cAC6eppsWY5CQ", "heading": 2.53, "distance": 13.54, "virtual": true}]}, "GtEsGa1eLT_e8j2cPiq6Dg": {"lat": 19.08120414574083, "lng": 72.88207832641021, "links": [{"pano_id": "ZsDDbLVeKzUjovbWhdcj3Q", "heading": 265.80966, "description": "Sonapur Ln"}, {"pano_id": "WH0JTe42z1r0F9S5w0Ed5A", "heading": 86.35751, "description": "Sonapur Ln"}, {"pano_id": "ykW9wloiryDUv9EZeIygCw", "heading": 266.3583, "description": ""}, {"pano_id": "bFi2j9ZpUDDJIaQG6IWpKw", "heading": 264.52, "distance": 12.51, "virtual": true}]}, "1WRL4364FK_YjJ7cqG2nKQ": {"lat": 19.0835688944505, "lng": 72.88271937859895, "links": [{"pano_id": "_vaeB_bjQbr6izqGZnVm1g", "heading": 218.52805, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hXGflfZUaHwaFOpHR9hN8Q", "heading": 39.844906, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "4Af7-s2lOE2o4078E0sRrQ", "heading": 180.08, "distance": 14.18, "virtual": true}, {"pano_id": "2A7RbnODHW5lMIFMo97BmQ", "heading": 135.66, "distance": 8.73, "virtual": true}, {"pano_id": "PZogReZGRBjDrLW9FyHRdg", "heading": 83.95, "distance": 12.77, "virtual": true}]}, "SS0xSvy0pW5pmtphKz1yHg": {"lat": 19.08312020460011, "lng": 72.88243301452337, "links": [{"pano_id": "rxvkfRA_X-QmqmXIppLVDQ", "heading": 27.38134, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "_CEUsJ_Eo1n5YE7dPAOxTg", "heading": 207.35605, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "-MPSLl_GMUpGlaXMeVaVzQ", "heading": 173.64, "distance": 14.89, "virtual": true}, {"pano_id": "GImQgsvGFeV1uKKlq1zxxQ", "heading": 132.8, "distance": 8.8, "virtual": true}, {"pano_id": "PFZBb5O2TMBPESjjcX0tAw", "heading": 76.24, "distance": 11.56, "virtual": true}]}, "4WQy6dysYM75qT6F1T5djg": {"lat": 19.08066401545801, "lng": 72.88116550913878, "links": [{"pano_id": "M_AcAoikByay7voZWpFQ1A", "heading": 36.24947, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "dyZVDhN3X7US3FOhCLfdHg", "heading": 215.81352, "description": "Lal Bahadur Shastri Marg"}]}, "L-_m-0RyplAUM8N2NZuLmg": {"lat": 19.08370759374952, "lng": 72.88298609258311, "links": [{"pano_id": "hZ0pNqXflx-MXsfQBLC70g", "heading": 231.0473, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "0BMU0lzwfGWb_r_H_evoAQ", "heading": 53.786064, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "lYNl67Xg87-oLmtO0s2slg", "heading": 271.56, "distance": 14.26, "virtual": true}, {"pano_id": "K9W9LuJ7-cAC6eppsWY5CQ", "heading": 316.27, "distance": 10.18, "virtual": true}]}, "0BMU0lzwfGWb_r_H_evoAQ": {"lat": 19.08375793130269, "lng": 72.88305883270938, "links": [{"pano_id": "zD4HjwJBUpKN7WI5bZQWqg", "heading": 59.799385, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "L-_m-0RyplAUM8N2NZuLmg", "heading": 233.78607, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "K9W9LuJ7-cAC6eppsWY5CQ", "heading": 276.83, "distance": 14.79, "virtual": true}]}, "WH0JTe42z1r0F9S5w0Ed5A": {"lat": 19.08120972576107, "lng": 72.88217107717684, "links": [{"pano_id": "haIDD9SdCWQxq7_xIJPxeg", "heading": 86.32123, "description": "Sonapur Ln"}, {"pano_id": "GtEsGa1eLT_e8j2cPiq6Dg", "heading": 266.3575, "description": "Sonapur Ln"}, {"pano_id": "ZsDDbLVeKzUjovbWhdcj3Q", "heading": 266.22, "distance": 12.98, "virtual": true}, {"pano_id": "ykW9wloiryDUv9EZeIygCw", "heading": 266.36, "distance": 12.41, "virtual": true}]}, "dyZVDhN3X7US3FOhCLfdHg": {"lat": 19.08058220461806, "lng": 72.8811030440802, "links": [{"pano_id": "lJfJSJphGKspENhRbyG6Xw", "heading": 214.99797, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "4WQy6dysYM75qT6F1T5djg", "heading": 35.813522, "description": "Lal Bahadur Shastri Marg"}]}, "ykW9wloiryDUv9EZeIygCw": {"lat": 19.0812026385453, "lng": 72.88205326837382, "links": [{"pano_id": "GtEsGa1eLT_e8j2cPiq6Dg", "heading": 86.358315, "description": "Sonapur Ln"}, {"pano_id": "bFi2j9ZpUDDJIaQG6IWpKw", "heading": 264.03, "distance": 9.88, "virtual": true}, {"pano_id": "ZsDDbLVeKzUjovbWhdcj3Q", "heading": 263.28, "distance": 0.57, "virtual": true}, {"pano_id": "WH0JTe42z1r0F9S5w0Ed5A", "heading": 86.36, "distance": 12.41, "virtual": true}]}, "_CEUsJ_Eo1n5YE7dPAOxTg": {"lat": 19.08304035218264, "lng": 72.88238929822758, "links": [{"pano_id": "hl9O--MoMpzeCgZp-ALDwA", "heading": 207.42253, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "SS0xSvy0pW5pmtphKz1yHg", "heading": 27.356054, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "EGFHsftDkKuXyJmS7RAjLw", "heading": 174.45, "distance": 14.8, "virtual": true}, {"pano_id": "-MPSLl_GMUpGlaXMeVaVzQ", "heading": 133.46, "distance": 8.6, "virtual": true}, {"pano_id": "GImQgsvGFeV1uKKlq1zxxQ", "heading": 75.31, "distance": 11.43, "virtual": true}]}, "hXGflfZUaHwaFOpHR9hN8Q": {"lat": 19.08364310434616, "lng": 72.88278490788161, "links": [{"pano_id": "lYNl67Xg87-oLmtO0s2slg", "heading": 42.331577, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "1WRL4364FK_YjJ7cqG2nKQ", "heading": 219.84491, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "2A7RbnODHW5lMIFMo97BmQ", "heading": 183.1, "distance": 14.52, "virtual": true}, {"pano_id": "PZogReZGRBjDrLW9FyHRdg", "heading": 139.89, "distance": 9.03, "virtual": true}, {"pano_id": "hZ0pNqXflx-MXsfQBLC70g", "heading": 85.77, "distance": 13.54, "virtual": true}]}, "haIDD9SdCWQxq7_xIJPxeg": {"lat": 19.08121546010372, "lng": 72.88226545036923, "links": [{"pano_id": "WH0JTe42z1r0F9S5w0Ed5A", "heading": 266.32123, "description": "Sonapur Ln"}]}, "hl9O--MoMpzeCgZp-ALDwA": {"lat": 19.08296187546492, "lng": 72.88234621288088, "links": [{"pano_id": "_CEUsJ_Eo1n5YE7dPAOxTg", "heading": 27.422535, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "7OOHaZbRSkXfh7sQkui23w", "heading": 175.66, "distance": 15.15, "virtual": true}, {"pano_id": "EGFHsftDkKuXyJmS7RAjLw", "heading": 135.21, "distance": 8.46, "virtual": true}, {"pano_id": "-MPSLl_GMUpGlaXMeVaVzQ", "heading": 75.37, "distance": 11.13, "virtual": true}]}, "lYNl67Xg87-oLmtO0s2slg": {"lat": 19.08371108693234, "lng": 72.88285043714646, "links": [{"pano_id": "K9W9LuJ7-cAC6eppsWY5CQ", "heading": 46.005814, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hXGflfZUaHwaFOpHR9hN8Q", "heading": 222.33157, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "PZogReZGRBjDrLW9FyHRdg", "heading": 184.23, "distance": 14.5, "virtual": true}, {"pano_id": "hZ0pNqXflx-MXsfQBLC70g", "heading": 134.74, "distance": 9.32, "virtual": true}, {"pano_id": "L-_m-0RyplAUM8N2NZuLmg", "heading": 91.56, "distance": 14.26, "virtual": true}]}, "zD4HjwJBUpKN7WI5bZQWqg": {"lat": 19.08380289920551, "lng": 72.88314058645584, "links": [{"pano_id": "0BMU0lzwfGWb_r_H_evoAQ", "heading": 239.79938, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "TGpZrES-cIJZsQvBKgSpyQ", "heading": 62.658894, "description": "Lal Bahadur Shastri Marg"}]}, "lJfJSJphGKspENhRbyG6Xw": {"lat": 19.08050652834261, "lng": 72.88104697874688, "links": [{"pano_id": "dyZVDhN3X7US3FOhCLfdHg", "heading": 34.99797, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "Wp8H6SMIAseNXffkTlxAug", "heading": 214.9357, "description": "Lal Bahadur Shastri Marg"}]}, "Wp8H6SMIAseNXffkTlxAug": {"lat": 19.08043067667995, "lng": 72.88099091340054, "links": [{"pano_id": "lJfJSJphGKspENhRbyG6Xw", "heading": 34.935696, "description": "Lal Bahadur Shastri Marg"}]}, "TGpZrES-cIJZsQvBKgSpyQ": {"lat": 19.08384526900863, "lng": 72.88322729767593, "links": [{"pano_id": "zD4HjwJBUpKN7WI5bZQWqg", "heading": 242.65889, "description": "Lal Bahadur Shastri Marg"}]}, "K9W9LuJ7-cAC6eppsWY5CQ": {"lat": 19.08377375635963, "lng": 72.88291912117108, "links": [{"pano_id": "lYNl67Xg87-oLmtO0s2slg", "heading": 226.00581, "description": "Lal Bahadur Shastri Marg"}, {"pano_id": "hZ0pNqXflx-MXsfQBLC70g", "heading": 182.53, "distance": 13.54, "virtual": true}, {"pano_id": "L-_m-0RyplAUM8N2NZuLmg", "heading": 136.27, "distance": 10.18, "virtual": true}, {"pano_id": "0BMU0lzwfGWb_r_H_evoAQ", "heading": 96.83, "distance": 14.79, "virtual": true}]}};
+        const targetPanos = ["GHkjLK7zZcOi3wA4vvG_MA", "pxLOJh1qosdfguE_b2h-Ew"];
+        const spawnPoints = ["TGpZrES-cIJZsQvBKgSpyQ", "M_AcAoikByay7voZWpFQ1A", "haIDD9SdCWQxq7_xIJPxeg", "SS0xSvy0pW5pmtphKz1yHg", "iW2QXasVECvzQxUrYFjONg", "ZsDDbLVeKzUjovbWhdcj3Q", "Wp8H6SMIAseNXffkTlxAug"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

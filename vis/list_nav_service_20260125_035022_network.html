@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_service_20260125_035022</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_service_20260125_035022</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"yT8b3nUX2lRB6Bbc9_e8ag": {"lat": -25.25750113043367, "lng": -57.58441997070022, "links": [{"pano_id": "oPCeGTnzoQPzu7z0Xkq_Mw", "heading": 138.25684, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "N2LRYXIg0Sb9c92FuE0g1Q", "heading": 318.28732, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "N2LRYXIg0Sb9c92FuE0g1Q": {"lat": -25.25743457955153, "lng": -57.58448556242185, "links": [{"pano_id": "QiMkUVURwP2QPuPi_iG61Q", "heading": 318.2922, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "yT8b3nUX2lRB6Bbc9_e8ag", "heading": 138.28731, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "oPCeGTnzoQPzu7z0Xkq_Mw": {"lat": -25.25756857348416, "lng": -57.5843534284158, "links": [{"pano_id": "yT8b3nUX2lRB6Bbc9_e8ag", "heading": 318.25684, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "hivEzTWYwxqMQmKTD4yHoQ", "heading": 138.27602, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "hivEzTWYwxqMQmKTD4yHoQ": {"lat": -25.25764780666878, "lng": -57.58427530609928, "links": [{"pano_id": "oPCeGTnzoQPzu7z0Xkq_Mw", "heading": 318.27603, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "_cPg5Qdc5cj8pOnQXtw-Vg", "heading": 138.2808, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "QiMkUVURwP2QPuPi_iG61Q": {"lat": -25.25736310604731, "lng": -57.58455599363099, "links": [{"pano_id": "YKv-AHDhJvP1YXGkPDqROQ", "heading": 318.26215, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "N2LRYXIg0Sb9c92FuE0g1Q", "heading": 138.29222, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "YKv-AHDhJvP1YXGkPDqROQ": {"lat": -25.2572919707488, "lng": -57.58462616563109, "links": [{"pano_id": "QiMkUVURwP2QPuPi_iG61Q", "heading": 138.26215, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "RY0N3cqAvFb4_lm_vbmwDg", "heading": 318.27753, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "_cPg5Qdc5cj8pOnQXtw-Vg": {"lat": -25.25771513106857, "lng": -57.5842089367433, "links": [{"pano_id": "hivEzTWYwxqMQmKTD4yHoQ", "heading": 318.28082, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "3BTkeWfsi5i_MSZYYQv2BA", "heading": 138.26462, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "3BTkeWfsi5i_MSZYYQv2BA": {"lat": -25.25779170395915, "lng": -57.58413340708452, "links": [{"pano_id": "POe-aU2ZWfTWmTkWucsfVQ", "heading": 138.31221, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "_cPg5Qdc5cj8pOnQXtw-Vg", "heading": 318.26462, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "RY0N3cqAvFb4_lm_vbmwDg": {"lat": -25.25722141044734, "lng": -57.58469573274645, "links": [{"pano_id": "YKv-AHDhJvP1YXGkPDqROQ", "heading": 138.27754, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "f0-vKZm0kgLi9hekXW3T8w", "heading": 318.25488, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "f0-vKZm0kgLi9hekXW3T8w": {"lat": -25.25715370882053, "lng": -57.58476253450429, "links": [{"pano_id": "CIbol6c0mBX5BlHF_A1Pnw", "heading": 318.2795, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "RY0N3cqAvFb4_lm_vbmwDg", "heading": 138.2549, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Uc_xV9U0zsbpz99CRual_Q", "heading": 312.72, "distance": 16.55, "virtual": true}, {"pano_id": "obICXib-L1gwIbTtsrTKMA", "heading": 327.37, "distance": 16.49, "virtual": true}]}, "POe-aU2ZWfTWmTkWucsfVQ": {"lat": -25.25785541664666, "lng": -57.58407066738636, "links": [{"pano_id": "3BTkeWfsi5i_MSZYYQv2BA", "heading": 318.3122, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "2ayAy6xBA-n66xuOb2qTww", "heading": 138.24667, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "vsX-jYz3dyxWzaX7UCZIvw", "heading": 106.16, "distance": 17.51, "virtual": true}, {"pano_id": "O7l_wpPH-fBCCTWhbOadQQ", "heading": 138.23, "distance": 14.7, "virtual": true}]}, "2ayAy6xBA-n66xuOb2qTww": {"lat": -25.25791968316978, "lng": -57.58400723637976, "links": [{"pano_id": "O7l_wpPH-fBCCTWhbOadQQ", "heading": 138.20178, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "POe-aU2ZWfTWmTkWucsfVQ", "heading": 318.24667, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "vsX-jYz3dyxWzaX7UCZIvw", "heading": 77.70915, "description": "Bogot\u00e1"}, {"pano_id": "g4QMXS5NQ0SxA91G4aGnBg", "heading": 137.51, "distance": 14.24, "virtual": true}]}, "CIbol6c0mBX5BlHF_A1Pnw": {"lat": -25.25708761407191, "lng": -57.58482769434525, "links": [{"pano_id": "Uc_xV9U0zsbpz99CRual_Q", "heading": 304.6851, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "f0-vKZm0kgLi9hekXW3T8w", "heading": 138.27951, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "jV_j4jE3vJtCIuzC81bpXQ", "heading": 254.9, "distance": 16.18, "virtual": true}, {"pano_id": "obICXib-L1gwIbTtsrTKMA", "heading": 340.31, "distance": 6.94, "virtual": true}, {"pano_id": "f3F7SKdYdWNHNG7P1Pzj_A", "heading": 26.79, "distance": 16.06, "virtual": true}]}, "vsX-jYz3dyxWzaX7UCZIvw": {"lat": -25.25789923284571, "lng": -57.58390344812597, "links": [{"pano_id": "gBAPemFsBJN-LC0APN5lTg", "heading": 49.652668, "description": "Bogot\u00e1"}, {"pano_id": "2ayAy6xBA-n66xuOb2qTww", "heading": 257.70917, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "POe-aU2ZWfTWmTkWucsfVQ", "heading": 286.16, "distance": 17.51, "virtual": true}, {"pano_id": "O7l_wpPH-fBCCTWhbOadQQ", "heading": 229.05, "distance": 9.3, "virtual": true}, {"pano_id": "g4QMXS5NQ0SxA91G4aGnBg", "heading": 183.66, "distance": 12.8, "virtual": true}]}, "Uc_xV9U0zsbpz99CRual_Q": {"lat": -25.25705272683975, "lng": -57.58488343455957, "links": [{"pano_id": "obICXib-L1gwIbTtsrTKMA", "heading": 50.907383, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "jV_j4jE3vJtCIuzC81bpXQ", "heading": 231.06673, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "CIbol6c0mBX5BlHF_A1Pnw", "heading": 124.68509, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "f0-vKZm0kgLi9hekXW3T8w", "heading": 132.72, "distance": 16.55, "virtual": true}, {"pano_id": "f3F7SKdYdWNHNG7P1Pzj_A", "heading": 50.84, "distance": 16.57, "virtual": true}]}, "O7l_wpPH-fBCCTWhbOadQQ": {"lat": -25.2579540386555, "lng": -57.58397327401732, "links": [{"pano_id": "g4QMXS5NQ0SxA91G4aGnBg", "heading": 137.12704, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "2ayAy6xBA-n66xuOb2qTww", "heading": 318.20178, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "POe-aU2ZWfTWmTkWucsfVQ", "heading": 318.23, "distance": 14.7, "virtual": true}, {"pano_id": "vsX-jYz3dyxWzaX7UCZIvw", "heading": 49.05, "distance": 9.3, "virtual": true}]}, "jV_j4jE3vJtCIuzC81bpXQ": {"lat": -25.25712552743833, "lng": -57.58498307566756, "links": [{"pano_id": "Uc_xV9U0zsbpz99CRual_Q", "heading": 51.06673, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "r1Uple66MrYqT_Ay2vODNQ", "heading": 231.0876, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "CIbol6c0mBX5BlHF_A1Pnw", "heading": 74.9, "distance": 16.18, "virtual": true}, {"pano_id": "obICXib-L1gwIbTtsrTKMA", "heading": 51.03, "distance": 17.09, "virtual": true}]}, "gBAPemFsBJN-LC0APN5lTg": {"lat": -25.25784140506843, "lng": -57.58382817794112, "links": [{"pano_id": "vsX-jYz3dyxWzaX7UCZIvw", "heading": 229.65266, "description": "Bogot\u00e1"}, {"pano_id": "A_CeEM_bIcvYnccAOzxuFw", "heading": 49.630543, "description": "Bogot\u00e1"}]}, "obICXib-L1gwIbTtsrTKMA": {"lat": -25.25702885077012, "lng": -57.5848509410357, "links": [{"pano_id": "Uc_xV9U0zsbpz99CRual_Q", "heading": 230.90738, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "f3F7SKdYdWNHNG7P1Pzj_A", "heading": 50.8208, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "f0-vKZm0kgLi9hekXW3T8w", "heading": 147.37, "distance": 16.49, "virtual": true}, {"pano_id": "CIbol6c0mBX5BlHF_A1Pnw", "heading": 160.31, "distance": 6.94, "virtual": true}, {"pano_id": "jV_j4jE3vJtCIuzC81bpXQ", "heading": 231.03, "distance": 17.09, "virtual": true}]}, "g4QMXS5NQ0SxA91G4aGnBg": {"lat": -25.25801414730218, "lng": -57.58391157143273, "links": [{"pano_id": "O7l_wpPH-fBCCTWhbOadQQ", "heading": 317.12704, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "iQdx-RH8HYTRbLo88Issbg", "heading": 137.11235, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "2ayAy6xBA-n66xuOb2qTww", "heading": 317.51, "distance": 14.24, "virtual": true}, {"pano_id": "vsX-jYz3dyxWzaX7UCZIvw", "heading": 3.66, "distance": 12.8, "virtual": true}]}, "A_CeEM_bIcvYnccAOzxuFw": {"lat": -25.2577778178169, "lng": -57.58374547585991, "links": [{"pano_id": "YUuxqgeWqVh3jioIsSm3Pg", "heading": 49.68111, "description": "Bogot\u00e1"}, {"pano_id": "gBAPemFsBJN-LC0APN5lTg", "heading": 229.63054, "description": "Bogot\u00e1"}]}, "iQdx-RH8HYTRbLo88Issbg": {"lat": -25.25808381720751, "lng": -57.58384001722035, "links": [{"pano_id": "hCbYdRIyf4Wd9UjLJEm7Qw", "heading": 137.13503, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "g4QMXS5NQ0SxA91G4aGnBg", "heading": 317.11237, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "r1Uple66MrYqT_Ay2vODNQ": {"lat": -25.25717827329798, "lng": -57.58505532201137, "links": [{"pano_id": "jf0KY_ntJwpygpGuz4CluA", "heading": 231.04863, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "jV_j4jE3vJtCIuzC81bpXQ", "heading": 51.087605, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "f3F7SKdYdWNHNG7P1Pzj_A": {"lat": -25.25695865724733, "lng": -57.58475570741455, "links": [{"pano_id": "0_I5TylelmtdWAD_zIZ7vQ", "heading": 50.764427, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "obICXib-L1gwIbTtsrTKMA", "heading": 230.8208, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "CIbol6c0mBX5BlHF_A1Pnw", "heading": 206.79, "distance": 16.06, "virtual": true}, {"pano_id": "Uc_xV9U0zsbpz99CRual_Q", "heading": 230.84, "distance": 16.57, "virtual": true}]}, "hCbYdRIyf4Wd9UjLJEm7Qw": {"lat": -25.25815362654803, "lng": -57.58376837663869, "links": [{"pano_id": "w7Eij3ylpjfalDv2QpTWZA", "heading": 137.0545, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "iQdx-RH8HYTRbLo88Issbg", "heading": 317.13504, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "YUuxqgeWqVh3jioIsSm3Pg": {"lat": -25.2577122881257, "lng": -57.58366009488723, "links": [{"pano_id": "A_CeEM_bIcvYnccAOzxuFw", "heading": 229.6811, "description": "Bogot\u00e1"}, {"pano_id": "qFPlkekZJTSRwZ32ZjvAaQ", "heading": 49.638123, "description": "Bogot\u00e1"}]}, "0_I5TylelmtdWAD_zIZ7vQ": {"lat": -25.25689093941233, "lng": -57.58466401704965, "links": [{"pano_id": "QklbA2p_IQrTN6ioR8MKrw", "heading": 50.780346, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "f3F7SKdYdWNHNG7P1Pzj_A", "heading": 230.76442, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "jf0KY_ntJwpygpGuz4CluA": {"lat": -25.25723412531492, "lng": -57.58513171652467, "links": [{"pano_id": "__MRh4YvdVu5tzQSJ1jV5g", "heading": 231.0762, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "r1Uple66MrYqT_Ay2vODNQ", "heading": 51.048626, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "__MRh4YvdVu5tzQSJ1jV5g": {"lat": -25.25730778501261, "lng": -57.58523256773759, "links": [{"pano_id": "jf0KY_ntJwpygpGuz4CluA", "heading": 51.076206, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "7CCb-czJME7h1DutxXq_Xg", "heading": 231.10507, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "qFPlkekZJTSRwZ32ZjvAaQ": {"lat": -25.25765376636748, "lng": -57.58358396069785, "links": [{"pano_id": "YUuxqgeWqVh3jioIsSm3Pg", "heading": 229.63812, "description": "Bogot\u00e1"}, {"pano_id": "QtANtzWH0dJ23qzIt7CkMw", "heading": 49.6696, "description": "Bogot\u00e1"}]}, "QklbA2p_IQrTN6ioR8MKrw": {"lat": -25.25682753381151, "lng": -57.58457811681809, "links": [{"pano_id": "0_I5TylelmtdWAD_zIZ7vQ", "heading": 230.78035, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "BDHVph_iRjMxwpLN4YRwNA", "heading": 50.78786, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "w7Eij3ylpjfalDv2QpTWZA": {"lat": -25.2582206362254, "lng": -57.58369941506339, "links": [{"pano_id": "hCbYdRIyf4Wd9UjLJEm7Qw", "heading": 317.0545, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "lqafuGK1B1U0w2wAJrwUOw", "heading": 136.95868, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "QtANtzWH0dJ23qzIt7CkMw": {"lat": -25.25759497798697, "lng": -57.58350739447452, "links": [{"pano_id": "qFPlkekZJTSRwZ32ZjvAaQ", "heading": 229.6696, "description": "Bogot\u00e1"}, {"pano_id": "B5767YwfBVNDnJ3b6em5aQ", "heading": 58.806267, "description": "Bogot\u00e1"}]}, "7CCb-czJME7h1DutxXq_Xg": {"lat": -25.25737071275443, "lng": -57.58531881418157, "links": [{"pano_id": "__MRh4YvdVu5tzQSJ1jV5g", "heading": 51.10507, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "bDys_ZgnLeGQch0ZNRh7pg", "heading": 231.07323, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "BDHVph_iRjMxwpLN4YRwNA": {"lat": -25.25676688736839, "lng": -57.58449593265826, "links": [{"pano_id": "QklbA2p_IQrTN6ioR8MKrw", "heading": 230.78786, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "G98s-JBLjPEdBXube9nPQw", "heading": 50.798046, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "lqafuGK1B1U0w2wAJrwUOw": {"lat": -25.25828901160744, "lng": -57.58362881159275, "links": [{"pano_id": "w7Eij3ylpjfalDv2QpTWZA", "heading": 316.95868, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "gnivSBKz4gvUnq6HBA1O7A", "heading": 136.58789, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "bDys_ZgnLeGQch0ZNRh7pg": {"lat": -25.25742683141592, "lng": -57.58539564098339, "links": [{"pano_id": "7CCb-czJME7h1DutxXq_Xg", "heading": 51.073227, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "akw4MlDy6alWZ6DjfSO5-g", "heading": 231.05067, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "gnivSBKz4gvUnq6HBA1O7A": {"lat": -25.25835592765144, "lng": -57.58355881309465, "links": [{"pano_id": "lqafuGK1B1U0w2wAJrwUOw", "heading": 316.5879, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "X49nJ7Z1WG9kKMn5wmqzMQ", "heading": 136.63818, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "B5767YwfBVNDnJ3b6em5aQ": {"lat": -25.25754595305603, "lng": -57.58341786564309, "links": [{"pano_id": "xyDOMZ9i3PS5kqME2I7YvQ", "heading": 74.643074, "description": "Bogot\u00e1"}, {"pano_id": "QtANtzWH0dJ23qzIt7CkMw", "heading": 238.80626, "description": "Bogot\u00e1"}]}, "G98s-JBLjPEdBXube9nPQw": {"lat": -25.25671104405723, "lng": -57.58442022995595, "links": [{"pano_id": "BDHVph_iRjMxwpLN4YRwNA", "heading": 230.79805, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "rxhpd_V01XguWRDuMkEDPQ", "heading": 50.768475, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "X49nJ7Z1WG9kKMn5wmqzMQ": {"lat": -25.2584225475948, "lng": -57.58348924673226, "links": [{"pano_id": "Uqi2PfPdfFQkeo5moYLiGg", "heading": 136.66034, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "gnivSBKz4gvUnq6HBA1O7A", "heading": 316.63818, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "rxhpd_V01XguWRDuMkEDPQ": {"lat": -25.25665667345303, "lng": -57.58434660135263, "links": [{"pano_id": "G98s-JBLjPEdBXube9nPQw", "heading": 230.76848, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "LTnCsXtv55w4XCKwRjz3_w", "heading": 50.795937, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "akw4MlDy6alWZ6DjfSO5-g": {"lat": -25.25748981836859, "lng": -57.58548180114182, "links": [{"pano_id": "0cn37Q-WeexDFBn4B1pJRA", "heading": 231.10532, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "bDys_ZgnLeGQch0ZNRh7pg", "heading": 51.05067, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "xyDOMZ9i3PS5kqME2I7YvQ": {"lat": -25.25752195565843, "lng": -57.58332125063841, "links": [{"pano_id": "B5767YwfBVNDnJ3b6em5aQ", "heading": 254.64307, "description": "Bogot\u00e1"}, {"pano_id": "gklcoi6ONZTxDWUM7cC3Pg", "heading": 92.23882, "description": "Bogot\u00e1"}]}, "0cn37Q-WeexDFBn4B1pJRA": {"lat": -25.25754826882167, "lng": -57.58556191200445, "links": [{"pano_id": "jVgzPKrsgK7lQwKyN8lWUA", "heading": 231.05124, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "akw4MlDy6alWZ6DjfSO5-g", "heading": 51.105316, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "LTnCsXtv55w4XCKwRjz3_w": {"lat": -25.25658807540407, "lng": -57.58425361506817, "links": [{"pano_id": "rxhpd_V01XguWRDuMkEDPQ", "heading": 230.79593, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "6WfrZX9_kCt_C8t4xazdJg", "heading": 50.782463, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "gklcoi6ONZTxDWUM7cC3Pg": {"lat": -25.25752541141859, "lng": -57.58322351229388, "links": [{"pano_id": "xyDOMZ9i3PS5kqME2I7YvQ", "heading": 272.23883, "description": "Bogot\u00e1"}, {"pano_id": "hJa9sK0j9BRdRtIAYhJUlA", "heading": 92.63245, "description": "Bogot\u00e1"}]}, "Uqi2PfPdfFQkeo5moYLiGg": {"lat": -25.25848706574043, "lng": -57.58342192727761, "links": [{"pano_id": "X49nJ7Z1WG9kKMn5wmqzMQ", "heading": 316.66034, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "eHzrTDh67yu_6MX8gazCNA", "heading": 136.6203, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "6WfrZX9_kCt_C8t4xazdJg": {"lat": -25.25652454711337, "lng": -57.58416754233548, "links": [{"pano_id": "LTnCsXtv55w4XCKwRjz3_w", "heading": 230.78247, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "iNp0kp-UWEp8i-9xGoFZUA", "heading": 50.807533, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "jVgzPKrsgK7lQwKyN8lWUA": {"lat": -25.2576056951269, "lng": -57.58564046737568, "links": [{"pano_id": "0cn37Q-WeexDFBn4B1pJRA", "heading": 51.05123, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "4xo9EMU-k7bYXYEBeZsG0w", "heading": 231.08023, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "eHzrTDh67yu_6MX8gazCNA": {"lat": -25.25855124544068, "lng": -57.58335486711923, "links": [{"pano_id": "DmouKSFQE107tDPgNudelw", "heading": 136.62723, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Uqi2PfPdfFQkeo5moYLiGg", "heading": 316.6203, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Cxn-N6OlRLY-SMpNqg5T9g", "heading": 112.86, "distance": 16.69, "virtual": true}]}, "hJa9sK0j9BRdRtIAYhJUlA": {"lat": -25.25752979535469, "lng": -57.58311808288184, "links": [{"pano_id": "Sk6f34wliJm_FzbLpy7hgg", "heading": 92.65084, "description": "Bogot\u00e1"}, {"pano_id": "gklcoi6ONZTxDWUM7cC3Pg", "heading": 272.63245, "description": "Bogot\u00e1"}]}, "4xo9EMU-k7bYXYEBeZsG0w": {"lat": -25.25767246540735, "lng": -57.58573189933388, "links": [{"pano_id": "jVgzPKrsgK7lQwKyN8lWUA", "heading": 51.080227, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "NMfQPc3YF4jUc1Jn4UrKIg", "heading": 231.07126, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "DmouKSFQE107tDPgNudelw": {"lat": -25.25861651604461, "lng": -57.58328668357424, "links": [{"pano_id": "vU-sapMY_rELB8lT94ESMQ", "heading": 137.59865, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "eHzrTDh67yu_6MX8gazCNA", "heading": 316.62723, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Cxn-N6OlRLY-SMpNqg5T9g", "heading": 84.81943, "description": ""}, {"pano_id": "Un4cgqHjBuXgTCl1hdWyOg", "heading": 65.1, "distance": 17.65, "virtual": true}]}, "Sk6f34wliJm_FzbLpy7hgg": {"lat": -25.25753421720175, "lng": -57.58301248074078, "links": [{"pano_id": "bcedeQIOSdaVhPsp2h98tA", "heading": 92.64589, "description": "Bogot\u00e1"}, {"pano_id": "hJa9sK0j9BRdRtIAYhJUlA", "heading": 272.65085, "description": "Bogot\u00e1"}]}, "iNp0kp-UWEp8i-9xGoFZUA": {"lat": -25.25646387952796, "lng": -57.58408527207859, "links": [{"pano_id": "yPWoqOS26fwFLP7ZOXou9A", "heading": 50.79648, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "6WfrZX9_kCt_C8t4xazdJg", "heading": 230.80753, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "NMfQPc3YF4jUc1Jn4UrKIg": {"lat": -25.25772700984427, "lng": -57.58580656594479, "links": [{"pano_id": "lwJ4z-wUSeHva5eyB5svzQ", "heading": 231.08553, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "4xo9EMU-k7bYXYEBeZsG0w", "heading": 51.07126, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "yPWoqOS26fwFLP7ZOXou9A": {"lat": -25.25640382557454, "lng": -57.58400386606849, "links": [{"pano_id": "iNp0kp-UWEp8i-9xGoFZUA", "heading": 230.79648, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "fIzZA-mUKhUxTX4UeNfrkw", "heading": 50.777195, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "bcedeQIOSdaVhPsp2h98tA": {"lat": -25.2575383743396, "lng": -57.5829130143368, "links": [{"pano_id": "Sk6f34wliJm_FzbLpy7hgg", "heading": 272.6459, "description": "Bogot\u00e1"}, {"pano_id": "Pw7eyOtUzncV5_MXCHiC3A", "heading": 92.618996, "description": "Bogot\u00e1"}]}, "Cxn-N6OlRLY-SMpNqg5T9g": {"lat": -25.25860956470438, "lng": -57.58320190789755, "links": [{"pano_id": "DmouKSFQE107tDPgNudelw", "heading": 264.81943, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Un4cgqHjBuXgTCl1hdWyOg", "heading": 48.341705, "description": ""}, {"pano_id": "eHzrTDh67yu_6MX8gazCNA", "heading": 292.86, "distance": 16.69, "virtual": true}, {"pano_id": "vU-sapMY_rELB8lT94ESMQ", "heading": 190.14, "distance": 8.59, "virtual": true}, {"pano_id": "62aSO6JmBqw62fkDPlrh0w", "heading": 162.69, "distance": 16.44, "virtual": true}]}, "vU-sapMY_rELB8lT94ESMQ": {"lat": -25.25868558468668, "lng": -57.58321694455692, "links": [{"pano_id": "DmouKSFQE107tDPgNudelw", "heading": 317.59866, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "62aSO6JmBqw62fkDPlrh0w", "heading": 138.52647, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Cxn-N6OlRLY-SMpNqg5T9g", "heading": 10.14, "distance": 8.59, "virtual": true}, {"pano_id": "Un4cgqHjBuXgTCl1hdWyOg", "heading": 30.76, "distance": 17.58, "virtual": true}]}, "lwJ4z-wUSeHva5eyB5svzQ": {"lat": -25.25778253608881, "lng": -57.58588261532525, "links": [{"pano_id": "6xtd9u1NLMT-fevpKk4tsg", "heading": 231.07326, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "NMfQPc3YF4jUc1Jn4UrKIg", "heading": 51.08552, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "fIzZA-mUKhUxTX4UeNfrkw": {"lat": -25.25634692012695, "lng": -57.58392678103004, "links": [{"pano_id": "yPWoqOS26fwFLP7ZOXou9A", "heading": 230.77719, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}, {"pano_id": "ZwOEQ8YkRXz2yLm45esKMA", "heading": 50.795612, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "62aSO6JmBqw62fkDPlrh0w": {"lat": -25.2587507507149, "lng": -57.58315325481326, "links": [{"pano_id": "vU-sapMY_rELB8lT94ESMQ", "heading": 318.52646, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "LC-Io0B7jevufh9zJqkFkw", "heading": 138.50342, "description": "Dr. Felipe Molas L\u00f3pez"}, {"pano_id": "Cxn-N6OlRLY-SMpNqg5T9g", "heading": 342.69, "distance": 16.44, "virtual": true}]}, "Pw7eyOtUzncV5_MXCHiC3A": {"lat": -25.25754232113483, "lng": -57.58281760963813, "links": [{"pano_id": "-13BXdlptrjk7rxDlapIoA", "heading": 92.622284, "description": "Bogot\u00e1"}, {"pano_id": "bcedeQIOSdaVhPsp2h98tA", "heading": 272.619, "description": "Bogot\u00e1"}]}, "Un4cgqHjBuXgTCl1hdWyOg": {"lat": -25.25854969780431, "lng": -57.58312750239057, "links": [{"pano_id": "Cxn-N6OlRLY-SMpNqg5T9g", "heading": 228.3417, "description": ""}, {"pano_id": "DmouKSFQE107tDPgNudelw", "heading": 245.1, "distance": 17.65, "virtual": true}, {"pano_id": "vU-sapMY_rELB8lT94ESMQ", "heading": 210.76, "distance": 17.58, "virtual": true}]}, "ZwOEQ8YkRXz2yLm45esKMA": {"lat": -25.25629119958372, "lng": -57.58385125157413, "links": [{"pano_id": "fIzZA-mUKhUxTX4UeNfrkw", "heading": 230.79561, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}, "-13BXdlptrjk7rxDlapIoA": {"lat": -25.25754642322895, "lng": -57.58271857550458, "links": [{"pano_id": "Pw7eyOtUzncV5_MXCHiC3A", "heading": 272.62228, "description": "Bogot\u00e1"}]}, "LC-Io0B7jevufh9zJqkFkw": {"lat": -25.25881383181762, "lng": -57.58309155271039, "links": [{"pano_id": "62aSO6JmBqw62fkDPlrh0w", "heading": 318.50342, "description": "Dr. Felipe Molas L\u00f3pez"}]}, "6xtd9u1NLMT-fevpKk4tsg": {"lat": -25.25783865478959, "lng": -57.58595944253937, "links": [{"pano_id": "lwJ4z-wUSeHva5eyB5svzQ", "heading": 51.073265, "description": "Av. Gral. Jos\u00e9 Gervasio Artigas"}]}};
+        const targetPanos = ["f3F7SKdYdWNHNG7P1Pzj_A", "yT8b3nUX2lRB6Bbc9_e8ag"];
+        const spawnPoints = ["6xtd9u1NLMT-fevpKk4tsg", "ZwOEQ8YkRXz2yLm45esKMA", "hJa9sK0j9BRdRtIAYhJUlA", "gnivSBKz4gvUnq6HBA1O7A"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

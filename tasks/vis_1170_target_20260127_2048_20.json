@@ -1,0 +1,36 @@
+{
+  "task_id": "nav_1170_target_20260125_0349_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_034833",
+  "spawn_point": "rBIgYnhuJ_IAAARIXnBZqw",
+  "spawn_heading": 348.3,
+  "description": "Proceed straight along the train station platform, keeping the tracks and advertisement billboards on your right. Walk past the stairs on your left and continue towards the overhead 'Lift' sign.",
+  "ground_truth": {
+    "target_name": "Commonwealth Bank Town Hall Sydney Branch",
+    "target_pano_id": "4lwEiN_PYucAAARIXnBZrA",
+    "optimal_distance_meters": 57,
+    "route_description": "right→straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "4lwEiN_PYucAAARIXnBZrA"
+  ],
+  "max_steps": 4,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "rBIgYnhuJ_IAAARIXnBZqw",
+      "heading": 348.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "4lwEiN_PYucAAARIXnBZrA",
+      "heading": 348.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [57m]",
+  "agent_concise_description": "Proceed straight along the train station platform, keeping the tracks and advertisement billboards on your right. Walk past the stairs on your left and continue towards the overhead 'Lift' sign."
+}

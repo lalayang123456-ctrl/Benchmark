@@ -1,0 +1,61 @@
+{
+  "task_id": "nav_0441_target_20260124_1346_19",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_134514",
+  "spawn_point": "v-_7UXZJPzu41cD5Yol0yQ",
+  "spawn_heading": 304.6,
+  "description": "Navigate to 尾上町（バス）. Walk down the narrow street until you reach the intersection with the main road, marked by a 'GINDACO' store on the right corner. Turn right onto the main road. The Onoe-cho bus stop will be a short distance ahead on the left side of the sidewalk.",
+  "ground_truth": {
+    "target_name": "尾上町（バス）",
+    "target_pano_id": "r4RXRccwycEPMcPJRrI2Nw",
+    "optimal_distance_meters": 51,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "r4RXRccwycEPMcPJRrI2Nw"
+  ],
+  "max_steps": 14,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "v-_7UXZJPzu41cD5Yol0yQ",
+      "heading": 304.6
+    },
+    {
+      "step_index": 1,
+      "pano_id": "_Q3UxMkYpYz3UCb_EZsZeQ",
+      "heading": 304.6
+    },
+    {
+      "step_index": 2,
+      "pano_id": "mWDqWqso_ibq_eOJTmbRNQ",
+      "heading": 304.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "T29hwHrV7hSLW8ah3Nuw9w",
+      "heading": 304.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "rOhy9kNT3JQDFQQE3Jmcnw",
+      "heading": 304.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Fe_nZziPWvr1gDlJI2LGUA",
+      "heading": 31.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "r4RXRccwycEPMcPJRrI2Nw",
+      "heading": 31.5
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head northwest on the narrow street [37m] -> Turn Right onto the main road [14m]",
+  "agent_concise_description": "Walk down the narrow street until you reach the intersection with the main road, marked by a 'GINDACO' store on the right corner. Turn right onto the main road. The Onoe-cho bus stop will be a short distance ahead on the left side of the sidewalk."
+}

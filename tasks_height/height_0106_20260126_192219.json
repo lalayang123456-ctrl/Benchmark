@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0106_20260126_192219",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your East (approx. 104\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "GjqTuUtF81QEWk1bXBxJ8w",
+  "spawn_heading": 104.74948049015484,
+  "target_building": {
+    "lat": 41.8944437,
+    "lng": 12.4911522,
+    "height": 21.72,
+    "floors": 6,
+    "ground_elevation": 24.41113662719727,
+    "roof_elevation": 46.13265,
+    "name": "buildings/ChIJcXzPDLFhLxMRwRI_IlrjPrs",
+    "date": "2022-04-18"
+  },
+  "geofence_id": "list_height_0106_20260126_192219",
+  "ground_truth": {
+    "height_meters": 21.72
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T19:22:19.655626",
+    "bearing_deg": 104.74948049015484,
+    "city": "Rome, Italy"
+  }
+}

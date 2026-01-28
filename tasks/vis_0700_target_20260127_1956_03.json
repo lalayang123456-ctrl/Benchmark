@@ -1,0 +1,156 @@
+{
+  "task_id": "nav_0700_target_20260124_1558_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_mcdonalds_20260124_155528",
+  "spawn_point": "7y9s-H9prDshMVfRbFQKhA",
+  "spawn_heading": 266.8,
+  "description": "Walk straight along the sidewalk, keeping the glass-roofed bus station and McDonald's on your left. Continue past the U-Bahn entrance and the large historic museum building on your left, staying parallel to the road.",
+  "ground_truth": {
+    "target_name": "Hamburger Sparkasse - Geldautomat",
+    "target_pano_id": "30OKd0ja24-irVKZ3ECPag",
+    "optimal_distance_meters": 247,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "30OKd0ja24-irVKZ3ECPag"
+  ],
+  "max_steps": 52,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "7y9s-H9prDshMVfRbFQKhA",
+      "heading": 266.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "nwnTAkNfYlOTSAnHKbDnGg",
+      "heading": 266.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "3l3N5CPe9-utXuXac8Zp4w",
+      "heading": 265.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "rS6EtEpdeRunLC9m3MMG5Q",
+      "heading": 265.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "mqTfub_obbVwgzUQGNytvg",
+      "heading": 265.3
+    },
+    {
+      "step_index": 5,
+      "pano_id": "NNh4IrXBCSmuJC3CdF19GQ",
+      "heading": 265.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "rfGpBGllSt0V2TKxEvch3g",
+      "heading": 265.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "g-treB6ryTDiDwCmg5fPwQ",
+      "heading": 265.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "jyBQn8MtmwuBkKrM14Xwpg",
+      "heading": 265.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "mzUoExrjobv6uFSJFAWrPw",
+      "heading": 265.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Qm7G5Or0fFTus_rmRX7F9g",
+      "heading": 267.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "oe9-PT8wa6Bo2DRv3cqHiw",
+      "heading": 267.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "UrrmO_cccGuwHTfTNTYtOQ",
+      "heading": 267.3
+    },
+    {
+      "step_index": 13,
+      "pano_id": "TqaGZNHptlVjH2eVKc3eOw",
+      "heading": 267.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "DhccUPyHFkc9jpdKgJWO5Q",
+      "heading": 264.8
+    },
+    {
+      "step_index": 15,
+      "pano_id": "LRDq40J7r8ibdrTwi4kLrA",
+      "heading": 264.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "2PvtlrsOsFTG1oqbK3yf0A",
+      "heading": 266.6
+    },
+    {
+      "step_index": 17,
+      "pano_id": "A1BPpJcxwGc9_uhLmdFI8w",
+      "heading": 266.6
+    },
+    {
+      "step_index": 18,
+      "pano_id": "D2BLV25XFbnkclfAmItoDw",
+      "heading": 266.6
+    },
+    {
+      "step_index": 19,
+      "pano_id": "NOjizeHuPKn8AyN75YteHA",
+      "heading": 265.0
+    },
+    {
+      "step_index": 20,
+      "pano_id": "pnZibX0IF4EQYhOp3CCF8Q",
+      "heading": 264.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "vfoU0za70J6IEU189yBlOA",
+      "heading": 260.5
+    },
+    {
+      "step_index": 22,
+      "pano_id": "0TR9DRYM-hEG8AeGdlwSOA",
+      "heading": 258.8
+    },
+    {
+      "step_index": 23,
+      "pano_id": "z3tuJQ_I5zwRpeDuD7XEiw",
+      "heading": 253.1
+    },
+    {
+      "step_index": 24,
+      "pano_id": "R_TkajmiSTUujlvSUgDTNg",
+      "heading": 255.6
+    },
+    {
+      "step_index": 25,
+      "pano_id": "30OKd0ja24-irVKZ3ECPag",
+      "heading": 258.6
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 247m -> Stop",
+  "agent_concise_description": "Walk straight along the sidewalk, keeping the glass-roofed bus station and McDonald's on your left. Continue past the U-Bahn entrance and the large historic museum building on your left, staying parallel to the road."
+}

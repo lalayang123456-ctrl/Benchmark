@@ -1,0 +1,1011 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "vis_0293_target_20260124_2241_57",
+  "timestamp": "20260125_015614",
+  "success": false,
+  "done_reason": "max_steps",
+  "total_steps": 30,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_015614_vis_0293_target_20260124_2241_57_20260125015614",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "rotation",
+        "heading": 160.0,
+        "pitch": 0.0,
+        "reason": "Need to scout for the 'Diehl & Diehl' sign at the corner before proceeding; rotating left to heading 160° to explore the street ahead.",
+        "agent_vlm_duration_seconds": 9.674,
+        "agent_total_duration_seconds": 9.674
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "rotation",
+        "heading": 70.0,
+        "pitch": 0.0,
+        "reason": "All available moves are rightward; need to rotate left to scout for the 'Diehl & Diehl' sign and understand the street layout before committing to a move.",
+        "agent_vlm_duration_seconds": 6.018,
+        "agent_total_duration_seconds": 6.018
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Need to make forward progress down the street to find the 'Diehl & Diehl' sign; moving back (7.5m) to advance along the street.",
+        "agent_vlm_duration_seconds": 6.824,
+        "agent_total_duration_seconds": 6.824
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move forward 17.9m down the street to make substantial progress and search for the 'Diehl & Diehl' sign at the corner.",
+        "agent_vlm_duration_seconds": 5.287,
+        "agent_total_duration_seconds": 5.287
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 0.5,
+          "heading": 249.70786
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 248.54
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 7.7,
+          "heading": 248.04
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 70.04718
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "rotation",
+        "heading": 158.54,
+        "pitch": 0.0,
+        "reason": "Limited forward progress (10.1m); rotate left to scout for the 'Diehl & Diehl' sign and identify the corner where I need to turn.",
+        "agent_vlm_duration_seconds": 5.255,
+        "agent_total_duration_seconds": 5.255
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 249.9191
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 68.92841
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.4,
+          "heading": 68.51
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 68.54
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 4,
+        "reason": "At a junction with multiple left options; the longest left path (17.9m) aligns with the task instruction to turn left at the corner onto the cobblestone pedestrian lane.",
+        "agent_vlm_duration_seconds": 5.395,
+        "agent_total_duration_seconds": 5.395
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 249.9191
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 68.92841
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 17.4,
+          "heading": 68.51
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 17.9,
+          "heading": 68.54
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Successfully turned left onto the cobblestone pedestrian lane; continue straight ahead 7.5m as instructed to progress toward the plaza where the Starbucks is located.",
+        "agent_vlm_duration_seconds": 4.548,
+        "agent_total_duration_seconds": 4.548
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.5,
+          "heading": 70.04718
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 0.5,
+          "heading": 249.70786
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 248.54
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.7,
+          "heading": 248.04
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 160.04718,
+        "pitch": 0.0,
+        "reason": "Reached a point with only backward moves; rotate right to scout for the plaza and Starbucks which should be visible on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 5.011,
+        "agent_total_duration_seconds": 5.011
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "rotation",
+        "heading": 70.04718,
+        "pitch": 0.0,
+        "reason": "Need to scout for the plaza opening; rotate left to look ahead and identify where the path opens into the plaza with the Starbucks.",
+        "agent_vlm_duration_seconds": 5.419,
+        "agent_total_duration_seconds": 5.419
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "rotation",
+        "heading": 340.04718,
+        "pitch": 0.0,
+        "reason": "Avoid retracing steps; rotate left to explore north direction (heading 340°) to find the plaza and Starbucks via a different route.",
+        "agent_vlm_duration_seconds": 4.752,
+        "agent_total_duration_seconds": 4.752
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move left 15.2m to explore westward and find the plaza where the path opens up and the Starbucks becomes visible.",
+        "agent_vlm_duration_seconds": 4.842,
+        "agent_total_duration_seconds": 4.842
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "left",
+          "distance": 7.5,
+          "heading": 250.04718
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 15.2,
+          "heading": 249.03
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 8.0,
+          "heading": 250.03
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move forward 10.1m to continue westward and explore for the plaza where the Starbucks is located.",
+        "agent_vlm_duration_seconds": 5.073,
+        "agent_total_duration_seconds": 5.073
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 248.9284
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 7.3,
+          "heading": 67.9303
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.7,
+          "heading": 68.04
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 69.03
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward 10.1m along the pedestrian lane to find where the path opens into the plaza.",
+        "agent_vlm_duration_seconds": 4.762,
+        "agent_total_duration_seconds": 4.762
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 249.9191
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 68.92841
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.4,
+          "heading": 68.51
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 68.54
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward 10.3m along the pedestrian lane; consistent forward progress suggests the plaza opening is approaching.",
+        "agent_vlm_duration_seconds": 4.381,
+        "agent_total_duration_seconds": 4.381
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 249.9119
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 69.9191
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue forward 10.1m; consistent forward progress on the pedestrian lane suggests the plaza is approaching.",
+        "agent_vlm_duration_seconds": 4.718,
+        "agent_total_duration_seconds": 4.718
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 250.2089
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 69.911896
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "rotation",
+        "heading": 340.20889999999997,
+        "pitch": 0.0,
+        "reason": "Path is opening into the plaza with multiple forward options; rotate right to look for the Starbucks which should be clearly visible on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 5.675,
+        "agent_total_duration_seconds": 5.675
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.9,
+          "heading": 250.10443
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.6,
+          "heading": 249.15
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 70.2089
+        },
+        {
+          "id": 4,
+          "direction": "front-left 53°",
+          "distance": 12.3,
+          "heading": 196.90538
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "rotation",
+        "heading": 70.20889999999997,
+        "pitch": 0.0,
+        "reason": "In the plaza; rotate right to look for the Starbucks which should be clearly visible on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 4.496,
+        "agent_total_duration_seconds": 4.496
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.1,
+          "heading": 70.2089
+        },
+        {
+          "id": 2,
+          "direction": "left-back 53°",
+          "distance": 12.3,
+          "heading": 196.90538
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 7.9,
+          "heading": 250.10443
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 15.6,
+          "heading": 249.15
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "rotation",
+        "heading": 160.20889999999997,
+        "pitch": 0.0,
+        "reason": "In the plaza heading east; rotate right to look for the Starbucks which should be on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 4.897,
+        "agent_total_duration_seconds": 4.897
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 70.2089
+        },
+        {
+          "id": 2,
+          "direction": "right-back 37°",
+          "distance": 12.3,
+          "heading": 196.90538
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.9,
+          "heading": 250.10443
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.6,
+          "heading": 249.15
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move right 15.6m to explore the right side of the plaza where the Starbucks with the green awning should be located.",
+        "agent_vlm_duration_seconds": 5.5,
+        "agent_total_duration_seconds": 5.5
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 37°",
+          "distance": 12.3,
+          "heading": 196.90538
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 7.9,
+          "heading": 250.10443
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 15.6,
+          "heading": 249.15
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 10.1,
+          "heading": 70.2089
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "rotation",
+        "heading": 159.15,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the Starbucks which should be clearly visible on the right side of the plaza.",
+        "agent_vlm_duration_seconds": 5.148,
+        "agent_total_duration_seconds": 5.148
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 247.62851
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 7.6,
+          "heading": 68.1695
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.6,
+          "heading": 69.15
+        },
+        {
+          "id": 4,
+          "direction": "left-back 40°",
+          "distance": 12.6,
+          "heading": 119.41
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right 10.3m to explore the right side of the plaza where the Starbucks should be located.",
+        "agent_vlm_duration_seconds": 4.826,
+        "agent_total_duration_seconds": 4.826
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 247.62851
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 7.6,
+          "heading": 68.1695
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.6,
+          "heading": 69.15
+        },
+        {
+          "id": 4,
+          "direction": "front-left 40°",
+          "distance": 12.6,
+          "heading": 119.41
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 337.62851,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout for the Starbucks before continuing forward; it should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 5.898,
+        "agent_total_duration_seconds": 5.898
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 244.0885
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 67.62851
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 67.86
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 67.62851,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout eastward for the Starbucks which should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 4.283,
+        "agent_total_duration_seconds": 4.283
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 67.62851
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 17.9,
+          "heading": 67.86
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 9.9,
+          "heading": 244.0885
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 157.62851,
+        "pitch": 0.0,
+        "reason": "Rotate right to look for the Starbucks which should be clearly visible on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 6.054,
+        "agent_total_duration_seconds": 6.054
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 67.62851
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 67.86
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 244.0885
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 67.62851,
+        "pitch": 0.0,
+        "reason": "Rotate left to scout for the Starbucks which should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 5.934,
+        "agent_total_duration_seconds": 5.934
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 244.0885
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 67.62851
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 17.9,
+          "heading": 67.86
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move forward 17.9m to explore eastward and locate the Starbucks which should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 8.167,
+        "agent_total_duration_seconds": 8.167
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 67.62851
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.9,
+          "heading": 67.86
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 244.0885
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move right 9.8m to explore the right side where the Starbucks should be clearly visible under a green awning.",
+        "agent_vlm_duration_seconds": 5.213,
+        "agent_total_duration_seconds": 5.213
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.9,
+          "heading": 70.10443
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 9.8,
+          "heading": 156.73
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 7.6,
+          "heading": 248.1695
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.9,
+          "heading": 247.86
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "rotation",
+        "heading": 246.73,
+        "pitch": 0.0,
+        "reason": "Rotate right to look for the Starbucks which should be clearly visible on the right side under a green awning.",
+        "agent_vlm_duration_seconds": 5.181,
+        "agent_total_duration_seconds": 5.181
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 160.35062
+        },
+        {
+          "id": 2,
+          "direction": "right-back 53°",
+          "distance": 12.6,
+          "heading": 299.41
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.8,
+          "heading": 336.73
+        },
+        {
+          "id": 4,
+          "direction": "left-back 50°",
+          "distance": 12.3,
+          "heading": 16.905378
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move front-right 12.6m to explore and locate the Starbucks which should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 5.003,
+        "agent_total_duration_seconds": 5.003
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front-right 53°",
+          "distance": 12.6,
+          "heading": 299.41
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 9.8,
+          "heading": 336.73
+        },
+        {
+          "id": 3,
+          "direction": "right-back 40°",
+          "distance": 12.3,
+          "heading": 16.905378
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 9.4,
+          "heading": 160.35062
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 29.410000000000025,
+        "pitch": 0.0,
+        "reason": "Rotate right to scout for the Starbucks which should be clearly visible on the right side.",
+        "agent_vlm_duration_seconds": 5.046,
+        "agent_total_duration_seconds": 5.046
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 39°",
+          "distance": 7.6,
+          "heading": 68.1695
+        },
+        {
+          "id": 2,
+          "direction": "right-back 40°",
+          "distance": 15.6,
+          "heading": 69.15
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 12.6,
+          "heading": 119.41
+        },
+        {
+          "id": 4,
+          "direction": "front-left 52°",
+          "distance": 10.3,
+          "heading": 247.62851
+        }
+      ]
+    }
+  ]
+}

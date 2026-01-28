@@ -1,0 +1,48 @@
+{
+  "task_id": "nav_0407_target_20260124_1338_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_133749",
+  "spawn_point": "CHZedutgNfww6MJLOwV32A",
+  "spawn_heading": 69.0,
+  "description": "Navigate to Banco do Brasil | Agência 2917 - Pontes Vieira. Head north for 35m. Total distance: approximately 35 m.",
+  "ground_truth": {
+    "target_name": "Banco do Brasil | Agência 2917 - Pontes Vieira",
+    "target_pano_id": "KHncUBb1jJIYtQGagP6zfw",
+    "optimal_distance_meters": 35,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "KHncUBb1jJIYtQGagP6zfw"
+  ],
+  "max_steps": 10,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "CHZedutgNfww6MJLOwV32A",
+      "heading": 69.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "7gkHm7w6CTEl4IYR9crscQ",
+      "heading": 69.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "IBeAI9xOo93mFfUCQ7UOhg",
+      "heading": 15.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "HKp6tKgW2_eqNF3KUYUktA",
+      "heading": 15.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "KHncUBb1jJIYtQGagP6zfw",
+      "heading": 15.9
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

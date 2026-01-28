@@ -1,0 +1,56 @@
+{
+  "task_id": "nav_1035_target_20260125_0332_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_033221",
+  "spawn_point": "4L7X21UXRKTUIrVcnMFy0Q",
+  "spawn_heading": 185.9,
+  "description": "Navigate straight through the narrow residential alley, passing a stone wall with vegetable vendors on the left and the 'BABAKAN CIAMIS' building on the right. Continue forward past the parked vehicles and green stalls, keeping the large white multi-story office building visible to your right.",
+  "ground_truth": {
+    "target_name": "BNI - Regional Office",
+    "target_pano_id": "30RC4TeHT1D3ty6_S3Fp9g",
+    "optimal_distance_meters": 193,
+    "route_description": "right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "30RC4TeHT1D3ty6_S3Fp9g"
+  ],
+  "max_steps": 12,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "4L7X21UXRKTUIrVcnMFy0Q",
+      "heading": 185.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "q63vBQFyHKYLUl8Nu5A6bw",
+      "heading": 185.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "uP43mLhXDoVBsuFmjZMBFA",
+      "heading": 168.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "cmUJggpD9l1PUDzwAe5_5g",
+      "heading": 155.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "U1-WxwYRzqKRswxij5Xrnw",
+      "heading": 154.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "30RC4TeHT1D3ty6_S3Fp9g",
+      "heading": 154.1
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 100m -> Stop",
+  "agent_concise_description": "Navigate straight through the narrow residential alley, passing a stone wall with vegetable vendors on the left and the 'BABAKAN CIAMIS' building on the right. Continue forward past the parked vehicles and green stalls, keeping the large white multi-story office building visible to your right."
+}

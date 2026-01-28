@@ -1,0 +1,101 @@
+{
+  "task_id": "nav_0778_target_20260124_1624_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260124_162302",
+  "spawn_point": "DzoRfCLHzabhXiK4O3bwRQ",
+  "spawn_heading": 136.2,
+  "description": "Navigate to Lucky Restaurant. Head straight along the street, passing a Suzuki showroom and the Industrial Lubricants shop on the right. Continue forward until you reach the intersection where Lucky Restaurant is prominently located on the corner. Turn right at the restaurant to arrive at the destination.",
+  "ground_truth": {
+    "target_name": "Lucky Restaurant",
+    "target_pano_id": "_oMkPHrAuVzQ4N1x87tUzA",
+    "optimal_distance_meters": 122,
+    "route_description": "right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "_oMkPHrAuVzQ4N1x87tUzA"
+  ],
+  "max_steps": 30,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "DzoRfCLHzabhXiK4O3bwRQ",
+      "heading": 136.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "V0dnbZ2ca6Ify39ob3j7Aw",
+      "heading": 136.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "nH70z3n36UqqqqZADu5f2A",
+      "heading": 136.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "lw3UimN9tOPBC7AT9Yct-w",
+      "heading": 136.2
+    },
+    {
+      "step_index": 4,
+      "pano_id": "E7aL6VB7ziM65QcAv9afqA",
+      "heading": 136.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "84_dd7yUfRkhPSCEzoG4vg",
+      "heading": 136.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "6EpdNcBc19umS8H1-pe-NQ",
+      "heading": 136.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "-vLvDsebdUUV-QA7FjbqyQ",
+      "heading": 135.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "eiyGf5FhmTR3JJpg4n0nXw",
+      "heading": 142.8
+    },
+    {
+      "step_index": 9,
+      "pano_id": "eB3f5xwEH834Qeo2M4Unig",
+      "heading": 137.8
+    },
+    {
+      "step_index": 10,
+      "pano_id": "Ux_X0ad0D_ULK4g_rjlZXA",
+      "heading": 129.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "ELOxPnKIcTZLuv_Zj2eWow",
+      "heading": 112.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "aIyZaePBLIPRkE6_3JLbUA",
+      "heading": 184.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "4iwz_UiVSk2B04Lg71p33w",
+      "heading": 187.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "_oMkPHrAuVzQ4N1x87tUzA",
+      "heading": 182.8
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head southeast [100m] -> Turn right [22m]",
+  "agent_concise_description": "Head straight along the street, passing a Suzuki showroom and the Industrial Lubricants shop on the right. Continue forward until you reach the intersection where Lucky Restaurant is prominently located on the corner. Turn right at the restaurant to arrive at the destination."
+}

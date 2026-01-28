@@ -1,0 +1,51 @@
+{
+  "task_id": "nav_0094_target_20260124_0340_10",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260124_034002",
+  "spawn_point": "-7-EVvQuTVvd4IVDVSxvog",
+  "spawn_heading": 21.0,
+  "description": "Navigate to Supermarché Migros - Lausanne - Métropole. The route consists of a straight walk along the pedestrian alley Rue du Port-Franc, flanked by a red building on the left and a glass building with outdoor seating on the right. The path continues straight towards a beige building in the distance, ignoring the text's incorrect instructions regarding roundabouts, turns, and stairs. The destination building is visible on the right at the end of the path.",
+  "ground_truth": {
+    "target_name": "Supermarché Migros - Lausanne - Métropole",
+    "target_pano_id": "H1aLDG6OLvk_k6-3Umbiiw",
+    "optimal_distance_meters": 223,
+    "route_description": "left→right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "H1aLDG6OLvk_k6-3Umbiiw"
+  ],
+  "max_steps": 10,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "-7-EVvQuTVvd4IVDVSxvog",
+      "heading": 21.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "5ZOjjs1TNB0xCS18N8OI3w",
+      "heading": 21.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "CjJeYkR9_6BDypSDL4IPVg",
+      "heading": 14.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "VG9ss8gaETJqqHDfkxdnSg",
+      "heading": 19.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "H1aLDG6OLvk_k6-3Umbiiw",
+      "heading": 18.7
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight along Rue du Port-Franc [67m]",
+  "agent_concise_description": "The route consists of a straight walk along the pedestrian alley Rue du Port-Franc, flanked by a red building on the left and a glass building with outdoor seating on the right. The path continues straight towards a beige building in the distance, ignoring the text's incorrect instructions regarding roundabouts, turns, and stairs. The destination building is visible on the right at the end of the path."
+}

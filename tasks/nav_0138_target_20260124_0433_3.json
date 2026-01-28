@@ -1,0 +1,113 @@
+{
+  "task_id": "nav_0138_target_20260124_0433_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_043238",
+  "spawn_point": "ulckKziBxPTkFUfqIN4QEg",
+  "spawn_heading": 260.0,
+  "description": "Navigate to Pizza Hut - Mirpur 11. Head west/1 Destination will be on the right for 144m. Total distance: approximately 144 m.",
+  "ground_truth": {
+    "target_name": "Pizza Hut - Mirpur 11",
+    "target_pano_id": "n9AmtMYtJeDZvbYD8OKN_w",
+    "optimal_distance_meters": 144,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "n9AmtMYtJeDZvbYD8OKN_w"
+  ],
+  "max_steps": 36,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ulckKziBxPTkFUfqIN4QEg",
+      "heading": 260.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "mMoWpvvlkkKgUTvUuWrw3g",
+      "heading": 260.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "F4czMSbFfc_wxYZzImiX6w",
+      "heading": 260.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "27vHAdqOBHwKkFhH6IksCg",
+      "heading": 260.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "hNwY7var01bVN49zrj7JiA",
+      "heading": 260.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "TEzUumzJxaNi2Tk-VhUJpQ",
+      "heading": 260.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "8_UhqlnO3yimJTWW6_WkKw",
+      "heading": 260.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "7DbgYU9-tModxPmdE_jjnw",
+      "heading": 260.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "ZcnD8PREDnQtlmYgKspPEw",
+      "heading": 259.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "jVLPz-oQqhxotaj_Ue7sJQ",
+      "heading": 260.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "WGrgmuyd2rD6DVxo31wzEQ",
+      "heading": 260.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "cT6sq-oS8S5wUwORHA2diQ",
+      "heading": 265.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "VCXd8OkzX4tNI02DcR7wBQ",
+      "heading": 265.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "anmvsDu1OCDHJ6FTxmMhjQ",
+      "heading": 265.0
+    },
+    {
+      "step_index": 14,
+      "pano_id": "-VMsd-TsJBEfqjbzNtNmJw",
+      "heading": 265.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "ORXyFmDefcIL2KhttUcx7g",
+      "heading": 265.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "23IvhnYPJskKGb1-glWrEA",
+      "heading": 265.1
+    },
+    {
+      "step_index": 17,
+      "pano_id": "n9AmtMYtJeDZvbYD8OKN_w",
+      "heading": 265.0
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

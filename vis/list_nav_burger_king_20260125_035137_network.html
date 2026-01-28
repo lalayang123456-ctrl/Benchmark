@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260125_035137</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260125_035137</h3>
+        <div>Total Panos: <strong>73</strong></div>
+        <div>Spawn Points: <strong>7</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"cOCLASQPq0j87KJEho9V0g": {"lat": 41.00825072970878, "lng": 28.97838687056704, "links": [{"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 200.81891, "description": "Alemdar Cd."}, {"pano_id": "Nm-I2QBAj6qQxnSUO8h4Nw", "heading": 21.019682, "description": "Alemdar Cd."}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 203.89, "distance": 13.23, "virtual": true}]}, "nHq0n0B1G-gqnJUdobHhBA": {"lat": 41.00816858265392, "lng": 28.97834547760266, "links": [{"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 20.818914, "description": "Alemdar Cd."}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 212.46674, "description": "Divan Yolu Cd."}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 219.21, "distance": 17.38, "virtual": true}]}, "Nm-I2QBAj6qQxnSUO8h4Nw": {"lat": 41.00834387990288, "lng": 28.97843430369283, "links": [{"pano_id": "0ldYiG4HnqNHowVhnTLYag", "heading": 15.698974, "description": "Alemdar Cd."}, {"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 201.01968, "description": "Alemdar Cd."}]}, "cxGv8f6gkzSr9FJhkRKSOg": {"lat": 41.00812537172822, "lng": 28.97832922242263, "links": [{"pano_id": "orKTpWTls8UlnungNg7dkw", "heading": 202.88936, "description": ""}, {"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 15.847823, "description": "Alemdar Cd."}, {"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 19.14, "distance": 14.75, "virtual": true}, {"pano_id": "o7MExNNdLRK5w7akk9U9gw", "heading": 344.64, "distance": 5.8, "virtual": true}, {"pano_id": "6gBW-PQUGL2DW3pkBG280w", "heading": 100.13, "distance": 7.61, "virtual": true}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 344.18, "distance": 1.91, "virtual": true}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 228.01, "distance": 12.95, "virtual": true}]}, "o7MExNNdLRK5w7akk9U9gw": {"lat": 41.00817565335704, "lng": 28.97831092423977, "links": [{"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 105.172195, "description": "Alemdar Cd."}, {"pano_id": "4i_x8Q72NW0ltFyTj0kR4Q", "heading": 312.4505, "description": "Yerebatan Cd."}, {"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 37.36, "distance": 10.5, "virtual": true}, {"pano_id": "cxGv8f6gkzSr9FJhkRKSOg", "heading": 164.64, "distance": 5.8, "virtual": true}, {"pano_id": "6gBW-PQUGL2DW3pkBG280w", "heading": 127.51, "distance": 11.38, "virtual": true}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 164.87, "distance": 3.88, "virtual": true}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 209.57, "distance": 16.39, "virtual": true}]}, "0ldYiG4HnqNHowVhnTLYag": {"lat": 41.00845739677315, "lng": 28.9784765848938, "links": [{"pano_id": "TpAjLoPtwONQBgAT0jP9xw", "heading": 32.748478, "description": "Caferiye Sk."}, {"pano_id": "Nm-I2QBAj6qQxnSUO8h4Nw", "heading": 195.69897, "description": "Alemdar Cd."}, {"pano_id": "0fqvNcfTeJsoknWbxIS4Mg", "heading": 11.032296, "description": "Alemdar Cd."}, {"pano_id": "plKGDe2JOeWdL5BQd5QROQ", "heading": 8.72, "distance": 16.96, "virtual": true}]}, "6gBW-PQUGL2DW3pkBG280w": {"lat": 41.00811333925346, "lng": 28.97841849265252, "links": [{"pano_id": "T1Q5jUiD4nMkyE23SZW9bw", "heading": 125.61259, "description": ""}, {"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 315.07532, "description": "Alemdar Cd."}, {"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 350.15, "distance": 15.51, "virtual": true}, {"pano_id": "cxGv8f6gkzSr9FJhkRKSOg", "heading": 280.13, "distance": 7.61, "virtual": true}, {"pano_id": "o7MExNNdLRK5w7akk9U9gw", "heading": 307.51, "distance": 11.38, "virtual": true}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 291.64, "distance": 8.62, "virtual": true}]}, "-DMJfyyzYkH5rJ3-ahFmEw": {"lat": 41.00814192900358, "lng": 28.97832300459375, "links": [{"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 220.90929, "description": "Divan Yolu Cd."}, {"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 32.46673, "description": "Alemdar Cd."}, {"pano_id": "cOCLASQPq0j87KJEho9V0g", "heading": 23.89, "distance": 13.23, "virtual": true}, {"pano_id": "orKTpWTls8UlnungNg7dkw", "heading": 198.72, "distance": 16.46, "virtual": true}]}, "TpAjLoPtwONQBgAT0jP9xw": {"lat": 41.00853868419927, "lng": 28.97854586918966, "links": [{"pano_id": "0ldYiG4HnqNHowVhnTLYag", "heading": 212.74847, "description": "Alemdar Cd."}, {"pano_id": "NWth1mLyFl9jU191YsXYGw", "heading": 51.352955, "description": "Caferiye Sk."}, {"pano_id": "0fqvNcfTeJsoknWbxIS4Mg", "heading": 244.24, "distance": 4.97, "virtual": true}, {"pano_id": "plKGDe2JOeWdL5BQd5QROQ", "heading": 337.24, "distance": 8.38, "virtual": true}]}, "-gh-p2USCcI5aeXjL1jXXQ": {"lat": 41.00804747748788, "lng": 28.97821454785255, "links": [{"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 225.5211, "description": "Divan Yolu Cd."}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 40.909294, "description": "Divan Yolu Cd."}, {"pano_id": "nHq0n0B1G-gqnJUdobHhBA", "heading": 39.21, "distance": 17.38, "virtual": true}, {"pano_id": "ucJinG4jL0cwPbDPldZr-A", "heading": 191.57, "distance": 11.71, "virtual": true}, {"pano_id": "orKTpWTls8UlnungNg7dkw", "heading": 143.14, "distance": 6.36, "virtual": true}]}, "0fqvNcfTeJsoknWbxIS4Mg": {"lat": 41.00851928090494, "lng": 28.97849257358022, "links": [{"pano_id": "0ldYiG4HnqNHowVhnTLYag", "heading": 191.0323, "description": "Alemdar Cd."}, {"pano_id": "plKGDe2JOeWdL5BQd5QROQ", "heading": 7.090596, "description": "Alemdar Cd."}, {"pano_id": "TpAjLoPtwONQBgAT0jP9xw", "heading": 64.24, "distance": 4.97, "virtual": true}, {"pano_id": "NWth1mLyFl9jU191YsXYGw", "heading": 55.6, "distance": 14.96, "virtual": true}]}, "NWth1mLyFl9jU191YsXYGw": {"lat": 41.00859528452818, "lng": 28.9786396694176, "links": [{"pano_id": "cUJp1-FjVzEF2FAppFW4PQ", "heading": 43.338062, "description": "Caferiye Sk."}, {"pano_id": "TpAjLoPtwONQBgAT0jP9xw", "heading": 231.35295, "description": "Caferiye Sk."}, {"pano_id": "0fqvNcfTeJsoknWbxIS4Mg", "heading": 235.6, "distance": 14.96, "virtual": true}, {"pano_id": "plKGDe2JOeWdL5BQd5QROQ", "heading": 277.36, "distance": 11.21, "virtual": true}, {"pano_id": "YFQjFF6aACgSCaMrP6vgCA", "heading": 322.3, "distance": 15.85, "virtual": true}]}, "plKGDe2JOeWdL5BQd5QROQ": {"lat": 41.00860819332944, "lng": 28.97850722987464, "links": [{"pano_id": "YFQjFF6aACgSCaMrP6vgCA", "heading": 7.2648835, "description": "Alemdar Cd."}, {"pano_id": "0fqvNcfTeJsoknWbxIS4Mg", "heading": 187.09059, "description": "Alemdar Cd."}, {"pano_id": "0ldYiG4HnqNHowVhnTLYag", "heading": 188.72, "distance": 16.96, "virtual": true}, {"pano_id": "TpAjLoPtwONQBgAT0jP9xw", "heading": 157.24, "distance": 8.38, "virtual": true}, {"pano_id": "NWth1mLyFl9jU191YsXYGw", "heading": 97.36, "distance": 11.21, "virtual": true}]}, "Y8RqyUqIJg47a13fLPPg5w": {"lat": 41.00795822346977, "lng": 28.97809409949048, "links": [{"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 235.55939, "description": "Divan Yolu Cd."}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 45.521103, "description": "Divan Yolu Cd."}, {"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 216.45, "distance": 16.41, "virtual": true}, {"pano_id": "QkwsotaN6BsjLjLMXsiZtQ", "heading": 188.39, "distance": 7.97, "virtual": true}, {"pano_id": "ucJinG4jL0cwPbDPldZr-A", "heading": 101.27, "distance": 7.91, "virtual": true}, {"pano_id": "orKTpWTls8UlnungNg7dkw", "heading": 70.85, "distance": 14.74, "virtual": true}]}, "YFQjFF6aACgSCaMrP6vgCA": {"lat": 41.00870809537401, "lng": 28.97852410681803, "links": [{"pano_id": "plKGDe2JOeWdL5BQd5QROQ", "heading": 187.26488, "description": "Alemdar Cd."}, {"pano_id": "YWhTj4Fm5qBSvvW9lxrXcg", "heading": 7.2944026, "description": "Alemdar Cd."}, {"pano_id": "NWth1mLyFl9jU191YsXYGw", "heading": 142.3, "distance": 15.85, "virtual": true}, {"pano_id": "cUJp1-FjVzEF2FAppFW4PQ", "heading": 107.49, "distance": 17.4, "virtual": true}]}, "cUJp1-FjVzEF2FAppFW4PQ": {"lat": 41.00866106279499, "lng": 28.97872192222209, "links": [{"pano_id": "A-Ej2Q1H3DSteInuqu_vUQ", "heading": 26.479088, "description": "Caferiye Sk."}, {"pano_id": "NWth1mLyFl9jU191YsXYGw", "heading": 223.33806, "description": "Caferiye Sk."}, {"pano_id": "YFQjFF6aACgSCaMrP6vgCA", "heading": 287.49, "distance": 17.4, "virtual": true}]}, "0kj4mK2w5aaU7BqQy3Fdew": {"lat": 41.00789336512936, "lng": 28.97796876558623, "links": [{"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 55.559383, "description": "Divan Yolu Cd."}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 247.44098, "description": "Divan Yolu Cd."}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 252.67, "distance": 17.75, "virtual": true}, {"pano_id": "VwkraLoWy-CaFqEzek2uFQ", "heading": 219.78, "distance": 13.51, "virtual": true}, {"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 172.69, "distance": 6.04, "virtual": true}, {"pano_id": "QkwsotaN6BsjLjLMXsiZtQ", "heading": 94.1, "distance": 9.38, "virtual": true}]}, "A-Ej2Q1H3DSteInuqu_vUQ": {"lat": 41.00874112726317, "lng": 28.97877477362301, "links": [{"pano_id": "cUJp1-FjVzEF2FAppFW4PQ", "heading": 206.4791, "description": "Caferiye Sk."}, {"pano_id": "yVz2du2iNYqlcOACZ5-2jQ", "heading": 24.71829, "description": "Caferiye Sk."}]}, "6C0cDDcj6O49Zwd3QbEWrg": {"lat": 41.00786348668357, "lng": 28.97787345490204, "links": [{"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 257.61594, "description": "Divan Yolu Cd."}, {"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 67.44097, "description": "Divan Yolu Cd."}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 232.39, "distance": 14.26, "virtual": true}, {"pano_id": "VwkraLoWy-CaFqEzek2uFQ", "heading": 185.25, "distance": 7.09, "virtual": true}, {"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 106.92, "distance": 9.16, "virtual": true}, {"pano_id": "QkwsotaN6BsjLjLMXsiZtQ", "heading": 81.31, "distance": 17.55, "virtual": true}]}, "YWhTj4Fm5qBSvvW9lxrXcg": {"lat": 41.00879763928347, "lng": 28.97853929606549, "links": [{"pano_id": "NZzPKUmv4hAkEB_ubkxfwA", "heading": 7.305821, "description": "Alemdar Cd."}, {"pano_id": "YFQjFF6aACgSCaMrP6vgCA", "heading": 187.2944, "description": "Alemdar Cd."}]}, "NZzPKUmv4hAkEB_ubkxfwA": {"lat": 41.00888704158884, "lng": 28.97855448531147, "links": [{"pano_id": "YWhTj4Fm5qBSvvW9lxrXcg", "heading": 187.30582, "description": "Alemdar Cd."}, {"pano_id": "-0XtF6l73kOocT31t7_u6Q", "heading": 7.281403, "description": "Alemdar Cd."}, {"pano_id": "P6wxUwDU2QRHcmdwxznagQ", "heading": 6.89, "distance": 17.22, "virtual": true}]}, "olLlej3Css3DjC4qPGjjDQ": {"lat": 41.00784582508599, "lng": 28.97776686320046, "links": [{"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 267.3884, "description": "Divan Yolu Cd."}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 77.61593, "description": "Divan Yolu Cd."}, {"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 72.67, "distance": 17.75, "virtual": true}, {"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 261.34, "distance": 15.13, "virtual": true}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 199.26, "distance": 7.14, "virtual": true}, {"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 235.38, "distance": 14.68, "virtual": true}, {"pano_id": "VwkraLoWy-CaFqEzek2uFQ", "heading": 121.58, "distance": 9.74, "virtual": true}, {"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 92.27, "distance": 17.72, "virtual": true}]}, "yVz2du2iNYqlcOACZ5-2jQ": {"lat": 41.00882164881497, "lng": 28.97882389432058, "links": [{"pano_id": "XWGlJ_ujJswJt9H05Y8EHA", "heading": 24.756525, "description": "Caferiye Sk."}, {"pano_id": "A-Ej2Q1H3DSteInuqu_vUQ", "heading": 204.71829, "description": "Caferiye Sk."}]}, "-0XtF6l73kOocT31t7_u6Q": {"lat": 41.00897517306443, "lng": 28.97856940807798, "links": [{"pano_id": "NZzPKUmv4hAkEB_ubkxfwA", "heading": 187.2814, "description": "Alemdar Cd."}, {"pano_id": "P6wxUwDU2QRHcmdwxznagQ", "heading": 6.355715, "description": "Alemdar Cd."}, {"pano_id": "TEfjmjWQBNN_rWNJ3kJUpg", "heading": 6.19, "distance": 9.67, "virtual": true}]}, "XWGlJ_ujJswJt9H05Y8EHA": {"lat": 41.00890348251238, "lng": 28.97887390326064, "links": [{"pano_id": "yVz2du2iNYqlcOACZ5-2jQ", "heading": 204.75653, "description": "Caferiye Sk."}, {"pano_id": "j4Lhlbl78PMui4rvj9ow9g", "heading": 24.730942, "description": "Caferiye Sk."}]}, "9MVimszk-EzRCc6onvwLrA": {"lat": 41.00784192073853, "lng": 28.97765343178386, "links": [{"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 87.38839, "description": "Divan Yolu Cd."}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 273.2492, "description": "Divan Yolu Cd."}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 275.57, "distance": 14.65, "virtual": true}, {"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 251.27, "distance": 5.75, "virtual": true}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 131.36, "distance": 9.54, "virtual": true}, {"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 197.96, "distance": 8.31, "virtual": true}]}, "vPQ4bmT2g7_YaqIXCEO6Ng": {"lat": 41.00784693615049, "lng": 28.97753635839411, "links": [{"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 93.24921, "description": "Divan Yolu Cd."}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 280.28506, "description": "Divan Yolu Cd."}, {"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 118.73, "distance": 5.0, "virtual": true}, {"pano_id": "dr5qAeiVApz7kavh1LbFyA", "heading": 279.99, "distance": 14.8, "virtual": true}, {"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 280.2, "distance": 12.15, "virtual": true}, {"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 139.38, "distance": 11.15, "virtual": true}, {"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 320.93, "distance": 15.23, "virtual": true}]}, "P6wxUwDU2QRHcmdwxznagQ": {"lat": 41.0090407662603, "lng": 28.97857909011025, "links": [{"pano_id": "TEfjmjWQBNN_rWNJ3kJUpg", "heading": 5.6814156, "description": "Alemdar Cd."}, {"pano_id": "-0XtF6l73kOocT31t7_u6Q", "heading": 186.35571, "description": "Alemdar Cd."}, {"pano_id": "NZzPKUmv4hAkEB_ubkxfwA", "heading": 186.89, "distance": 17.22, "virtual": true}, {"pano_id": "s41YZmeQLZEWQLNI_x404g", "heading": 5.5, "distance": 11.75, "virtual": true}]}, "j4Lhlbl78PMui4rvj9ow9g": {"lat": 41.00898817720342, "lng": 28.97892559987436, "links": [{"pano_id": "XWGlJ_ujJswJt9H05Y8EHA", "heading": 204.73094, "description": "Caferiye Sk."}, {"pano_id": "SQQDjrhNm66KSEeXtVGJuw", "heading": 26.424412, "description": "Caferiye Sk."}]}, "O-Cx2TmwBzU3B1V3heJZLg": {"lat": 41.00785469642093, "lng": 28.97747968702486, "links": [{"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 109.66466, "description": ""}, {"pano_id": "dr5qAeiVApz7kavh1LbFyA", "heading": 279.85107, "description": "Divan Yolu Cd."}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 100.28507, "description": "Divan Yolu Cd."}, {"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 95.57, "distance": 14.65, "virtual": true}, {"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 280.14, "distance": 7.31, "virtual": true}, {"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 127.83, "distance": 15.21, "virtual": true}, {"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 336.16, "distance": 11.98, "virtual": true}]}, "SQQDjrhNm66KSEeXtVGJuw": {"lat": 41.00907126553027, "lng": 28.97898031654631, "links": [{"pano_id": "EH6Z8ceMPR_sHCJJr6MyHQ", "heading": 37.34509, "description": "Caferiye Sk."}, {"pano_id": "j4Lhlbl78PMui4rvj9ow9g", "heading": 206.42441, "description": "Caferiye Sk."}]}, "TEfjmjWQBNN_rWNJ3kJUpg": {"lat": 41.00906165255076, "lng": 28.97858184371564, "links": [{"pano_id": "s41YZmeQLZEWQLNI_x404g", "heading": 5.451686, "description": "Alemdar Cd."}, {"pano_id": "P6wxUwDU2QRHcmdwxznagQ", "heading": 185.68141, "description": "Alemdar Cd."}, {"pano_id": "-0XtF6l73kOocT31t7_u6Q", "heading": 186.19, "distance": 9.67, "virtual": true}]}, "EH6Z8ceMPR_sHCJJr6MyHQ": {"lat": 41.00914285823944, "lng": 28.97905270951592, "links": [{"pano_id": "_EYlmXyEyFNiqFFVqYF0uA", "heading": 37.36001, "description": "Caferiye Sk."}, {"pano_id": "SQQDjrhNm66KSEeXtVGJuw", "heading": 217.3451, "description": "Caferiye Sk."}]}, "s41YZmeQLZEWQLNI_x404g": {"lat": 41.00914593157496, "lng": 28.97859250283284, "links": [{"pano_id": "cP3H5M5PqgBJXzaj0DdBZQ", "heading": 5.434579, "description": "Alemdar Cd."}, {"pano_id": "TEfjmjWQBNN_rWNJ3kJUpg", "heading": 185.45169, "description": "Alemdar Cd."}, {"pano_id": "P6wxUwDU2QRHcmdwxznagQ", "heading": 185.5, "distance": 11.75, "virtual": true}]}, "3c8R_xG4AikomY6iqNK2dQ": {"lat": 41.00782532920549, "lng": 28.97758858841507, "links": [{"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 154.61424, "description": ""}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 109.49512, "description": ""}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 289.66464, "description": "Divan Yolu Cd."}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 81.34, "distance": 15.13, "virtual": true}, {"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 71.27, "distance": 5.75, "virtual": true}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 298.73, "distance": 5.0, "virtual": true}, {"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 285.57, "distance": 16.96, "virtual": true}, {"pano_id": "1HJsha-tMM5VhWoK21AacQ", "heading": 181.09, "distance": 15.3, "virtual": true}]}, "dr5qAeiVApz7kavh1LbFyA": {"lat": 41.00787003754258, "lng": 28.97736261350337, "links": [{"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 99.06497, "description": "\u015eeftali Sk."}, {"pano_id": "7bN8SMkOo7SiX8YlE1MsCQ", "heading": 278.95496, "description": "Divan Yolu Cd."}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 99.85108, "description": "Divan Yolu Cd."}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 99.99, "distance": 14.8, "virtual": true}, {"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 28.28, "distance": 10.51, "virtual": true}]}, "cP3H5M5PqgBJXzaj0DdBZQ": {"lat": 41.00923329558015, "lng": 28.97860351725317, "links": [{"pano_id": "f6wxDjK_Kq-nUpvsHRvgzA", "heading": 5.3895183, "description": "Alemdar Cd."}, {"pano_id": "s41YZmeQLZEWQLNI_x404g", "heading": 185.43459, "description": "Alemdar Cd."}]}, "7bN8SMkOo7SiX8YlE1MsCQ": {"lat": 41.00788368435701, "lng": 28.97724784938854, "links": [{"pano_id": "Oom04GKL8t-IXzpafDvkvQ", "heading": 279.18372, "description": "Divan Yolu Cd."}, {"pano_id": "dr5qAeiVApz7kavh1LbFyA", "heading": 98.954956, "description": "Divan Yolu Cd."}, {"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 98.98, "distance": 12.41, "virtual": true}, {"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 62.09, "distance": 16.53, "virtual": true}]}, "PJm0SrvbgO1kWsZAc29suA": {"lat": 41.0078662730818, "lng": 28.977393880492, "links": [{"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 13.682705, "description": "\u015eeftali Sk."}, {"pano_id": "dr5qAeiVApz7kavh1LbFyA", "heading": 279.06497, "description": "Divan Yolu Cd."}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 100.2, "distance": 12.15, "virtual": true}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 100.14, "distance": 7.31, "virtual": true}, {"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 105.57, "distance": 16.96, "virtual": true}, {"pano_id": "7bN8SMkOo7SiX8YlE1MsCQ", "heading": 278.98, "distance": 12.41, "virtual": true}]}, "OfOnCJq9dPK5S9Ug7UTZZA": {"lat": 41.00778520137838, "lng": 28.97773879404014, "links": [{"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 289.49512, "description": ""}, {"pano_id": "VwkraLoWy-CaFqEzek2uFQ", "heading": 81.23339, "description": ""}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 52.39, "distance": 14.26, "virtual": true}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 19.26, "distance": 7.14, "virtual": true}, {"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 311.36, "distance": 9.54, "virtual": true}, {"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 260.65, "distance": 9.86, "virtual": true}, {"pano_id": "1HJsha-tMM5VhWoK21AacQ", "heading": 229.95, "distance": 16.84, "virtual": true}]}, "_EYlmXyEyFNiqFFVqYF0uA": {"lat": 41.00921599252446, "lng": 28.97912670131358, "links": [{"pano_id": "YJwCU2WC3QztY4XmHsowKg", "heading": 37.928528, "description": "Caferiye Sk."}, {"pano_id": "EH6Z8ceMPR_sHCJJr6MyHQ", "heading": 217.36002, "description": "Caferiye Sk."}]}, "5vKJrZExCUQ-Yf9Ed6piPw": {"lat": 41.00777080433172, "lng": 28.97762287546004, "links": [{"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 334.61426, "description": ""}, {"pano_id": "1HJsha-tMM5VhWoK21AacQ", "heading": 198.92744, "description": "At Meydan\u0131 Cd"}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 55.38, "distance": 14.68, "virtual": true}, {"pano_id": "9MVimszk-EzRCc6onvwLrA", "heading": 17.96, "distance": 8.31, "virtual": true}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 319.38, "distance": 11.15, "virtual": true}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 307.83, "distance": 15.21, "virtual": true}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 80.65, "distance": 9.86, "virtual": true}]}, "Oom04GKL8t-IXzpafDvkvQ": {"lat": 41.00789717641098, "lng": 28.97713726004858, "links": [{"pano_id": "n7pph38hgNZXnmrwPKetVQ", "heading": 280.81638, "description": "Divan Yolu Cd."}, {"pano_id": "7bN8SMkOo7SiX8YlE1MsCQ", "heading": 99.1837, "description": "Divan Yolu Cd."}]}, "pIFqrMp9gdzOxfPzlI7BVA": {"lat": 41.00795327749594, "lng": 28.97742194971503, "links": [{"pano_id": "FH1lq7gJBXbmvbkVYS_CfA", "heading": 13.660808, "description": "\u015eeftali Sk."}, {"pano_id": "PJm0SrvbgO1kWsZAc29suA", "heading": 193.68271, "description": "\u015eeftali Sk."}, {"pano_id": "vPQ4bmT2g7_YaqIXCEO6Ng", "heading": 140.93, "distance": 15.23, "virtual": true}, {"pano_id": "O-Cx2TmwBzU3B1V3heJZLg", "heading": 156.16, "distance": 11.98, "virtual": true}, {"pano_id": "dr5qAeiVApz7kavh1LbFyA", "heading": 208.28, "distance": 10.51, "virtual": true}, {"pano_id": "7bN8SMkOo7SiX8YlE1MsCQ", "heading": 242.09, "distance": 16.53, "virtual": true}]}, "YJwCU2WC3QztY4XmHsowKg": {"lat": 41.00928764140825, "lng": 28.97920069307577, "links": [{"pano_id": "zDrmCy8ZoWsorTpJ9lr5aw", "heading": 38.398678, "description": "Caferiye Sk."}, {"pano_id": "_EYlmXyEyFNiqFFVqYF0uA", "heading": 217.92853, "description": "Caferiye Sk."}]}, "VwkraLoWy-CaFqEzek2uFQ": {"lat": 41.00779997270553, "lng": 28.97786572700616, "links": [{"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 64.966736, "description": ""}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 261.2334, "description": ""}, {"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 39.78, "distance": 13.51, "virtual": true}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 5.25, "distance": 7.09, "virtual": true}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 301.58, "distance": 9.74, "virtual": true}]}, "f6wxDjK_Kq-nUpvsHRvgzA": {"lat": 41.00932068379999, "lng": 28.97861444284675, "links": [{"pano_id": "DZsHBfBVJcUVqoF-k6AFNw", "heading": 5.438958, "description": "Alemdar Cd."}, {"pano_id": "cP3H5M5PqgBJXzaj0DdBZQ", "heading": 185.38951, "description": "Alemdar Cd."}]}, "1HJsha-tMM5VhWoK21AacQ": {"lat": 41.00768772781477, "lng": 28.97758512417954, "links": [{"pano_id": "5vKJrZExCUQ-Yf9Ed6piPw", "heading": 18.927443, "description": ""}, {"pano_id": "8DUqR6WzshgSILf6nVXuWg", "heading": 237.15681, "description": "At Meydan\u0131 Cd"}, {"pano_id": "3c8R_xG4AikomY6iqNK2dQ", "heading": 1.09, "distance": 15.3, "virtual": true}, {"pano_id": "OfOnCJq9dPK5S9Ug7UTZZA", "heading": 49.95, "distance": 16.84, "virtual": true}]}, "FH1lq7gJBXbmvbkVYS_CfA": {"lat": 41.0080426329914, "lng": 28.97745072954601, "links": [{"pano_id": "ru1Eo1zQL_AmgNQTRwKXZA", "heading": 13.645188, "description": "\u015eeftali Sk."}, {"pano_id": "pIFqrMp9gdzOxfPzlI7BVA", "heading": 193.66081, "description": "\u015eeftali Sk."}]}, "DZsHBfBVJcUVqoF-k6AFNw": {"lat": 41.00940797679424, "lng": 28.97862545726552, "links": [{"pano_id": "f6wxDjK_Kq-nUpvsHRvgzA", "heading": 185.43896, "description": "Alemdar Cd."}, {"pano_id": "T-n3o-XtkOTZ3Xduvu13oQ", "heading": 5.458405, "description": "Alemdar Cd."}, {"pano_id": "HeVTVVGFzOvgFJ3cZ93MJA", "heading": 5.45, "distance": 16.97, "virtual": true}]}, "n7pph38hgNZXnmrwPKetVQ": {"lat": 41.00791309502475, "lng": 28.97702684828315, "links": [{"pano_id": "Oom04GKL8t-IXzpafDvkvQ", "heading": 100.81638, "description": "Divan Yolu Cd."}, {"pano_id": "DY7YXMpbW34JVxSbXqEIew", "heading": 281.1778, "description": "Divan Yolu Cd."}]}, "8DUqR6WzshgSILf6nVXuWg": {"lat": 41.00764229459533, "lng": 28.97749185627048, "links": [{"pano_id": "OFFYn5BUf4ub00ar38vElQ", "heading": 237.05913, "description": "At Meydan\u0131 Cd"}, {"pano_id": "1HJsha-tMM5VhWoK21AacQ", "heading": 57.156815, "description": "At Meydan\u0131 Cd"}]}, "zDrmCy8ZoWsorTpJ9lr5aw": {"lat": 41.00936011991651, "lng": 28.97927681661641, "links": [{"pano_id": "YJwCU2WC3QztY4XmHsowKg", "heading": 218.39868, "description": "Caferiye Sk."}, {"pano_id": "8-ddIbJBz3e01h982XxgcQ", "heading": 35.30443, "description": "Caferiye Sk."}]}, "NWcHMrkLTLK54gzDsClOTQ": {"lat": 41.00783950974254, "lng": 28.9779779146982, "links": [{"pano_id": "QkwsotaN6BsjLjLMXsiZtQ", "heading": 58.226665, "description": ""}, {"pano_id": "VwkraLoWy-CaFqEzek2uFQ", "heading": 244.96674, "description": ""}, {"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 36.45, "distance": 16.41, "virtual": true}, {"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 352.69, "distance": 6.04, "virtual": true}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 286.92, "distance": 9.16, "virtual": true}, {"pano_id": "olLlej3Css3DjC4qPGjjDQ", "heading": 272.27, "distance": 17.72, "virtual": true}]}, "QkwsotaN6BsjLjLMXsiZtQ": {"lat": 41.00788733758186, "lng": 28.97808024259325, "links": [{"pano_id": "NWcHMrkLTLK54gzDsClOTQ", "heading": 238.22667, "description": ""}, {"pano_id": "ucJinG4jL0cwPbDPldZr-A", "heading": 54.615807, "description": ""}, {"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 8.39, "distance": 7.97, "virtual": true}, {"pano_id": "0kj4mK2w5aaU7BqQy3Fdew", "heading": 274.1, "distance": 9.38, "virtual": true}, {"pano_id": "6C0cDDcj6O49Zwd3QbEWrg", "heading": 261.31, "distance": 17.55, "virtual": true}]}, "OFFYn5BUf4ub00ar38vElQ": {"lat": 41.00759312970357, "lng": 28.97739130451874, "links": [{"pano_id": "ANB_XB0Ez0nOjACF16C6ZA", "heading": 232.9507, "description": "At Meydan\u0131 Cd"}, {"pano_id": "8DUqR6WzshgSILf6nVXuWg", "heading": 57.059124, "description": "At Meydan\u0131 Cd"}]}, "DY7YXMpbW34JVxSbXqEIew": {"lat": 41.00792995640567, "lng": 28.97691377163061, "links": [{"pano_id": "n7pph38hgNZXnmrwPKetVQ", "heading": 101.17779, "description": "Divan Yolu Cd."}, {"pano_id": "oy_-NUm8ic152iKplDIKoQ", "heading": 282.2362, "description": "Divan Yolu Cd."}]}, "ru1Eo1zQL_AmgNQTRwKXZA": {"lat": 41.00813264684587, "lng": 28.97747968702486, "links": [{"pano_id": "syKcu1LrOaZKTfTGoILZ-w", "heading": 16.671291, "description": "\u015eeftali Sk."}, {"pano_id": "FH1lq7gJBXbmvbkVYS_CfA", "heading": 193.64519, "description": "\u015eeftali Sk."}, {"pano_id": "yEwa-GcbWcLdni6D-AAZTw", "heading": 16.86, "distance": 16.52, "virtual": true}]}, "8-ddIbJBz3e01h982XxgcQ": {"lat": 41.00943650362892, "lng": 28.97934849884265, "links": [{"pano_id": "zDrmCy8ZoWsorTpJ9lr5aw", "heading": 215.30443, "description": "Caferiye Sk."}, {"pano_id": "uMeBYI1320zoRl0e5pfx1g", "heading": 29.25857, "description": "Caferiye Sk."}]}, "T-n3o-XtkOTZ3Xduvu13oQ": {"lat": 41.0094907480795, "lng": 28.97863593872781, "links": [{"pano_id": "DZsHBfBVJcUVqoF-k6AFNw", "heading": 185.4584, "description": "Alemdar Cd."}, {"pano_id": "HeVTVVGFzOvgFJ3cZ93MJA", "heading": 5.4292345, "description": "Alemdar Cd."}, {"pano_id": "w-p43j0-kqJtlpDtG45EJw", "heading": 334.33, "distance": 15.43, "virtual": true}, {"pano_id": "tUHHZjEeGkTIdTDUW0PRPg", "heading": 5.67, "distance": 9.58, "virtual": true}]}, "syKcu1LrOaZKTfTGoILZ-w": {"lat": 41.00821792605608, "lng": 28.97751352996104, "links": [{"pano_id": "ru1Eo1zQL_AmgNQTRwKXZA", "heading": 196.6713, "description": "\u015eeftali Sk."}, {"pano_id": "yEwa-GcbWcLdni6D-AAZTw", "heading": 17.147644, "description": "\u015eeftali Sk."}]}, "oy_-NUm8ic152iKplDIKoQ": {"lat": 41.00794963927762, "lng": 28.97679349990771, "links": [{"pano_id": "DY7YXMpbW34JVxSbXqEIew", "heading": 102.23619, "description": "Divan Yolu Cd."}, {"pano_id": "0jS_b_1btRxngus7NeOMBA", "heading": 282.17984, "description": "Divan Yolu Cd."}]}, "HeVTVVGFzOvgFJ3cZ93MJA": {"lat": 41.00955986183003, "lng": 28.97864464367052, "links": [{"pano_id": "tUHHZjEeGkTIdTDUW0PRPg", "heading": 6.670515, "description": "Alemdar Cd."}, {"pano_id": "T-n3o-XtkOTZ3Xduvu13oQ", "heading": 185.42923, "description": "Alemdar Cd."}, {"pano_id": "w-p43j0-kqJtlpDtG45EJw", "heading": 310.0148, "description": "Zeynep Sultan Cami Sk."}, {"pano_id": "DZsHBfBVJcUVqoF-k6AFNw", "heading": 185.45, "distance": 16.97, "virtual": true}]}, "uMeBYI1320zoRl0e5pfx1g": {"lat": 41.00951917820368, "lng": 28.97940987727757, "links": [{"pano_id": "XnNY_dihCHEDBKY4dHyprg", "heading": 29.253536, "description": "Caferiye Sk."}, {"pano_id": "8-ddIbJBz3e01h982XxgcQ", "heading": 209.25858, "description": "Caferiye Sk."}]}, "ANB_XB0Ez0nOjACF16C6ZA": {"lat": 41.0075381762524, "lng": 28.9772948387307, "links": [{"pano_id": "OFFYn5BUf4ub00ar38vElQ", "heading": 52.950703, "description": "At Meydan\u0131 Cd"}, {"pano_id": "r_ozwSoAmo--Rc0u069gQw", "heading": 214.9198, "description": "At Meydan\u0131 Cd"}]}, "ucJinG4jL0cwPbDPldZr-A": {"lat": 41.00794432422716, "lng": 28.97818656759983, "links": [{"pano_id": "orKTpWTls8UlnungNg7dkw", "heading": 44.016373, "description": ""}, {"pano_id": "QkwsotaN6BsjLjLMXsiZtQ", "heading": 234.6158, "description": ""}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 11.57, "distance": 11.71, "virtual": true}, {"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 281.27, "distance": 7.91, "virtual": true}]}, "XnNY_dihCHEDBKY4dHyprg": {"lat": 41.00959780092299, "lng": 28.97946823562215, "links": [{"pano_id": "uMeBYI1320zoRl0e5pfx1g", "heading": 209.25354, "description": "Caferiye Sk."}]}, "w-p43j0-kqJtlpDtG45EJw": {"lat": 41.00961585322123, "lng": 28.97855626183136, "links": [{"pano_id": "HeVTVVGFzOvgFJ3cZ93MJA", "heading": 130.01482, "description": "Alemdar Cd."}, {"pano_id": "T-n3o-XtkOTZ3Xduvu13oQ", "heading": 154.33, "distance": 15.43, "virtual": true}, {"pano_id": "tUHHZjEeGkTIdTDUW0PRPg", "heading": 119.84, "distance": 8.8, "virtual": true}]}, "orKTpWTls8UlnungNg7dkw": {"lat": 41.00800169468729, "lng": 28.97826002685568, "links": [{"pano_id": "ucJinG4jL0cwPbDPldZr-A", "heading": 224.01637, "description": ""}, {"pano_id": "-DMJfyyzYkH5rJ3-ahFmEw", "heading": 18.72, "distance": 16.46, "virtual": true}, {"pano_id": "-gh-p2USCcI5aeXjL1jXXQ", "heading": 323.14, "distance": 6.36, "virtual": true}, {"pano_id": "Y8RqyUqIJg47a13fLPPg5w", "heading": 250.85, "distance": 14.74, "virtual": true}]}, "yEwa-GcbWcLdni6D-AAZTw": {"lat": 41.00827484323141, "lng": 28.97753680252702, "links": [{"pano_id": "syKcu1LrOaZKTfTGoILZ-w", "heading": 197.14764, "description": "\u015eeftali Sk."}, {"pano_id": "ru1Eo1zQL_AmgNQTRwKXZA", "heading": 196.86, "distance": 16.52, "virtual": true}]}, "0jS_b_1btRxngus7NeOMBA": {"lat": 41.00797074786131, "lng": 28.97666390124767, "links": [{"pano_id": "oy_-NUm8ic152iKplDIKoQ", "heading": 102.179855, "description": "Divan Yolu Cd."}]}, "r_ozwSoAmo--Rc0u069gQw": {"lat": 41.00746472429284, "lng": 28.97722688627476, "links": [{"pano_id": "ANB_XB0Ez0nOjACF16C6ZA", "heading": 34.919796, "description": "At Meydan\u0131 Cd"}]}, "tUHHZjEeGkTIdTDUW0PRPg": {"lat": 41.00957648253735, "lng": 28.97864721962287, "links": [{"pano_id": "HeVTVVGFzOvgFJ3cZ93MJA", "heading": 186.67052, "description": "Alemdar Cd."}, {"pano_id": "T-n3o-XtkOTZ3Xduvu13oQ", "heading": 185.67, "distance": 9.58, "virtual": true}, {"pano_id": "w-p43j0-kqJtlpDtG45EJw", "heading": 299.84, "distance": 8.8, "virtual": true}]}};
+        const targetPanos = ["cOCLASQPq0j87KJEho9V0g"];
+        const spawnPoints = ["XnNY_dihCHEDBKY4dHyprg", "DZsHBfBVJcUVqoF-k6AFNw", "f6wxDjK_Kq-nUpvsHRvgzA", "zDrmCy8ZoWsorTpJ9lr5aw", "EH6Z8ceMPR_sHCJJr6MyHQ", "0jS_b_1btRxngus7NeOMBA", "r_ozwSoAmo--Rc0u069gQw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

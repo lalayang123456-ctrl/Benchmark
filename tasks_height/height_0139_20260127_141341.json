@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0139_20260127_141341",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your South (approx. 199\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "GSuDvuNn1yBHCvoikDdbsg",
+  "spawn_heading": 199.10008646161106,
+  "target_building": {
+    "lat": 48.2148288,
+    "lng": 16.3654066,
+    "height": 27.97,
+    "floors": 7,
+    "ground_elevation": 172.0493316650391,
+    "roof_elevation": 200.02138,
+    "name": "buildings/ChIJ9a3G7bwHbUcR9HH95F4FtWo",
+    "date": "2022-03-26"
+  },
+  "geofence_id": "list_height_0139_20260127_141341",
+  "ground_truth": {
+    "height_meters": 27.97
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-27T14:13:41.099813",
+    "bearing_deg": 199.10008646161106,
+    "city": "Vienna, Austria"
+  }
+}

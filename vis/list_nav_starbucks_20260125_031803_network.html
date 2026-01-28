@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_starbucks_20260125_031803</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_starbucks_20260125_031803</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>16</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"G9n7T0i0rgpziMwNG0X1uw": {"lat": 18.45186984638665, "lng": -66.06407091074367, "links": [{"pano_id": "sdkVSucYilq2ghZ1T_5viQ", "heading": 45.13617, "description": "Av. de Diego"}, {"pano_id": "qpLnduzDt3F0BwUOA6PRWg", "heading": 225.09334, "description": "Av. de Diego"}]}, "qpLnduzDt3F0BwUOA6PRWg": {"lat": 18.45180437144369, "lng": -66.064140159436, "links": [{"pano_id": "G9n7T0i0rgpziMwNG0X1uw", "heading": 45.09334, "description": "Av. de Diego"}, {"pano_id": "UHY16UZBYqMhDBO-vlthsg", "heading": 223.37958, "description": "Av. de Diego"}]}, "sdkVSucYilq2ghZ1T_5viQ": {"lat": 18.4519353091649, "lng": -66.06400157130275, "links": [{"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 42.758736, "description": "PR-37"}, {"pano_id": "G9n7T0i0rgpziMwNG0X1uw", "heading": 225.13617, "description": "Av. de Diego"}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 8.64, "distance": 17.39, "virtual": true}]}, "Q9DnMMMH399ypYjQ7E8YYg": {"lat": 18.45199992460811, "lng": -66.06393858496054, "links": [{"pano_id": "sdkVSucYilq2ghZ1T_5viQ", "heading": 222.75873, "description": "Av. de Diego"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 40.859386, "description": "PR-37"}, {"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 63.52, "distance": 15.91, "virtual": true}, {"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 22.74, "distance": 9.46, "virtual": true}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 39.36, "distance": 11.26, "virtual": true}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 338.07, "distance": 10.79, "virtual": true}]}, "UHY16UZBYqMhDBO-vlthsg": {"lat": 18.45173722678036, "lng": -66.06420704841815, "links": [{"pano_id": "qpLnduzDt3F0BwUOA6PRWg", "heading": 43.379585, "description": "Av. de Diego"}, {"pano_id": "v9NZMxEKwhsvH7qjf1YJrA", "heading": 221.68922, "description": "Av. de Diego"}]}, "v0tunREk7jEqbjgLAVEeWQ": {"lat": 18.45207098923141, "lng": -66.06387378345846, "links": [{"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 284.52203, "description": "Av. Wilson"}, {"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 96.20487, "description": "C. Lo\u00edza"}, {"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 220.85939, "description": "PR-37"}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 20.843899, "description": "Av. de Diego"}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 280.99, "distance": 11.07, "virtual": true}, {"pano_id": "-XOQFdVJq0fmq_mofTK4ww", "heading": 97.44, "distance": 17.37, "virtual": true}, {"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 9.99, "distance": 10.82, "virtual": true}]}, "v9NZMxEKwhsvH7qjf1YJrA": {"lat": 18.4516691747169, "lng": -66.06427094237985, "links": [{"pano_id": "UHY16UZBYqMhDBO-vlthsg", "heading": 41.689224, "description": "Av. de Diego"}, {"pano_id": "7pvfbo3J70XgA8G-OtHaYA", "heading": 221.67474, "description": "PR-37"}]}, "XWK3N7pUD-GUN5EvBD7YVw": {"lat": 18.45206374456099, "lng": -66.06380353646176, "links": [{"pano_id": "-XOQFdVJq0fmq_mofTK4ww", "heading": 98.37474, "description": "C. Lo\u00edza"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 276.20486, "description": "PR-37"}, {"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 243.52, "distance": 15.91, "virtual": true}, {"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 278.75, "distance": 10.71, "virtual": true}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 282.77, "distance": 7.28, "virtual": true}, {"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 334.22, "distance": 12.72, "virtual": true}]}, "7pvfbo3J70XgA8G-OtHaYA": {"lat": 18.45160292554054, "lng": -66.0643331119387, "links": [{"pano_id": "v9NZMxEKwhsvH7qjf1YJrA", "heading": 41.67474, "description": "Av. de Diego"}, {"pano_id": "z-X8ivua0mMPgaY0X-qLYg", "heading": 221.70654, "description": "PR-37"}]}, "3kpi9bbw3VMLXvoOqXpQdw": {"lat": 18.4520783929446, "lng": -66.06390391524828, "links": [{"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 279.506, "description": "Av. Wilson"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 104.52204, "description": "PR-37"}, {"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 202.74, "distance": 9.46, "virtual": true}, {"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 98.75, "distance": 10.71, "virtual": true}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 90.31, "distance": 3.48, "virtual": true}, {"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 27.22, "distance": 11.05, "virtual": true}, {"pano_id": "KgKcmtGoZQiecUCNocS8rw", "heading": 279.51, "distance": 17.65, "virtual": true}]}, "uqMLsDckW1x5CAwAZ2r3vw": {"lat": 18.45207822500067, "lng": -66.06387087918966, "links": [{"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 9.058587, "description": "Av. de Diego"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 200.8439, "description": "PR-37"}, {"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 219.36, "distance": 11.26, "virtual": true}, {"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 102.77, "distance": 7.28, "virtual": true}, {"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 270.31, "distance": 3.48, "virtual": true}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 276.67, "distance": 11.25, "virtual": true}, {"pano_id": "-XOQFdVJq0fmq_mofTK4ww", "heading": 100.24, "distance": 17.19, "virtual": true}]}, "qvMQaFzaUDDNqqp7qCtLrA": {"lat": 18.45208996916868, "lng": -66.06397679425362, "links": [{"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 99.50601, "description": "Av. Wilson"}, {"pano_id": "KgKcmtGoZQiecUCNocS8rw", "heading": 279.51636, "description": "Av. Wilson"}, {"pano_id": "sdkVSucYilq2ghZ1T_5viQ", "heading": 188.64, "distance": 17.39, "virtual": true}, {"pano_id": "Q9DnMMMH399ypYjQ7E8YYg", "heading": 158.07, "distance": 10.79, "virtual": true}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 100.99, "distance": 11.07, "virtual": true}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 96.67, "distance": 11.25, "virtual": true}, {"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 56.16, "distance": 15.34, "virtual": true}]}, "-XOQFdVJq0fmq_mofTK4ww": {"lat": 18.45205075347349, "lng": -66.06371050912385, "links": [{"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 278.37473, "description": "C. Lo\u00edza"}, {"pano_id": "1wOY9m-JOgzFol6P247r6Q", "heading": 98.357574, "description": "C. Lo\u00edza"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 277.44, "distance": 17.37, "virtual": true}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 280.24, "distance": 17.19, "virtual": true}]}, "z-X8ivua0mMPgaY0X-qLYg": {"lat": 18.45152554400532, "lng": -66.06440580949129, "links": [{"pano_id": "7aoyQTJ9HjLoAylX3me_ZQ", "heading": 222.12271, "description": "PR-37"}, {"pano_id": "7pvfbo3J70XgA8G-OtHaYA", "heading": 41.706543, "description": "PR-37"}]}, "fIt5irxhH2ybYvOK-3dgrQ": {"lat": 18.45216678362325, "lng": -66.06385599481236, "links": [{"pano_id": "EJn6cs-6_fQb-33IGOr05w", "heading": 9.018409, "description": "Av. de Diego"}, {"pano_id": "uqMLsDckW1x5CAwAZ2r3vw", "heading": 189.0586, "description": "Av. de Diego"}, {"pano_id": "v0tunREk7jEqbjgLAVEeWQ", "heading": 189.99, "distance": 10.82, "virtual": true}, {"pano_id": "XWK3N7pUD-GUN5EvBD7YVw", "heading": 154.22, "distance": 12.72, "virtual": true}, {"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 207.22, "distance": 11.05, "virtual": true}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 236.16, "distance": 15.34, "virtual": true}, {"pano_id": "v650o-7eCYwmqrk0RvDRKA", "heading": 355.12, "distance": 16.75, "virtual": true}]}, "7aoyQTJ9HjLoAylX3me_ZQ": {"lat": 18.45145633006882, "lng": -66.06447179092484, "links": [{"pano_id": "z-X8ivua0mMPgaY0X-qLYg", "heading": 42.12272, "description": "PR-37"}, {"pano_id": "FoBgRfD4czdRhpbHMtBhZg", "heading": 222.22415, "description": "PR-37"}]}, "EJn6cs-6_fQb-33IGOr05w": {"lat": 18.45225303118717, "lng": -66.06384156422745, "links": [{"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 189.0184, "description": "Av. de Diego"}, {"pano_id": "nRXbVjHIYH8XfN2-lGT3XQ", "heading": 21.954039, "description": "Av. de Diego"}, {"pano_id": "v650o-7eCYwmqrk0RvDRKA", "heading": 337.45, "distance": 7.69, "virtual": true}]}, "1wOY9m-JOgzFol6P247r6Q": {"lat": 18.45203716964417, "lng": -66.06361303464449, "links": [{"pano_id": "3ks32e5sO8ilCxH3WmJw-w", "heading": 98.423225, "description": "C. Lo\u00edza"}, {"pano_id": "-XOQFdVJq0fmq_mofTK4ww", "heading": 278.35757, "description": "C. Lo\u00edza"}]}, "KgKcmtGoZQiecUCNocS8rw": {"lat": 18.45210461783785, "lng": -66.06406891405805, "links": [{"pano_id": "tN0CjCk9_rzuz3PTtfYHqA", "heading": 279.52008, "description": "Av. Wilson"}, {"pano_id": "qvMQaFzaUDDNqqp7qCtLrA", "heading": 99.51635, "description": "Av. Wilson"}, {"pano_id": "3kpi9bbw3VMLXvoOqXpQdw", "heading": 99.51, "distance": 17.65, "virtual": true}]}, "3ks32e5sO8ilCxH3WmJw-w": {"lat": 18.4520239365215, "lng": -66.06351882748464, "links": [{"pano_id": "1wOY9m-JOgzFol6P247r6Q", "heading": 278.42322, "description": "C. Lo\u00edza"}, {"pano_id": "66BpscDsTYOOUQbH6f1-Yg", "heading": 98.35966, "description": "C. Lo\u00edza"}]}, "nRXbVjHIYH8XfN2-lGT3XQ": {"lat": 18.45234978245788, "lng": -66.06380045067661, "links": [{"pano_id": "v650o-7eCYwmqrk0RvDRKA", "heading": 243.34274, "description": ""}, {"pano_id": "OiHdceaCckbd8iCBGxs5Yg", "heading": 3.8447697, "description": "Av. de Diego"}, {"pano_id": "EJn6cs-6_fQb-33IGOr05w", "heading": 201.95404, "description": "Av. de Diego"}]}, "FoBgRfD4czdRhpbHMtBhZg": {"lat": 18.45138992333823, "lng": -66.06453532188718, "links": [{"pano_id": "YdebY3BdEjSEBX2jlNoEpA", "heading": 222.19316, "description": "PR-37"}, {"pano_id": "7aoyQTJ9HjLoAylX3me_ZQ", "heading": 42.224155, "description": "PR-37"}]}, "tN0CjCk9_rzuz3PTtfYHqA": {"lat": 18.45211766975681, "lng": -66.06415095969164, "links": [{"pano_id": "KgKcmtGoZQiecUCNocS8rw", "heading": 99.52009, "description": "Av. Wilson"}, {"pano_id": "XXOyfZNEYvWayjNTrq3G7g", "heading": 279.52243, "description": "Av. Wilson"}]}, "v650o-7eCYwmqrk0RvDRKA": {"lat": 18.45231689244259, "lng": -66.06386951781367, "links": [{"pano_id": "nRXbVjHIYH8XfN2-lGT3XQ", "heading": 63.342735, "description": "Av. de Diego"}, {"pano_id": "fIt5irxhH2ybYvOK-3dgrQ", "heading": 175.12, "distance": 16.75, "virtual": true}, {"pano_id": "EJn6cs-6_fQb-33IGOr05w", "heading": 157.45, "distance": 7.69, "virtual": true}, {"pano_id": "OiHdceaCckbd8iCBGxs5Yg", "heading": 30.04, "distance": 15.91, "virtual": true}]}, "OiHdceaCckbd8iCBGxs5Yg": {"lat": 18.45244073650136, "lng": -66.06379400683122, "links": [{"pano_id": "4lmq63AjF4dqe9g2Jh9YGA", "heading": 15.49871, "description": "Av. de Diego"}, {"pano_id": "nRXbVjHIYH8XfN2-lGT3XQ", "heading": 183.84477, "description": "Av. de Diego"}, {"pano_id": "v650o-7eCYwmqrk0RvDRKA", "heading": 210.04, "distance": 15.91, "virtual": true}]}, "YdebY3BdEjSEBX2jlNoEpA": {"lat": 18.45131907571637, "lng": -66.06460302775047, "links": [{"pano_id": "FoBgRfD4czdRhpbHMtBhZg", "heading": 42.193157, "description": "PR-37"}, {"pano_id": "aVhKG9vcVLqRW-vLSSkdKg", "heading": 221.68326, "description": "Av. de Diego"}]}, "66BpscDsTYOOUQbH6f1-Yg": {"lat": 18.45201042517278, "lng": -66.06342189759356, "links": [{"pano_id": "Bfl1nU83uvNMk6djJ9lKhA", "heading": 97.734825, "description": "C. Lo\u00edza"}, {"pano_id": "3ks32e5sO8ilCxH3WmJw-w", "heading": 278.35965, "description": "C. Lo\u00edza"}]}, "XXOyfZNEYvWayjNTrq3G7g": {"lat": 18.45213279010513, "lng": -66.06424598380006, "links": [{"pano_id": "tN0CjCk9_rzuz3PTtfYHqA", "heading": 99.52244, "description": "Av. Wilson"}, {"pano_id": "2584GK3X7604ms02zIbPUg", "heading": 279.5133, "description": "Av. Wilson"}]}, "aVhKG9vcVLqRW-vLSSkdKg": {"lat": 18.45124936552593, "lng": -66.06466846465943, "links": [{"pano_id": "YdebY3BdEjSEBX2jlNoEpA", "heading": 41.683266, "description": "PR-37"}, {"pano_id": "H2XivCxe1JlJc2nzvy2Jxg", "heading": 219.34972, "description": "Av. de Diego"}]}, "4lmq63AjF4dqe9g2Jh9YGA": {"lat": 18.45252984010222, "lng": -66.06376795917532, "links": [{"pano_id": "OiHdceaCckbd8iCBGxs5Yg", "heading": 195.4987, "description": "Av. de Diego"}, {"pano_id": "eAf9sXvJ30Y1DMXRnE5Wig", "heading": 15.427065, "description": "Av. de Diego"}]}, "Bfl1nU83uvNMk6djJ9lKhA": {"lat": 18.4519981236866, "lng": -66.06332641985453, "links": [{"pano_id": "XB8urYWgZjz-9zekC6aGxA", "heading": 97.430824, "description": "C. Lo\u00edza"}, {"pano_id": "66BpscDsTYOOUQbH6f1-Yg", "heading": 277.73483, "description": "C. Lo\u00edza"}]}, "2584GK3X7604ms02zIbPUg": {"lat": 18.45214746284508, "lng": -66.06433828517241, "links": [{"pano_id": "90F_OijDUYpNG5Q7CgB4xw", "heading": 279.5059, "description": "Av. Wilson"}, {"pano_id": "XXOyfZNEYvWayjNTrq3G7g", "heading": 99.5133, "description": "Av. Wilson"}]}, "90F_OijDUYpNG5Q7CgB4xw": {"lat": 18.45216219602117, "lng": -66.06443104035478, "links": [{"pano_id": "OCxeMRRoXWqrZ2FHd8W6zw", "heading": 279.49152, "description": "Av. Wilson"}, {"pano_id": "2584GK3X7604ms02zIbPUg", "heading": 99.50588, "description": "Av. Wilson"}]}, "eAf9sXvJ30Y1DMXRnE5Wig": {"lat": 18.45261781840525, "lng": -66.06374236531269, "links": [{"pano_id": "LAraq7aLF0HgebI7telXzg", "heading": 15.869178, "description": "Av. de Diego"}, {"pano_id": "4lmq63AjF4dqe9g2Jh9YGA", "heading": 195.42706, "description": "Av. de Diego"}]}, "XB8urYWgZjz-9zekC6aGxA": {"lat": 18.45198606422647, "lng": -66.06322894545211, "links": [{"pano_id": "IqvzYgSDRkgrf9rjhddDOQ", "heading": 97.4146, "description": "C. Lo\u00edza"}, {"pano_id": "Bfl1nU83uvNMk6djJ9lKhA", "heading": 277.43082, "description": "C. Lo\u00edza"}]}, "H2XivCxe1JlJc2nzvy2Jxg": {"lat": 18.45117744119525, "lng": -66.06473063426905, "links": [{"pano_id": "OmizGjZxnFnOOydPla8uYw", "heading": 219.35646, "description": "Av. de Diego"}, {"pano_id": "aVhKG9vcVLqRW-vLSSkdKg", "heading": 39.34972, "description": "Av. de Diego"}]}, "LAraq7aLF0HgebI7telXzg": {"lat": 18.45270170697165, "lng": -66.06371722524327, "links": [{"pano_id": "njE7jbx770jTQ2zeHVvdug", "heading": 16.39896, "description": "Av. de Diego"}, {"pano_id": "eAf9sXvJ30Y1DMXRnE5Wig", "heading": 195.86917, "description": "Av. de Diego"}]}, "OCxeMRRoXWqrZ2FHd8W6zw": {"lat": 18.4521765178797, "lng": -66.06452134507475, "links": [{"pano_id": "90F_OijDUYpNG5Q7CgB4xw", "heading": 99.491516, "description": "Av. Wilson"}, {"pano_id": "wXPZQAHrGnZp5BT65hHSWQ", "heading": 279.9164, "description": "Av. Wilson"}]}, "OmizGjZxnFnOOydPla8uYw": {"lat": 18.45110437937283, "lng": -66.06479380223088, "links": [{"pano_id": "H2XivCxe1JlJc2nzvy2Jxg", "heading": 39.356464, "description": "Av. de Diego"}, {"pano_id": "rFKe9fGVBxE1k1KiKb_Amw", "heading": 219.33365, "description": "Av. de Diego"}]}, "IqvzYgSDRkgrf9rjhddDOQ": {"lat": 18.45197330316727, "lng": -66.06312557178221, "links": [{"pano_id": "XB8urYWgZjz-9zekC6aGxA", "heading": 277.41458, "description": "C. Lo\u00edza"}, {"pano_id": "7i3oV3dvctHFzMyB2pvuTg", "heading": 97.46868, "description": "C. Lo\u00edza"}]}, "wXPZQAHrGnZp5BT65hHSWQ": {"lat": 18.45219290835148, "lng": -66.06462018111411, "links": [{"pano_id": "d4U3-UQLOuekxnQZiqhMfQ", "heading": 280.0373, "description": "Av. Wilson"}, {"pano_id": "OCxeMRRoXWqrZ2FHd8W6zw", "heading": 99.916405, "description": "Av. Wilson"}]}, "7i3oV3dvctHFzMyB2pvuTg": {"lat": 18.45196149759796, "lng": -66.0630306386508, "links": [{"pano_id": "l5uYLa3YK4OSd6rsd-jM6A", "heading": 97.43399, "description": "C. Lo\u00edza"}, {"pano_id": "IqvzYgSDRkgrf9rjhddDOQ", "heading": 277.4687, "description": "C. Lo\u00edza"}]}, "njE7jbx770jTQ2zeHVvdug": {"lat": 18.45278946753623, "lng": -66.06368999773272, "links": [{"pano_id": "LAraq7aLF0HgebI7telXzg", "heading": 196.39896, "description": "Av. de Diego"}, {"pano_id": "Wy6aOT59aewqck9S5AU_lw", "heading": 16.400984, "description": "Av. de Diego"}]}, "rFKe9fGVBxE1k1KiKb_Amw": {"lat": 18.4510306277725, "lng": -66.0648575147524, "links": [{"pano_id": "EGQ1issjmegsOFjA9TPKMQ", "heading": 219.35072, "description": "Av. de Diego"}, {"pano_id": "OmizGjZxnFnOOydPla8uYw", "heading": 39.33364, "description": "Av. de Diego"}]}, "EGQ1issjmegsOFjA9TPKMQ": {"lat": 18.45095650099686, "lng": -66.06492159031666, "links": [{"pano_id": "XnMTEgayHQ5qayhqPZG0ng", "heading": 219.37822, "description": "Av. de Diego"}, {"pano_id": "rFKe9fGVBxE1k1KiKb_Amw", "heading": 39.350727, "description": "Av. de Diego"}]}, "l5uYLa3YK4OSd6rsd-jM6A": {"lat": 18.45194826467857, "lng": -66.06292372545232, "links": [{"pano_id": "7i3oV3dvctHFzMyB2pvuTg", "heading": 277.434, "description": "C. Lo\u00edza"}, {"pano_id": "lx_91jRo8n8np13ka14Prg", "heading": 97.41743, "description": "C. Lo\u00edza"}, {"pano_id": "l9bE772iqzW9JxTF021z3A", "heading": 97.41, "distance": 17.39, "virtual": true}, {"pano_id": "DfKrOLlplxlsjELFtCGUSw", "heading": 114.02, "distance": 16.96, "virtual": true}]}, "d4U3-UQLOuekxnQZiqhMfQ": {"lat": 18.45220933512488, "lng": -66.06471801882937, "links": [{"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 280.00818, "description": "Av. Wilson"}, {"pano_id": "wXPZQAHrGnZp5BT65hHSWQ", "heading": 100.037285, "description": "Av. Wilson"}]}, "Wy6aOT59aewqck9S5AU_lw": {"lat": 18.45288218905389, "lng": -66.06366122733156, "links": [{"pano_id": "njE7jbx770jTQ2zeHVvdug", "heading": 196.40099, "description": "Av. de Diego"}, {"pano_id": "fiNDCiwLm4F241XsXfWEmA", "heading": 15.538115, "description": "Calle de Diego"}]}, "fiNDCiwLm4F241XsXfWEmA": {"lat": 18.45296981645342, "lng": -66.0636355427162, "links": [{"pano_id": "Wy6aOT59aewqck9S5AU_lw", "heading": 195.53812, "description": "Av. de Diego"}, {"pano_id": "_u1sDSZZHvqqjpXohpC36Q", "heading": 14.661036, "description": "Av. de Diego"}]}, "XnMTEgayHQ5qayhqPZG0ng": {"lat": 18.45088276136681, "lng": -66.06498539361351, "links": [{"pano_id": "H-9hhICjs4z_JP33eZvpGA", "heading": 219.33423, "description": "Av. de Diego"}, {"pano_id": "EGQ1issjmegsOFjA9TPKMQ", "heading": 39.378223, "description": "Av. de Diego"}]}, "OAKhs5wu8MSvMzFiI1RxYg": {"lat": 18.45222512073792, "lng": -66.06481231697987, "links": [{"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 279.60052, "description": "Av. Wilson"}, {"pano_id": "d4U3-UQLOuekxnQZiqhMfQ", "heading": 100.00817, "description": "Av. Wilson"}, {"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 278.74, "distance": 16.47, "virtual": true}, {"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 263.26, "distance": 14.33, "virtual": true}, {"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 292.89, "distance": 13.57, "virtual": true}, {"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 321.97, "distance": 17.06, "virtual": true}]}, "lx_91jRo8n8np13ka14Prg": {"lat": 18.45193650741687, "lng": -66.06282852008567, "links": [{"pano_id": "l5uYLa3YK4OSd6rsd-jM6A", "heading": 277.41742, "description": "C. Lo\u00edza"}, {"pano_id": "l9bE772iqzW9JxTF021z3A", "heading": 97.40902, "description": "C. Lo\u00edza"}, {"pano_id": "DfKrOLlplxlsjELFtCGUSw", "heading": 135.78, "distance": 7.81, "virtual": true}, {"pano_id": "qYf692Mqegn7PHhn1UlzMw", "heading": 97.25, "distance": 16.45, "virtual": true}, {"pano_id": "ijPhInN7ANc08UeOhSbMng", "heading": 166.53, "distance": 16.28, "virtual": true}]}, "H-9hhICjs4z_JP33eZvpGA": {"lat": 18.45081037692315, "lng": -66.06504792629805, "links": [{"pano_id": "XnMTEgayHQ5qayhqPZG0ng", "heading": 39.33423, "description": "Av. de Diego"}, {"pano_id": "5zUVIohoZbZDMnXBmZeRnw", "heading": 219.37321, "description": "Av. de Diego"}]}, "l9bE772iqzW9JxTF021z3A": {"lat": 18.45192808861032, "lng": -66.0627602699201, "links": [{"pano_id": "DfKrOLlplxlsjELFtCGUSw", "heading": 200.60062, "description": "C. del Parque"}, {"pano_id": "qYf692Mqegn7PHhn1UlzMw", "heading": 97.12609, "description": "C. Lo\u00edza"}, {"pano_id": "lx_91jRo8n8np13ka14Prg", "heading": 277.40903, "description": "C. Lo\u00edza"}, {"pano_id": "l5uYLa3YK4OSd6rsd-jM6A", "heading": 277.41, "distance": 17.39, "virtual": true}, {"pano_id": "ijPhInN7ANc08UeOhSbMng", "heading": 192.89, "distance": 15.28, "virtual": true}]}, "RxkQhXyPFA7Oty2sbEHZ_w": {"lat": 18.45224161977166, "lng": -66.06491514645641, "links": [{"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 223.93573, "description": "Cll Ojeda"}, {"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 99.60052, "description": "Av. Wilson"}, {"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 277.02008, "description": "Av. Wilson"}, {"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 334.31973, "description": "Cll Ojeda"}, {"pano_id": "6vIqfGeJDfHReRNTSVJnUw", "heading": 274.74, "distance": 14.26, "virtual": true}, {"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 1.65, "distance": 11.61, "virtual": true}]}, "_u1sDSZZHvqqjpXohpC36Q": {"lat": 18.45306360263419, "lng": -66.06360967658549, "links": [{"pano_id": "fiNDCiwLm4F241XsXfWEmA", "heading": 194.66104, "description": "Calle de Diego"}, {"pano_id": "S9A39FuaHWSlfS_XGeYBRA", "heading": 14.644015, "description": "Calle de Diego"}]}, "DfKrOLlplxlsjELFtCGUSw": {"lat": 18.45188617479551, "lng": -66.06277687866961, "links": [{"pano_id": "ijPhInN7ANc08UeOhSbMng", "heading": 189.19527, "description": "C. del Parque"}, {"pano_id": "l9bE772iqzW9JxTF021z3A", "heading": 20.600624, "description": "C. Lo\u00edza"}, {"pano_id": "l5uYLa3YK4OSd6rsd-jM6A", "heading": 294.02, "distance": 16.96, "virtual": true}, {"pano_id": "lx_91jRo8n8np13ka14Prg", "heading": 315.78, "distance": 7.81, "virtual": true}, {"pano_id": "qYf692Mqegn7PHhn1UlzMw", "heading": 72.06, "distance": 11.43, "virtual": true}]}, "5zUVIohoZbZDMnXBmZeRnw": {"lat": 18.45073914195176, "lng": -66.06510955140432, "links": [{"pano_id": "H-9hhICjs4z_JP33eZvpGA", "heading": 39.37322, "description": "Av. de Diego"}, {"pano_id": "i8rHaHLJctTZR4EA_5YcPA", "heading": 219.30136, "description": "Av. de Diego"}]}, "qYf692Mqegn7PHhn1UlzMw": {"lat": 18.45191783130293, "lng": -66.06267377737029, "links": [{"pano_id": "l9bE772iqzW9JxTF021z3A", "heading": 277.1261, "description": "C. Lo\u00edza"}, {"pano_id": "x4qNtLYSg-0pPwJ5fxha0Q", "heading": 97.11459, "description": "C. Lo\u00edza"}, {"pano_id": "lx_91jRo8n8np13ka14Prg", "heading": 277.25, "distance": 16.45, "virtual": true}, {"pano_id": "DfKrOLlplxlsjELFtCGUSw", "heading": 252.06, "distance": 11.43, "virtual": true}]}, "9fGCUvnIu2ouJjS70kaLeQ": {"lat": 18.45224763080063, "lng": -66.06496660658212, "links": [{"pano_id": "6vIqfGeJDfHReRNTSVJnUw", "heading": 273.31778, "description": "Av. Wilson"}, {"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 97.02008, "description": "Av. Wilson"}, {"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 98.74, "distance": 16.47, "virtual": true}, {"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 154.03, "distance": 4.66, "virtual": true}, {"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 53.65, "distance": 4.68, "virtual": true}, {"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 27.79, "distance": 12.36, "virtual": true}]}, "BQY8f0m7LBii24gXJ9ON6g": {"lat": 18.45220998924243, "lng": -66.06494727499987, "links": [{"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 43.935726, "description": "Av. Wilson"}, {"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 83.26, "distance": 14.33, "virtual": true}, {"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 334.03, "distance": 4.66, "virtual": true}, {"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 13.98, "distance": 7.17, "virtual": true}, {"pano_id": "6vIqfGeJDfHReRNTSVJnUw", "heading": 293.44, "distance": 11.8, "virtual": true}, {"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 13.84, "distance": 15.57, "virtual": true}]}, "S9A39FuaHWSlfS_XGeYBRA": {"lat": 18.4531439942444, "lng": -66.06358753154835, "links": [{"pano_id": "M2FoCaCbTz3-HmzETG7lwA", "heading": 45.173992, "description": "Cll Mirsonia"}, {"pano_id": "_u1sDSZZHvqqjpXohpC36Q", "heading": 194.64401, "description": "Av. de Diego"}, {"pano_id": "WqN5rO0dRM8YFLRkQfVK3w", "heading": 11.803419, "description": "Calle de Diego"}]}, "bFAhQ5C1EoXccDMV5OFYTw": {"lat": 18.45227259451657, "lng": -66.06493084769349, "links": [{"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 13.715125, "description": "Cll Ojeda"}, {"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 154.31973, "description": "Av. Wilson"}, {"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 112.89, "distance": 13.57, "virtual": true}, {"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 233.65, "distance": 4.68, "virtual": true}, {"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 193.98, "distance": 7.17, "virtual": true}, {"pano_id": "6vIqfGeJDfHReRNTSVJnUw", "heading": 259.77, "distance": 12.76, "virtual": true}]}, "i8rHaHLJctTZR4EA_5YcPA": {"lat": 18.45067487676152, "lng": -66.06516500493075, "links": [{"pano_id": "5zUVIohoZbZDMnXBmZeRnw", "heading": 39.30137, "description": "Av. de Diego"}]}, "x4qNtLYSg-0pPwJ5fxha0Q": {"lat": 18.45190637646164, "lng": -66.06257702916386, "links": [{"pano_id": "qYf692Mqegn7PHhn1UlzMw", "heading": 277.1146, "description": "C. Lo\u00edza"}]}, "6vIqfGeJDfHReRNTSVJnUw": {"lat": 18.45225221242052, "lng": -66.06504992298767, "links": [{"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 93.31778, "description": "Av. Wilson"}, {"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 94.74, "distance": 14.26, "virtual": true}, {"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 113.44, "distance": 11.8, "virtual": true}, {"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 79.77, "distance": 12.76, "virtual": true}, {"pano_id": "dleqew2Z-GmErWlwuDk2jA", "heading": 54.38, "distance": 17.9, "virtual": true}]}, "ijPhInN7ANc08UeOhSbMng": {"lat": 18.45179416846156, "lng": -66.0627925798377, "links": [{"pano_id": "DfKrOLlplxlsjELFtCGUSw", "heading": 9.195265, "description": "C. del Parque"}, {"pano_id": "lx_91jRo8n8np13ka14Prg", "heading": 346.53, "distance": 16.28, "virtual": true}, {"pano_id": "l9bE772iqzW9JxTF021z3A", "heading": 12.89, "distance": 15.28, "virtual": true}]}, "WqN5rO0dRM8YFLRkQfVK3w": {"lat": 18.4532642910292, "lng": -66.0635610301118, "links": [{"pano_id": "S9A39FuaHWSlfS_XGeYBRA", "heading": 191.80342, "description": "Calle de Diego"}, {"pano_id": "M2FoCaCbTz3-HmzETG7lwA", "heading": 146.1, "distance": 7.66, "virtual": true}]}, "dleqew2Z-GmErWlwuDk2jA": {"lat": 18.45234596875093, "lng": -66.06491196990561, "links": [{"pano_id": "bFAhQ5C1EoXccDMV5OFYTw", "heading": 193.71512, "description": "Cll Ojeda"}, {"pano_id": "OAKhs5wu8MSvMzFiI1RxYg", "heading": 141.97, "distance": 17.06, "virtual": true}, {"pano_id": "RxkQhXyPFA7Oty2sbEHZ_w", "heading": 181.65, "distance": 11.61, "virtual": true}, {"pano_id": "9fGCUvnIu2ouJjS70kaLeQ", "heading": 207.79, "distance": 12.36, "virtual": true}, {"pano_id": "BQY8f0m7LBii24gXJ9ON6g", "heading": 193.84, "distance": 15.57, "virtual": true}, {"pano_id": "6vIqfGeJDfHReRNTSVJnUw", "heading": 234.38, "distance": 17.9, "virtual": true}]}, "M2FoCaCbTz3-HmzETG7lwA": {"lat": 18.45320714526837, "lng": -66.06352055189299, "links": [{"pano_id": "S9A39FuaHWSlfS_XGeYBRA", "heading": 225.174, "description": "Calle de Diego"}, {"pano_id": "WqN5rO0dRM8YFLRkQfVK3w", "heading": 326.1, "distance": 7.66, "virtual": true}]}};
+        const targetPanos = ["OiHdceaCckbd8iCBGxs5Yg", "l5uYLa3YK4OSd6rsd-jM6A", "XnMTEgayHQ5qayhqPZG0ng", "KgKcmtGoZQiecUCNocS8rw", "qpLnduzDt3F0BwUOA6PRWg", "G9n7T0i0rgpziMwNG0X1uw", "FoBgRfD4czdRhpbHMtBhZg", "EGQ1issjmegsOFjA9TPKMQ", "66BpscDsTYOOUQbH6f1-Yg"];
+        const spawnPoints = ["S9A39FuaHWSlfS_XGeYBRA", "6vIqfGeJDfHReRNTSVJnUw", "H2XivCxe1JlJc2nzvy2Jxg", "OmizGjZxnFnOOydPla8uYw", "x4qNtLYSg-0pPwJ5fxha0Q", "bFAhQ5C1EoXccDMV5OFYTw", "XnMTEgayHQ5qayhqPZG0ng", "EGQ1issjmegsOFjA9TPKMQ", "i8rHaHLJctTZR4EA_5YcPA", "fiNDCiwLm4F241XsXfWEmA", "WqN5rO0dRM8YFLRkQfVK3w", "dleqew2Z-GmErWlwuDk2jA", "IqvzYgSDRkgrf9rjhddDOQ", "9fGCUvnIu2ouJjS70kaLeQ", "qYf692Mqegn7PHhn1UlzMw", "rFKe9fGVBxE1k1KiKb_Amw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

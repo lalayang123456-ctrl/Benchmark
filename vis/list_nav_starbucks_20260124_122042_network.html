@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_starbucks_20260124_122042</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_starbucks_20260124_122042</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"LwQpx_i7L5uqVnh_xRSF9Q": {"lat": 50.11478547726483, "lng": 8.673660025634074, "links": [{"pano_id": "EKW-O-g8zRT-SghPQWJLIQ", "heading": 107.456955, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "LRFiFhxdZnERnjhurCFb0g", "heading": 287.49658, "description": "Gro\u00dfe Bockenheimer Str."}]}, "EKW-O-g8zRT-SghPQWJLIQ": {"lat": 50.11475878711649, "lng": 8.673792380240183, "links": [{"pano_id": "LwQpx_i7L5uqVnh_xRSF9Q", "heading": 287.45694, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ", "heading": 107.47242, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 107.51, "distance": 10.41, "virtual": true}]}, "LRFiFhxdZnERnjhurCFb0g": {"lat": 50.11481263194091, "lng": 8.673525692058748, "links": [{"pano_id": "LwQpx_i7L5uqVnh_xRSF9Q", "heading": 107.496574, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "CPiacRPrpQs2BM7rJCbjjQ", "heading": 287.44232, "description": "Gro\u00dfe Bockenheimer Str."}]}, "ke7_Bok1aZo8YRN0KjB3ZQ": {"lat": 50.11473211164522, "lng": 8.673924537297234, "links": [{"pano_id": "EKW-O-g8zRT-SghPQWJLIQ", "heading": 287.4724, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 108.14016, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 108.76, "distance": 10.47, "virtual": true}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 117.95, "distance": 13.23, "virtual": true}, {"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 148.18, "distance": 17.83, "virtual": true}]}, "CPiacRPrpQs2BM7rJCbjjQ": {"lat": 50.11484223285762, "lng": 8.673378771889988, "links": [{"pano_id": "I0qHw8Y0icxUi9Nl2IzL8g", "heading": 287.48618, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "LRFiFhxdZnERnjhurCFb0g", "heading": 107.44232, "description": "Gro\u00dfe Bockenheimer Str."}]}, "RVR5QrjXrsg85Rr7RQm9rQ": {"lat": 50.11473063599204, "lng": 8.67393156116827, "links": [{"pano_id": "4Vd-hF2CzilNH41EevOJnA", "heading": 14.983102, "description": "Kleine Hochstra\u00dfe"}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 108.78876, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ", "heading": 288.14017, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "EKW-O-g8zRT-SghPQWJLIQ", "heading": 287.51, "distance": 10.41, "virtual": true}, {"pano_id": "7WbxtxvWgoBLRW82SiwYyQ", "heading": 107.99, "distance": 17.8, "virtual": true}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 118.36, "distance": 12.71, "virtual": true}, {"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 149.3, "distance": 17.43, "virtual": true}]}, "I0qHw8Y0icxUi9Nl2IzL8g": {"lat": 50.11486839109727, "lng": 8.673249285663955, "links": [{"pano_id": "CPiacRPrpQs2BM7rJCbjjQ", "heading": 107.48618, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "hw7_MXxVm3gRL5EFbeLv3A", "heading": 287.47098, "description": "Gro\u00dfe Bockenheimer Str."}]}, "KC-WuaVTPe-ElCNBZa7_gA": {"lat": 50.11470183790229, "lng": 8.674063565722614, "links": [{"pano_id": "7WbxtxvWgoBLRW82SiwYyQ", "heading": 106.97719, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 288.78876, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 147.9936, "description": ""}, {"pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ", "heading": 288.76, "distance": 10.47, "virtual": true}, {"pano_id": "2-C0snJA7bfoNEMFnFSxQw", "heading": 106.54, "distance": 17.94, "virtual": true}, {"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 182.49, "distance": 11.8, "virtual": true}]}, "4Vd-hF2CzilNH41EevOJnA": {"lat": 50.11551727590838, "lng": 8.674259875930192, "links": [{"pano_id": "ZF8OxJ9dQVc5XYq52CY1xA", "heading": 344.77158, "description": "Kleine Hochstra\u00dfe"}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 194.98311, "description": "Gro\u00dfe Bockenheimer Str."}]}, "hw7_MXxVm3gRL5EFbeLv3A": {"lat": 50.11489594755391, "lng": 8.673112751687082, "links": [{"pano_id": "b5eZWvSNNHwwvPtrtUmWUA", "heading": 287.45654, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "I0qHw8Y0icxUi9Nl2IzL8g", "heading": 107.47099, "description": "Gro\u00dfe Bockenheimer Str."}]}, "b5eZWvSNNHwwvPtrtUmWUA": {"lat": 50.1149226369018, "lng": 8.672980397345734, "links": [{"pano_id": "hw7_MXxVm3gRL5EFbeLv3A", "heading": 107.45654, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 287.4817, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 284.5, "distance": 15.0, "virtual": true}, {"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 304.44, "distance": 14.54, "virtual": true}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 287.12, "distance": 16.62, "virtual": true}]}, "ZF8OxJ9dQVc5XYq52CY1xA": {"lat": 50.11561017809831, "lng": 8.674220436053893, "links": [{"pano_id": "4Vd-hF2CzilNH41EevOJnA", "heading": 164.77158, "description": "Kleine Hochstra\u00dfe"}, {"pano_id": "NiNTtcgcJcFdkxzDuf7kwQ", "heading": 340.35062, "description": "Kleine Hochstra\u00dfe"}]}, "7WbxtxvWgoBLRW82SiwYyQ": {"lat": 50.11468120007947, "lng": 8.67416898362173, "links": [{"pano_id": "2-C0snJA7bfoNEMFnFSxQw", "heading": 106.192444, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 286.97717, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 287.99, "distance": 17.8, "virtual": true}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 264.63, "distance": 5.77, "virtual": true}, {"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 220.23, "distance": 12.43, "virtual": true}]}, "XTaL_kVyvkmMYFyauKTd-g": {"lat": 50.11467634135998, "lng": 8.67408841701108, "links": [{"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 194.31583, "description": ""}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 327.99362, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ", "heading": 297.95, "distance": 13.23, "virtual": true}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 298.36, "distance": 12.71, "virtual": true}, {"pano_id": "7WbxtxvWgoBLRW82SiwYyQ", "heading": 84.63, "distance": 5.77, "virtual": true}, {"pano_id": "2-C0snJA7bfoNEMFnFSxQw", "heading": 98.38, "distance": 15.6, "virtual": true}]}, "NiNTtcgcJcFdkxzDuf7kwQ": {"lat": 50.11569018615297, "lng": 8.674175885942999, "links": [{"pano_id": "ZF8OxJ9dQVc5XYq52CY1xA", "heading": 160.35062, "description": "Kleine Hochstra\u00dfe"}, {"pano_id": "LosU6VQl5dSSIIdYNZCAZw", "heading": 16.905378, "description": "Hochstra\u00dfe"}, {"pano_id": "kmhXlpgtfvUpnyzBiY97hw", "heading": 336.73, "distance": 9.83, "virtual": true}, {"pano_id": "UfUGdOHgAk7aMzCvIfTNBg", "heading": 299.41, "distance": 12.61, "virtual": true}]}, "2-C0snJA7bfoNEMFnFSxQw": {"lat": 50.11465590878044, "lng": 8.674304805330006, "links": [{"pano_id": "7WbxtxvWgoBLRW82SiwYyQ", "heading": 286.19244, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "6tycBa6qxmqfpzBzL2iu1Q", "heading": 106.17559, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 286.54, "distance": 17.94, "virtual": true}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 278.38, "distance": 15.6, "virtual": true}, {"pano_id": "f7CFvNPTx7SB1prVu5mB1A", "heading": 99.63, "distance": 16.92, "virtual": true}]}, "dWwnBIZZvMjk3VqlonUu-g": {"lat": 50.11459584005987, "lng": 8.674056381004217, "links": [{"pano_id": "7DmN5iJqwcvk1DY_jMLUJQ", "heading": 194.3382, "description": ""}, {"pano_id": "XTaL_kVyvkmMYFyauKTd-g", "heading": 14.315825, "description": ""}, {"pano_id": "ke7_Bok1aZo8YRN0KjB3ZQ", "heading": 328.18, "distance": 17.83, "virtual": true}, {"pano_id": "RVR5QrjXrsg85Rr7RQm9rQ", "heading": 329.3, "distance": 17.43, "virtual": true}, {"pano_id": "KC-WuaVTPe-ElCNBZa7_gA", "heading": 2.49, "distance": 11.8, "virtual": true}, {"pano_id": "7WbxtxvWgoBLRW82SiwYyQ", "heading": 40.23, "distance": 12.43, "virtual": true}]}, "-lXvs0qPieMMQqY5UvDalw": {"lat": 50.11495005647122, "lng": 8.672844629930335, "links": [{"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 278.31177, "description": "Neue Mainzer Str."}, {"pano_id": "b5eZWvSNNHwwvPtrtUmWUA", "heading": 107.48168, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 335.95, "distance": 5.67, "virtual": true}, {"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 228.47, "distance": 12.98, "virtual": true}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 286.54, "distance": 6.47, "virtual": true}, {"pano_id": "FsDw_LWIItf8fjuhRdTEPg", "heading": 11.47, "distance": 14.54, "virtual": true}, {"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 285.03, "distance": 17.18, "virtual": true}]}, "VyRJ8Wz21MsCV2bJ_Hat6A": {"lat": 50.1149564163363, "lng": 8.672776742509646, "links": [{"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 29.541761, "description": "Hochstra\u00dfe"}, {"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 207.64534, "description": "Neue Mainzer Str."}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 309.83255, "description": ""}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 98.31175, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "b5eZWvSNNHwwvPtrtUmWUA", "heading": 104.5, "distance": 15.0, "virtual": true}, {"pano_id": "FsDw_LWIItf8fjuhRdTEPg", "heading": 29.72, "distance": 15.59, "virtual": true}, {"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 287.69, "distance": 12.34, "virtual": true}]}, "LosU6VQl5dSSIIdYNZCAZw": {"lat": 50.11579565977961, "lng": 8.67422587691441, "links": [{"pano_id": "5qEBgmt8nEC1mM9a8-2HJg", "heading": 70.2089, "description": "Hochstra\u00dfe"}, {"pano_id": "kmhXlpgtfvUpnyzBiY97hw", "heading": 250.10443, "description": "Hochstra\u00dfe"}, {"pano_id": "NiNTtcgcJcFdkxzDuf7kwQ", "heading": 196.90538, "description": "Kleine Hochstra\u00dfe"}, {"pano_id": "UfUGdOHgAk7aMzCvIfTNBg", "heading": 249.15, "distance": 15.56, "virtual": true}]}, "7DmN5iJqwcvk1DY_jMLUJQ": {"lat": 50.11450337165908, "lng": 8.67401952271865, "links": [{"pano_id": "dWwnBIZZvMjk3VqlonUu-g", "heading": 14.338192, "description": ""}, {"pano_id": "iCqDnXw8s-FREXFAKTpLEQ", "heading": 194.30234, "description": ""}]}, "6tycBa6qxmqfpzBzL2iu1Q": {"lat": 50.11463046590959, "lng": 8.674441591169764, "links": [{"pano_id": "IGWVZcSVzIfj6m1duHK78g", "heading": 106.425804, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "2-C0snJA7bfoNEMFnFSxQw", "heading": 286.1756, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "f7CFvNPTx7SB1prVu5mB1A", "heading": 90.02, "distance": 6.93, "virtual": true}, {"pano_id": "Jl_aHXc-dvLKRT5tE2Oyvg", "heading": 47.97, "distance": 11.99, "virtual": true}]}, "kmhXlpgtfvUpnyzBiY97hw": {"lat": 50.11577141424402, "lng": 8.674121401331979, "links": [{"pano_id": "LosU6VQl5dSSIIdYNZCAZw", "heading": 70.10443, "description": "Hochstra\u00dfe"}, {"pano_id": "UfUGdOHgAk7aMzCvIfTNBg", "heading": 248.1695, "description": "Hochstra\u00dfe"}, {"pano_id": "NiNTtcgcJcFdkxzDuf7kwQ", "heading": 156.73, "distance": 9.83, "virtual": true}, {"pano_id": "r5oSlKxrPdGClHejOAKeMQ", "heading": 247.86, "distance": 17.91, "virtual": true}]}, "5qEBgmt8nEC1mM9a8-2HJg": {"lat": 50.1158264907799, "lng": 8.674359490567836, "links": [{"pano_id": "LosU6VQl5dSSIIdYNZCAZw", "heading": 250.2089, "description": "Hochstra\u00dfe"}, {"pano_id": "GVtc6EPaK1rsS0wSSz23qw", "heading": 69.911896, "description": "Hochstra\u00dfe"}]}, "HpsHDhxTCL-Kphhyo1iiow": {"lat": 50.11499658790411, "lng": 8.672812246105963, "links": [{"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 209.54176, "description": "Neue Mainzer Str."}, {"pano_id": "FsDw_LWIItf8fjuhRdTEPg", "heading": 29.807747, "description": "Hochstra\u00dfe"}, {"pano_id": "b5eZWvSNNHwwvPtrtUmWUA", "heading": 124.44, "distance": 14.54, "virtual": true}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 155.95, "distance": 5.67, "virtual": true}, {"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 208.27, "distance": 15.65, "virtual": true}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 229.43, "distance": 5.12, "virtual": true}, {"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 267.12, "distance": 14.3, "virtual": true}]}, "RcFBIgOK_qpbpcx03FBeVA": {"lat": 50.11487263958723, "lng": 8.672708310731572, "links": [{"pano_id": "M1CN0AY5Ff339nywJzkUOg", "heading": 154.98506, "description": "\u6b4c\u5fb7\u5927\u8857"}, {"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 27.645338, "description": "Neue Mainzer Str."}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 48.47, "distance": 12.98, "virtual": true}, {"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 28.27, "distance": 15.65, "virtual": true}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 18.61, "distance": 11.03, "virtual": true}, {"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 332.24, "distance": 14.76, "virtual": true}]}, "IGWVZcSVzIfj6m1duHK78g": {"lat": 50.11460333030301, "lng": 8.674585131521606, "links": [{"pano_id": "f7CFvNPTx7SB1prVu5mB1A", "heading": 312.34778, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "8Bs6abCKJXYVNnv5wDGaug", "heading": 106.84997, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "6tycBa6qxmqfpzBzL2iu1Q", "heading": 286.4258, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "Jl_aHXc-dvLKRT5tE2Oyvg", "heading": 353.14, "distance": 11.12, "virtual": true}]}, "JUP1VWgcaiqm8uTkuzf_jw": {"lat": 50.11496662099906, "lng": 8.672757664306769, "links": [{"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 129.83253, "description": "Neue Mainzer Str."}, {"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 284.11575, "description": ""}, {"pano_id": "b5eZWvSNNHwwvPtrtUmWUA", "heading": 107.12, "distance": 16.62, "virtual": true}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 106.54, "distance": 6.47, "virtual": true}, {"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 49.43, "distance": 5.12, "virtual": true}, {"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 198.61, "distance": 11.03, "virtual": true}, {"pano_id": "FsDw_LWIItf8fjuhRdTEPg", "heading": 36.23, "distance": 15.38, "virtual": true}]}, "iCqDnXw8s-FREXFAKTpLEQ": {"lat": 50.11441442655759, "lng": 8.673984161366128, "links": [{"pano_id": "X9tNtl8yJfyVk0r843HJEw", "heading": 194.32875, "description": ""}, {"pano_id": "7DmN5iJqwcvk1DY_jMLUJQ", "heading": 14.302334, "description": ""}, {"pano_id": "qR21mosYsRTciV8H_oWsVg", "heading": 216.98, "distance": 17.23, "virtual": true}]}, "FsDw_LWIItf8fjuhRdTEPg": {"lat": 50.11507821010787, "lng": 8.672885166591497, "links": [{"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 209.80775, "description": "Hochstra\u00dfe"}, {"pano_id": "zr1JFnK5GXhJlMHIiOtm0g", "heading": 30.269213, "description": "Hochstra\u00dfe"}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 191.47, "distance": 14.54, "virtual": true}, {"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 209.72, "distance": 15.59, "virtual": true}, {"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 216.23, "distance": 15.38, "virtual": true}]}, "UfUGdOHgAk7aMzCvIfTNBg": {"lat": 50.11574584867181, "lng": 8.674021875292357, "links": [{"pano_id": "r5oSlKxrPdGClHejOAKeMQ", "heading": 247.62851, "description": "Hochstra\u00dfe"}, {"pano_id": "kmhXlpgtfvUpnyzBiY97hw", "heading": 68.1695, "description": "Hochstra\u00dfe"}, {"pano_id": "NiNTtcgcJcFdkxzDuf7kwQ", "heading": 119.41, "distance": 12.61, "virtual": true}, {"pano_id": "LosU6VQl5dSSIIdYNZCAZw", "heading": 69.15, "distance": 15.56, "virtual": true}]}, "f7CFvNPTx7SB1prVu5mB1A": {"lat": 50.11463044384897, "lng": 8.674538741904417, "links": [{"pano_id": "IGWVZcSVzIfj6m1duHK78g", "heading": 132.34778, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "Jl_aHXc-dvLKRT5tE2Oyvg", "heading": 13.842687, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "2-C0snJA7bfoNEMFnFSxQw", "heading": 279.63, "distance": 16.92, "virtual": true}, {"pano_id": "6tycBa6qxmqfpzBzL2iu1Q", "heading": 270.02, "distance": 6.93, "virtual": true}, {"pano_id": "8Bs6abCKJXYVNnv5wDGaug", "heading": 114.57, "distance": 14.35, "virtual": true}]}, "8Bs6abCKJXYVNnv5wDGaug": {"lat": 50.11457679095302, "lng": 8.674721779834718, "links": [{"pano_id": "dH0YOU3J60f_cEzOR6dD2w", "heading": 106.812675, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "IGWVZcSVzIfj6m1duHK78g", "heading": 286.84998, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "f7CFvNPTx7SB1prVu5mB1A", "heading": 294.57, "distance": 14.35, "virtual": true}, {"pano_id": "Jl_aHXc-dvLKRT5tE2Oyvg", "heading": 321.65, "distance": 17.85, "virtual": true}, {"pano_id": "1e9AgLZUt7fsuutpQVmlow", "heading": 116.04, "distance": 13.0, "virtual": true}]}, "M1CN0AY5Ff339nywJzkUOg": {"lat": 50.11471831509671, "lng": 8.672820609391866, "links": [{"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 334.98505, "description": "Neue Mainzer Str."}, {"pano_id": "n8jP2AxXroSZ9qd53ZKAfQ", "heading": 142.72939, "description": "\u6b4c\u5fb7\u5927\u8857"}]}, "X9tNtl8yJfyVk0r843HJEw": {"lat": 50.1143262539279, "lng": 8.673949039666537, "links": [{"pano_id": "yOmVdTB-NVJAxLHUs5szjw", "heading": 145.26877, "description": "Kleine Bockenheimer Str."}, {"pano_id": "iCqDnXw8s-FREXFAKTpLEQ", "heading": 14.328749, "description": ""}, {"pano_id": "qR21mosYsRTciV8H_oWsVg", "heading": 243.27, "distance": 8.8, "virtual": true}]}, "GVtc6EPaK1rsS0wSSz23qw": {"lat": 50.11585822186039, "lng": 8.674494799335426, "links": [{"pano_id": "5qEBgmt8nEC1mM9a8-2HJg", "heading": 249.9119, "description": "Hochstra\u00dfe"}, {"pano_id": "Ps5EDP8CS65KyjdVRV-srg", "heading": 69.9191, "description": "Hochstra\u00dfe"}]}, "Jl_aHXc-dvLKRT5tE2Oyvg": {"lat": 50.11470265240381, "lng": 8.674566489406699, "links": [{"pano_id": "b9VcBQ-2-6zI9BpAZf4w6Q", "heading": 13.88436, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "f7CFvNPTx7SB1prVu5mB1A", "heading": 193.84268, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "6tycBa6qxmqfpzBzL2iu1Q", "heading": 227.97, "distance": 11.99, "virtual": true}, {"pano_id": "IGWVZcSVzIfj6m1duHK78g", "heading": 173.14, "distance": 11.12, "virtual": true}, {"pano_id": "8Bs6abCKJXYVNnv5wDGaug", "heading": 141.65, "distance": 17.85, "virtual": true}]}, "Ps5EDP8CS65KyjdVRV-srg": {"lat": 50.11588953078981, "lng": 8.674628360124537, "links": [{"pano_id": "GVtc6EPaK1rsS0wSSz23qw", "heading": 249.9191, "description": "Hochstra\u00dfe"}, {"pano_id": "ydocabfn8rgDkoP-4xX0hQ", "heading": 68.92841, "description": "Hochstra\u00dfe"}, {"pano_id": "EeFZihAXq5n6BcSUzPlTRg", "heading": 68.51, "distance": 17.38, "virtual": true}, {"pano_id": "UIwEZUdfkdv4qmZDzS3zxw", "heading": 68.54, "distance": 17.86, "virtual": true}]}, "dH0YOU3J60f_cEzOR6dD2w": {"lat": 50.11454788952098, "lng": 8.674870940066846, "links": [{"pano_id": "VkIKAHSUMUUujhx9apDn7Q", "heading": 107.05883, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "8Bs6abCKJXYVNnv5wDGaug", "heading": 286.81268, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "1e9AgLZUt7fsuutpQVmlow", "heading": 157.24652, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "I_04zJjYntMoVPHMhwt6wg", "heading": 172.67, "distance": 12.43, "virtual": true}]}, "r5oSlKxrPdGClHejOAKeMQ": {"lat": 50.11571071294334, "lng": 8.673888748305897, "links": [{"pano_id": "2m-RKGc689SZt8dX9Xj7Dg", "heading": 244.0885, "description": "Hochstra\u00dfe"}, {"pano_id": "UfUGdOHgAk7aMzCvIfTNBg", "heading": 67.62851, "description": "Hochstra\u00dfe"}, {"pano_id": "kmhXlpgtfvUpnyzBiY97hw", "heading": 67.86, "distance": 17.91, "virtual": true}]}, "XZq3NvT7u85gTn9GShM5-A": {"lat": 50.11499012845863, "lng": 8.672611888803715, "links": [{"pano_id": "JUP1VWgcaiqm8uTkuzf_jw", "heading": 104.115746, "description": ""}, {"pano_id": "Fivb2nTBTNfqyFx3CzCWgQ", "heading": 284.12488, "description": ""}, {"pano_id": "-lXvs0qPieMMQqY5UvDalw", "heading": 105.03, "distance": 17.18, "virtual": true}, {"pano_id": "VyRJ8Wz21MsCV2bJ_Hat6A", "heading": 107.69, "distance": 12.34, "virtual": true}, {"pano_id": "HpsHDhxTCL-Kphhyo1iiow", "heading": 87.12, "distance": 14.3, "virtual": true}, {"pano_id": "RcFBIgOK_qpbpcx03FBeVA", "heading": 152.24, "distance": 14.76, "virtual": true}]}, "yOmVdTB-NVJAxLHUs5szjw": {"lat": 50.11425314279639, "lng": 8.674028077297788, "links": [{"pano_id": "qR21mosYsRTciV8H_oWsVg", "heading": 287.18033, "description": "Kleine Bockenheimer Str."}, {"pano_id": "jx43fZxdNt_0UaocWixaJA", "heading": 106.65649, "description": "Kleine Bockenheimer Str."}, {"pano_id": "X9tNtl8yJfyVk0r843HJEw", "heading": 325.26877, "description": ""}]}, "n8jP2AxXroSZ9qd53ZKAfQ": {"lat": 50.11464847229371, "lng": 8.672903492997916, "links": [{"pano_id": "Qp-PAydwUDJiNqs9BXzHAA", "heading": 142.70787, "description": "\u6b4c\u5fb7\u5927\u8857"}, {"pano_id": "M1CN0AY5Ff339nywJzkUOg", "heading": 322.7294, "description": "\u6b4c\u5fb7\u5927\u8857"}]}, "zr1JFnK5GXhJlMHIiOtm0g": {"lat": 50.11515603726062, "lng": 8.672956001108432, "links": [{"pano_id": "FsDw_LWIItf8fjuhRdTEPg", "heading": 210.26921, "description": "Hochstra\u00dfe"}, {"pano_id": "BRbkIyJF0ArfFk6X8hIFbw", "heading": 30.956726, "description": "Hochstra\u00dfe"}]}, "b9VcBQ-2-6zI9BpAZf4w6Q": {"lat": 50.11479113863337, "lng": 8.67460059844807, "links": [{"pano_id": "Jl_aHXc-dvLKRT5tE2Oyvg", "heading": 193.88435, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "ipvmKwlw3llGsTffCVLG4w", "heading": 13.912812, "description": "Kaiserhofstra\u00dfe"}]}, "1e9AgLZUt7fsuutpQVmlow": {"lat": 50.11452544860398, "lng": 8.674885617318534, "links": [{"pano_id": "dH0YOU3J60f_cEzOR6dD2w", "heading": 337.24652, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "I_04zJjYntMoVPHMhwt6wg", "heading": 176.86531, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "8Bs6abCKJXYVNnv5wDGaug", "heading": 296.04, "distance": 13.0, "virtual": true}, {"pano_id": "VkIKAHSUMUUujhx9apDn7Q", "heading": 89.08, "distance": 6.73, "virtual": true}, {"pano_id": "IkN52HPMIKp-fZ440tQKzA", "heading": 99.95, "distance": 16.69, "virtual": true}]}, "ydocabfn8rgDkoP-4xX0hQ": {"lat": 50.11592226385353, "lng": 8.674760846499693, "links": [{"pano_id": "EeFZihAXq5n6BcSUzPlTRg", "heading": 67.9303, "description": "Hochstra\u00dfe"}, {"pano_id": "Ps5EDP8CS65KyjdVRV-srg", "heading": 248.9284, "description": "Hochstra\u00dfe"}, {"pano_id": "UIwEZUdfkdv4qmZDzS3zxw", "heading": 68.04, "distance": 7.74, "virtual": true}, {"pano_id": "DPxo7mNu717VJMG-h1y8YA", "heading": 69.03, "distance": 15.24, "virtual": true}]}, "Fivb2nTBTNfqyFx3CzCWgQ": {"lat": 50.11501184872499, "lng": 8.672477286829025, "links": [{"pano_id": "XZq3NvT7u85gTn9GShM5-A", "heading": 104.12488, "description": ""}, {"pano_id": "cPjlpy_kEOxv3bFzmslGmQ", "heading": 284.09006, "description": ""}]}, "2m-RKGc689SZt8dX9Xj7Dg": {"lat": 50.11567173542496, "lng": 8.673763631145157, "links": [{"pano_id": "r5oSlKxrPdGClHejOAKeMQ", "heading": 64.08851, "description": "Hochstra\u00dfe"}, {"pano_id": "NIi-VNn9OhXB1Y9TfkQAiQ", "heading": 238.32579, "description": "Hochstra\u00dfe"}]}, "BRbkIyJF0ArfFk6X8hIFbw": {"lat": 50.11523217574156, "lng": 8.673027222403926, "links": [{"pano_id": "T9pzK3_q1Yr3izOiGxMMEQ", "heading": 34.97705, "description": "Hochstra\u00dfe"}, {"pano_id": "zr1JFnK5GXhJlMHIiOtm0g", "heading": 210.95673, "description": "Hochstra\u00dfe"}]}, "VkIKAHSUMUUujhx9apDn7Q": {"lat": 50.11452642100532, "lng": 8.67498004386057, "links": [{"pano_id": "dH0YOU3J60f_cEzOR6dD2w", "heading": 287.05884, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "IkN52HPMIKp-fZ440tQKzA", "heading": 107.12427, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "1e9AgLZUt7fsuutpQVmlow", "heading": 269.08, "distance": 6.73, "virtual": true}, {"pano_id": "I_04zJjYntMoVPHMhwt6wg", "heading": 211.92, "distance": 11.72, "virtual": true}]}, "jx43fZxdNt_0UaocWixaJA": {"lat": 50.1142262675498, "lng": 8.674168157440068, "links": [{"pano_id": "yOmVdTB-NVJAxLHUs5szjw", "heading": 286.6565, "description": "Kleine Bockenheimer Str."}, {"pano_id": "6faOyab1iisnbGP87VvxQQ", "heading": 105.918465, "description": "Kleine Bockenheimer Str."}]}, "ipvmKwlw3llGsTffCVLG4w": {"lat": 50.11488530336145, "lng": 8.674636973853163, "links": [{"pano_id": "b9VcBQ-2-6zI9BpAZf4w6Q", "heading": 193.91281, "description": "Kaiserhofstra\u00dfe"}, {"pano_id": "zaP8vnyvJnwisqkQe1oKWw", "heading": 13.90354, "description": "Kaiserhofstra\u00dfe"}]}, "IkN52HPMIKp-fZ440tQKzA": {"lat": 50.11449952466529, "lng": 8.675116177405089, "links": [{"pano_id": "VkIKAHSUMUUujhx9apDn7Q", "heading": 287.12427, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "EgZwBP252JXmNnmooJnbrw", "heading": 107.06584, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "1e9AgLZUt7fsuutpQVmlow", "heading": 279.95, "distance": 16.69, "virtual": true}, {"pano_id": "I_04zJjYntMoVPHMhwt6wg", "heading": 246.38, "distance": 17.35, "virtual": true}]}, "NIi-VNn9OhXB1Y9TfkQAiQ": {"lat": 50.11562377219, "lng": 8.673642401438126, "links": [{"pano_id": "2m-RKGc689SZt8dX9Xj7Dg", "heading": 58.325794, "description": "Hochstra\u00dfe"}, {"pano_id": "PHtB6EKWb5nuQFF76jd-yA", "heading": 236.92865, "description": "Hochstra\u00dfe"}]}, "EeFZihAXq5n6BcSUzPlTRg": {"lat": 50.11594679453164, "lng": 8.67485520102301, "links": [{"pano_id": "ydocabfn8rgDkoP-4xX0hQ", "heading": 247.9303, "description": "Hochstra\u00dfe"}, {"pano_id": "UIwEZUdfkdv4qmZDzS3zxw", "heading": 69.70786, "description": "Hochstra\u00dfe"}, {"pano_id": "Ps5EDP8CS65KyjdVRV-srg", "heading": 248.51, "distance": 17.38, "virtual": true}, {"pano_id": "DPxo7mNu717VJMG-h1y8YA", "heading": 70.03, "distance": 7.98, "virtual": true}]}, "Qp-PAydwUDJiNqs9BXzHAA": {"lat": 50.11457732265833, "lng": 8.67298799316462, "links": [{"pano_id": "n8jP2AxXroSZ9qd53ZKAfQ", "heading": 322.70786, "description": "\u6b4c\u5fb7\u5927\u8857"}]}, "qR21mosYsRTciV8H_oWsVg": {"lat": 50.11429066367728, "lng": 8.673838827818921, "links": [{"pano_id": "yOmVdTB-NVJAxLHUs5szjw", "heading": 107.18033, "description": "Kleine Bockenheimer Str."}, {"pano_id": "iCqDnXw8s-FREXFAKTpLEQ", "heading": 36.98, "distance": 17.23, "virtual": true}, {"pano_id": "X9tNtl8yJfyVk0r843HJEw", "heading": 63.27, "distance": 8.8, "virtual": true}]}, "T9pzK3_q1Yr3izOiGxMMEQ": {"lat": 50.11530427807543, "lng": 8.673105887431218, "links": [{"pano_id": "BRbkIyJF0ArfFk6X8hIFbw", "heading": 214.97705, "description": "Hochstra\u00dfe"}, {"pano_id": "9dTy03IzERCl7oefW28IJA", "heading": 39.418903, "description": "Hochstra\u00dfe"}]}, "6faOyab1iisnbGP87VvxQQ": {"lat": 50.1142009306974, "lng": 8.674306692713456, "links": [{"pano_id": "jx43fZxdNt_0UaocWixaJA", "heading": 285.91846, "description": "Kleine Bockenheimer Str."}, {"pano_id": "Bd5--CGv5x3ZdMwk2Az8qQ", "heading": 105.94455, "description": "Kleine Bockenheimer Str."}]}, "I_04zJjYntMoVPHMhwt6wg": {"lat": 50.11443699634078, "lng": 8.674893171408225, "links": [{"pano_id": "1e9AgLZUt7fsuutpQVmlow", "heading": 356.86533, "description": "Gro\u00dfe Bockenheimer Str."}, {"pano_id": "dH0YOU3J60f_cEzOR6dD2w", "heading": 352.67, "distance": 12.43, "virtual": true}, {"pano_id": "VkIKAHSUMUUujhx9apDn7Q", "heading": 31.92, "distance": 11.72, "virtual": true}, {"pano_id": "IkN52HPMIKp-fZ440tQKzA", "heading": 66.38, "distance": 17.35, "virtual": true}]}, "zaP8vnyvJnwisqkQe1oKWw": {"lat": 50.11497447753868, "lng": 8.674671397610444, "links": [{"pano_id": "ipvmKwlw3llGsTffCVLG4w", "heading": 193.90353, "description": "Kaiserhofstra\u00dfe"}]}, "9dTy03IzERCl7oefW28IJA": {"lat": 50.115373563932, "lng": 8.673194699673457, "links": [{"pano_id": "T9pzK3_q1Yr3izOiGxMMEQ", "heading": 219.4189, "description": "Hochstra\u00dfe"}, {"pano_id": "bXFDph4C_NzbmI1MeBd1ew", "heading": 43.6028, "description": "Hochstra\u00dfe"}]}, "cPjlpy_kEOxv3bFzmslGmQ": {"lat": 50.11503346934291, "lng": 8.672342957408365, "links": [{"pano_id": "Fivb2nTBTNfqyFx3CzCWgQ", "heading": 104.09006, "description": ""}]}, "UIwEZUdfkdv4qmZDzS3zxw": {"lat": 50.11594829524432, "lng": 8.674861530462778, "links": [{"pano_id": "EeFZihAXq5n6BcSUzPlTRg", "heading": 249.70786, "description": "Hochstra\u00dfe"}, {"pano_id": "DPxo7mNu717VJMG-h1y8YA", "heading": 70.04718, "description": "Hochstra\u00dfe"}, {"pano_id": "Ps5EDP8CS65KyjdVRV-srg", "heading": 248.54, "distance": 17.86, "virtual": true}, {"pano_id": "ydocabfn8rgDkoP-4xX0hQ", "heading": 248.04, "distance": 7.74, "virtual": true}]}, "PHtB6EKWb5nuQFF76jd-yA": {"lat": 50.11557178635589, "lng": 8.673517903193826, "links": [{"pano_id": "NIi-VNn9OhXB1Y9TfkQAiQ", "heading": 56.928654, "description": "Hochstra\u00dfe"}]}, "Bd5--CGv5x3ZdMwk2Az8qQ": {"lat": 50.11417602563314, "lng": 8.674442632325611, "links": [{"pano_id": "6faOyab1iisnbGP87VvxQQ", "heading": 285.94455, "description": "Kleine Bockenheimer Str."}]}, "EgZwBP252JXmNnmooJnbrw": {"lat": 50.11447384557663, "lng": 8.67524662242955, "links": [{"pano_id": "IkN52HPMIKp-fZ440tQKzA", "heading": 287.06583, "description": "Gro\u00dfe Bockenheimer Str."}]}, "DPxo7mNu717VJMG-h1y8YA": {"lat": 50.1159713038089, "lng": 8.674960367500006, "links": [{"pano_id": "UIwEZUdfkdv4qmZDzS3zxw", "heading": 250.04718, "description": "Hochstra\u00dfe"}, {"pano_id": "ydocabfn8rgDkoP-4xX0hQ", "heading": 249.03, "distance": 15.24, "virtual": true}, {"pano_id": "EeFZihAXq5n6BcSUzPlTRg", "heading": 250.03, "distance": 7.98, "virtual": true}]}, "bXFDph4C_NzbmI1MeBd1ew": {"lat": 50.11543997828505, "lng": 8.673293338864793, "links": [{"pano_id": "9dTy03IzERCl7oefW28IJA", "heading": 223.6028, "description": "Hochstra\u00dfe"}]}};
+        const targetPanos = ["LwQpx_i7L5uqVnh_xRSF9Q", "6tycBa6qxmqfpzBzL2iu1Q"];
+        const spawnPoints = ["Ps5EDP8CS65KyjdVRV-srg", "r5oSlKxrPdGClHejOAKeMQ", "ydocabfn8rgDkoP-4xX0hQ", "EgZwBP252JXmNnmooJnbrw", "DPxo7mNu717VJMG-h1y8YA"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

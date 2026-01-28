@@ -1,0 +1,146 @@
+{
+  "task_id": "nav_0681_target_20260124_1543_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_154201",
+  "spawn_point": "M7XeAXQPqnXACeBq6PBRbw",
+  "spawn_heading": 12.2,
+  "description": "Head straight along the road underneath the elevated metro tracks. Turn left at the intersection onto the cross street. Continue forward for a short distance; the destination 'Kaffeine Cafe' will be on your right.",
+  "ground_truth": {
+    "target_name": "kaffeine",
+    "target_pano_id": "CnXMeAPxsQTsmKUae-v0qA",
+    "optimal_distance_meters": 210,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "CnXMeAPxsQTsmKUae-v0qA"
+  ],
+  "max_steps": 48,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "M7XeAXQPqnXACeBq6PBRbw",
+      "heading": 12.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "W6gn2K8Dj8NFKIq1hVg5VQ",
+      "heading": 12.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "1rnfyna4e48dJYH19ur6tQ",
+      "heading": 12.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "iQXw0TFEpvluTn7zJhuiIw",
+      "heading": 11.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "Vaum4LgOkvBEupdPsIY4rg",
+      "heading": 10.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "T9FGpvviq0ogNHfnEOomOg",
+      "heading": 10.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "tTyPChDiWiHr-WTZm02_nQ",
+      "heading": 10.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "xw6jTkGloBrrrrFpnjyRtQ",
+      "heading": 11.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "nld3UYJ-dQQ7qytqz_T0IA",
+      "heading": 11.6
+    },
+    {
+      "step_index": 9,
+      "pano_id": "kxB5mBjgfvKD1vmAwrEWEA",
+      "heading": 11.5
+    },
+    {
+      "step_index": 10,
+      "pano_id": "7TSQ4P1rn21rg5ixY15nRA",
+      "heading": 12.4
+    },
+    {
+      "step_index": 11,
+      "pano_id": "MZe1cUDPfAOvT08nrNIOXw",
+      "heading": 10.8
+    },
+    {
+      "step_index": 12,
+      "pano_id": "bGqIZaVPbKEPsVU7mQgKFg",
+      "heading": 10.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "58gJfaKSf_q1W1CJFsH3vg",
+      "heading": 10.8
+    },
+    {
+      "step_index": 14,
+      "pano_id": "65uGWNLS-j-0YfOYhnfWhg",
+      "heading": 0.0
+    },
+    {
+      "step_index": 15,
+      "pano_id": "dchniI6Gj1pzb2UUcTzTzg",
+      "heading": 11.8
+    },
+    {
+      "step_index": 16,
+      "pano_id": "8CPo_UOD_oPdq-L5MPYHWQ",
+      "heading": 11.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "cYhZc3uOZI4vcTm60hX_aA",
+      "heading": 11.8
+    },
+    {
+      "step_index": 18,
+      "pano_id": "Eqj2bjBnnBtVVuWyKtukgQ",
+      "heading": 333.7
+    },
+    {
+      "step_index": 19,
+      "pano_id": "Mosk06AmsvRCIIxTkAuu4w",
+      "heading": 288.3
+    },
+    {
+      "step_index": 20,
+      "pano_id": "lX82bL3YyuqbIHk3JgMHuA",
+      "heading": 288.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "nMFTLz9JWNV7MiDNLuXZOA",
+      "heading": 289.9
+    },
+    {
+      "step_index": 22,
+      "pano_id": "VQY499LbTwFhgLE6AhB7LA",
+      "heading": 290.0
+    },
+    {
+      "step_index": 23,
+      "pano_id": "CnXMeAPxsQTsmKUae-v0qA",
+      "heading": 290.0
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 160m -> Turn Left -> Head Straight 50m -> Stop",
+  "agent_concise_description": "Head straight along the road underneath the elevated metro tracks. Turn left at the intersection onto the cross street. Continue forward for a short distance; the destination 'Kaffeine Cafe' will be on your right."
+}

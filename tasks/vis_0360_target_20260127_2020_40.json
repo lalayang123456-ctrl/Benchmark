@@ -1,0 +1,166 @@
+{
+  "task_id": "nav_0360_target_20260124_1319_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_gas_station_20260124_131816",
+  "spawn_point": "TMae8aC5lLcQPY5CKTpaYA",
+  "spawn_heading": 24.7,
+  "description": "Navigate straight along Avenida Eloy Alfaro, passing 'Edificio El Quijote' and a Primax gas station on the right. Continue past the 'Autos Quito' dealership and pull over to the right side of the road.",
+  "ground_truth": {
+    "target_name": "Eloy Alfaro Y Camilo Gallegos Dominguez",
+    "target_pano_id": "Aa52KO6RqHzN5bePlJzZ3Q",
+    "optimal_distance_meters": 283,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Aa52KO6RqHzN5bePlJzZ3Q"
+  ],
+  "max_steps": 56,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "TMae8aC5lLcQPY5CKTpaYA",
+      "heading": 24.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "YBR_F5ReFAGnUpJMjDQnTQ",
+      "heading": 24.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Q8OOt6ovjfnklXUJPKcGUA",
+      "heading": 24.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "1vIMUlUoM6LgYb4AvuJfng",
+      "heading": 24.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "n4VCwckwd-zOLvKOYe_pYQ",
+      "heading": 24.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "ehNeSPiPlHfpO1HWfctVfA",
+      "heading": 21.2
+    },
+    {
+      "step_index": 6,
+      "pano_id": "vuJP3lrO-H8HMc9pHiJn4g",
+      "heading": 21.2
+    },
+    {
+      "step_index": 7,
+      "pano_id": "SwW8GFQ2KyQys5O4hp1NRA",
+      "heading": 21.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "wcCFpL2i3b-Ymm5Bhis_eg",
+      "heading": 21.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "emWeFm-qdMizUoM9V9QmFA",
+      "heading": 22.7
+    },
+    {
+      "step_index": 10,
+      "pano_id": "_fizPvhmVP0klxL7-w7wgA",
+      "heading": 23.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Hw6ZtzC8EHrzSP28Dwpang",
+      "heading": 23.2
+    },
+    {
+      "step_index": 12,
+      "pano_id": "U5e0QrRbq41Wud5MOSmjRA",
+      "heading": 23.2
+    },
+    {
+      "step_index": 13,
+      "pano_id": "WavTMu69fKl5Eh2PhCOixg",
+      "heading": 23.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "sOkuyD8wcnOICpfJ93TY3g",
+      "heading": 23.2
+    },
+    {
+      "step_index": 15,
+      "pano_id": "-tPsROZxatboI1DcXB29Ng",
+      "heading": 23.2
+    },
+    {
+      "step_index": 16,
+      "pano_id": "ptQYlyi3Ng-bQ5GF0mUv0A",
+      "heading": 23.2
+    },
+    {
+      "step_index": 17,
+      "pano_id": "RhradhcxIgD2JkdcwLiHxw",
+      "heading": 23.2
+    },
+    {
+      "step_index": 18,
+      "pano_id": "5b-7tOJa-CY2YnBSDuT5Sw",
+      "heading": 23.2
+    },
+    {
+      "step_index": 19,
+      "pano_id": "xSNt_pP52hU6KB3UfdIDMg",
+      "heading": 23.1
+    },
+    {
+      "step_index": 20,
+      "pano_id": "Zm4nDRp_3IaH4SQyrhcPPw",
+      "heading": 23.2
+    },
+    {
+      "step_index": 21,
+      "pano_id": "NDDp5mSOfiUIvqeGNnIUqQ",
+      "heading": 23.2
+    },
+    {
+      "step_index": 22,
+      "pano_id": "jqmx5UoPO0HVPWIm-5Bb9Q",
+      "heading": 23.2
+    },
+    {
+      "step_index": 23,
+      "pano_id": "6dD9lTnuJxjxadKaDF7h_w",
+      "heading": 23.2
+    },
+    {
+      "step_index": 24,
+      "pano_id": "eK7ROldCmZSh-rKLwGPsIw",
+      "heading": 23.2
+    },
+    {
+      "step_index": 25,
+      "pano_id": "xvCrgHaFTuNBhRUpLlYeVA",
+      "heading": 21.4
+    },
+    {
+      "step_index": 26,
+      "pano_id": "7BlfrhSbIyAdi1iKW3mLJA",
+      "heading": 20.7
+    },
+    {
+      "step_index": 27,
+      "pano_id": "Aa52KO6RqHzN5bePlJzZ3Q",
+      "heading": 20.8
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 283m -> Stop",
+  "agent_concise_description": "Navigate straight along Avenida Eloy Alfaro, passing 'Edificio El Quijote' and a Primax gas station on the right. Continue past the 'Autos Quito' dealership and pull over to the right side of the road."
+}

@@ -1,0 +1,106 @@
+{
+  "task_id": "nav_0555_target_20260124_1433_19",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_143129",
+  "spawn_point": "nVxI2aZoURJDmq-_b-5QuA",
+  "spawn_heading": 78.9,
+  "description": "Navigate to Akasaka Station. Walk to the intersection with the corner building labeled 'ivy.' and turn left. Proceed straight along the street, passing a McDonald's on the right side. Continue straight across the large intersection to arrive near the Starbucks.",
+  "ground_truth": {
+    "target_name": "Akasaka Station",
+    "target_pano_id": "oVqsjIaOu1oymGvXZuHODw",
+    "optimal_distance_meters": 119,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "oVqsjIaOu1oymGvXZuHODw"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "nVxI2aZoURJDmq-_b-5QuA",
+      "heading": 78.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "hyLitwkdfzy92-HTqklioQ",
+      "heading": 78.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "uupDgV4ZaMisDmHsZLoH-w",
+      "heading": 80.8
+    },
+    {
+      "step_index": 3,
+      "pano_id": "py8YxYgzs1MxXeLHIzwq9A",
+      "heading": 345.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "yUt6AaqVZApga5ZD15Sg2Q",
+      "heading": 345.6
+    },
+    {
+      "step_index": 5,
+      "pano_id": "B80rv5C5a_MbFN9QQ4Ualg",
+      "heading": 345.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "fZ0uLfOO_A2x5AgVewdkCA",
+      "heading": 345.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ItyNv9S1HaTnlwAC69b4qA",
+      "heading": 345.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "4eTqNfsIojHFEvyOPHsJWw",
+      "heading": 345.3
+    },
+    {
+      "step_index": 9,
+      "pano_id": "pCDVMr9wJHdy2eqG0kC4jQ",
+      "heading": 345.3
+    },
+    {
+      "step_index": 10,
+      "pano_id": "b0p-WAV_3PBOTOFL3tyxbw",
+      "heading": 345.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "xXqhg7_VqwCYsFhKnCaEPw",
+      "heading": 345.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "8bFy0U6Ueoeve11j03kP4g",
+      "heading": 345.3
+    },
+    {
+      "step_index": 13,
+      "pano_id": "cABovkEknBuWaE5lNF-q4g",
+      "heading": 345.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "6ZOgyfNCWBxyku0-kci4zQ",
+      "heading": 343.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "oVqsjIaOu1oymGvXZuHODw",
+      "heading": 75.1
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [12 m] -> Turn Left [107 m]",
+  "agent_concise_description": "Walk to the intersection with the corner building labeled 'ivy.' and turn left. Proceed straight along the street, passing a McDonald's on the right side. Continue straight across the large intersection to arrive near the Starbucks."
+}

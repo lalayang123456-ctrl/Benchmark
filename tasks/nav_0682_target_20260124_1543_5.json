@@ -1,0 +1,68 @@
+{
+  "task_id": "nav_0682_target_20260124_1543_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_154201",
+  "spawn_point": "3XAcRiTbtfJHvIKIH5R78w",
+  "spawn_heading": 194.1,
+  "description": "Navigate to kaffeine. Head south/Mount Rd Ext for 48m. Turn right onto Mount Rd/Mount Rd Ext Destination will be on the right for 29m. Total distance: approximately 77 m.",
+  "ground_truth": {
+    "target_name": "kaffeine",
+    "target_pano_id": "CnXMeAPxsQTsmKUae-v0qA",
+    "optimal_distance_meters": 77,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "CnXMeAPxsQTsmKUae-v0qA"
+  ],
+  "max_steps": 18,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "3XAcRiTbtfJHvIKIH5R78w",
+      "heading": 194.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Vi6fZ_2r3OLUs-hSde-1HA",
+      "heading": 194.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "24fMqM2p4JYwrxhmFz0n-g",
+      "heading": 193.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "v4b6WtBOODMEhZhl94fq_A",
+      "heading": 191.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "t6p0YEnpIMa98yCADoYi_g",
+      "heading": 191.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "lX82bL3YyuqbIHk3JgMHuA",
+      "heading": 192.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "nMFTLz9JWNV7MiDNLuXZOA",
+      "heading": 289.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "VQY499LbTwFhgLE6AhB7LA",
+      "heading": 290.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "CnXMeAPxsQTsmKUae-v0qA",
+      "heading": 290.0
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

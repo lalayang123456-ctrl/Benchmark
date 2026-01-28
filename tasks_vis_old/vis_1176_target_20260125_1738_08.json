@@ -1,0 +1,106 @@
+{
+  "task_id": "nav_1176_target_20260125_0350_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260125_035022",
+  "spawn_point": "6xtd9u1NLMT-fevpKk4tsg",
+  "spawn_heading": 51.1,
+  "description": "Navigate to Farmacenter Artigas 1. Head straight along the main road, passing a long wall and a bus stop on the right. Continue past a large billboard until you reach the green Farmacenter building located on the right corner.",
+  "ground_truth": {
+    "target_name": "Farmacenter Artigas 1",
+    "target_pano_id": "f3F7SKdYdWNHNG7P1Pzj_A",
+    "optimal_distance_meters": 157,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "f3F7SKdYdWNHNG7P1Pzj_A"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "6xtd9u1NLMT-fevpKk4tsg",
+      "heading": 51.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "lwJ4z-wUSeHva5eyB5svzQ",
+      "heading": 51.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "NMfQPc3YF4jUc1Jn4UrKIg",
+      "heading": 51.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "4xo9EMU-k7bYXYEBeZsG0w",
+      "heading": 51.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "jVgzPKrsgK7lQwKyN8lWUA",
+      "heading": 51.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "0cn37Q-WeexDFBn4B1pJRA",
+      "heading": 51.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "akw4MlDy6alWZ6DjfSO5-g",
+      "heading": 51.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "bDys_ZgnLeGQch0ZNRh7pg",
+      "heading": 51.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "7CCb-czJME7h1DutxXq_Xg",
+      "heading": 51.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "__MRh4YvdVu5tzQSJ1jV5g",
+      "heading": 51.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "jf0KY_ntJwpygpGuz4CluA",
+      "heading": 51.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "r1Uple66MrYqT_Ay2vODNQ",
+      "heading": 51.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "jV_j4jE3vJtCIuzC81bpXQ",
+      "heading": 51.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "Uc_xV9U0zsbpz99CRual_Q",
+      "heading": 51.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "obICXib-L1gwIbTtsrTKMA",
+      "heading": 50.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "f3F7SKdYdWNHNG7P1Pzj_A",
+      "heading": 50.8
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [157m]",
+  "agent_concise_description": "Head straight along the main road, passing a long wall and a bus stop on the right. Continue past a large billboard until you reach the green Farmacenter building located on the right corner."
+}

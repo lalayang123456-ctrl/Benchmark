@@ -1,0 +1,116 @@
+{
+  "task_id": "nav_0263_target_20260124_1210_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_gas_station_20260124_120904",
+  "spawn_point": "TKzqHdVeJRLGyoafMJdJhQ",
+  "spawn_heading": 291.5,
+  "description": "Navigate to Lyric Service Station. Proceed west along C-1 (Recto Ave) beneath the elevated railway tracks. Turn right at the intersection marked by the 'Alonzo St' sign. Continue straight down Alonzo St past hardware and glass supply stores.",
+  "ground_truth": {
+    "target_name": "Lyric Service Station",
+    "target_pano_id": "-T1C-bitt5iUVnwCKyeyKQ",
+    "optimal_distance_meters": 174,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "-T1C-bitt5iUVnwCKyeyKQ"
+  ],
+  "max_steps": 36,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "TKzqHdVeJRLGyoafMJdJhQ",
+      "heading": 291.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "kuaDXF0_tXn7YL8Qu8kGcQ",
+      "heading": 291.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "ISyU660W6WWqwJr2B74vog",
+      "heading": 291.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "KWwwzKV_Lbb_OvU8RfdfHA",
+      "heading": 292.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "IV9pGklxzc-uk2EgjalBAw",
+      "heading": 292.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "bMdyPTFRtsRSsbZJ8ICD8g",
+      "heading": 292.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "z9Y_w-CjjtUUzEyxm5nvOQ",
+      "heading": 292.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "i1KBDcUa7umkCgaxQDd21w",
+      "heading": 292.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "fhR2KrIG2IqzefgPWHc_ow",
+      "heading": 292.0
+    },
+    {
+      "step_index": 9,
+      "pano_id": "u0JCN_zX2qY-z31jA8HGDA",
+      "heading": 292.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "8CaKBn5Jm6Zaj4Zb8giYRA",
+      "heading": 292.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "rhhSyc86k_PxMtAMjhQ4VQ",
+      "heading": 292.4
+    },
+    {
+      "step_index": 12,
+      "pano_id": "1oeJlpVTIK1PpAZJ4JzZhg",
+      "heading": 336.0
+    },
+    {
+      "step_index": 13,
+      "pano_id": "kIO3S9hl4J1kAt1_gVzjEw",
+      "heading": 10.0
+    },
+    {
+      "step_index": 14,
+      "pano_id": "iNbsTsilyIuQ39-0sVbL8w",
+      "heading": 9.9
+    },
+    {
+      "step_index": 15,
+      "pano_id": "_4s19O-OuKooSlWkLqOv2A",
+      "heading": 9.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "-lqRu_P3apwxvsaVyb7VHA",
+      "heading": 9.9
+    },
+    {
+      "step_index": 17,
+      "pano_id": "-T1C-bitt5iUVnwCKyeyKQ",
+      "heading": 9.9
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head west/C-1 [114m] -> Turn right onto Alonzo St [60m]",
+  "agent_concise_description": "Proceed west along C-1 (Recto Ave) beneath the elevated railway tracks. Turn right at the intersection marked by the 'Alonzo St' sign. Continue straight down Alonzo St past hardware and glass supply stores."
+}

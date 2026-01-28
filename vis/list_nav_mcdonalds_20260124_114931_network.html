@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_mcdonalds_20260124_114931</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_mcdonalds_20260124_114931</h3>
+        <div>Total Panos: <strong>72</strong></div>
+        <div>Spawn Points: <strong>8</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"s5x362pMmEsIg8p0N4vx1g": {"lat": 25.64557131715402, "lng": -100.3604786448926, "links": [{"pano_id": "-DednUZDE8mfYlujsH247w", "heading": 194.80055, "description": ""}, {"pano_id": "6O9xWFa1p7gfkfxJk10dEg", "heading": 14.820481, "description": ""}, {"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 194.81, "distance": 17.98, "virtual": true}, {"pano_id": "R0yJgUcHm-7iNePevMeJ0Q", "heading": 128.64, "distance": 15.61, "virtual": true}, {"pano_id": "Syos_ME5NlMS9CSp4oNWEQ", "heading": 89.39, "distance": 14.78, "virtual": true}]}, "6O9xWFa1p7gfkfxJk10dEg": {"lat": 25.64565275347641, "lng": -100.360454742695, "links": [{"pano_id": "hTRwNFBJ3_ijfnrXFVEU7w", "heading": 14.794241, "description": ""}, {"pano_id": "s5x362pMmEsIg8p0N4vx1g", "heading": 194.82048, "description": ""}, {"pano_id": "Syos_ME5NlMS9CSp4oNWEQ", "heading": 125.7, "distance": 15.25, "virtual": true}, {"pano_id": "WB3FirsYUAhIi3TjM-lsfA", "heading": 86.27, "distance": 15.0, "virtual": true}]}, "-DednUZDE8mfYlujsH247w": {"lat": 25.64549444283186, "lng": -100.3605011763607, "links": [{"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 194.81406, "description": ""}, {"pano_id": "s5x362pMmEsIg8p0N4vx1g", "heading": 14.800554, "description": ""}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 175.61, "distance": 15.49, "virtual": true}, {"pano_id": "R0yJgUcHm-7iNePevMeJ0Q", "heading": 94.74, "distance": 14.5, "virtual": true}, {"pano_id": "VdywwwKnthTcyn9FNPVrBQ", "heading": 133.73, "distance": 16.33, "virtual": true}]}, "hTRwNFBJ3_ijfnrXFVEU7w": {"lat": 25.64573901965027, "lng": -100.3604294697689, "links": [{"pano_id": "6O9xWFa1p7gfkfxJk10dEg", "heading": 194.79424, "description": ""}, {"pano_id": "DlKKOEYNdWMq-Ux_uyCeWg", "heading": 14.809129, "description": ""}, {"pano_id": "WB3FirsYUAhIi3TjM-lsfA", "heading": 124.72, "distance": 15.13, "virtual": true}, {"pano_id": "dvHEzvsN7T8qKzROd8hy2Q", "heading": 85.25, "distance": 15.06, "virtual": true}]}, "6UTaYSsZN68gCzM28xfF_w": {"lat": 25.64541501351724, "lng": -100.3605244788735, "links": [{"pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg", "heading": 194.90167, "description": ""}, {"pano_id": "-DednUZDE8mfYlujsH247w", "heading": 14.814051, "description": ""}, {"pano_id": "s5x362pMmEsIg8p0N4vx1g", "heading": 14.81, "distance": 17.98, "virtual": true}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 151.96, "distance": 7.49, "virtual": true}, {"pano_id": "VdywwwKnthTcyn9FNPVrBQ", "heading": 99.86, "distance": 14.35, "virtual": true}, {"pano_id": "yBh1hHHowEpW1gFgZeiSIg", "heading": 137.97, "distance": 16.84, "virtual": true}]}, "DlKKOEYNdWMq-Ux_uyCeWg": {"lat": 25.6458266556296, "lng": -100.3604037684954, "links": [{"pano_id": "Wrk249HXk62mfN7M_Szn6g", "heading": 14.800236, "description": ""}, {"pano_id": "hTRwNFBJ3_ijfnrXFVEU7w", "heading": 194.80913, "description": ""}, {"pano_id": "S6jCPNRstQmN_aRCCky96Q", "heading": 334.07, "distance": 17.52, "virtual": true}, {"pano_id": "dvHEzvsN7T8qKzROd8hy2Q", "heading": 124.35, "distance": 15.06, "virtual": true}, {"pano_id": "4wJQFIv6x4_AN9yoR1vZdw", "heading": 85.67, "distance": 14.99, "virtual": true}]}, "Zmd_ZCQiq9lvrWjsY8nRYg": {"lat": 25.64531778863542, "lng": -100.3605531786678, "links": [{"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 14.901673, "description": ""}, {"pano_id": "JWp_YV5zIFdzMYHG8hzGdg", "heading": 195.54947, "description": ""}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 56.719784, "description": ""}, {"pano_id": "yBh1hHHowEpW1gFgZeiSIg", "heading": 96.85, "distance": 14.25, "virtual": true}, {"pano_id": "8HTecp3-GOPg6oPn4Ul-8Q", "heading": 136.05, "distance": 16.27, "virtual": true}]}, "d6vrlH0qJ9l3PW2Ewg6pRQ": {"lat": 25.64535555529651, "lng": -100.3604893537645, "links": [{"pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg", "heading": 236.71979, "description": ""}, {"pano_id": "R0yJgUcHm-7iNePevMeJ0Q", "heading": 42.968037, "description": "Eje Metropolitano 9"}, {"pano_id": "-DednUZDE8mfYlujsH247w", "heading": 355.61, "distance": 15.49, "virtual": true}, {"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 331.96, "distance": 7.49, "virtual": true}, {"pano_id": "JWp_YV5zIFdzMYHG8hzGdg", "heading": 212.14, "distance": 17.64, "virtual": true}, {"pano_id": "VdywwwKnthTcyn9FNPVrBQ", "heading": 68.62, "distance": 11.4, "virtual": true}, {"pano_id": "yBh1hHHowEpW1gFgZeiSIg", "heading": 127.26, "distance": 9.74, "virtual": true}, {"pano_id": "8HTecp3-GOPg6oPn4Ul-8Q", "heading": 162.9, "distance": 16.65, "virtual": true}]}, "JWp_YV5zIFdzMYHG8hzGdg": {"lat": 25.6452211985633, "lng": -100.3605829921952, "links": [{"pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg", "heading": 15.549465, "description": ""}, {"pano_id": "kuIyU9a72IYXlB9zcTVUXQ", "heading": 195.59775, "description": ""}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 32.14, "distance": 17.64, "virtual": true}, {"pano_id": "8HTecp3-GOPg6oPn4Ul-8Q", "heading": 93.9, "distance": 14.31, "virtual": true}, {"pano_id": "Q6ERZ9ulbFQsLaRaF3s6kQ", "heading": 133.67, "distance": 15.83, "virtual": true}]}, "Wrk249HXk62mfN7M_Szn6g": {"lat": 25.64591346969135, "lng": -100.3603783242418, "links": [{"pano_id": "94ry2CDZ26oVhmcKQXt3bg", "heading": 15.587908, "description": ""}, {"pano_id": "DlKKOEYNdWMq-Ux_uyCeWg", "heading": 194.80023, "description": ""}, {"pano_id": "S6jCPNRstQmN_aRCCky96Q", "heading": 300.8625, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "4wJQFIv6x4_AN9yoR1vZdw", "heading": 124.51, "distance": 15.04, "virtual": true}, {"pano_id": "3fXjMEy57KB1SK85jtqt8Q", "heading": 85.78, "distance": 15.1, "virtual": true}]}, "R0yJgUcHm-7iNePevMeJ0Q": {"lat": 25.64548365630669, "lng": -100.3603569921964, "links": [{"pano_id": "VdywwwKnthTcyn9FNPVrBQ", "heading": 194.73709, "description": "Eje Metropolitano 9"}, {"pano_id": "Syos_ME5NlMS9CSp4oNWEQ", "heading": 14.627371, "description": "Eje Metropolitano 9"}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 222.96803, "description": ""}, {"pano_id": "s5x362pMmEsIg8p0N4vx1g", "heading": 308.64, "distance": 15.61, "virtual": true}, {"pano_id": "-DednUZDE8mfYlujsH247w", "heading": 274.74, "distance": 14.5, "virtual": true}]}, "S6jCPNRstQmN_aRCCky96Q": {"lat": 25.64596834587523, "lng": -100.3604801869701, "links": [{"pano_id": "9m-70VcUZxu1_oldN8pE0w", "heading": 291.13293, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "Wrk249HXk62mfN7M_Szn6g", "heading": 120.86249, "description": ""}, {"pano_id": "DlKKOEYNdWMq-Ux_uyCeWg", "heading": 154.07, "distance": 17.52, "virtual": true}, {"pano_id": "94ry2CDZ26oVhmcKQXt3bg", "heading": 74.92, "distance": 13.34, "virtual": true}, {"pano_id": "k_bRTROWnM2mvurn_QwjHQ", "heading": 328.57, "distance": 13.95, "virtual": true}]}, "kuIyU9a72IYXlB9zcTVUXQ": {"lat": 25.64512934905834, "lng": -100.3606114349948, "links": [{"pano_id": "JWp_YV5zIFdzMYHG8hzGdg", "heading": 15.597744, "description": ""}, {"pano_id": "UKEPws0jLJZ1vUoZobvCog", "heading": 195.56305, "description": ""}, {"pano_id": "Q6ERZ9ulbFQsLaRaF3s6kQ", "heading": 92.86, "distance": 14.32, "virtual": true}, {"pano_id": "BlUCId0Rmt1RmLlM7dp9QA", "heading": 132.27, "distance": 15.57, "virtual": true}]}, "94ry2CDZ26oVhmcKQXt3bg": {"lat": 25.64599956572266, "lng": -100.3603516806035, "links": [{"pano_id": "YdA3Yr2bQhVaaOQJOhtvGw", "heading": 15.85369, "description": ""}, {"pano_id": "Wrk249HXk62mfN7M_Szn6g", "heading": 195.5879, "description": ""}, {"pano_id": "S6jCPNRstQmN_aRCCky96Q", "heading": 254.92, "distance": 13.34, "virtual": true}, {"pano_id": "3fXjMEy57KB1SK85jtqt8Q", "heading": 124.35, "distance": 15.0, "virtual": true}, {"pano_id": "apzLEQXiabZKW6hd4rcOfQ", "heading": 86.15, "distance": 15.21, "virtual": true}]}, "YdA3Yr2bQhVaaOQJOhtvGw": {"lat": 25.64608414389269, "lng": -100.3603250369731, "links": [{"pano_id": "94ry2CDZ26oVhmcKQXt3bg", "heading": 195.85368, "description": ""}, {"pano_id": "93NbDoaGi9v2PJhfgyja6Q", "heading": 15.822463, "description": ""}, {"pano_id": "apzLEQXiabZKW6hd4rcOfQ", "heading": 123.84, "distance": 15.05, "virtual": true}, {"pano_id": "f2nSc59Txhb5l0a-36bgrw", "heading": 86.07, "distance": 15.33, "virtual": true}]}, "UKEPws0jLJZ1vUoZobvCog": {"lat": 25.64504033458471, "lng": -100.3606389354211, "links": [{"pano_id": "kuIyU9a72IYXlB9zcTVUXQ", "heading": 15.563051, "description": ""}, {"pano_id": "Bvy-WqsDu7TGeu_k-5ezXw", "heading": 192.02742, "description": ""}, {"pano_id": "BlUCId0Rmt1RmLlM7dp9QA", "heading": 92.32, "distance": 14.29, "virtual": true}, {"pano_id": "nbJEhPEV5CC7_yDUnU7YAA", "heading": 131.99, "distance": 15.47, "virtual": true}]}, "Syos_ME5NlMS9CSp4oNWEQ": {"lat": 25.64557272701719, "lng": -100.3603312052727, "links": [{"pano_id": "WB3FirsYUAhIi3TjM-lsfA", "heading": 14.66958, "description": "Eje Metropolitano 9"}, {"pano_id": "R0yJgUcHm-7iNePevMeJ0Q", "heading": 194.62737, "description": "Eje Metropolitano 9"}, {"pano_id": "s5x362pMmEsIg8p0N4vx1g", "heading": 269.39, "distance": 14.78, "virtual": true}, {"pano_id": "6O9xWFa1p7gfkfxJk10dEg", "heading": 305.7, "distance": 15.25, "virtual": true}]}, "VdywwwKnthTcyn9FNPVrBQ": {"lat": 25.645392929558, "lng": -100.3603834644945, "links": [{"pano_id": "yBh1hHHowEpW1gFgZeiSIg", "heading": 195.87613, "description": "Eje Metropolitano 9"}, {"pano_id": "R0yJgUcHm-7iNePevMeJ0Q", "heading": 14.73709, "description": "Eje Metropolitano 9"}, {"pano_id": "-DednUZDE8mfYlujsH247w", "heading": 313.73, "distance": 16.33, "virtual": true}, {"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 279.86, "distance": 14.35, "virtual": true}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 248.62, "distance": 11.4, "virtual": true}]}, "9m-70VcUZxu1_oldN8pE0w": {"lat": 25.64599828748002, "lng": -100.360566114996, "links": [{"pano_id": "CXwD1nWzx7_pX5sYy4IEPQ", "heading": 277.3661, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "S6jCPNRstQmN_aRCCky96Q", "heading": 111.132935, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "k_bRTROWnM2mvurn_QwjHQ", "heading": 8.88, "distance": 8.68, "virtual": true}]}, "WB3FirsYUAhIi3TjM-lsfA": {"lat": 25.64566152985059, "lng": -100.3603054183564, "links": [{"pano_id": "dvHEzvsN7T8qKzROd8hy2Q", "heading": 14.637976, "description": "Eje Metropolitano 9"}, {"pano_id": "Syos_ME5NlMS9CSp4oNWEQ", "heading": 194.66959, "description": "Eje Metropolitano 9"}, {"pano_id": "6O9xWFa1p7gfkfxJk10dEg", "heading": 266.27, "distance": 15.0, "virtual": true}, {"pano_id": "hTRwNFBJ3_ijfnrXFVEU7w", "heading": 304.72, "distance": 15.13, "virtual": true}]}, "93NbDoaGi9v2PJhfgyja6Q": {"lat": 25.64616835268161, "lng": -100.3602985646922, "links": [{"pano_id": "ZrMSZ-Axpfa94Y4PSju8sg", "heading": 15.774279, "description": ""}, {"pano_id": "YdA3Yr2bQhVaaOQJOhtvGw", "heading": 195.82246, "description": ""}, {"pano_id": "f2nSc59Txhb5l0a-36bgrw", "heading": 123.33, "distance": 15.13, "virtual": true}, {"pano_id": "Ye86KV5muTtbKzpFe5FVQA", "heading": 84.89, "distance": 15.55, "virtual": true}]}, "yBh1hHHowEpW1gFgZeiSIg": {"lat": 25.64530250254922, "lng": -100.3604119929021, "links": [{"pano_id": "VdywwwKnthTcyn9FNPVrBQ", "heading": 15.876127, "description": "Eje Metropolitano 9"}, {"pano_id": "8HTecp3-GOPg6oPn4Ul-8Q", "heading": 195.9359, "description": "Eje Metropolitano 9"}, {"pano_id": "6UTaYSsZN68gCzM28xfF_w", "heading": 317.97, "distance": 16.84, "virtual": true}, {"pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg", "heading": 276.85, "distance": 14.25, "virtual": true}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 307.26, "distance": 9.74, "virtual": true}]}, "CXwD1nWzx7_pX5sYy4IEPQ": {"lat": 25.64600941977069, "lng": -100.3606616382715, "links": [{"pano_id": "k_bRTROWnM2mvurn_QwjHQ", "heading": 56.09215, "description": ""}, {"pano_id": "jLvJOIhs4ifotksACbWoww", "heading": 275.84912, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "9m-70VcUZxu1_oldN8pE0w", "heading": 97.3661, "description": "Mar\u00eda de Los Angeles"}]}, "Bvy-WqsDu7TGeu_k-5ezXw": {"lat": 25.64495478592872, "lng": -100.3606591538083, "links": [{"pano_id": "T5IkBFESJEiuzN_yVEZkuQ", "heading": 193.10785, "description": ""}, {"pano_id": "UKEPws0jLJZ1vUoZobvCog", "heading": 12.027426, "description": ""}, {"pano_id": "nbJEhPEV5CC7_yDUnU7YAA", "heading": 93.54, "distance": 13.55, "virtual": true}, {"pano_id": "jRdIjh-q6owA4va9_iDJXA", "heading": 134.74, "distance": 15.11, "virtual": true}]}, "8HTecp3-GOPg6oPn4Ul-8Q": {"lat": 25.64521243265699, "lng": -100.3604405213187, "links": [{"pano_id": "Q6ERZ9ulbFQsLaRaF3s6kQ", "heading": 195.89241, "description": "Eje Metropolitano 9"}, {"pano_id": "yBh1hHHowEpW1gFgZeiSIg", "heading": 15.9359, "description": "Eje Metropolitano 9"}, {"pano_id": "Zmd_ZCQiq9lvrWjsY8nRYg", "heading": 316.05, "distance": 16.27, "virtual": true}, {"pano_id": "d6vrlH0qJ9l3PW2Ewg6pRQ", "heading": 342.9, "distance": 16.65, "virtual": true}, {"pano_id": "JWp_YV5zIFdzMYHG8hzGdg", "heading": 273.9, "distance": 14.31, "virtual": true}]}, "dvHEzvsN7T8qKzROd8hy2Q": {"lat": 25.6457502372659, "lng": -100.3602797171183, "links": [{"pano_id": "4wJQFIv6x4_AN9yoR1vZdw", "heading": 14.595399, "description": "Eje Metropolitano 9"}, {"pano_id": "WB3FirsYUAhIi3TjM-lsfA", "heading": 194.63797, "description": "Eje Metropolitano 9"}, {"pano_id": "hTRwNFBJ3_ijfnrXFVEU7w", "heading": 265.25, "distance": 15.06, "virtual": true}, {"pano_id": "DlKKOEYNdWMq-Ux_uyCeWg", "heading": 304.35, "distance": 15.06, "virtual": true}]}, "k_bRTROWnM2mvurn_QwjHQ": {"lat": 25.64607540065101, "lng": -100.3605527503126, "links": [{"pano_id": "CXwD1nWzx7_pX5sYy4IEPQ", "heading": 236.09215, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "eLOR1vIEFb6TKjpoCFxRlQ", "heading": 15.181008, "description": ""}, {"pano_id": "S6jCPNRstQmN_aRCCky96Q", "heading": 148.57, "distance": 13.95, "virtual": true}, {"pano_id": "9m-70VcUZxu1_oldN8pE0w", "heading": 188.88, "distance": 8.68, "virtual": true}]}, "jLvJOIhs4ifotksACbWoww": {"lat": 25.64601889016031, "lng": -100.3607641866897, "links": [{"pano_id": "CXwD1nWzx7_pX5sYy4IEPQ", "heading": 95.84912, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "Q0AQvx3H8KxHMf9HFYmjYw", "heading": 275.87143, "description": "Mar\u00eda de Los Angeles"}]}, "T5IkBFESJEiuzN_yVEZkuQ": {"lat": 25.64486755440948, "lng": -100.3606816853215, "links": [{"pano_id": "k5yWmueFwysM6p-VeTvetA", "heading": 196.28828, "description": ""}, {"pano_id": "Bvy-WqsDu7TGeu_k-5ezXw", "heading": 13.107853, "description": ""}, {"pano_id": "jRdIjh-q6owA4va9_iDJXA", "heading": 94.13, "distance": 13.03, "virtual": true}, {"pano_id": "GwRKAywgg8Fonw9j5fFBCA", "heading": 136.34, "distance": 14.87, "virtual": true}]}, "ZrMSZ-Axpfa94Y4PSju8sg": {"lat": 25.64625419912931, "lng": -100.3602716640652, "links": [{"pano_id": "hvVR55QEqM6Da95zAsDj6A", "heading": 15.835389, "description": ""}, {"pano_id": "93NbDoaGi9v2PJhfgyja6Q", "heading": 195.77428, "description": ""}, {"pano_id": "KFoHi6v536GgS1FxhjhXWw", "heading": 83.79, "distance": 15.8, "virtual": true}, {"pano_id": "Ye86KV5muTtbKzpFe5FVQA", "heading": 122.53, "distance": 15.18, "virtual": true}]}, "hvVR55QEqM6Da95zAsDj6A": {"lat": 25.64634105824202, "lng": -100.3602443350924, "links": [{"pano_id": "C4MbSuBQ7R9imqVwFbrd8Q", "heading": 15.8182745, "description": ""}, {"pano_id": "ZrMSZ-Axpfa94Y4PSju8sg", "heading": 195.83539, "description": ""}, {"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 50.01, "distance": 15.92, "virtual": true}, {"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 83.27, "distance": 15.97, "virtual": true}, {"pano_id": "KFoHi6v536GgS1FxhjhXWw", "heading": 121.51, "distance": 15.21, "virtual": true}]}, "eLOR1vIEFb6TKjpoCFxRlQ": {"lat": 25.64615879739202, "lng": -100.3605276487011, "links": [{"pano_id": "hpALOgH2yUQEwklWrBj83w", "heading": 15.142519, "description": ""}, {"pano_id": "k_bRTROWnM2mvurn_QwjHQ", "heading": 195.18102, "description": ""}]}, "Q0AQvx3H8KxHMf9HFYmjYw": {"lat": 25.64602989007032, "lng": -100.3608828414379, "links": [{"pano_id": "jLvJOIhs4ifotksACbWoww", "heading": 95.87143, "description": "Mar\u00eda de Los Angeles"}, {"pano_id": "vSMqNXiNa7xje8XYf2D6vA", "heading": 275.85043, "description": "Mar\u00eda de Los Angeles"}]}, "4wJQFIv6x4_AN9yoR1vZdw": {"lat": 25.64583684222122, "lng": -100.3602547012535, "links": [{"pano_id": "dvHEzvsN7T8qKzROd8hy2Q", "heading": 194.5954, "description": "Eje Metropolitano 9"}, {"pano_id": "3fXjMEy57KB1SK85jtqt8Q", "heading": 15.449742, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "DlKKOEYNdWMq-Ux_uyCeWg", "heading": 265.67, "distance": 14.99, "virtual": true}, {"pano_id": "Wrk249HXk62mfN7M_Szn6g", "heading": 304.51, "distance": 15.04, "virtual": true}]}, "k5yWmueFwysM6p-VeTvetA": {"lat": 25.64477953795827, "lng": -100.3607102138235, "links": [{"pano_id": "H1g3hcaf5dTcV2-joM0c4A", "heading": 196.28381, "description": ""}, {"pano_id": "T5IkBFESJEiuzN_yVEZkuQ", "heading": 16.288286, "description": ""}, {"pano_id": "X9abmE7ux-_xzUMJyztTVw", "heading": 240.95, "distance": 16.09, "virtual": true}, {"pano_id": "GwRKAywgg8Fonw9j5fFBCA", "heading": 94.22, "distance": 13.16, "virtual": true}]}, "Q6ERZ9ulbFQsLaRaF3s6kQ": {"lat": 25.64512291678428, "lng": -100.3604687927315, "links": [{"pano_id": "BlUCId0Rmt1RmLlM7dp9QA", "heading": 195.86497, "description": "Eje Metropolitano 9"}, {"pano_id": "8HTecp3-GOPg6oPn4Ul-8Q", "heading": 15.892406, "description": "Eje Metropolitano 9"}, {"pano_id": "JWp_YV5zIFdzMYHG8hzGdg", "heading": 313.67, "distance": 15.83, "virtual": true}, {"pano_id": "kuIyU9a72IYXlB9zcTVUXQ", "heading": 272.86, "distance": 14.32, "virtual": true}]}, "H1g3hcaf5dTcV2-joM0c4A": {"lat": 25.64468832317553, "lng": -100.3607397703891, "links": [{"pano_id": "w0_Dnak1GZ0SXbaW2PWlVQ", "heading": 195.45227, "description": ""}, {"pano_id": "k5yWmueFwysM6p-VeTvetA", "heading": 16.28381, "description": ""}, {"pano_id": "X9abmE7ux-_xzUMJyztTVw", "heading": 281.84143, "description": ""}]}, "vSMqNXiNa7xje8XYf2D6vA": {"lat": 25.64603910941055, "lng": -100.3609826486213, "links": [{"pano_id": "Q0AQvx3H8KxHMf9HFYmjYw", "heading": 95.85045, "description": "Mar\u00eda de Los Angeles"}]}, "3fXjMEy57KB1SK85jtqt8Q": {"lat": 25.64592346786625, "lng": -100.3602281433225, "links": [{"pano_id": "4wJQFIv6x4_AN9yoR1vZdw", "heading": 195.44974, "description": "Eje Metropolitano 9"}, {"pano_id": "apzLEQXiabZKW6hd4rcOfQ", "heading": 16.398893, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "Wrk249HXk62mfN7M_Szn6g", "heading": 265.78, "distance": 15.1, "virtual": true}, {"pano_id": "94ry2CDZ26oVhmcKQXt3bg", "heading": 304.35, "distance": 15.0, "virtual": true}]}, "C4MbSuBQ7R9imqVwFbrd8Q": {"lat": 25.64642992437182, "lng": -100.3602164064329, "links": [{"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 87.88927, "description": "Magnolia"}, {"pano_id": "hvVR55QEqM6Da95zAsDj6A", "heading": 195.81827, "description": ""}, {"pano_id": "pJFzjBl49a6NBROX_B46-g", "heading": 15.984547, "description": ""}, {"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 121.52, "distance": 15.32, "virtual": true}]}, "hpALOgH2yUQEwklWrBj83w": {"lat": 25.64624355782721, "lng": -100.3605022044126, "links": [{"pano_id": "eLOR1vIEFb6TKjpoCFxRlQ", "heading": 195.14252, "description": ""}, {"pano_id": "D3DIEZ_sQcRk-FcufCSy3Q", "heading": 15.144747, "description": ""}]}, "BlUCId0Rmt1RmLlM7dp9QA": {"lat": 25.64503514008024, "lng": -100.3604964644562, "links": [{"pano_id": "nbJEhPEV5CC7_yDUnU7YAA", "heading": 195.89522, "description": "Eje Metropolitano 9"}, {"pano_id": "Q6ERZ9ulbFQsLaRaF3s6kQ", "heading": 15.864973, "description": "Eje Metropolitano 9"}, {"pano_id": "kuIyU9a72IYXlB9zcTVUXQ", "heading": 312.27, "distance": 15.57, "virtual": true}, {"pano_id": "UKEPws0jLJZ1vUoZobvCog", "heading": 272.32, "distance": 14.29, "virtual": true}]}, "3avUteCzjBoGMG0b2KDmdg": {"lat": 25.64653548048449, "lng": -100.3603300058811, "links": [{"pano_id": "C4MbSuBQ7R9imqVwFbrd8Q", "heading": 135.86731, "description": ""}, {"pano_id": "ViWq1Q2NsZ3chB3uJrFVPg", "heading": 311.91144, "description": ""}, {"pano_id": "pJFzjBl49a6NBROX_B46-g", "heading": 97.64, "distance": 14.33, "virtual": true}, {"pano_id": "8Gs3EyYw444a96WTyQniGg", "heading": 223.41, "distance": 17.27, "virtual": true}, {"pano_id": "W-EiJyAGdSkAn40-HjAAvQ", "heading": 253.36, "distance": 9.62, "virtual": true}]}, "pJFzjBl49a6NBROX_B46-g": {"lat": 25.64651835627798, "lng": -100.3601883064406, "links": [{"pano_id": "C4MbSuBQ7R9imqVwFbrd8Q", "heading": 195.98454, "description": ""}, {"pano_id": "Qhew_lGijcXRjUszhUHHww", "heading": 16.31232, "description": ""}, {"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 145.26, "distance": 11.54, "virtual": true}, {"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 102.73, "distance": 14.91, "virtual": true}]}, "X9abmE7ux-_xzUMJyztTVw": {"lat": 25.64470926066333, "lng": -100.3608505433429, "links": [{"pano_id": "H1g3hcaf5dTcV2-joM0c4A", "heading": 101.84143, "description": ""}, {"pano_id": "46iV8Vzkzb4DKh8B0Nf0kg", "heading": 285.29453, "description": ""}, {"pano_id": "k5yWmueFwysM6p-VeTvetA", "heading": 60.95, "distance": 16.09, "virtual": true}, {"pano_id": "w0_Dnak1GZ0SXbaW2PWlVQ", "heading": 146.59, "distance": 15.03, "virtual": true}]}, "apzLEQXiabZKW6hd4rcOfQ": {"lat": 25.64600875659677, "lng": -100.3602003003387, "links": [{"pano_id": "f2nSc59Txhb5l0a-36bgrw", "heading": 16.4805, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "3fXjMEy57KB1SK85jtqt8Q", "heading": 196.3989, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "94ry2CDZ26oVhmcKQXt3bg", "heading": 266.15, "distance": 15.21, "virtual": true}, {"pano_id": "YdA3Yr2bQhVaaOQJOhtvGw", "heading": 303.84, "distance": 15.05, "virtual": true}]}, "w0_Dnak1GZ0SXbaW2PWlVQ": {"lat": 25.64459640257943, "lng": -100.3607679562245, "links": [{"pano_id": "H1g3hcaf5dTcV2-joM0c4A", "heading": 15.452277, "description": ""}, {"pano_id": "ZO3MtfKmrRXXHdgKLhvDXA", "heading": 195.3712, "description": ""}, {"pano_id": "X9abmE7ux-_xzUMJyztTVw", "heading": 326.59, "distance": 15.03, "virtual": true}]}, "QzyIFWJDHU2hN7jbMaSGKw": {"lat": 25.64643303833695, "lng": -100.3601226827123, "links": [{"pano_id": "C4MbSuBQ7R9imqVwFbrd8Q", "heading": 267.88928, "description": ""}, {"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 156.30923, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "hvVR55QEqM6Da95zAsDj6A", "heading": 230.01, "distance": 15.92, "virtual": true}, {"pano_id": "pJFzjBl49a6NBROX_B46-g", "heading": 325.26, "distance": 11.54, "virtual": true}, {"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 52.12, "distance": 10.1, "virtual": true}]}, "D3DIEZ_sQcRk-FcufCSy3Q": {"lat": 25.6463308732111, "lng": -100.3604759890925, "links": [{"pano_id": "hpALOgH2yUQEwklWrBj83w", "heading": 195.14474, "description": ""}, {"pano_id": "8Gs3EyYw444a96WTyQniGg", "heading": 15.15934, "description": ""}]}, "nbJEhPEV5CC7_yDUnU7YAA": {"lat": 25.6449472679583, "lng": -100.3605242218605, "links": [{"pano_id": "BlUCId0Rmt1RmLlM7dp9QA", "heading": 15.895219, "description": "Eje Metropolitano 9"}, {"pano_id": "jRdIjh-q6owA4va9_iDJXA", "heading": 195.89476, "description": "Eje Metropolitano 9"}, {"pano_id": "UKEPws0jLJZ1vUoZobvCog", "heading": 311.99, "distance": 15.47, "virtual": true}, {"pano_id": "Bvy-WqsDu7TGeu_k-5ezXw", "heading": 273.54, "distance": 13.55, "virtual": true}]}, "ZO3MtfKmrRXXHdgKLhvDXA": {"lat": 25.64450650123091, "lng": -100.3607953710272, "links": [{"pano_id": "8OpxeKTASJr4GUKkirV1xw", "heading": 195.95168, "description": ""}, {"pano_id": "w0_Dnak1GZ0SXbaW2PWlVQ", "heading": 15.371198, "description": ""}]}, "Xa-3gc_eYpf0sqPu6G_xng": {"lat": 25.64635788073664, "lng": -100.3600861013597, "links": [{"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 336.30923, "description": "Magnolia"}, {"pano_id": "KFoHi6v536GgS1FxhjhXWw", "heading": 196.42159, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 16.465008, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "hvVR55QEqM6Da95zAsDj6A", "heading": 263.27, "distance": 15.97, "virtual": true}, {"pano_id": "C4MbSuBQ7R9imqVwFbrd8Q", "heading": 301.52, "distance": 15.32, "virtual": true}]}, "f2nSc59Txhb5l0a-36bgrw": {"lat": 25.64609359888279, "lng": -100.3601724573635, "links": [{"pano_id": "Ye86KV5muTtbKzpFe5FVQA", "heading": 16.384497, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "apzLEQXiabZKW6hd4rcOfQ", "heading": 196.4805, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "YdA3Yr2bQhVaaOQJOhtvGw", "heading": 266.07, "distance": 15.33, "virtual": true}, {"pano_id": "93NbDoaGi9v2PJhfgyja6Q", "heading": 303.33, "distance": 15.13, "virtual": true}]}, "Qhew_lGijcXRjUszhUHHww": {"lat": 25.64660728958332, "lng": -100.3601594354211, "links": [{"pano_id": "A_pkGdW61HMTlKpTUamWiA", "heading": 16.340689, "description": ""}, {"pano_id": "pJFzjBl49a6NBROX_B46-g", "heading": 196.31232, "description": ""}, {"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 138.51, "distance": 17.59, "virtual": true}, {"pano_id": "6tgKCYqp3N53n55UfV75Uw", "heading": 103.22, "distance": 14.93, "virtual": true}]}, "8Gs3EyYw444a96WTyQniGg": {"lat": 25.64642266129591, "lng": -100.360448403045, "links": [{"pano_id": "W-EiJyAGdSkAn40-HjAAvQ", "heading": 15.164976, "description": ""}, {"pano_id": "D3DIEZ_sQcRk-FcufCSy3Q", "heading": 195.15935, "description": ""}]}, "jRdIjh-q6owA4va9_iDJXA": {"lat": 25.64485912184832, "lng": -100.3605520649443, "links": [{"pano_id": "nbJEhPEV5CC7_yDUnU7YAA", "heading": 15.894758, "description": "Eje Metropolitano 9"}, {"pano_id": "GwRKAywgg8Fonw9j5fFBCA", "heading": 195.5464, "description": "Eje Metropolitano 9"}, {"pano_id": "Bvy-WqsDu7TGeu_k-5ezXw", "heading": 314.74, "distance": 15.11, "virtual": true}, {"pano_id": "T5IkBFESJEiuzN_yVEZkuQ", "heading": 274.13, "distance": 13.03, "virtual": true}]}, "46iV8Vzkzb4DKh8B0Nf0kg": {"lat": 25.64473335906278, "lng": -100.3609482943766, "links": [{"pano_id": "0oyyRzv_XjTvLN6J3cUshA", "heading": 285.32053, "description": ""}, {"pano_id": "X9abmE7ux-_xzUMJyztTVw", "heading": 105.29451, "description": ""}, {"pano_id": "n217D9tm1qvfCWabmNHX9w", "heading": 241.21477, "description": ""}]}, "KFoHi6v536GgS1FxhjhXWw": {"lat": 25.6462695723657, "lng": -100.3601149723558, "links": [{"pano_id": "Ye86KV5muTtbKzpFe5FVQA", "heading": 196.43304, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 16.42158, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "ZrMSZ-Axpfa94Y4PSju8sg", "heading": 263.79, "distance": 15.8, "virtual": true}, {"pano_id": "hvVR55QEqM6Da95zAsDj6A", "heading": 301.51, "distance": 15.21, "virtual": true}]}, "A_pkGdW61HMTlKpTUamWiA": {"lat": 25.646694215829, "lng": -100.3601311641054, "links": [{"pano_id": "8ByvuFrC7sp5U4sM5hF_Sg", "heading": 16.326635, "description": ""}, {"pano_id": "Qhew_lGijcXRjUszhUHHww", "heading": 196.34068, "description": ""}, {"pano_id": "6tgKCYqp3N53n55UfV75Uw", "heading": 138.18, "distance": 17.55, "virtual": true}]}, "W-EiJyAGdSkAn40-HjAAvQ": {"lat": 25.64651070924518, "lng": -100.3604219307279, "links": [{"pano_id": "8Gs3EyYw444a96WTyQniGg", "heading": 195.16498, "description": ""}, {"pano_id": "ViWq1Q2NsZ3chB3uJrFVPg", "heading": 16.013895, "description": ""}]}, "n217D9tm1qvfCWabmNHX9w": {"lat": 25.6446809967838, "lng": -100.3610540129669, "links": [{"pano_id": "ulwA4LtwDnqI1YsKVh_2SQ", "heading": 194.74226, "description": ""}, {"pano_id": "46iV8Vzkzb4DKh8B0Nf0kg", "heading": 61.214764, "description": ""}, {"pano_id": "0oyyRzv_XjTvLN6J3cUshA", "heading": 12.9, "distance": 8.42, "virtual": true}, {"pano_id": "jDZlZ4wso5irSv2jRyjQcQ", "heading": 324.36, "distance": 13.66, "virtual": true}]}, "rCphxTz4JtwonAyruL2vig": {"lat": 25.64637756452808, "lng": -100.3600091691959, "links": [{"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 254.15498, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "32h_VXoo1mXqyCnxgP_Wrw", "heading": 153.68051, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 298.46, "distance": 12.94, "virtual": true}, {"pano_id": "KFoHi6v536GgS1FxhjhXWw", "heading": 221.45, "distance": 16.02, "virtual": true}, {"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 344.59, "distance": 12.83, "virtual": true}]}, "0oyyRzv_XjTvLN6J3cUshA": {"lat": 25.64475483455779, "lng": -100.3610352509066, "links": [{"pano_id": "jDZlZ4wso5irSv2jRyjQcQ", "heading": 286.3896, "description": ""}, {"pano_id": "46iV8Vzkzb4DKh8B0Nf0kg", "heading": 105.32052, "description": ""}, {"pano_id": "n217D9tm1qvfCWabmNHX9w", "heading": 192.9, "distance": 8.42, "virtual": true}]}, "8OpxeKTASJr4GUKkirV1xw": {"lat": 25.6444167943826, "lng": -100.3608238138938, "links": [{"pano_id": "ZO3MtfKmrRXXHdgKLhvDXA", "heading": 15.951673, "description": ""}]}, "xMV3w-EZebpkHZCS_donmg": {"lat": 25.64648879791343, "lng": -100.3600431804005, "links": [{"pano_id": "Xa-3gc_eYpf0sqPu6G_xng", "heading": 196.46501, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "6tgKCYqp3N53n55UfV75Uw", "heading": 16.471064, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "pJFzjBl49a6NBROX_B46-g", "heading": 282.73, "distance": 14.91, "virtual": true}, {"pano_id": "QzyIFWJDHU2hN7jbMaSGKw", "heading": 232.12, "distance": 10.1, "virtual": true}, {"pano_id": "Qhew_lGijcXRjUszhUHHww", "heading": 318.51, "distance": 17.59, "virtual": true}]}, "ulwA4LtwDnqI1YsKVh_2SQ": {"lat": 25.64449461755848, "lng": -100.3611084143968, "links": [{"pano_id": "n217D9tm1qvfCWabmNHX9w", "heading": 14.742271, "description": ""}]}, "8ByvuFrC7sp5U4sM5hF_Sg": {"lat": 25.64678095737305, "lng": -100.360102978469, "links": [{"pano_id": "A_pkGdW61HMTlKpTUamWiA", "heading": 196.32663, "description": ""}]}, "Ye86KV5muTtbKzpFe5FVQA": {"lat": 25.64618080532712, "lng": -100.3601440147023, "links": [{"pano_id": "f2nSc59Txhb5l0a-36bgrw", "heading": 196.38449, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "KFoHi6v536GgS1FxhjhXWw", "heading": 16.433044, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "93NbDoaGi9v2PJhfgyja6Q", "heading": 264.89, "distance": 15.55, "virtual": true}, {"pano_id": "ZrMSZ-Axpfa94Y4PSju8sg", "heading": 302.53, "distance": 15.18, "virtual": true}]}, "6tgKCYqp3N53n55UfV75Uw": {"lat": 25.64657656441045, "lng": -100.360014395098, "links": [{"pano_id": "xMV3w-EZebpkHZCS_donmg", "heading": 196.47107, "description": "Av. Manuel G\u00f3mez Mor\u00edn"}, {"pano_id": "Qhew_lGijcXRjUszhUHHww", "heading": 283.22, "distance": 14.93, "virtual": true}, {"pano_id": "A_pkGdW61HMTlKpTUamWiA", "heading": 318.18, "distance": 17.55, "virtual": true}]}, "jDZlZ4wso5irSv2jRyjQcQ": {"lat": 25.6447808665019, "lng": -100.3611334304984, "links": [{"pano_id": "0oyyRzv_XjTvLN6J3cUshA", "heading": 106.38958, "description": ""}, {"pano_id": "n217D9tm1qvfCWabmNHX9w", "heading": 144.36, "distance": 13.66, "virtual": true}]}, "GwRKAywgg8Fonw9j5fFBCA": {"lat": 25.64477083992246, "lng": -100.3605793083392, "links": [{"pano_id": "jRdIjh-q6owA4va9_iDJXA", "heading": 15.546407, "description": "Eje Metropolitano 9"}, {"pano_id": "T5IkBFESJEiuzN_yVEZkuQ", "heading": 316.34, "distance": 14.87, "virtual": true}, {"pano_id": "k5yWmueFwysM6p-VeTvetA", "heading": 274.22, "distance": 13.16, "virtual": true}]}, "ViWq1Q2NsZ3chB3uJrFVPg": {"lat": 25.64658955237113, "lng": -100.3603968291528, "links": [{"pano_id": "W-EiJyAGdSkAn40-HjAAvQ", "heading": 196.0139, "description": ""}]}};
+        const targetPanos = ["Zmd_ZCQiq9lvrWjsY8nRYg", "s5x362pMmEsIg8p0N4vx1g"];
+        const spawnPoints = ["X9abmE7ux-_xzUMJyztTVw", "8ByvuFrC7sp5U4sM5hF_Sg", "ulwA4LtwDnqI1YsKVh_2SQ", "pJFzjBl49a6NBROX_B46-g", "W-EiJyAGdSkAn40-HjAAvQ", "H1g3hcaf5dTcV2-joM0c4A", "8OpxeKTASJr4GUKkirV1xw", "jDZlZ4wso5irSv2jRyjQcQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

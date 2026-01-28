@@ -1,0 +1,78 @@
+{
+  "task_id": "nav_0054_target_20260124_0245_12",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_starbucks_20260124_024511",
+  "spawn_point": "ndsW5MKWfxIL56lKGUmLIw",
+  "spawn_heading": 29.7,
+  "description": "Navigate to Burger King. Head northeast/Lulu Mall Rd for 122m. Turn right at DEVPURI for 29m. Total distance: approximately 151 m.",
+  "ground_truth": {
+    "target_name": "Burger King",
+    "target_pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+    "optimal_distance_meters": 151,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "FjDSnVpBhOJ27rRtr05m6g"
+  ],
+  "max_steps": 22,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ndsW5MKWfxIL56lKGUmLIw",
+      "heading": 29.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "0YNdIZmyb-BFmmEXAsVuGw",
+      "heading": 29.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GJiP00oo5j04FwbkJEHvNQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "ExvqUMRAxZixH6r3-wgO7Q",
+      "heading": 29.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "hjG1RQkbRDmWY4YCWEpQEQ",
+      "heading": 29.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "6K6KOiFoxzU6sLLC_b2jRw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "YvDbrR5chni0HQ8XAwwNqw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "bU8Fx38tXpPFvGdtMLgj4A",
+      "heading": 29.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "LjGAqNgqg1CtvhRHRnfy7w",
+      "heading": 29.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "H5qd1vVz12mSgHMgNTogkw",
+      "heading": 29.4
+    },
+    {
+      "step_index": 10,
+      "pano_id": "FjDSnVpBhOJ27rRtr05m6g",
+      "heading": 29.8
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

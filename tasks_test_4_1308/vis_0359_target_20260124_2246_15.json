@@ -1,0 +1,111 @@
+{
+  "task_id": "nav_0359_target_20260124_1319_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_gas_station_20260124_131816",
+  "spawn_point": "rreexXyF13NYSOg9N9rhKg",
+  "spawn_heading": 307.7,
+  "description": "Navigate to Dispetrol 3. Head down the sloping street towards the intersection with the main avenue, facing the red Ambacar building. Turn left at the intersection and proceed straight along the main road, passing the GWM and CAT stores. The destination, Dispetrol 3 gas station, will be on your left.",
+  "ground_truth": {
+    "target_name": "Dispetrol 3",
+    "target_pano_id": "-tPsROZxatboI1DcXB29Ng",
+    "optimal_distance_meters": 158,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "-tPsROZxatboI1DcXB29Ng"
+  ],
+  "max_steps": 34,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "rreexXyF13NYSOg9N9rhKg",
+      "heading": 307.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "Dh3zHiGShV1u39IUJela9A",
+      "heading": 307.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Ex-jgCZ5bYH-InnEKf2MgQ",
+      "heading": 305.8
+    },
+    {
+      "step_index": 3,
+      "pano_id": "NyxXIy7Fn4piGql_B8lf7Q",
+      "heading": 302.8
+    },
+    {
+      "step_index": 4,
+      "pano_id": "wHHlJK9tL3X1U0n7ACD8jA",
+      "heading": 301.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Gw1_hTKpNk89pBgeFFGweA",
+      "heading": 300.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "xvCrgHaFTuNBhRUpLlYeVA",
+      "heading": 334.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "eK7ROldCmZSh-rKLwGPsIw",
+      "heading": 201.4
+    },
+    {
+      "step_index": 8,
+      "pano_id": "6dD9lTnuJxjxadKaDF7h_w",
+      "heading": 203.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "jqmx5UoPO0HVPWIm-5Bb9Q",
+      "heading": 203.2
+    },
+    {
+      "step_index": 10,
+      "pano_id": "NDDp5mSOfiUIvqeGNnIUqQ",
+      "heading": 203.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Zm4nDRp_3IaH4SQyrhcPPw",
+      "heading": 203.2
+    },
+    {
+      "step_index": 12,
+      "pano_id": "xSNt_pP52hU6KB3UfdIDMg",
+      "heading": 203.2
+    },
+    {
+      "step_index": 13,
+      "pano_id": "5b-7tOJa-CY2YnBSDuT5Sw",
+      "heading": 203.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "RhradhcxIgD2JkdcwLiHxw",
+      "heading": 203.2
+    },
+    {
+      "step_index": 15,
+      "pano_id": "ptQYlyi3Ng-bQ5GF0mUv0A",
+      "heading": 203.2
+    },
+    {
+      "step_index": 16,
+      "pano_id": "-tPsROZxatboI1DcXB29Ng",
+      "heading": 203.2
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [64m] -> Turn Left [94m]",
+  "agent_concise_description": "Head down the sloping street towards the intersection with the main avenue, facing the red Ambacar building. Turn left at the intersection and proceed straight along the main road, passing the GWM and CAT stores. The destination, Dispetrol 3 gas station, will be on your left."
+}

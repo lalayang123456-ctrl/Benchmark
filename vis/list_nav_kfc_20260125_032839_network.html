@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_kfc_20260125_032839</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_kfc_20260125_032839</h3>
+        <div>Total Panos: <strong>77</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"8f-IllScn9ZO5kOgQz8LXw": {"lat": 29.32114181150336, "lng": -98.5540092380859, "links": [{"pano_id": "yJtNMOIXwIN2HspBTWqm7g", "heading": 8.844767, "description": ""}, {"pano_id": "wcymBId6bQ59fqZvnREpvw", "heading": 188.82927, "description": ""}]}, "wcymBId6bQ59fqZvnREpvw": {"lat": 29.32102749098462, "lng": -98.55402960484273, "links": [{"pano_id": "AqUAmjRumsr32NuHUD-_Mg", "heading": 187.81323, "description": ""}, {"pano_id": "8f-IllScn9ZO5kOgQz8LXw", "heading": 8.829268, "description": ""}, {"pano_id": "aoSFSpjXo9dInE_EE_V-zA", "heading": 126.06115, "description": ""}, {"pano_id": "pFsdVtiU6MhaLY4HXQ6qkg", "heading": 105.71, "distance": 17.54, "virtual": true}]}, "yJtNMOIXwIN2HspBTWqm7g": {"lat": 29.3212446575403, "lng": -98.55399088286526, "links": [{"pano_id": "8f-IllScn9ZO5kOgQz8LXw", "heading": 188.84477, "description": ""}, {"pano_id": "YQ6N5lKihdPBwNGN-iZeLQ", "heading": 8.824188, "description": ""}]}, "aoSFSpjXo9dInE_EE_V-zA": {"lat": 29.3209849210966, "lng": -98.55396255381204, "links": [{"pano_id": "wcymBId6bQ59fqZvnREpvw", "heading": 306.06116, "description": ""}, {"pano_id": "pFsdVtiU6MhaLY4HXQ6qkg", "heading": 90.09621, "description": ""}, {"pano_id": "AqUAmjRumsr32NuHUD-_Mg", "heading": 235.38, "distance": 9.6, "virtual": true}]}, "jsYHmLpWeLiIqNzWcdnedA": {"lat": 29.32098893805002, "lng": -98.55413143870909, "links": [{"pano_id": "3PuoUxF_2hYNxdvzzfj_UQ", "heading": 273.21555, "description": ""}, {"pano_id": "wcymBId6bQ59fqZvnREpvw", "heading": 66.52885, "description": ""}, {"pano_id": "aoSFSpjXo9dInE_EE_V-zA", "heading": 91.56, "distance": 16.38, "virtual": true}, {"pano_id": "AqUAmjRumsr32NuHUD-_Mg", "heading": 124.84, "distance": 10.33, "virtual": true}, {"pano_id": "so8u2rr4lgsWfiSmBKVFOA", "heading": 155.35, "distance": 17.96, "virtual": true}]}, "AqUAmjRumsr32NuHUD-_Mg": {"lat": 29.32093589123985, "lng": -98.55404402082209, "links": [{"pano_id": "so8u2rr4lgsWfiSmBKVFOA", "heading": 185.3859, "description": ""}, {"pano_id": "wcymBId6bQ59fqZvnREpvw", "heading": 7.813227, "description": ""}, {"pano_id": "aoSFSpjXo9dInE_EE_V-zA", "heading": 55.38, "distance": 9.6, "virtual": true}]}, "YQ6N5lKihdPBwNGN-iZeLQ": {"lat": 29.32136751773357, "lng": -98.55396900747115, "links": [{"pano_id": "yJtNMOIXwIN2HspBTWqm7g", "heading": 188.82419, "description": ""}, {"pano_id": "4LxLA9oWFuJCI9GgmTq8Iw", "heading": 8.850154, "description": ""}]}, "4LxLA9oWFuJCI9GgmTq8Iw": {"lat": 29.32146983055661, "lng": -98.55395073607403, "links": [{"pano_id": "SbKb6jy7po976urWr1fGEQ", "heading": 20.099545, "description": ""}, {"pano_id": "YQ6N5lKihdPBwNGN-iZeLQ", "heading": 188.85016, "description": ""}, {"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 329.99, "distance": 12.77, "virtual": true}, {"pano_id": "9y2TSM_GDYyWuZpQFCCCQg", "heading": 59.07, "distance": 15.25, "virtual": true}]}, "so8u2rr4lgsWfiSmBKVFOA": {"lat": 29.32084210342639, "lng": -98.55405416229758, "links": [{"pano_id": "qPXQsk3FVR21AqHv6jVUbQ", "heading": 184.81241, "description": ""}, {"pano_id": "AqUAmjRumsr32NuHUD-_Mg", "heading": 5.385892, "description": ""}]}, "SEpDhwG633X1vX0c6o3jxA": {"lat": 29.32142779177999, "lng": -98.55403563943841, "links": [{"pano_id": "YQ6N5lKihdPBwNGN-iZeLQ", "heading": 136.05438, "description": ""}, {"pano_id": "mtAMSW4KRB6mAiHbL_1_Xw", "heading": 279.0887, "description": ""}, {"pano_id": "4LxLA9oWFuJCI9GgmTq8Iw", "heading": 60.41, "distance": 9.47, "virtual": true}, {"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 6.69, "distance": 15.84, "virtual": true}]}, "pFsdVtiU6MhaLY4HXQ6qkg": {"lat": 29.32098476428225, "lng": -98.5538554399136, "links": [{"pano_id": "aoSFSpjXo9dInE_EE_V-zA", "heading": 270.0962, "description": ""}, {"pano_id": "sXkrpPuPZtZqSUTag0lPMA", "heading": 89.57798, "description": ""}, {"pano_id": "wcymBId6bQ59fqZvnREpvw", "heading": 285.72, "distance": 17.54, "virtual": true}]}, "qPXQsk3FVR21AqHv6jVUbQ": {"lat": 29.32071537650121, "lng": -98.55406639912104, "links": [{"pano_id": "jzR5YtCPMW1LUlFE9IGQRQ", "heading": 184.55504, "description": ""}, {"pano_id": "so8u2rr4lgsWfiSmBKVFOA", "heading": 4.8124037, "description": ""}]}, "sXkrpPuPZtZqSUTag0lPMA": {"lat": 29.32098545810524, "lng": -98.55374740421794, "links": [{"pano_id": "zqj9OCCxC2Dxv8eaxgnLlA", "heading": 90.11453, "description": ""}, {"pano_id": "pFsdVtiU6MhaLY4HXQ6qkg", "heading": 269.57797, "description": ""}]}, "SbKb6jy7po976urWr1fGEQ": {"lat": 29.32155470066867, "lng": -98.55391511524365, "links": [{"pano_id": "4LxLA9oWFuJCI9GgmTq8Iw", "heading": 200.09955, "description": ""}, {"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 279.3613, "description": ""}, {"pano_id": "9y2TSM_GDYyWuZpQFCCCQg", "heading": 99.42667, "description": ""}]}, "mCRDqLKrDge0gfSIJTt47Q": {"lat": 29.32164202156082, "lng": -98.55391938974242, "links": [{"pano_id": "SbKb6jy7po976urWr1fGEQ", "heading": 177.55609, "description": ""}, {"pano_id": "hXi1GG22znJ8pLZKLpWfxw", "heading": 8.89151, "description": ""}, {"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 229.37, "distance": 12.42, "virtual": true}, {"pano_id": "9y2TSM_GDYyWuZpQFCCCQg", "heading": 138.39, "distance": 15.12, "virtual": true}, {"pano_id": "vMb0uLp79asDq5QcfmN9pA", "heading": 275.72, "distance": 16.0, "virtual": true}]}, "cadqZPJFfUV914XSy-TSYA": {"lat": 29.32156928951573, "lng": -98.55401661370091, "links": [{"pano_id": "vMb0uLp79asDq5QcfmN9pA", "heading": 326.15674, "description": ""}, {"pano_id": "SbKb6jy7po976urWr1fGEQ", "heading": 99.3613, "description": ""}, {"pano_id": "4LxLA9oWFuJCI9GgmTq8Iw", "heading": 149.99, "distance": 12.77, "virtual": true}]}, "jzR5YtCPMW1LUlFE9IGQRQ": {"lat": 29.3206108086596, "lng": -98.55407595390238, "links": [{"pano_id": "qPXQsk3FVR21AqHv6jVUbQ", "heading": 4.555038, "description": ""}, {"pano_id": "9PAbiZZkjb6ydCpe1FTLSw", "heading": 213.88284, "description": "I- 410 Access Rd"}, {"pano_id": "RSVFWgK8yl35A1ZvUlTgfA", "heading": 161.72, "distance": 10.39, "virtual": true}, {"pano_id": "rOkOQfgcAgMQ9eu7YMMBIw", "heading": 125.06, "distance": 16.69, "virtual": true}]}, "zqj9OCCxC2Dxv8eaxgnLlA": {"lat": 29.32098528149564, "lng": -98.55364607374813, "links": [{"pano_id": "7bS05997HPgqlMe1ELEKXA", "heading": 89.753624, "description": ""}, {"pano_id": "sXkrpPuPZtZqSUTag0lPMA", "heading": 270.11453, "description": ""}]}, "9y2TSM_GDYyWuZpQFCCCQg": {"lat": 29.32154032356736, "lng": -98.55381579607565, "links": [{"pano_id": "SbKb6jy7po976urWr1fGEQ", "heading": 279.42667, "description": ""}, {"pano_id": "W4I-EntcOhWRudeQkn-RWQ", "heading": 99.47117, "description": ""}, {"pano_id": "4LxLA9oWFuJCI9GgmTq8Iw", "heading": 239.07, "distance": 15.25, "virtual": true}]}, "vMb0uLp79asDq5QcfmN9pA": {"lat": 29.32165636577198, "lng": -98.55408358096555, "links": [{"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 146.15674, "description": ""}, {"pano_id": "ch1K1OVjfXSXTjy4mCzzqA", "heading": 8.929491, "description": ""}]}, "zVYekwpWgHZQ9yjKuftNgA": {"lat": 29.32158622807706, "lng": -98.55413629991764, "links": [{"pano_id": "cadqZPJFfUV914XSy-TSYA", "heading": 99.219864, "description": ""}, {"pano_id": "yS-h3S9asjkltkDvNyCLmw", "heading": 278.812, "description": ""}, {"pano_id": "vMb0uLp79asDq5QcfmN9pA", "heading": 33.24, "distance": 9.32, "virtual": true}]}, "W4I-EntcOhWRudeQkn-RWQ": {"lat": 29.32152690139703, "lng": -98.55372351737041, "links": [{"pano_id": "9y2TSM_GDYyWuZpQFCCCQg", "heading": 279.47116, "description": ""}, {"pano_id": "L0F6tBOaxEAWYE3xMcKaoQ", "heading": 99.50639, "description": ""}]}, "9PAbiZZkjb6ydCpe1FTLSw": {"lat": 29.3205187468404, "lng": -98.55414686047526, "links": [{"pano_id": "jzR5YtCPMW1LUlFE9IGQRQ", "heading": 33.88285, "description": ""}, {"pano_id": "M1StDSvcJcTIPMqklNHI9A", "heading": 268.38116, "description": "I- 410 Access Rd"}, {"pano_id": "RSVFWgK8yl35A1ZvUlTgfA", "heading": 87.88195, "description": "SW Loop 410"}]}, "7bS05997HPgqlMe1ELEKXA": {"lat": 29.32098565229026, "lng": -98.55354717399923, "links": [{"pano_id": "zqj9OCCxC2Dxv8eaxgnLlA", "heading": 269.75363, "description": ""}, {"pano_id": "MNXKdaZgHQEUzOKubhpSrg", "heading": 78.9682, "description": ""}]}, "M1StDSvcJcTIPMqklNHI9A": {"lat": 29.32051606405656, "lng": -98.55425573488122, "links": [{"pano_id": "cRXlGTV-WGCoTh0dTYlvpQ", "heading": 267.34274, "description": "I- 410 Access Rd"}, {"pano_id": "9PAbiZZkjb6ydCpe1FTLSw", "heading": 88.381165, "description": "I- 410 Access Rd"}]}, "L0F6tBOaxEAWYE3xMcKaoQ": {"lat": 29.32151260851218, "lng": -98.55362562328098, "links": [{"pano_id": "AGtGwTacsKh5_Z82AdyUIw", "heading": 99.44917, "description": ""}, {"pano_id": "W4I-EntcOhWRudeQkn-RWQ", "heading": 279.50638, "description": ""}]}, "RSVFWgK8yl35A1ZvUlTgfA": {"lat": 29.32052211705105, "lng": -98.55404234454527, "links": [{"pano_id": "rOkOQfgcAgMQ9eu7YMMBIw", "heading": 88.47369, "description": "SW Loop 410"}, {"pano_id": "9PAbiZZkjb6ydCpe1FTLSw", "heading": 267.88196, "description": "I- 410 Access Rd"}, {"pano_id": "jzR5YtCPMW1LUlFE9IGQRQ", "heading": 341.72, "distance": 10.39, "virtual": true}]}, "MNXKdaZgHQEUzOKubhpSrg": {"lat": 29.32100727864017, "lng": -98.55341994552907, "links": [{"pano_id": "7bS05997HPgqlMe1ELEKXA", "heading": 258.9682, "description": ""}, {"pano_id": "nV9a-xsaUXpO8WSQW61Yrw", "heading": 20.349752, "description": ""}]}, "ch1K1OVjfXSXTjy4mCzzqA": {"lat": 29.32175263879002, "lng": -98.55406623149331, "links": [{"pano_id": "d2rJswqlCmq_woZx8yi2_A", "heading": 8.864152, "description": ""}, {"pano_id": "vMb0uLp79asDq5QcfmN9pA", "heading": 188.92949, "description": ""}]}, "cRXlGTV-WGCoTh0dTYlvpQ": {"lat": 29.32051157020917, "lng": -98.55436678861274, "links": [{"pano_id": "fGsF7FLX6wQ4p5n72cQs3Q", "heading": 265.22458, "description": "I- 410 Access Rd"}, {"pano_id": "M1StDSvcJcTIPMqklNHI9A", "heading": 87.34275, "description": "I- 410 Access Rd"}]}, "d2rJswqlCmq_woZx8yi2_A": {"lat": 29.3218440100686, "lng": -98.55404988779121, "links": [{"pano_id": "7RFOJl6nquDs0nAEXOm4nA", "heading": 8.925405, "description": ""}, {"pano_id": "ch1K1OVjfXSXTjy4mCzzqA", "heading": 188.86415, "description": ""}]}, "AGtGwTacsKh5_Z82AdyUIw": {"lat": 29.32149834245074, "lng": -98.55352731025168, "links": [{"pano_id": "L0F6tBOaxEAWYE3xMcKaoQ", "heading": 279.44916, "description": ""}, {"pano_id": "JUJqY19tJXe4zNcksfOeNA", "heading": 99.532524, "description": ""}]}, "rOkOQfgcAgMQ9eu7YMMBIw": {"lat": 29.32052460942059, "lng": -98.5539350629066, "links": [{"pano_id": "RSVFWgK8yl35A1ZvUlTgfA", "heading": 268.4737, "description": "SW Loop 410"}, {"pano_id": "-oBRJXn0egu47H7VUAuyqA", "heading": 88.44908, "description": "TX-16"}, {"pano_id": "jzR5YtCPMW1LUlFE9IGQRQ", "heading": 305.06, "distance": 16.69, "virtual": true}]}, "nV9a-xsaUXpO8WSQW61Yrw": {"lat": 29.32109751542724, "lng": -98.55338155911559, "links": [{"pano_id": "MNXKdaZgHQEUzOKubhpSrg", "heading": 200.34975, "description": ""}, {"pano_id": "rUy2iAbhBUnnjzj_iLjwEA", "heading": 8.942405, "description": ""}]}, "fGsF7FLX6wQ4p5n72cQs3Q": {"lat": 29.32050338965499, "lng": -98.55447909972183, "links": [{"pano_id": "Jp1VIQvcdc9yKmiGQN1OAg", "heading": 264.63165, "description": "SW Loop 410"}, {"pano_id": "cRXlGTV-WGCoTh0dTYlvpQ", "heading": 85.22458, "description": "I- 410 Access Rd"}]}, "-oBRJXn0egu47H7VUAuyqA": {"lat": 29.32052711428493, "lng": -98.55382895481027, "links": [{"pano_id": "rOkOQfgcAgMQ9eu7YMMBIw", "heading": 268.4491, "description": "SW Loop 410"}, {"pano_id": "TH0ZSAUV_x3viOob5BAzkw", "heading": 88.56901, "description": "TX-16"}]}, "rUy2iAbhBUnnjzj_iLjwEA": {"lat": 29.32118435872355, "lng": -98.5533658860659, "links": [{"pano_id": "nV9a-xsaUXpO8WSQW61Yrw", "heading": 188.9424, "description": ""}, {"pano_id": "eJ4ScewIKuVazvXnu7C0fg", "heading": 10.800342, "description": ""}]}, "7RFOJl6nquDs0nAEXOm4nA": {"lat": 29.32192916041148, "lng": -98.5540345498586, "links": [{"pano_id": "d2rJswqlCmq_woZx8yi2_A", "heading": 188.9254, "description": ""}, {"pano_id": "d6cPXjvTyw9q3rcZl8KPHw", "heading": 8.887089, "description": ""}]}, "JUJqY19tJXe4zNcksfOeNA": {"lat": 29.3214815307782, "lng": -98.553412486159, "links": [{"pano_id": "a9H1ZuwBWz6f7kMlaDcobw", "heading": 111.49326, "description": ""}, {"pano_id": "AGtGwTacsKh5_Z82AdyUIw", "heading": 279.53253, "description": ""}, {"pano_id": "JrOlosWQ3B7pdp44keK7bA", "heading": 150.4, "distance": 17.05, "virtual": true}, {"pano_id": "GWqoBiXA4rK36-_PCmL5aQ", "heading": 62.52, "distance": 14.02, "virtual": true}]}, "a9H1ZuwBWz6f7kMlaDcobw": {"lat": 29.32144337479338, "lng": -98.55330135001311, "links": [{"pano_id": "JrOlosWQ3B7pdp44keK7bA", "heading": 192.5577, "description": ""}, {"pano_id": "JUJqY19tJXe4zNcksfOeNA", "heading": 291.49326, "description": ""}, {"pano_id": "GWqoBiXA4rK36-_PCmL5aQ", "heading": 8.837527, "description": ""}]}, "d6cPXjvTyw9q3rcZl8KPHw": {"lat": 29.32201608579545, "lng": -98.55401896048765, "links": [{"pano_id": "QyYvpvekZ-hBLUMsMAcvOQ", "heading": 8.885114, "description": ""}, {"pano_id": "7RFOJl6nquDs0nAEXOm4nA", "heading": 188.88708, "description": ""}]}, "TH0ZSAUV_x3viOob5BAzkw": {"lat": 29.32052941624564, "lng": -98.55372326592996, "links": [{"pano_id": "ITo20Npp4MzdM6OlX4RwFQ", "heading": 88.54953, "description": "TX-16"}, {"pano_id": "-oBRJXn0egu47H7VUAuyqA", "heading": 268.569, "description": "TX-16"}]}, "Jp1VIQvcdc9yKmiGQN1OAg": {"lat": 29.32049402981229, "lng": -98.55459333872969, "links": [{"pano_id": "fGsF7FLX6wQ4p5n72cQs3Q", "heading": 84.63167, "description": "I- 410 Access Rd"}, {"pano_id": "li_p1Lvly5VNkIzw5i0WBQ", "heading": 263.1544, "description": "SW Loop 410"}]}, "eJ4ScewIKuVazvXnu7C0fg": {"lat": 29.3212663342863, "lng": -98.5533479500665, "links": [{"pano_id": "JrOlosWQ3B7pdp44keK7bA", "heading": 13.350938, "description": ""}, {"pano_id": "rUy2iAbhBUnnjzj_iLjwEA", "heading": 190.80034, "description": ""}]}, "QyYvpvekZ-hBLUMsMAcvOQ": {"lat": 29.32210630284587, "lng": -98.55400278442335, "links": [{"pano_id": "BdlDiPDVR-roJQHDW54IHw", "heading": 8.913703, "description": ""}, {"pano_id": "d6cPXjvTyw9q3rcZl8KPHw", "heading": 188.88512, "description": ""}]}, "ITo20Npp4MzdM6OlX4RwFQ": {"lat": 29.32053171994136, "lng": -98.55361891821099, "links": [{"pano_id": "OTDbjSc8y78QQEv2bGcgyA", "heading": 114.65552, "description": ""}, {"pano_id": "TH0ZSAUV_x3viOob5BAzkw", "heading": 268.54953, "description": "TX-16"}, {"pano_id": "uTArPLq0UfSf5RnxDCzsXQ", "heading": 88.62603, "description": "SW Loop 410"}]}, "li_p1Lvly5VNkIzw5i0WBQ": {"lat": 29.32048173892208, "lng": -98.5547107628637, "links": [{"pano_id": "Jp1VIQvcdc9yKmiGQN1OAg", "heading": 83.1544, "description": "SW Loop 410"}, {"pano_id": "ZV-15PcMoQSCe5EF35mdFw", "heading": 263.1143, "description": "SW Loop 410"}]}, "JrOlosWQ3B7pdp44keK7bA": {"lat": 29.32134823789368, "lng": -98.55332565579278, "links": [{"pano_id": "eJ4ScewIKuVazvXnu7C0fg", "heading": 193.35094, "description": ""}, {"pano_id": "a9H1ZuwBWz6f7kMlaDcobw", "heading": 12.557699, "description": ""}, {"pano_id": "JUJqY19tJXe4zNcksfOeNA", "heading": 330.4, "distance": 17.05, "virtual": true}]}, "GWqoBiXA4rK36-_PCmL5aQ": {"lat": 29.32153972514446, "lng": -98.55328416834598, "links": [{"pano_id": "a9H1ZuwBWz6f7kMlaDcobw", "heading": 188.83752, "description": ""}, {"pano_id": "aN56wG5uaK8A_p7uNvjTWQ", "heading": 7.5255876, "description": ""}, {"pano_id": "JUJqY19tJXe4zNcksfOeNA", "heading": 242.52, "distance": 14.02, "virtual": true}]}, "-k15JVHy_Esn2RSGjRRrLQ": {"lat": 29.32145180092506, "lng": -98.55321259207703, "links": [{"pano_id": "r4nCADOrt2IFR7_qb9YAPA", "heading": 99.7728, "description": ""}, {"pano_id": "a9H1ZuwBWz6f7kMlaDcobw", "heading": 263.78592, "description": ""}, {"pano_id": "JrOlosWQ3B7pdp44keK7bA", "heading": 223.59, "distance": 15.9, "virtual": true}, {"pano_id": "GWqoBiXA4rK36-_PCmL5aQ", "heading": 324.63, "distance": 11.99, "virtual": true}]}, "uTArPLq0UfSf5RnxDCzsXQ": {"lat": 29.32053392838302, "lng": -98.55351331343691, "links": [{"pano_id": "ITo20Npp4MzdM6OlX4RwFQ", "heading": 268.62604, "description": "TX-16"}, {"pano_id": "nHbDPmS5cYMO0LT9giMhXA", "heading": 88.6126, "description": "SW Loop 410"}, {"pano_id": "OTDbjSc8y78QQEv2bGcgyA", "heading": 141.14, "distance": 10.08, "virtual": true}]}, "ZV-15PcMoQSCe5EF35mdFw": {"lat": 29.32046911052577, "lng": -98.55483070162099, "links": [{"pano_id": "li_p1Lvly5VNkIzw5i0WBQ", "heading": 83.11428, "description": "SW Loop 410"}, {"pano_id": "rl23tjp5twtaO-jHY_SPGw", "heading": 263.19772, "description": "SW Loop 410"}]}, "aN56wG5uaK8A_p7uNvjTWQ": {"lat": 29.32162933590135, "lng": -98.55327059064105, "links": [{"pano_id": "By5JU1sN79fdObkEkeD2QQ", "heading": 8.143118, "description": ""}, {"pano_id": "GWqoBiXA4rK36-_PCmL5aQ", "heading": 187.52559, "description": ""}]}, "OTDbjSc8y78QQEv2bGcgyA": {"lat": 29.32046336005265, "lng": -98.55344810675307, "links": [{"pano_id": "ITo20Npp4MzdM6OlX4RwFQ", "heading": 294.65552, "description": "TX-16"}, {"pano_id": "uTArPLq0UfSf5RnxDCzsXQ", "heading": 321.14, "distance": 10.08, "virtual": true}, {"pano_id": "nHbDPmS5cYMO0LT9giMhXA", "heading": 26.1, "distance": 9.01, "virtual": true}, {"pano_id": "CtUnR6VqIzi7HE_cPBn3ow", "heading": 59.69, "distance": 16.52, "virtual": true}]}, "BdlDiPDVR-roJQHDW54IHw": {"lat": 29.32219296429143, "lng": -98.55398719505892, "links": [{"pano_id": "qroNzq45nklzJjCgIMZ9rQ", "heading": 8.862341, "description": ""}, {"pano_id": "QyYvpvekZ-hBLUMsMAcvOQ", "heading": 188.9137, "description": ""}, {"pano_id": "6f-q0RQCQOtB6a9Tl_yuxA", "heading": 340.55, "distance": 17.86, "virtual": true}]}, "nHbDPmS5cYMO0LT9giMhXA": {"lat": 29.32053616902304, "lng": -98.55340720593118, "links": [{"pano_id": "CtUnR6VqIzi7HE_cPBn3ow", "heading": 88.664825, "description": "SW Loop 410"}, {"pano_id": "uTArPLq0UfSf5RnxDCzsXQ", "heading": 268.6126, "description": "SW Loop 410"}, {"pano_id": "OTDbjSc8y78QQEv2bGcgyA", "heading": 206.1, "distance": 9.01, "virtual": true}]}, "qroNzq45nklzJjCgIMZ9rQ": {"lat": 29.32227873007294, "lng": -98.553971857139, "links": [{"pano_id": "6f-q0RQCQOtB6a9Tl_yuxA", "heading": 314.49512, "description": ""}, {"pano_id": "BdlDiPDVR-roJQHDW54IHw", "heading": 188.86234, "description": ""}]}, "rl23tjp5twtaO-jHY_SPGw": {"lat": 29.32045646229205, "lng": -98.55495231686501, "links": [{"pano_id": "ZV-15PcMoQSCe5EF35mdFw", "heading": 83.19774, "description": "SW Loop 410"}, {"pano_id": "3x7omNqY7qhixO2pRbU1Lw", "heading": 263.23788, "description": "SW Loop 410"}]}, "dtBiuMNa_V57F-leZ5tcpw": {"lat": 29.320418431107, "lng": -98.55338080479763, "links": [{"pano_id": "OTDbjSc8y78QQEv2bGcgyA", "heading": 307.43976, "description": ""}, {"pano_id": "2MWTOG3wk9QUWQUf5Q4I9A", "heading": 140.52141, "description": ""}, {"pano_id": "nHbDPmS5cYMO0LT9giMhXA", "heading": 348.94, "distance": 13.34, "virtual": true}, {"pano_id": "CtUnR6VqIzi7HE_cPBn3ow", "heading": 30.12, "distance": 15.41, "virtual": true}]}, "By5JU1sN79fdObkEkeD2QQ": {"lat": 29.32171768660321, "lng": -98.55325609099589, "links": [{"pano_id": "VmyCZjgCUsWiGIjw2kJrbg", "heading": 8.131066, "description": ""}, {"pano_id": "aN56wG5uaK8A_p7uNvjTWQ", "heading": 188.14311, "description": ""}]}, "CtUnR6VqIzi7HE_cPBn3ow": {"lat": 29.32053832700147, "lng": -98.55330101476103, "links": [{"pano_id": "nHbDPmS5cYMO0LT9giMhXA", "heading": 268.66483, "description": "SW Loop 410"}, {"pano_id": "R-1dbKdvonNcJRc2HTMoyQ", "heading": 90.574715, "description": "SW Loop 410"}, {"pano_id": "OTDbjSc8y78QQEv2bGcgyA", "heading": 239.69, "distance": 16.52, "virtual": true}]}, "6f-q0RQCQOtB6a9Tl_yuxA": {"lat": 29.32234442601908, "lng": -98.55404854676965, "links": [{"pano_id": "7f1laOXNrBu3WlETete2ug", "heading": 284.8756, "description": ""}, {"pano_id": "qroNzq45nklzJjCgIMZ9rQ", "heading": 134.49513, "description": ""}, {"pano_id": "BdlDiPDVR-roJQHDW54IHw", "heading": 160.55, "distance": 17.86, "virtual": true}]}, "VmyCZjgCUsWiGIjw2kJrbg": {"lat": 29.32180514701906, "lng": -98.5532417589794, "links": [{"pano_id": "By5JU1sN79fdObkEkeD2QQ", "heading": 188.13107, "description": ""}, {"pano_id": "eKZMpjPSZ9ELyfqPKE3BRg", "heading": 8.092315, "description": ""}]}, "3x7omNqY7qhixO2pRbU1Lw": {"lat": 29.32044369011791, "lng": -98.55507586004879, "links": [{"pano_id": "rl23tjp5twtaO-jHY_SPGw", "heading": 83.2379, "description": "SW Loop 410"}, {"pano_id": "6FHwHmtZ9GdORQaIJIGJKQ", "heading": 263.18945, "description": "SW Loop 410"}]}, "eKZMpjPSZ9ELyfqPKE3BRg": {"lat": 29.32188789236563, "lng": -98.55322826509502, "links": [{"pano_id": "fD1aQcrnlzwH12hh2TxmUg", "heading": 33.749233, "description": ""}, {"pano_id": "VmyCZjgCUsWiGIjw2kJrbg", "heading": 188.09232, "description": ""}, {"pano_id": "XbKMmFM4Fl9dN6aUQ6PhHQ", "heading": 350.4356, "description": ""}]}, "6FHwHmtZ9GdORQaIJIGJKQ": {"lat": 29.32043060733509, "lng": -98.55520149881197, "links": [{"pano_id": "Z1pVeGeVihTyBaMb2oGI9w", "heading": 263.09445, "description": "SW Loop 410"}, {"pano_id": "3x7omNqY7qhixO2pRbU1Lw", "heading": 83.18944, "description": "SW Loop 410"}]}, "R-1dbKdvonNcJRc2HTMoyQ": {"lat": 29.32053738872489, "lng": -98.55319373417198, "links": [{"pano_id": "w9BAJnCgZntb2H0xep9b9Q", "heading": 91.017265, "description": "I- 410 Access Rd"}, {"pano_id": "CtUnR6VqIzi7HE_cPBn3ow", "heading": 270.5747, "description": "SW Loop 410"}, {"pano_id": "wt_TtaV-_CMfPvyD7Z08QQ", "heading": 135.94, "distance": 13.71, "virtual": true}]}, "7f1laOXNrBu3WlETete2ug": {"lat": 29.32236632115284, "lng": -98.55414308884738, "links": [{"pano_id": "vUsjkivQlkcldsk7T55R_Q", "heading": 284.83435, "description": ""}, {"pano_id": "6f-q0RQCQOtB6a9Tl_yuxA", "heading": 104.8756, "description": ""}]}, "1TLlwcJDwgq8zfquJGEDtg": {"lat": 29.32231539517082, "lng": -98.55389667623217, "links": [{"pano_id": "6f-q0RQCQOtB6a9Tl_yuxA", "heading": 282.36618, "description": ""}, {"pano_id": "RG0saaKtxbfxF6v0KPbC_w", "heading": 133.56601, "description": ""}, {"pano_id": "BdlDiPDVR-roJQHDW54IHw", "heading": 212.81, "distance": 16.2, "virtual": true}, {"pano_id": "qroNzq45nklzJjCgIMZ9rQ", "heading": 240.78, "distance": 8.35, "virtual": true}]}, "fD1aQcrnlzwH12hh2TxmUg": {"lat": 29.32203422607847, "lng": -98.55311612346556, "links": [{"pano_id": "s4C1uyCU4eVa2x6kbWYMuw", "heading": 24.85802, "description": ""}, {"pano_id": "XbKMmFM4Fl9dN6aUQ6PhHQ", "heading": 254.57747, "description": ""}, {"pano_id": "eKZMpjPSZ9ELyfqPKE3BRg", "heading": 213.74924, "description": ""}]}, "vUsjkivQlkcldsk7T55R_Q": {"lat": 29.32238999142609, "lng": -98.55424559337875, "links": [{"pano_id": "7f1laOXNrBu3WlETete2ug", "heading": 104.83434, "description": ""}]}, "XbKMmFM4Fl9dN6aUQ6PhHQ": {"lat": 29.32200195137543, "lng": -98.55325030790118, "links": [{"pano_id": "fD1aQcrnlzwH12hh2TxmUg", "heading": 74.57747, "description": ""}, {"pano_id": "eKZMpjPSZ9ELyfqPKE3BRg", "heading": 170.43561, "description": ""}]}, "w9BAJnCgZntb2H0xep9b9Q": {"lat": 29.32053554357943, "lng": -98.55307455232072, "links": [{"pano_id": "wt_TtaV-_CMfPvyD7Z08QQ", "heading": 191.84775, "description": "Poteet Jourdanton Fwy Acc Rd"}, {"pano_id": "R-1dbKdvonNcJRc2HTMoyQ", "heading": 271.01727, "description": "SW Loop 410"}, {"pano_id": "UNAYATBMBFr_FSKTcPeTlw", "heading": 86.35271, "description": "I- 410 Access Rd"}]}, "Z1pVeGeVihTyBaMb2oGI9w": {"lat": 29.32041713675656, "lng": -98.55532906553448, "links": [{"pano_id": "6FHwHmtZ9GdORQaIJIGJKQ", "heading": 83.09447, "description": "SW Loop 410"}]}, "UNAYATBMBFr_FSKTcPeTlw": {"lat": 29.32054007125061, "lng": -98.55299308635303, "links": [{"pano_id": "w9BAJnCgZntb2H0xep9b9Q", "heading": 266.35272, "description": "I- 410 Access Rd"}, {"pano_id": "wt_TtaV-_CMfPvyD7Z08QQ", "heading": 224.35, "distance": 14.19, "virtual": true}]}, "s4C1uyCU4eVa2x6kbWYMuw": {"lat": 29.32211198626645, "lng": -98.55307480375902, "links": [{"pano_id": "fD1aQcrnlzwH12hh2TxmUg", "heading": 204.85802, "description": ""}]}, "wt_TtaV-_CMfPvyD7Z08QQ": {"lat": 29.32044880597337, "lng": -98.55309542170308, "links": [{"pano_id": "w9BAJnCgZntb2H0xep9b9Q", "heading": 11.847755, "description": "I- 410 Access Rd"}, {"pano_id": "R-1dbKdvonNcJRc2HTMoyQ", "heading": 315.94, "distance": 13.71, "virtual": true}, {"pano_id": "UNAYATBMBFr_FSKTcPeTlw", "heading": 44.35, "distance": 14.19, "virtual": true}]}};
+        const targetPanos = ["8f-IllScn9ZO5kOgQz8LXw"];
+        const spawnPoints = ["wt_TtaV-_CMfPvyD7Z08QQ", "Z1pVeGeVihTyBaMb2oGI9w", "6FHwHmtZ9GdORQaIJIGJKQ", "s4C1uyCU4eVa2x6kbWYMuw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

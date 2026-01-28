@@ -1,0 +1,58 @@
+{
+  "task_id": "nav_0989_target_20260125_0328_9",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260125_032803",
+  "spawn_point": "EsGCwturJIFdhNec7d74Xg",
+  "spawn_heading": 326.1,
+  "description": "Navigate to Pratap Nagar Sector 5. Head northwest for 56m. Total distance: approximately 56 m.",
+  "ground_truth": {
+    "target_name": "Pratap Nagar Sector 5",
+    "target_pano_id": "9lO70urHAjVJfOhFBojvaA",
+    "optimal_distance_meters": 56,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "9lO70urHAjVJfOhFBojvaA"
+  ],
+  "max_steps": 14,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "EsGCwturJIFdhNec7d74Xg",
+      "heading": 326.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "0qNCFC8DDno01C11cSFFBg",
+      "heading": 326.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "8aujVPCRrqP5ktwfuK9dyQ",
+      "heading": 323.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "-oKhbWUhqV7qq8x97x2l5Q",
+      "heading": 322.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "nJRpQVJlMkFMHWeEHveFPQ",
+      "heading": 323.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "xYx0snmv1JZxJmtxFa4m5w",
+      "heading": 323.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "9lO70urHAjVJfOhFBojvaA",
+      "heading": 323.0
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

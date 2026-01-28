@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_mcdonalds_20260124_115755</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_mcdonalds_20260124_115755</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"e6_tB83x0efTGn5x3WvCDQ": {"lat": -25.96463550947645, "lng": 28.21688048236127, "links": [{"pano_id": "Xn_DgaIHG2K9tSv6RRSWfQ", "heading": 1.1577739, "description": "Southward Dr"}, {"pano_id": "UbCh0NS-8CjLFC2ZG4PQwQ", "heading": 181.12704, "description": "Southward Dr"}]}, "Xn_DgaIHG2K9tSv6RRSWfQ": {"lat": -25.9645441967948, "lng": 28.21688253494228, "links": [{"pano_id": "e6_tB83x0efTGn5x3WvCDQ", "heading": 181.15778, "description": "Southward Dr"}, {"pano_id": "JCS6K58ENFRSIP9td9hq7w", "heading": 359.3309, "description": "Southward Dr"}]}, "UbCh0NS-8CjLFC2ZG4PQwQ": {"lat": -25.96472523355486, "lng": 28.2168785190229, "links": [{"pano_id": "R4O-8czrC05owSRDqKjUlw", "heading": 181.1536, "description": "Southward Dr"}, {"pano_id": "e6_tB83x0efTGn5x3WvCDQ", "heading": 1.1270506, "description": "Southward Dr"}]}, "JCS6K58ENFRSIP9td9hq7w": {"lat": -25.96445488452447, "lng": 28.2168813747878, "links": [{"pano_id": "Xn_DgaIHG2K9tSv6RRSWfQ", "heading": 179.33089, "description": "Southward Dr"}, {"pano_id": "gkauTLmbDrpdukkFr3KVkA", "heading": 356.29755, "description": "Southward Dr"}]}, "R4O-8czrC05owSRDqKjUlw": {"lat": -25.96481687665823, "lng": 28.21687646644184, "links": [{"pano_id": "UbCh0NS-8CjLFC2ZG4PQwQ", "heading": 1.1535988, "description": "Southward Dr"}, {"pano_id": "rcNr9lfW1CTWvDNUyIUrQg", "heading": 181.1154, "description": "Southward Dr"}]}, "gkauTLmbDrpdukkFr3KVkA": {"lat": -25.96436561027553, "lng": 28.2168749493167, "links": [{"pano_id": "JCS6K58ENFRSIP9td9hq7w", "heading": 176.29756, "description": "Southward Dr"}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 343.42352, "description": "Southward Dr"}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 343.42, "distance": 13.16, "virtual": true}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 339.78, "distance": 12.75, "virtual": true}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 5.91, "distance": 15.26, "virtual": true}]}, "rcNr9lfW1CTWvDNUyIUrQg": {"lat": -25.96491165919614, "lng": 28.21687441386077, "links": [{"pano_id": "O5YhmvaTasOjVQZ104Yjog", "heading": 190.41905, "description": "Southward Dr"}, {"pano_id": "R4O-8czrC05owSRDqKjUlw", "heading": 1.1153977, "description": "Southward Dr"}]}, "jL58H6qhY-61-verc_BZDg": {"lat": -25.96427827686384, "lng": 28.21684603469381, "links": [{"pano_id": "gkauTLmbDrpdukkFr3KVkA", "heading": 163.42352, "description": "Southward Dr"}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 343.39368, "description": "Southward Dr"}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 326.05, "distance": 2.72, "virtual": true}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 340.57, "distance": 13.44, "virtual": true}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 39.21, "distance": 7.06, "virtual": true}, {"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 284.77, "distance": 10.8, "virtual": true}, {"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 49.83, "distance": 16.7, "virtual": true}]}, "O5YhmvaTasOjVQZ104Yjog": {"lat": -25.96500154673562, "lng": 28.21685602987265, "links": [{"pano_id": "D-XRihe_j0gtoGJUw07ubw", "heading": 196.75826, "description": "Southward Dr"}, {"pano_id": "rcNr9lfW1CTWvDNUyIUrQg", "heading": 10.419049, "description": "Southward Dr"}, {"pano_id": "z9Zn0bX0mMi7nQacKL7gqA", "heading": 198.33, "distance": 13.71, "virtual": true}, {"pano_id": "XLRU8ZQVlonE8IjM2tfSig", "heading": 198.25, "distance": 13.36, "virtual": true}]}, "D-XRihe_j0gtoGJUw07ubw": {"lat": -25.96508974215388, "lng": 28.21682649054782, "links": [{"pano_id": "XLRU8ZQVlonE8IjM2tfSig", "heading": 203.14754, "description": ""}, {"pano_id": "O5YhmvaTasOjVQZ104Yjog", "heading": 16.758253, "description": "Southward Dr"}, {"pano_id": "z9Zn0bX0mMi7nQacKL7gqA", "heading": 202.94582, "description": "Southward Dr"}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 201.58, "distance": 13.24, "virtual": true}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 263.22, "distance": 13.8, "virtual": true}]}, "zV1zTsoNBQud0loREc7D1g": {"lat": -25.96425218046086, "lng": 28.21683737815454, "links": [{"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 225.09735, "description": ""}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 64.286354, "description": "Baksteen Rd"}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 339.75555, "description": "Southward Dr"}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 163.39368, "description": "Southward Dr"}, {"pano_id": "gkauTLmbDrpdukkFr3KVkA", "heading": 163.42, "distance": 13.16, "virtual": true}, {"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 269.12, "distance": 9.58, "virtual": true}, {"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 59.99, "distance": 15.73, "virtual": true}]}, "ryMQst7HcEIJx5B04xOnoQ": {"lat": -25.9642580177586, "lng": 28.21683086343912, "links": [{"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 273.21634, "description": ""}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 45.09735, "description": "Southward Dr"}, {"pano_id": "gkauTLmbDrpdukkFr3KVkA", "heading": 159.78, "distance": 12.75, "virtual": true}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 146.05, "distance": 2.72, "virtual": true}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 344.18, "distance": 10.83, "virtual": true}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 61.73, "distance": 6.79, "virtual": true}, {"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 59.18, "distance": 16.62, "virtual": true}]}, "z9Zn0bX0mMi7nQacKL7gqA": {"lat": -25.96511854904989, "lng": 28.21681292565979, "links": [{"pano_id": "D-XRihe_j0gtoGJUw07ubw", "heading": 22.94581, "description": "Southward Dr"}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 201.09486, "description": "Southward Dr"}, {"pano_id": "O5YhmvaTasOjVQZ104Yjog", "heading": 18.33, "distance": 13.71, "virtual": true}, {"pano_id": "XLRU8ZQVlonE8IjM2tfSig", "heading": 21.12, "distance": 0.35, "virtual": true}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 277.26, "distance": 12.45, "virtual": true}]}, "88bqOCuE58bBCfwyFDOsJw": {"lat": -25.96416428941288, "lng": 28.21680132410996, "links": [{"pano_id": "ouhiyH2a631VXnT7Xyht2Q", "heading": 333.41776, "description": "Southward Dr"}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 159.75555, "description": "Southward Dr"}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 160.57, "distance": 13.44, "virtual": true}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 164.18, "distance": 10.83, "virtual": true}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 128.91, "distance": 11.48, "virtual": true}, {"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 211.07, "distance": 11.58, "virtual": true}, {"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 96.31, "distance": 17.33, "virtual": true}]}, "XLRU8ZQVlonE8IjM2tfSig": {"lat": -25.96511564140876, "lng": 28.21681417505742, "links": [{"pano_id": "D-XRihe_j0gtoGJUw07ubw", "heading": 23.14754, "description": "Southward Dr"}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 275.7223, "description": ""}, {"pano_id": "O5YhmvaTasOjVQZ104Yjog", "heading": 18.25, "distance": 13.36, "virtual": true}, {"pano_id": "z9Zn0bX0mMi7nQacKL7gqA", "heading": 201.12, "distance": 0.35, "virtual": true}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 201.1, "distance": 10.11, "virtual": true}]}, "Y4E6zZE5a5Ys-d7jXDc5qw": {"lat": -25.96422911350652, "lng": 28.21689065602339, "links": [{"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 244.28636, "description": "Southward Dr"}, {"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 57.419617, "description": "Baksteen Rd"}, {"pano_id": "gkauTLmbDrpdukkFr3KVkA", "heading": 185.91, "distance": 15.26, "virtual": true}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 219.21, "distance": 7.06, "virtual": true}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 241.73, "distance": 6.79, "virtual": true}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 308.91, "distance": 11.48, "virtual": true}, {"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 259.69, "distance": 15.15, "virtual": true}]}, "ouhiyH2a631VXnT7Xyht2Q": {"lat": -25.96408459537288, "lng": 28.21675697048538, "links": [{"pano_id": "cOAhAa740tFiBv-vIETkZw", "heading": 330.14532, "description": "Southward Dr"}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 153.41774, "description": "Southward Dr"}]}, "9t2MsKym7Jwl3kG9yR1hLA": {"lat": -25.96425350445304, "lng": 28.21674153149466, "links": [{"pano_id": "KKzu_Kfjrxb5DzlS6Ac5sg", "heading": 273.19952, "description": ""}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 93.21634, "description": ""}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 104.77, "distance": 10.8, "virtual": true}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 89.12, "distance": 9.58, "virtual": true}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 31.07, "distance": 11.58, "virtual": true}, {"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 79.69, "distance": 15.15, "virtual": true}]}, "cVRXdxy-wHCIybtPnonnwg": {"lat": -25.96520049640613, "lng": 28.21677776403716, "links": [{"pano_id": "z9Zn0bX0mMi7nQacKL7gqA", "heading": 21.09487, "description": "Southward Dr"}, {"pano_id": "Q0iaAMe0FWkRXnk8XLeJmQ", "heading": 203.10983, "description": "Southward Dr"}, {"pano_id": "D-XRihe_j0gtoGJUw07ubw", "heading": 21.58, "distance": 13.24, "virtual": true}, {"pano_id": "XLRU8ZQVlonE8IjM2tfSig", "heading": 21.1, "distance": 10.11, "virtual": true}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 320.42, "distance": 13.86, "virtual": true}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 231.93, "distance": 11.49, "virtual": true}, {"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 288.69, "distance": 16.19, "virtual": true}]}, "LQI2u1aIFOkDXsaXmQedyw": {"lat": -25.96418142884367, "lng": 28.21697365166565, "links": [{"pano_id": "Y4E6zZE5a5Ys-d7jXDc5qw", "heading": 237.41962, "description": "Baksteen Rd"}, {"pano_id": "uuizKICHK8CNOKPES0ax3w", "heading": 57.42856, "description": "Baksteen Rd"}, {"pano_id": "jL58H6qhY-61-verc_BZDg", "heading": 229.83, "distance": 16.7, "virtual": true}, {"pano_id": "zV1zTsoNBQud0loREc7D1g", "heading": 239.99, "distance": 15.73, "virtual": true}, {"pano_id": "ryMQst7HcEIJx5B04xOnoQ", "heading": 239.18, "distance": 16.62, "virtual": true}, {"pano_id": "88bqOCuE58bBCfwyFDOsJw", "heading": 276.31, "distance": 17.33, "virtual": true}]}, "HonRMthEnopy81bovxmJJQ": {"lat": -25.96510440145967, "lng": 28.21668941373542, "links": [{"pano_id": "XLRU8ZQVlonE8IjM2tfSig", "heading": 95.7223, "description": ""}, {"pano_id": "VrIh1e5WBxl_N6lzhgP8qQ", "heading": 271.07474, "description": ""}, {"pano_id": "D-XRihe_j0gtoGJUw07ubw", "heading": 83.22, "distance": 13.8, "virtual": true}, {"pano_id": "z9Zn0bX0mMi7nQacKL7gqA", "heading": 97.26, "distance": 12.45, "virtual": true}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 140.42, "distance": 13.86, "virtual": true}, {"pano_id": "3aVHItuaQICDvPGoRirMJw", "heading": 270.63, "distance": 13.12, "virtual": true}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 180.69, "distance": 17.77, "virtual": true}, {"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 229.8, "distance": 8.52, "virtual": true}]}, "Q0iaAMe0FWkRXnk8XLeJmQ": {"lat": -25.96528736066838, "lng": 28.21673653390199, "links": [{"pano_id": "ASQWDlMIzYlV2h_52uvjCg", "heading": 205.09883, "description": "Southward Dr"}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 23.109827, "description": "Southward Dr"}, {"pano_id": "YhhCJJVEvOQn2hD9JVo2ag", "heading": 205.34, "distance": 10.34, "virtual": true}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 297.58, "distance": 5.56, "virtual": true}]}, "KKzu_Kfjrxb5DzlS6Ac5sg": {"lat": -25.96424804152209, "lng": 28.21663283382138, "links": [{"pano_id": "9t2MsKym7Jwl3kG9yR1hLA", "heading": 93.19952, "description": ""}]}, "VrIh1e5WBxl_N6lzhgP8qQ": {"lat": -25.96510233030093, "lng": 28.21656661566494, "links": [{"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 91.074745, "description": ""}, {"pano_id": "pSDJ-qzGhBPSkOiDW6sztQ", "heading": 261.89957, "description": ""}, {"pano_id": "3aVHItuaQICDvPGoRirMJw", "heading": 264.09, "distance": 0.84, "virtual": true}, {"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 134.77, "distance": 8.13, "virtual": true}]}, "uuizKICHK8CNOKPES0ax3w": {"lat": -25.96413242792121, "lng": 28.21705896757447, "links": [{"pano_id": "LQI2u1aIFOkDXsaXmQedyw", "heading": 237.42856, "description": "Baksteen Rd"}, {"pano_id": "tBkSZXng31z90pdcc2FHfA", "heading": 57.43038, "description": "Baksteen Rd"}]}, "cOAhAa740tFiBv-vIETkZw": {"lat": -25.96400757141815, "lng": 28.21670779774133, "links": [{"pano_id": "IPX2Q4cMKNy-kH2chj5E1g", "heading": 330.2093, "description": "Southward Dr"}, {"pano_id": "ouhiyH2a631VXnT7Xyht2Q", "heading": 150.14532, "description": "Southward Dr"}]}, "pSDJ-qzGhBPSkOiDW6sztQ": {"lat": -25.96510969601758, "lng": 28.21650905403924, "links": [{"pano_id": "3aVHItuaQICDvPGoRirMJw", "heading": 81.52764, "description": ""}, {"pano_id": "VrIh1e5WBxl_N6lzhgP8qQ", "heading": 81.89957, "description": ""}, {"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 113.06, "distance": 12.53, "virtual": true}]}, "tBkSZXng31z90pdcc2FHfA": {"lat": -25.96408107282291, "lng": 28.21714838859669, "links": [{"pano_id": "ZM2VFr74bu_x9GfIIy1Vug", "heading": 57.427822, "description": "Baksteen Rd"}, {"pano_id": "uuizKICHK8CNOKPES0ax3w", "heading": 237.43039, "description": "Baksteen Rd"}]}, "IPX2Q4cMKNy-kH2chj5E1g": {"lat": -25.96392586298813, "lng": 28.21665576921464, "links": [{"pano_id": "dHYy1TTgFMTMqeS0yQmgGA", "heading": 330.17172, "description": "Southward Dr"}, {"pano_id": "cOAhAa740tFiBv-vIETkZw", "heading": 150.20929, "description": "Southward Dr"}]}, "ASQWDlMIzYlV2h_52uvjCg": {"lat": -25.9653670111616, "lng": 28.2166950360287, "links": [{"pano_id": "YhhCJJVEvOQn2hD9JVo2ag", "heading": 209.56444, "description": "Southward Dr"}, {"pano_id": "Q0iaAMe0FWkRXnk8XLeJmQ", "heading": 25.098835, "description": "Southward Dr"}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 356.11, "distance": 11.46, "virtual": true}, {"pano_id": "Tupj45c8ZhMRY64cuEtoZw", "heading": 209.56, "distance": 11.28, "virtual": true}]}, "ZM2VFr74bu_x9GfIIy1Vug": {"lat": -25.96403063530371, "lng": 28.21723620320803, "links": [{"pano_id": "Kiw0gDh34wZvZ-t48WfItA", "heading": 59.937366, "description": "Baksteen Rd"}, {"pano_id": "tBkSZXng31z90pdcc2FHfA", "heading": 237.42783, "description": "Baksteen Rd"}]}, "nEhaJKG66VX5cg9ZYQ1YHQ": {"lat": -25.96533989000525, "lng": 28.21590068448668, "links": [{"pano_id": "pSDJ-qzGhBPSkOiDW6sztQ", "heading": 67.17571, "description": ""}, {"pano_id": "3wBv8MZQk-fLrbyxrSCCEw", "heading": 295.9773, "description": ""}, {"pano_id": "eCPzZ_QPvHVPlVtob3rNqA", "heading": 28.599949, "description": ""}]}, "dHYy1TTgFMTMqeS0yQmgGA": {"lat": -25.96383980053702, "lng": 28.21660088490272, "links": [{"pano_id": "JvKadKPAFiKlPvRf1N2P_Q", "heading": 330.1861, "description": "Southward Dr"}, {"pano_id": "IPX2Q4cMKNy-kH2chj5E1g", "heading": 150.17172, "description": "Southward Dr"}]}, "3aVHItuaQICDvPGoRirMJw": {"lat": -25.96510311068793, "lng": 28.21655822684006, "links": [{"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 130.46875, "description": ""}, {"pano_id": "pSDJ-qzGhBPSkOiDW6sztQ", "heading": 261.52765, "description": ""}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 90.63, "distance": 13.12, "virtual": true}, {"pano_id": "VrIh1e5WBxl_N6lzhgP8qQ", "heading": 84.09, "distance": 0.84, "virtual": true}]}, "YhhCJJVEvOQn2hD9JVo2ag": {"lat": -25.96537139588084, "lng": 28.21669226950345, "links": [{"pano_id": "ASQWDlMIzYlV2h_52uvjCg", "heading": 29.56444, "description": "Southward Dr"}, {"pano_id": "Tupj45c8ZhMRY64cuEtoZw", "heading": 209.56287, "description": "Southward Dr"}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 357.59933, "description": ""}, {"pano_id": "Q0iaAMe0FWkRXnk8XLeJmQ", "heading": 25.34, "distance": 10.34, "virtual": true}]}, "Kiw0gDh34wZvZ-t48WfItA": {"lat": -25.96398224399043, "lng": 28.21732919383501, "links": [{"pano_id": "ZM2VFr74bu_x9GfIIy1Vug", "heading": 239.93736, "description": "Baksteen Rd"}, {"pano_id": "ssIs_vA85_6F7Sy2e9wAiw", "heading": 60.395584, "description": "Baksteen Rd"}]}, "Wc7AMKslCXI0f-PI66mCqg": {"lat": -25.96526422273068, "lng": 28.21668727190936, "links": [{"pano_id": "YhhCJJVEvOQn2hD9JVo2ag", "heading": 177.59933, "description": "Southward Dr"}, {"pano_id": "5sLcpFijNxEWWWXULGz-_g", "heading": 332.86868, "description": ""}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 51.93, "distance": 11.49, "virtual": true}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 0.69, "distance": 17.77, "virtual": true}, {"pano_id": "Q0iaAMe0FWkRXnk8XLeJmQ", "heading": 117.58, "distance": 5.56, "virtual": true}, {"pano_id": "ASQWDlMIzYlV2h_52uvjCg", "heading": 176.11, "distance": 11.46, "virtual": true}]}, "5sLcpFijNxEWWWXULGz-_g": {"lat": -25.96515383307768, "lng": 28.21662435575695, "links": [{"pano_id": "3aVHItuaQICDvPGoRirMJw", "heading": 310.46875, "description": ""}, {"pano_id": "Wc7AMKslCXI0f-PI66mCqg", "heading": 152.86868, "description": ""}, {"pano_id": "cVRXdxy-wHCIybtPnonnwg", "heading": 108.69, "distance": 16.19, "virtual": true}, {"pano_id": "HonRMthEnopy81bovxmJJQ", "heading": 49.8, "distance": 8.52, "virtual": true}, {"pano_id": "VrIh1e5WBxl_N6lzhgP8qQ", "heading": 314.77, "distance": 8.13, "virtual": true}, {"pano_id": "pSDJ-qzGhBPSkOiDW6sztQ", "heading": 293.06, "distance": 12.53, "virtual": true}]}, "Tupj45c8ZhMRY64cuEtoZw": {"lat": -25.96545527665176, "lng": 28.2166393485443, "links": [{"pano_id": "YhhCJJVEvOQn2hD9JVo2ag", "heading": 29.562872, "description": "Southward Dr"}, {"pano_id": "E3wWvz3POT4gUoST9lkQUA", "heading": 209.51823, "description": "Southward Dr"}, {"pano_id": "ASQWDlMIzYlV2h_52uvjCg", "heading": 29.56, "distance": 11.28, "virtual": true}]}, "JvKadKPAFiKlPvRf1N2P_Q": {"lat": -25.96376348938743, "lng": 28.21655224757103, "links": [{"pano_id": "dHYy1TTgFMTMqeS0yQmgGA", "heading": 150.1861, "description": "Southward Dr"}, {"pano_id": "-1XRZ0-o3t8P1qnqDvXVsQ", "heading": 330.16, "description": "Southward Dr"}]}, "ssIs_vA85_6F7Sy2e9wAiw": {"lat": -25.9639382970855, "lng": 28.21741522350658, "links": [{"pano_id": "Kiw0gDh34wZvZ-t48WfItA", "heading": 240.39558, "description": "Baksteen Rd"}, {"pano_id": "uTiolVDmsIHA9ITOQSg3og", "heading": 60.429806, "description": "Baksteen Rd"}, {"pano_id": "4Gn_8BNzkL2aQy8w-cvUkQ", "heading": 61.83, "distance": 17.88, "virtual": true}]}, "-1XRZ0-o3t8P1qnqDvXVsQ": {"lat": -25.96368544034747, "lng": 28.21650245006855, "links": [{"pano_id": "ntJBrnGXSA8ArN6AQEctNg", "heading": 330.17828, "description": "Southward Dr"}, {"pano_id": "JvKadKPAFiKlPvRf1N2P_Q", "heading": 150.15999, "description": "Southward Dr"}]}, "E3wWvz3POT4gUoST9lkQUA": {"lat": -25.96553760936556, "lng": 28.21658749848253, "links": [{"pano_id": "EA7azkz3Kl_inzWW_y-Byw", "heading": 209.97682, "description": "Southward Dr"}, {"pano_id": "Tupj45c8ZhMRY64cuEtoZw", "heading": 29.518236, "description": "Southward Dr"}]}, "ntJBrnGXSA8ArN6AQEctNg": {"lat": -25.96360607372606, "lng": 28.2164518493658, "links": [{"pano_id": "nTc0GsRDnx91jHfiTxlugA", "heading": 330.21747, "description": "Southward Dr"}, {"pano_id": "-1XRZ0-o3t8P1qnqDvXVsQ", "heading": 150.17827, "description": "Southward Dr"}]}, "EA7azkz3Kl_inzWW_y-Byw": {"lat": -25.96561578355774, "lng": 28.21653734401893, "links": [{"pano_id": "JsQXvk-BoXp0Y2PzypzLuA", "heading": 210.10767, "description": "Southward Dr"}, {"pano_id": "E3wWvz3POT4gUoST9lkQUA", "heading": 29.976822, "description": "Southward Dr"}]}, "uTiolVDmsIHA9ITOQSg3og": {"lat": -25.9638947299509, "lng": 28.21750062843884, "links": [{"pano_id": "4Gn_8BNzkL2aQy8w-cvUkQ", "heading": 63.52375, "description": "Baksteen Rd"}, {"pano_id": "ssIs_vA85_6F7Sy2e9wAiw", "heading": 240.42981, "description": "Baksteen Rd"}, {"pano_id": "osV_LqyjSsI4kxJ4eLOD0Q", "heading": 68.0, "distance": 12.31, "virtual": true}]}, "nTc0GsRDnx91jHfiTxlugA": {"lat": -25.9635255996765, "lng": 28.21640062394786, "links": [{"pano_id": "yTLmS19m4z09MyB43l3qvQ", "heading": 330.32706, "description": "Southward Dr"}, {"pano_id": "ntJBrnGXSA8ArN6AQEctNg", "heading": 150.21745, "description": "Southward Dr"}]}, "4Gn_8BNzkL2aQy8w-cvUkQ": {"lat": -25.9638623605462, "lng": 28.21757291471202, "links": [{"pano_id": "osV_LqyjSsI4kxJ4eLOD0Q", "heading": 76.42259, "description": "Baksteen Rd"}, {"pano_id": "uTiolVDmsIHA9ITOQSg3og", "heading": 243.52376, "description": "Baksteen Rd"}, {"pano_id": "ssIs_vA85_6F7Sy2e9wAiw", "heading": 241.83, "distance": 17.88, "virtual": true}, {"pano_id": "XG3WPJc7fumsb4UvZemoqQ", "heading": 81.19, "distance": 14.44, "virtual": true}]}, "JsQXvk-BoXp0Y2PzypzLuA": {"lat": -25.96569880489313, "lng": 28.21648379831213, "links": [{"pano_id": "sMtuZ7T1tUOG1WzH91XlDQ", "heading": 224.58401, "description": ""}, {"pano_id": "EA7azkz3Kl_inzWW_y-Byw", "heading": 30.107664, "description": "Southward Dr"}, {"pano_id": "j84pzTVL3_aqHpf5ZgGLGA", "heading": 210.72948, "description": "Southward Dr"}]}, "yTLmS19m4z09MyB43l3qvQ": {"lat": -25.96344406311723, "lng": 28.21634895230003, "links": [{"pano_id": "nTc0GsRDnx91jHfiTxlugA", "heading": 150.32707, "description": "Southward Dr"}, {"pano_id": "bpwm9HEoRUG3SraFZhzB-g", "heading": 330.38794, "description": "Southward Dr"}]}, "sMtuZ7T1tUOG1WzH91XlDQ": {"lat": -25.96576653631057, "lng": 28.2164095482378, "links": [{"pano_id": "JsQXvk-BoXp0Y2PzypzLuA", "heading": 44.58401, "description": "Southward Dr"}, {"pano_id": "xy7sPCh2L3GVOGBz7HP5mg", "heading": 232.60951, "description": ""}, {"pano_id": "j84pzTVL3_aqHpf5ZgGLGA", "heading": 170.09, "distance": 3.89, "virtual": true}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 200.12, "distance": 13.18, "virtual": true}]}, "j84pzTVL3_aqHpf5ZgGLGA": {"lat": -25.96580097855583, "lng": 28.21641624145494, "links": [{"pano_id": "JsQXvk-BoXp0Y2PzypzLuA", "heading": 30.729475, "description": "Southward Dr"}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 211.33273, "description": "Southward Dr"}, {"pano_id": "sMtuZ7T1tUOG1WzH91XlDQ", "heading": 350.09, "distance": 3.89, "virtual": true}, {"pano_id": "xy7sPCh2L3GVOGBz7HP5mg", "heading": 254.56, "distance": 9.23, "virtual": true}]}, "osV_LqyjSsI4kxJ4eLOD0Q": {"lat": -25.96385327253322, "lng": 28.21761476934273, "links": [{"pano_id": "XG3WPJc7fumsb4UvZemoqQ", "heading": 83.20264, "description": "Baksteen Rd"}, {"pano_id": "4Gn_8BNzkL2aQy8w-cvUkQ", "heading": 256.4226, "description": "Baksteen Rd"}, {"pano_id": "uTiolVDmsIHA9ITOQSg3og", "heading": 248.0, "distance": 12.31, "virtual": true}]}, "XG3WPJc7fumsb4UvZemoqQ": {"lat": -25.96384246554524, "lng": 28.21771561308068, "links": [{"pano_id": "osV_LqyjSsI4kxJ4eLOD0Q", "heading": 263.20264, "description": "Baksteen Rd"}, {"pano_id": "ItV2utThtVV1RxcaFHf-1w", "heading": 89.697464, "description": "Baksteen Rd"}, {"pano_id": "4Gn_8BNzkL2aQy8w-cvUkQ", "heading": 261.19, "distance": 14.44, "virtual": true}]}, "xy7sPCh2L3GVOGBz7HP5mg": {"lat": -25.96582307583706, "lng": 28.21632726626705, "links": [{"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 245.32594, "description": ""}, {"pano_id": "sMtuZ7T1tUOG1WzH91XlDQ", "heading": 52.609505, "description": ""}, {"pano_id": "j84pzTVL3_aqHpf5ZgGLGA", "heading": 74.56, "distance": 9.23, "virtual": true}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 148.75, "distance": 7.12, "virtual": true}, {"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 183.17, "distance": 13.39, "virtual": true}]}, "bpwm9HEoRUG3SraFZhzB-g": {"lat": -25.96336133650456, "lng": 28.21629665593602, "links": [{"pano_id": "7gOGfIvfAymKImI6apQZ2Q", "heading": 330.3744, "description": "Southward Dr"}, {"pano_id": "yTLmS19m4z09MyB43l3qvQ", "heading": 150.38794, "description": "Southward Dr"}]}, "WSfRQXfcg_RcpHTDkFIVCA": {"lat": -25.96587781364499, "lng": 28.21636421284013, "links": [{"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 211.3466, "description": "Southward Dr"}, {"pano_id": "j84pzTVL3_aqHpf5ZgGLGA", "heading": 31.332727, "description": "Southward Dr"}, {"pano_id": "sMtuZ7T1tUOG1WzH91XlDQ", "heading": 20.12, "distance": 13.18, "virtual": true}, {"pano_id": "xy7sPCh2L3GVOGBz7HP5mg", "heading": 328.75, "distance": 7.12, "virtual": true}, {"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 278.96, "distance": 12.77, "virtual": true}, {"pano_id": "IyovjP19u0P947xGIpMBpg", "heading": 211.32, "distance": 17.44, "virtual": true}]}, "ItV2utThtVV1RxcaFHf-1w": {"lat": -25.96384199443443, "lng": 28.21781485040052, "links": [{"pano_id": "EfhK-_9uHZKw39ERMMweNg", "heading": 91.995575, "description": "Baksteen Rd"}, {"pano_id": "XG3WPJc7fumsb4UvZemoqQ", "heading": 269.69748, "description": "Baksteen Rd"}]}, "qJZ-gx4phNqWKgu0RaMycw": {"lat": -25.96594327886564, "lng": 28.2163198591029, "links": [{"pano_id": "IyovjP19u0P947xGIpMBpg", "heading": 211.2869, "description": "Southward Dr"}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 31.346596, "description": "Southward Dr"}, {"pano_id": "xy7sPCh2L3GVOGBz7HP5mg", "heading": 3.17, "distance": 13.39, "virtual": true}, {"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 318.56, "distance": 12.36, "virtual": true}, {"pano_id": "0JyfpvIMXHUpkuOXcH4Tpg", "heading": 213.33, "distance": 9.6, "virtual": true}, {"pano_id": "eA-EvZXH4fV3GuDd73lVjw", "heading": 210.83, "distance": 15.09, "virtual": true}]}, "DAS29MJ0sA85cckbmFfnLg": {"lat": -25.9658599355204, "lng": 28.21623802330421, "links": [{"pano_id": "xy7sPCh2L3GVOGBz7HP5mg", "heading": 65.325935, "description": ""}, {"pano_id": "F2pD5hT4tgHx2Q555Txyjw", "heading": 271.1316, "description": ""}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 98.96, "distance": 12.77, "virtual": true}, {"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 138.56, "distance": 12.36, "virtual": true}, {"pano_id": "IyovjP19u0P947xGIpMBpg", "heading": 168.13, "distance": 17.26, "virtual": true}, {"pano_id": "0JyfpvIMXHUpkuOXcH4Tpg", "heading": 170.45, "distance": 17.53, "virtual": true}]}, "7gOGfIvfAymKImI6apQZ2Q": {"lat": -25.96327766768879, "lng": 28.21624373485522, "links": [{"pano_id": "bpwm9HEoRUG3SraFZhzB-g", "heading": 150.37439, "description": "Southward Dr"}, {"pano_id": "ve_k6IUn0p1m0uE7EginIw", "heading": 330.31296, "description": "Southward Dr"}]}, "ve_k6IUn0p1m0uE7EginIw": {"lat": -25.96319322190259, "lng": 28.21619018905708, "links": [{"pano_id": "7gOGfIvfAymKImI6apQZ2Q", "heading": 150.31297, "description": "Southward Dr"}, {"pano_id": "nkgsLQ7gVYcA1HL-E0iWDw", "heading": 330.4121, "description": "Southward Dr"}]}, "EfhK-_9uHZKw39ERMMweNg": {"lat": -25.96384514234931, "lng": 28.21791533705277, "links": [{"pano_id": "ItV2utThtVV1RxcaFHf-1w", "heading": 271.99557, "description": "Baksteen Rd"}, {"pano_id": "8Gs9H7iKx3xsznEdQTJp8w", "heading": 97.93737, "description": "Baksteen Rd"}]}, "F2pD5hT4tgHx2Q555Txyjw": {"lat": -25.96585815418156, "lng": 28.21613771415875, "links": [{"pano_id": "F336PXDoR0TWPdKKksp7eQ", "heading": 267.4964, "description": "R562"}, {"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 91.131584, "description": ""}]}, "IyovjP19u0P947xGIpMBpg": {"lat": -25.96601180252997, "lng": 28.21627354200897, "links": [{"pano_id": "0JyfpvIMXHUpkuOXcH4Tpg", "heading": 238.15703, "description": "R562"}, {"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 31.286896, "description": "Southward Dr"}, {"pano_id": "WSfRQXfcg_RcpHTDkFIVCA", "heading": 31.32, "distance": 17.44, "virtual": true}, {"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 348.13, "distance": 17.26, "virtual": true}, {"pano_id": "eA-EvZXH4fV3GuDd73lVjw", "heading": 210.17, "distance": 6.18, "virtual": true}]}, "F336PXDoR0TWPdKKksp7eQ": {"lat": -25.96586153605578, "lng": 28.21605168384864, "links": [{"pano_id": "F2pD5hT4tgHx2Q555Txyjw", "heading": 87.4964, "description": ""}]}, "nkgsLQ7gVYcA1HL-E0iWDw": {"lat": -25.96310815275933, "lng": 28.21613646475621, "links": [{"pano_id": "ve_k6IUn0p1m0uE7EginIw", "heading": 150.41211, "description": "Southward Dr"}]}, "8Gs9H7iKx3xsznEdQTJp8w": {"lat": -25.96385809673618, "lng": 28.21801867939236, "links": [{"pano_id": "Wp4kH1kS-fx6ADr5gH0vJQ", "heading": 97.88518, "description": "Baksteen Rd"}, {"pano_id": "EfhK-_9uHZKw39ERMMweNg", "heading": 277.93738, "description": "Baksteen Rd"}]}, "0JyfpvIMXHUpkuOXcH4Tpg": {"lat": -25.96601539033908, "lng": 28.21626711651518, "links": [{"pano_id": "eA-EvZXH4fV3GuDd73lVjw", "heading": 206.48439, "description": "Southward Dr"}, {"pano_id": "IyovjP19u0P947xGIpMBpg", "heading": 58.15703, "description": "Southward Dr"}, {"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 33.33, "distance": 9.6, "virtual": true}, {"pano_id": "DAS29MJ0sA85cckbmFfnLg", "heading": 350.45, "distance": 17.53, "virtual": true}]}, "Wp4kH1kS-fx6ADr5gH0vJQ": {"lat": -25.96387047589145, "lng": 28.21811809502145, "links": [{"pano_id": "8Gs9H7iKx3xsznEdQTJp8w", "heading": 277.88516, "description": "Baksteen Rd"}]}, "eA-EvZXH4fV3GuDd73lVjw": {"lat": -25.96605983596136, "lng": 28.21624248545345, "links": [{"pano_id": "0JyfpvIMXHUpkuOXcH4Tpg", "heading": 26.484385, "description": "R562"}, {"pano_id": "qJZ-gx4phNqWKgu0RaMycw", "heading": 30.83, "distance": 15.09, "virtual": true}, {"pano_id": "IyovjP19u0P947xGIpMBpg", "heading": 30.17, "distance": 6.18, "virtual": true}]}};
+        const targetPanos = ["KKzu_Kfjrxb5DzlS6Ac5sg", "e6_tB83x0efTGn5x3WvCDQ"];
+        const spawnPoints = ["nkgsLQ7gVYcA1HL-E0iWDw", "ItV2utThtVV1RxcaFHf-1w", "eA-EvZXH4fV3GuDd73lVjw", "j84pzTVL3_aqHpf5ZgGLGA", "EfhK-_9uHZKw39ERMMweNg", "Wp4kH1kS-fx6ADr5gH0vJQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

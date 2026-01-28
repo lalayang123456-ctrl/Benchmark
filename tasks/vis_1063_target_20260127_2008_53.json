@@ -1,0 +1,76 @@
+{
+  "task_id": "nav_1063_target_20260125_0335_13",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_033510",
+  "spawn_point": "ZE3AvZMzCZcofm-EKSjZCg",
+  "spawn_heading": 181.4,
+  "description": "Walk down the narrow cobblestone street past 'Damiroglu Brode' towards the elevator structure. Turn right onto the main boulevard and continue straight, passing 'Altin Duvak' and 'Alvina', to finish near 'Türkiye Finans'.",
+  "ground_truth": {
+    "target_name": "Kavaflar 2",
+    "target_pano_id": "XdcZSontdQHs8TbIhUGQyQ",
+    "optimal_distance_meters": 90,
+    "route_description": "right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "XdcZSontdQHs8TbIhUGQyQ"
+  ],
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ZE3AvZMzCZcofm-EKSjZCg",
+      "heading": 181.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "O45t2JXy9Pj6jWgtkD8pxg",
+      "heading": 181.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "W3ftwo5MgdWJtZQsRpzfSg",
+      "heading": 182.2
+    },
+    {
+      "step_index": 3,
+      "pano_id": "KlEGGGUVmRPLQnwHVWnRtw",
+      "heading": 182.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "UPtbekoQ9q1sbEk7zh0DPQ",
+      "heading": 270.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "_vfhw978XZrc08BTulmJiQ",
+      "heading": 269.9
+    },
+    {
+      "step_index": 6,
+      "pano_id": "3NVWGHhfx14cLCWvv7hm0g",
+      "heading": 269.9
+    },
+    {
+      "step_index": 7,
+      "pano_id": "nKmGHaJWj6B_2BrMBeoqmg",
+      "heading": 269.9
+    },
+    {
+      "step_index": 8,
+      "pano_id": "bsiNeQbmFCcniuNHe7cwDA",
+      "heading": 269.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "XdcZSontdQHs8TbIhUGQyQ",
+      "heading": 269.9
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 38m -> Turn Right -> Head Straight 52m",
+  "agent_concise_description": "Walk down the narrow cobblestone street past 'Damiroglu Brode' towards the elevator structure. Turn right onto the main boulevard and continue straight, passing 'Altin Duvak' and 'Alvina', to finish near 'Türkiye Finans'."
+}

@@ -1,0 +1,108 @@
+{
+  "task_id": "nav_0802_target_20260125_0310_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_supermarket_20260125_031001",
+  "spawn_point": "ej_F2t4k3ty7bIYRk-Vumw",
+  "spawn_heading": 182.1,
+  "description": "Navigate to Amir Store. Head south& fast food (on the right in 22m) for 141m. Turn right at Puthiya Vidial News for 13m. Total distance: approximately 154 m.",
+  "ground_truth": {
+    "target_name": "Amir Store",
+    "target_pano_id": "ksL-tJcLbIuMxRh2XEWnQg",
+    "optimal_distance_meters": 154,
+    "route_description": "right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "ksL-tJcLbIuMxRh2XEWnQg"
+  ],
+  "max_steps": 34,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "ej_F2t4k3ty7bIYRk-Vumw",
+      "heading": 182.1
+    },
+    {
+      "step_index": 1,
+      "pano_id": "BQK8HgNlQE1TmINkbTK36g",
+      "heading": 182.1
+    },
+    {
+      "step_index": 2,
+      "pano_id": "tGZ-bnWJ5vu98oGuelU5iA",
+      "heading": 182.1
+    },
+    {
+      "step_index": 3,
+      "pano_id": "Jmp9ubc938sHfXOaP1uOYg",
+      "heading": 182.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "3opR1H4WusKW98HeDALD5Q",
+      "heading": 182.2
+    },
+    {
+      "step_index": 5,
+      "pano_id": "tVcad0zBCzuoV9PiHP60og",
+      "heading": 182.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "Xa_b2jxN_idCu6F1BiAWWw",
+      "heading": 182.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "Qm3EC6PPWh-eUtLk2fqC1Q",
+      "heading": 183.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "dX5Tiyq1wzPCa0SX0GaiDw",
+      "heading": 180.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "bzeuZX6ndmDj0CzLUXNoFA",
+      "heading": 182.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "pP0D5_-KS_9BRLHYkdvhtA",
+      "heading": 182.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "-ntr7Pw8M5yQQh9J9wByvA",
+      "heading": 182.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "NXRhgDM-VPrObGMTbqNQ7Q",
+      "heading": 183.9
+    },
+    {
+      "step_index": 13,
+      "pano_id": "F6kmSAWteH-vfSfyzmGCMg",
+      "heading": 183.7
+    },
+    {
+      "step_index": 14,
+      "pano_id": "8OWcfm0FLWsp9gKkhRkzwQ",
+      "heading": 183.6
+    },
+    {
+      "step_index": 15,
+      "pano_id": "JZPy3EzGmduQivlL2KYUsQ",
+      "heading": 182.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "ksL-tJcLbIuMxRh2XEWnQg",
+      "heading": 304.0
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

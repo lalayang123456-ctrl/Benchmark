@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260124_141848</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260124_141848</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>9</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"yEfPotPWVArkiuO6X8a_3w": {"lat": 6.469880204078925, "lng": 3.580234611873055, "links": [{"pano_id": "GA27K6wPCAdqZS2ySaod9g", "heading": 267.0537, "description": ""}, {"pano_id": "jUFoauvPJhyKXOhzvFNaHQ", "heading": 87.045, "description": ""}]}, "GA27K6wPCAdqZS2ySaod9g": {"lat": 6.469875563016574, "lng": 3.58014385982971, "links": [{"pano_id": "yEfPotPWVArkiuO6X8a_3w", "heading": 87.05371, "description": ""}, {"pano_id": "6_oGRNty9V9zlPCyf3H5sQ", "heading": 267.05463, "description": ""}]}, "jUFoauvPJhyKXOhzvFNaHQ": {"lat": 6.469884989631026, "lng": 3.580327912868439, "links": [{"pano_id": "yEfPotPWVArkiuO6X8a_3w", "heading": 267.04498, "description": ""}, {"pano_id": "zGvSVnYd2p9WlmuMUlVLdw", "heading": 87.05039, "description": ""}]}, "6_oGRNty9V9zlPCyf3H5sQ": {"lat": 6.469871207708319, "lng": 3.580058668912116, "links": [{"pano_id": "GA27K6wPCAdqZS2ySaod9g", "heading": 87.05463, "description": ""}, {"pano_id": "OWpbTBiMjFIJJ8UyNTxaJg", "heading": 267.0492, "description": ""}, {"pano_id": "w8Ya0I2LJFAdlbk9YfOEYg", "heading": 254.81, "distance": 10.35, "virtual": true}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 221.87, "distance": 14.0, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 217.26, "distance": 15.21, "virtual": true}]}, "zGvSVnYd2p9WlmuMUlVLdw": {"lat": 6.469889845523969, "lng": 3.580422758760244, "links": [{"pano_id": "gv6LtK4DztNiP0Qmidk88w", "heading": 87.10053, "description": ""}, {"pano_id": "jUFoauvPJhyKXOhzvFNaHQ", "heading": 267.05038, "description": ""}]}, "gv6LtK4DztNiP0Qmidk88w": {"lat": 6.469894548774253, "lng": 3.580516214578309, "links": [{"pano_id": "zGvSVnYd2p9WlmuMUlVLdw", "heading": 267.10052, "description": ""}, {"pano_id": "Opv1cAb4G-M8F4o-OYvaZw", "heading": 87.03674, "description": ""}]}, "OWpbTBiMjFIJJ8UyNTxaJg": {"lat": 6.469867137075191, "lng": 3.579979193562835, "links": [{"pano_id": "6xtHgyhsP-sjxZJzREXZ8g", "heading": 267.04233, "description": ""}, {"pano_id": "6_oGRNty9V9zlPCyf3H5sQ", "heading": 87.04918, "description": ""}, {"pano_id": "w8Ya0I2LJFAdlbk9YfOEYg", "heading": 208.06, "distance": 2.56, "virtual": true}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 183.23, "distance": 9.99, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 182.1, "distance": 11.66, "virtual": true}]}, "Opv1cAb4G-M8F4o-OYvaZw": {"lat": 6.469899407334181, "lng": 3.580610674644157, "links": [{"pano_id": "PlZbdJKGR1HjHLe9TxRISg", "heading": 87.03409, "description": ""}, {"pano_id": "gv6LtK4DztNiP0Qmidk88w", "heading": 267.03674, "description": ""}]}, "6xtHgyhsP-sjxZJzREXZ8g": {"lat": 6.469862636685605, "lng": 3.579891531394631, "links": [{"pano_id": "w8Ya0I2LJFAdlbk9YfOEYg", "heading": 101.70177, "description": ""}, {"pano_id": "HnrSB2SH1_qQDIsgqZ9_sA", "heading": 267.05322, "description": ""}, {"pano_id": "OWpbTBiMjFIJJ8UyNTxaJg", "heading": 87.042336, "description": ""}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 136.07, "distance": 13.15, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 140.3, "distance": 14.49, "virtual": true}]}, "HnrSB2SH1_qQDIsgqZ9_sA": {"lat": 6.469857852668367, "lng": 3.579797999505765, "links": [{"pano_id": "6xtHgyhsP-sjxZJzREXZ8g", "heading": 87.05322, "description": ""}, {"pano_id": "u2qdS6L4ZqbwN_iF8up4Sg", "heading": 267.07294, "description": ""}]}, "PlZbdJKGR1HjHLe9TxRISg": {"lat": 6.469904337856969, "lng": 3.580706447909777, "links": [{"pano_id": "Opv1cAb4G-M8F4o-OYvaZw", "heading": 267.0341, "description": ""}, {"pano_id": "jhKN9kPoMR3oXfff2Y66Lg", "heading": 87.07166, "description": ""}]}, "w8Ya0I2LJFAdlbk9YfOEYg": {"lat": 6.469846836778943, "lng": 3.579968303364439, "links": [{"pano_id": "6xtHgyhsP-sjxZJzREXZ8g", "heading": 281.70175, "description": ""}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 175.2569, "description": ""}, {"pano_id": "6_oGRNty9V9zlPCyf3H5sQ", "heading": 74.81, "distance": 10.35, "virtual": true}, {"pano_id": "OWpbTBiMjFIJJ8UyNTxaJg", "heading": 28.06, "distance": 2.56, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 175.27, "distance": 9.43, "virtual": true}]}, "u2qdS6L4ZqbwN_iF8up4Sg": {"lat": 6.469853143863068, "lng": 3.579705317376769, "links": [{"pano_id": "HnrSB2SH1_qQDIsgqZ9_sA", "heading": 87.07292, "description": ""}, {"pano_id": "8Vm0nytkKrR9CAuXWt8m9w", "heading": 267.06613, "description": ""}]}, "jhKN9kPoMR3oXfff2Y66Lg": {"lat": 6.469909260783672, "lng": 3.580803302672506, "links": [{"pano_id": "PlZbdJKGR1HjHLe9TxRISg", "heading": 267.07166, "description": ""}, {"pano_id": "z41IvhUOUHDAQBdXC1CggQ", "heading": 87.0581, "description": ""}]}, "Sus5FXbR01w_pZ82gwIG1Q": {"lat": 6.469777467170543, "lng": 3.579974096022866, "links": [{"pano_id": "w8Ya0I2LJFAdlbk9YfOEYg", "heading": 355.2569, "description": ""}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 175.35365, "description": ""}, {"pano_id": "6_oGRNty9V9zlPCyf3H5sQ", "heading": 41.87, "distance": 14.0, "virtual": true}, {"pano_id": "OWpbTBiMjFIJJ8UyNTxaJg", "heading": 3.23, "distance": 9.99, "virtual": true}, {"pano_id": "6xtHgyhsP-sjxZJzREXZ8g", "heading": 316.07, "distance": 13.15, "virtual": true}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 175.26, "distance": 12.08, "virtual": true}, {"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 175.23, "distance": 17.46, "virtual": true}, {"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 191.57, "distance": 17.96, "virtual": true}]}, "z41IvhUOUHDAQBdXC1CggQ": {"lat": 6.469914257836395, "lng": 3.580901161701735, "links": [{"pano_id": "jhKN9kPoMR3oXfff2Y66Lg", "heading": 267.0581, "description": ""}, {"pano_id": "6ChFrJIwFsr7lCG6_ysp7w", "heading": 87.06045, "description": ""}, {"pano_id": "6m6MBx62P0TUOSfbLWXZqQ", "heading": 71.54, "distance": 13.62, "virtual": true}, {"pano_id": "DAHhG5T9vr_Jui4ySqyjxw", "heading": 86.94, "distance": 15.67, "virtual": true}]}, "8Vm0nytkKrR9CAuXWt8m9w": {"lat": 6.469848219624296, "lng": 3.579608619204815, "links": [{"pano_id": "uj4g9OjsvaTbcjbESkeiXQ", "heading": 267.0584, "description": ""}, {"pano_id": "u2qdS6L4ZqbwN_iF8up4Sg", "heading": 87.06615, "description": ""}]}, "N8QNkrIRHrBwsYeoECfw-w": {"lat": 6.469762358758699, "lng": 3.579975331790085, "links": [{"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 355.35364, "description": ""}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 175.24432, "description": ""}, {"pano_id": "6_oGRNty9V9zlPCyf3H5sQ", "heading": 37.26, "distance": 15.21, "virtual": true}, {"pano_id": "OWpbTBiMjFIJJ8UyNTxaJg", "heading": 2.1, "distance": 11.66, "virtual": true}, {"pano_id": "6xtHgyhsP-sjxZJzREXZ8g", "heading": 320.3, "distance": 14.49, "virtual": true}, {"pano_id": "w8Ya0I2LJFAdlbk9YfOEYg", "heading": 355.27, "distance": 9.43, "virtual": true}, {"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 175.22, "distance": 15.77, "virtual": true}, {"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 193.22, "distance": 16.35, "virtual": true}, {"pano_id": "7SLcf101zqX_bHUcOg2B3g", "heading": 150.33, "distance": 17.7, "virtual": true}]}, "6ChFrJIwFsr7lCG6_ysp7w": {"lat": 6.469919325767335, "lng": 3.581000488425522, "links": [{"pano_id": "6m6MBx62P0TUOSfbLWXZqQ", "heading": 27.41909, "description": "Peninsula Resort Way"}, {"pano_id": "z41IvhUOUHDAQBdXC1CggQ", "heading": 267.06046, "description": ""}, {"pano_id": "DAHhG5T9vr_Jui4ySqyjxw", "heading": 86.64753, "description": ""}, {"pano_id": "TPRoubnlbyu3o1xIU2Tjqw", "heading": 86.5, "distance": 15.79, "virtual": true}]}, "uj4g9OjsvaTbcjbESkeiXQ": {"lat": 6.46984336518707, "lng": 3.579513543148892, "links": [{"pano_id": "8Vm0nytkKrR9CAuXWt8m9w", "heading": 87.0584, "description": ""}, {"pano_id": "MGWQQ_mH4yflc44foHrvOQ", "heading": 267.05865, "description": ""}]}, "CoGk10PexzhoBt5a9JGt3w": {"lat": 6.469669189037352, "lng": 3.579983132571348, "links": [{"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 175.17339, "description": "Lagos-Epe Exp Road"}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 355.24432, "description": ""}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 355.26, "distance": 12.08, "virtual": true}, {"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 219.62, "distance": 7.21, "virtual": true}, {"pano_id": "7SLcf101zqX_bHUcOg2B3g", "heading": 122.43, "distance": 9.36, "virtual": true}, {"pano_id": "b_Rk698dpYQzLmSmjTf0Mw", "heading": 248.99, "distance": 16.69, "virtual": true}, {"pano_id": "I_VaLG1KUzcMl6sV24HJrw", "heading": 104.83, "distance": 17.94, "virtual": true}]}, "MGWQQ_mH4yflc44foHrvOQ": {"lat": 6.469838582175179, "lng": 3.579419857495982, "links": [{"pano_id": "Wh7XlT4tCkEBZ2Yr9EYJfg", "heading": 267.03384, "description": ""}, {"pano_id": "uj4g9OjsvaTbcjbESkeiXQ", "heading": 87.05867, "description": ""}]}, "6m6MBx62P0TUOSfbLWXZqQ": {"lat": 6.469953055108719, "lng": 3.581018098471733, "links": [{"pano_id": "IzZEE5JSVbN3w6EqjxrQcg", "heading": 357.70593, "description": "Peninsula Resort Way"}, {"pano_id": "6ChFrJIwFsr7lCG6_ysp7w", "heading": 207.41908, "description": ""}, {"pano_id": "z41IvhUOUHDAQBdXC1CggQ", "heading": 251.54, "distance": 13.62, "virtual": true}, {"pano_id": "DAHhG5T9vr_Jui4ySqyjxw", "heading": 141.85, "distance": 4.42, "virtual": true}, {"pano_id": "TPRoubnlbyu3o1xIU2Tjqw", "heading": 101.41, "distance": 14.09, "virtual": true}]}, "DAHhG5T9vr_Jui4ySqyjxw": {"lat": 6.469921789366382, "lng": 3.5810428143365, "links": [{"pano_id": "TPRoubnlbyu3o1xIU2Tjqw", "heading": 86.44276, "description": ""}, {"pano_id": "6ChFrJIwFsr7lCG6_ysp7w", "heading": 266.64752, "description": ""}, {"pano_id": "z41IvhUOUHDAQBdXC1CggQ", "heading": 266.94, "distance": 15.67, "virtual": true}, {"pano_id": "6m6MBx62P0TUOSfbLWXZqQ", "heading": 321.85, "distance": 4.42, "virtual": true}]}, "zSWBWyHnj5kXjaOjTI6LDA": {"lat": 6.469621019841091, "lng": 3.579987226051112, "links": [{"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 267.7432, "description": "Lekki - Epe Expy"}, {"pano_id": "7SLcf101zqX_bHUcOg2B3g", "heading": 87.42034, "description": "Lagos-Epe Exp Road"}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 355.1734, "description": ""}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 355.23, "distance": 17.46, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 355.22, "distance": 15.77, "virtual": true}, {"pano_id": "b_Rk698dpYQzLmSmjTf0Mw", "heading": 267.76, "distance": 16.05, "virtual": true}, {"pano_id": "I_VaLG1KUzcMl6sV24HJrw", "heading": 87.4, "distance": 16.91, "virtual": true}]}, "TPRoubnlbyu3o1xIU2Tjqw": {"lat": 6.469927986773382, "lng": 3.581143145425147, "links": [{"pano_id": "ZM_yTFj309SH6n8mXek4EA", "heading": 86.3973, "description": ""}, {"pano_id": "DAHhG5T9vr_Jui4ySqyjxw", "heading": 266.44275, "description": ""}, {"pano_id": "6ChFrJIwFsr7lCG6_ysp7w", "heading": 266.5, "distance": 15.79, "virtual": true}, {"pano_id": "6m6MBx62P0TUOSfbLWXZqQ", "heading": 281.41, "distance": 14.09, "virtual": true}, {"pano_id": "hCx4TGjzlSp1yacjFs1A2A", "heading": 86.42, "distance": 16.38, "virtual": true}]}, "IzZEE5JSVbN3w6EqjxrQcg": {"lat": 6.470089072922869, "lng": 3.581012614640889, "links": [{"pano_id": "8koc4Tq5SvjfB8uvaW6jLA", "heading": 357.71594, "description": "Peninsula Resort Way"}, {"pano_id": "6m6MBx62P0TUOSfbLWXZqQ", "heading": 177.70595, "description": "Peninsula Resort Way"}]}, "ls9yDEPSq2uqGBkpT1QSQQ": {"lat": 6.469619229399125, "lng": 3.579941502673494, "links": [{"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 87.743195, "description": "Lagos-Epe Exp Road"}, {"pano_id": "b_Rk698dpYQzLmSmjTf0Mw", "heading": 267.7678, "description": "Lekki - Epe Expy"}, {"pano_id": "Sus5FXbR01w_pZ82gwIG1Q", "heading": 11.57, "distance": 17.96, "virtual": true}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 13.22, "distance": 16.35, "virtual": true}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 39.62, "distance": 7.21, "virtual": true}, {"pano_id": "7SLcf101zqX_bHUcOg2B3g", "heading": 87.55, "distance": 12.51, "virtual": true}]}, "Wh7XlT4tCkEBZ2Yr9EYJfg": {"lat": 6.469833651385719, "lng": 3.579324086687979, "links": [{"pano_id": "GMHMGCu--rAlUxrR35F2Lw", "heading": 267.06207, "description": ""}, {"pano_id": "MGWQQ_mH4yflc44foHrvOQ", "heading": 87.03385, "description": ""}]}, "7SLcf101zqX_bHUcOg2B3g": {"lat": 6.469624038335951, "lng": 3.580054652662091, "links": [{"pano_id": "I_VaLG1KUzcMl6sV24HJrw", "heading": 87.39172, "description": "Lagos-Epe Exp Road"}, {"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 267.42035, "description": "Lagos-Epe Exp Road"}, {"pano_id": "N8QNkrIRHrBwsYeoECfw-w", "heading": 330.33, "distance": 17.7, "virtual": true}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 302.43, "distance": 9.36, "virtual": true}, {"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 267.55, "distance": 12.51, "virtual": true}]}, "GMHMGCu--rAlUxrR35F2Lw": {"lat": 6.469829011767235, "lng": 3.579233104589824, "links": [{"pano_id": "TjzCz2WQOUCyR-nEUsDBog", "heading": 267.06448, "description": ""}, {"pano_id": "Wh7XlT4tCkEBZ2Yr9EYJfg", "heading": 87.06206, "description": ""}]}, "b_Rk698dpYQzLmSmjTf0Mw": {"lat": 6.469615379497389, "lng": 3.5798421008123, "links": [{"pano_id": "z3Q--O9FZZ9E4RC0AQfGXw", "heading": 267.25473, "description": "Lekki - Epe Expy"}, {"pano_id": "ls9yDEPSq2uqGBkpT1QSQQ", "heading": 87.7678, "description": "Lekki - Epe Expy"}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 68.99, "distance": 16.69, "virtual": true}, {"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 87.76, "distance": 16.05, "virtual": true}]}, "8koc4Tq5SvjfB8uvaW6jLA": {"lat": 6.470202597130489, "lng": 3.581008057655154, "links": [{"pano_id": "ILxGlaZL3kDtbXnAxzY0FA", "heading": 357.17932, "description": "Peninsula Resort Way"}, {"pano_id": "IzZEE5JSVbN3w6EqjxrQcg", "heading": 177.71594, "description": "Peninsula Resort Way"}]}, "ZM_yTFj309SH6n8mXek4EA": {"lat": 6.469934046150856, "lng": 3.581240001031414, "links": [{"pano_id": "hCx4TGjzlSp1yacjFs1A2A", "heading": 86.47179, "description": ""}, {"pano_id": "TPRoubnlbyu3o1xIU2Tjqw", "heading": 266.3973, "description": ""}, {"pano_id": "ahzWpWB9DoXnnRtj8W6wlA", "heading": 86.42, "distance": 15.47, "virtual": true}]}, "I_VaLG1KUzcMl6sV24HJrw": {"lat": 6.469627904937139, "lng": 3.580140075279982, "links": [{"pano_id": "7SLcf101zqX_bHUcOg2B3g", "heading": 267.39172, "description": "Lagos-Epe Exp Road"}, {"pano_id": "8Q4RWK8Y2yAhwehuQEbSjg", "heading": 87.41869, "description": "Lagos-Epe Exp Road"}, {"pano_id": "CoGk10PexzhoBt5a9JGt3w", "heading": 284.83, "distance": 17.94, "virtual": true}, {"pano_id": "zSWBWyHnj5kXjaOjTI6LDA", "heading": 267.4, "distance": 16.91, "virtual": true}]}, "hCx4TGjzlSp1yacjFs1A2A": {"lat": 6.469937178660951, "lng": 3.581291132216401, "links": [{"pano_id": "ZM_yTFj309SH6n8mXek4EA", "heading": 266.4718, "description": ""}, {"pano_id": "ahzWpWB9DoXnnRtj8W6wlA", "heading": 86.393005, "description": ""}, {"pano_id": "TPRoubnlbyu3o1xIU2Tjqw", "heading": 266.42, "distance": 16.38, "virtual": true}]}, "ILxGlaZL3kDtbXnAxzY0FA": {"lat": 6.470297613108536, "lng": 3.581003346195759, "links": [{"pano_id": "0ESxS2ze53afVG72UAQXmA", "heading": 354.80112, "description": "Peninsula Resort Way"}, {"pano_id": "8koc4Tq5SvjfB8uvaW6jLA", "heading": 177.1793, "description": "Peninsula Resort Way"}]}, "8Q4RWK8Y2yAhwehuQEbSjg": {"lat": 6.469631766112125, "lng": 3.580226270401789, "links": [{"pano_id": "I_VaLG1KUzcMl6sV24HJrw", "heading": 267.4187, "description": "Lagos-Epe Exp Road"}, {"pano_id": "WdjN8tZZr71RsOEEzvGVPw", "heading": 87.38074, "description": "Lagos-Epe Exp Road"}]}, "TjzCz2WQOUCyR-nEUsDBog": {"lat": 6.469824301225986, "lng": 3.579140655207602, "links": [{"pano_id": "YFnubpkoV1RwESSn7JcSIA", "heading": 267.04755, "description": ""}, {"pano_id": "GMHMGCu--rAlUxrR35F2Lw", "heading": 87.06449, "description": ""}]}, "z3Q--O9FZZ9E4RC0AQfGXw": {"lat": 6.469611132901016, "lng": 3.579752971416694, "links": [{"pano_id": "b_Rk698dpYQzLmSmjTf0Mw", "heading": 87.25473, "description": "Lekki - Epe Expy"}, {"pano_id": "Uzr2m9dVcA9otxAoT8FBhg", "heading": 267.08533, "description": "Lekki - Epe Expy"}]}, "WdjN8tZZr71RsOEEzvGVPw": {"lat": 6.469635705205996, "lng": 3.580312929087611, "links": [{"pano_id": "OrDd9pMwto5oL-K437RUMA", "heading": 87.4373, "description": "Lagos-Epe Exp Road"}, {"pano_id": "8Q4RWK8Y2yAhwehuQEbSjg", "heading": 267.38074, "description": "Lagos-Epe Exp Road"}]}, "ahzWpWB9DoXnnRtj8W6wlA": {"lat": 6.469942727650627, "lng": 3.581379723682995, "links": [{"pano_id": "0hI2z9JBUuMCBJKet5HpKg", "heading": 86.40595, "description": ""}, {"pano_id": "hCx4TGjzlSp1yacjFs1A2A", "heading": 266.393, "description": ""}, {"pano_id": "ZM_yTFj309SH6n8mXek4EA", "heading": 266.42, "distance": 15.47, "virtual": true}]}, "0ESxS2ze53afVG72UAQXmA": {"lat": 6.470387864377248, "lng": 3.580995081833628, "links": [{"pano_id": "ILxGlaZL3kDtbXnAxzY0FA", "heading": 174.80113, "description": "Peninsula Resort Way"}, {"pano_id": "iNhvSeL0eKKZKAjPvA1z2Q", "heading": 354.77765, "description": "Peninsula Resort Way"}, {"pano_id": "T87uCSwsg3qzmWjIO5wUMg", "heading": 342.1, "distance": 11.55, "virtual": true}, {"pano_id": "ozGL5mJdQGiGbuj1gDYovw", "heading": 305.77, "distance": 17.73, "virtual": true}]}, "YFnubpkoV1RwESSn7JcSIA": {"lat": 6.469819515975027, "lng": 3.579047279187586, "links": [{"pano_id": "TjzCz2WQOUCyR-nEUsDBog", "heading": 87.047554, "description": ""}, {"pano_id": "w8i_xSUNH8kpcELnSogsqA", "heading": 267.0535, "description": ""}]}, "Uzr2m9dVcA9otxAoT8FBhg": {"lat": 6.469606569135565, "lng": 3.579662760889937, "links": [{"pano_id": "z3Q--O9FZZ9E4RC0AQfGXw", "heading": 87.085335, "description": "Lekki - Epe Expy"}, {"pano_id": "1sbIuesmLb9Xa5OCaSstBA", "heading": 267.11282, "description": "Lekki - Epe Expy"}]}, "w8i_xSUNH8kpcELnSogsqA": {"lat": 6.469813946418236, "lng": 3.5789383793343, "links": [{"pano_id": "ryKsrbu7h7e0MpOIMuhhpw", "heading": 267.0828, "description": ""}, {"pano_id": "YFnubpkoV1RwESSn7JcSIA", "heading": 87.05349, "description": ""}]}, "iNhvSeL0eKKZKAjPvA1z2Q": {"lat": 6.470485264691642, "lng": 3.58098612233977, "links": [{"pano_id": "0ESxS2ze53afVG72UAQXmA", "heading": 174.77765, "description": "Peninsula Resort Way"}, {"pano_id": "T87uCSwsg3qzmWjIO5wUMg", "heading": 273.63165, "description": "Olusegun Ojeleye St"}, {"pano_id": "ozGL5mJdQGiGbuj1gDYovw", "heading": 268.01, "distance": 13.41, "virtual": true}]}, "1sbIuesmLb9Xa5OCaSstBA": {"lat": 6.46960144082864, "lng": 3.579560424658403, "links": [{"pano_id": "2gC47DsNtXIlpt4RI5Z7fA", "heading": 267.0559, "description": "Lekki - Epe Expy"}, {"pano_id": "Uzr2m9dVcA9otxAoT8FBhg", "heading": 87.112816, "description": "Lekki - Epe Expy"}]}, "0hI2z9JBUuMCBJKet5HpKg": {"lat": 6.469948420583303, "lng": 3.581470941389743, "links": [{"pano_id": "ahzWpWB9DoXnnRtj8W6wlA", "heading": 266.40594, "description": ""}, {"pano_id": "d_1jE4rC_Rn3sDw4dpTmQw", "heading": 86.405495, "description": ""}]}, "OrDd9pMwto5oL-K437RUMA": {"lat": 6.469639562561274, "lng": 3.580399665159311, "links": [{"pano_id": "jiMhgex4ahh2esxzfKZDgg", "heading": 87.36454, "description": "Lagos-Epe Exp Road"}, {"pano_id": "WdjN8tZZr71RsOEEzvGVPw", "heading": 267.43732, "description": "Lagos-Epe Exp Road"}]}, "d_1jE4rC_Rn3sDw4dpTmQw": {"lat": 6.469954186560264, "lng": 3.581563317830892, "links": [{"pano_id": "Uza9HEOKIWJk8QFMJJ3OZQ", "heading": 85.94456, "description": ""}, {"pano_id": "0hI2z9JBUuMCBJKet5HpKg", "heading": 266.4055, "description": ""}]}, "nNkZ8xJ8Cm2o3cd27B7VTA": {"lat": 6.470548521991286, "lng": 3.580983805229549, "links": [{"pano_id": "3NMVzsqmmt3MiiZ36aVlew", "heading": 357.97443, "description": "Peninsula Resort Way"}, {"pano_id": "iNhvSeL0eKKZKAjPvA1z2Q", "heading": 177.91554, "description": "Peninsula Resort Way"}, {"pano_id": "0ESxS2ze53afVG72UAQXmA", "heading": 176.01, "distance": 17.91, "virtual": true}, {"pano_id": "T87uCSwsg3qzmWjIO5wUMg", "heading": 198.54, "distance": 7.25, "virtual": true}, {"pano_id": "ozGL5mJdQGiGbuj1gDYovw", "heading": 240.29, "distance": 15.13, "virtual": true}]}, "2gC47DsNtXIlpt4RI5Z7fA": {"lat": 6.469596657282055, "lng": 3.579466816152558, "links": [{"pano_id": "1sbIuesmLb9Xa5OCaSstBA", "heading": 87.05592, "description": "Lekki - Epe Expy"}, {"pano_id": "WA-4N-vJI1Lc7r4g6OUA6g", "heading": 267.0826, "description": "Lagos-Epe Exp Road"}]}, "T87uCSwsg3qzmWjIO5wUMg": {"lat": 6.470486725979192, "lng": 3.580962951242391, "links": [{"pano_id": "ozGL5mJdQGiGbuj1gDYovw", "heading": 266.68533, "description": "Olusegun Ojeleye St"}, {"pano_id": "iNhvSeL0eKKZKAjPvA1z2Q", "heading": 93.63166, "description": "Peninsula Resort Way"}, {"pano_id": "0ESxS2ze53afVG72UAQXmA", "heading": 162.1, "distance": 11.55, "virtual": true}]}, "ryKsrbu7h7e0MpOIMuhhpw": {"lat": 6.469808526219087, "lng": 3.57883133332608, "links": [{"pano_id": "wRi6G7sJy8Lh05a45qavig", "heading": 267.027, "description": ""}, {"pano_id": "w8i_xSUNH8kpcELnSogsqA", "heading": 87.082794, "description": ""}]}, "jiMhgex4ahh2esxzfKZDgg": {"lat": 6.469643504869169, "lng": 3.580485860727392, "links": [{"pano_id": "vyGAtPAFAWB_tIbW4QX35A", "heading": 87.41608, "description": "Lagos-Epe Exp Road"}, {"pano_id": "OrDd9pMwto5oL-K437RUMA", "heading": 267.36453, "description": "Lagos-Epe Exp Road"}]}, "WA-4N-vJI1Lc7r4g6OUA6g": {"lat": 6.469591807680426, "lng": 3.579371045254849, "links": [{"pano_id": "2gC47DsNtXIlpt4RI5Z7fA", "heading": 87.08261, "description": "Lekki - Epe Expy"}, {"pano_id": "D1Syzs3MI74ZsKyDU0zu7g", "heading": 267.08353, "description": "Lagos-Epe Exp Road"}]}, "vyGAtPAFAWB_tIbW4QX35A": {"lat": 6.469647366520825, "lng": 3.580571979207275, "links": [{"pano_id": "alZKErDGvQNMHND345229g", "heading": 87.394196, "description": "Lagos-Epe Exp Road"}, {"pano_id": "jiMhgex4ahh2esxzfKZDgg", "heading": 267.41608, "description": "Lagos-Epe Exp Road"}]}, "wRi6G7sJy8Lh05a45qavig": {"lat": 6.469803022109454, "lng": 3.578724673714056, "links": [{"pano_id": "P2sZRCeBsvpfsPGs9_iPwQ", "heading": 267.05624, "description": ""}, {"pano_id": "ryKsrbu7h7e0MpOIMuhhpw", "heading": 87.027, "description": ""}]}, "Uza9HEOKIWJk8QFMJJ3OZQ": {"lat": 6.469960536487664, "lng": 3.581653454539092, "links": [{"pano_id": "d_1jE4rC_Rn3sDw4dpTmQw", "heading": 265.94455, "description": ""}, {"pano_id": "ot35ObtjTvdl4p7CyMkGvg", "heading": 85.742165, "description": ""}]}, "ozGL5mJdQGiGbuj1gDYovw": {"lat": 6.470481081112584, "lng": 3.580864860382103, "links": [{"pano_id": "T87uCSwsg3qzmWjIO5wUMg", "heading": 86.68535, "description": "Olusegun Ojeleye St"}, {"pano_id": "_olPH0Afv25tK8fhpJ0RHQ", "heading": 266.6382, "description": "Olusegun Ojeleye St"}, {"pano_id": "0ESxS2ze53afVG72UAQXmA", "heading": 125.77, "distance": 17.73, "virtual": true}, {"pano_id": "iNhvSeL0eKKZKAjPvA1z2Q", "heading": 88.01, "distance": 13.41, "virtual": true}]}, "ot35ObtjTvdl4p7CyMkGvg": {"lat": 6.469967433016007, "lng": 3.581746680936448, "links": [{"pano_id": "4mRVLoER96LMPtWDq5-snw", "heading": 87.46265, "description": ""}, {"pano_id": "Uza9HEOKIWJk8QFMJJ3OZQ", "heading": 265.74216, "description": ""}]}, "alZKErDGvQNMHND345229g": {"lat": 6.469651302844353, "lng": 3.580659024673132, "links": [{"pano_id": "YkyOKJN6FDxz1Ud1XpDNUw", "heading": 87.43108, "description": "Lagos-Epe Exp Road"}, {"pano_id": "vyGAtPAFAWB_tIbW4QX35A", "heading": 267.3942, "description": "Lagos-Epe Exp Road"}]}, "P2sZRCeBsvpfsPGs9_iPwQ": {"lat": 6.469797595912051, "lng": 3.578618477729124, "links": [{"pano_id": "wRi6G7sJy8Lh05a45qavig", "heading": 87.05624, "description": ""}, {"pano_id": "MAHac66arbbT_FfcFOvQUA", "heading": 267.09125, "description": ""}]}, "D1Syzs3MI74ZsKyDU0zu7g": {"lat": 6.469586173782215, "lng": 3.579259750433395, "links": [{"pano_id": "0syz2xyshu35m3Gxw9xYmg", "heading": 267.13608, "description": "Lagos-Epe Exp Road"}, {"pano_id": "WA-4N-vJI1Lc7r4g6OUA6g", "heading": 87.08354, "description": "Lagos-Epe Exp Road"}]}, "_olPH0Afv25tK8fhpJ0RHQ": {"lat": 6.470475500089067, "lng": 3.580769241287251, "links": [{"pano_id": "ozGL5mJdQGiGbuj1gDYovw", "heading": 86.63823, "description": "Olusegun Ojeleye St"}, {"pano_id": "uc6QGFtYIvxjzs3LZeGPkg", "heading": 266.65607, "description": "Olusegun Ojeleye St"}]}, "0syz2xyshu35m3Gxw9xYmg": {"lat": 6.4695820467076, "lng": 3.579176723576211, "links": [{"pano_id": "D1Syzs3MI74ZsKyDU0zu7g", "heading": 87.13609, "description": "Lagos-Epe Exp Road"}]}, "4mRVLoER96LMPtWDq5-snw": {"lat": 6.469971214869744, "lng": 3.581832569866862, "links": [{"pano_id": "ot35ObtjTvdl4p7CyMkGvg", "heading": 267.46265, "description": ""}]}, "YkyOKJN6FDxz1Ud1XpDNUw": {"lat": 6.469655231575693, "lng": 3.58074715160306, "links": [{"pano_id": "alZKErDGvQNMHND345229g", "heading": 267.4311, "description": "Lagos-Epe Exp Road"}]}, "uc6QGFtYIvxjzs3LZeGPkg": {"lat": 6.470469415170286, "lng": 3.58066443122879, "links": [{"pano_id": "_olPH0Afv25tK8fhpJ0RHQ", "heading": 86.656075, "description": "Olusegun Ojeleye St"}]}, "MAHac66arbbT_FfcFOvQUA": {"lat": 6.469792320156376, "lng": 3.578513981099537, "links": [{"pano_id": "P2sZRCeBsvpfsPGs9_iPwQ", "heading": 87.09125, "description": ""}]}};
+        const targetPanos = ["ot35ObtjTvdl4p7CyMkGvg", "Wh7XlT4tCkEBZ2Yr9EYJfg", "yEfPotPWVArkiuO6X8a_3w", "ryKsrbu7h7e0MpOIMuhhpw", "8Q4RWK8Y2yAhwehuQEbSjg"];
+        const spawnPoints = ["P2sZRCeBsvpfsPGs9_iPwQ", "ZM_yTFj309SH6n8mXek4EA", "4mRVLoER96LMPtWDq5-snw", "T87uCSwsg3qzmWjIO5wUMg", "Wh7XlT4tCkEBZ2Yr9EYJfg", "MAHac66arbbT_FfcFOvQUA", "WA-4N-vJI1Lc7r4g6OUA6g", "wRi6G7sJy8Lh05a45qavig", "hCx4TGjzlSp1yacjFs1A2A"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

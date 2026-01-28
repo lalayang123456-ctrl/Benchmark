@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_burger_king_20260124_122652</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_burger_king_20260124_122652</h3>
+        <div>Total Panos: <strong>74</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"P_u2LWZTsKNeE2bVkfK-7w": {"lat": 51.51177334554351, "lng": -0.0788662809925946, "links": [{"pano_id": "bHI9c_nscEn8EnNn9LTUew", "heading": 154.87888, "description": "French Ordinary Ct"}, {"pano_id": "fHmy7PZyEW4ZNgr7IYuJUg", "heading": 325.6683, "description": "St Katherines Row"}]}, "fHmy7PZyEW4ZNgr7IYuJUg": {"lat": 51.51184868103026, "lng": -0.07894895343315464, "links": [{"pano_id": "z-qhI4p6gprnSRlDJ1GuJQ", "heading": 326.5706, "description": "St Katherines Row"}, {"pano_id": "P_u2LWZTsKNeE2bVkfK-7w", "heading": 145.6683, "description": "St Katherines Row"}]}, "bHI9c_nscEn8EnNn9LTUew": {"lat": 51.51169262184266, "lng": -0.07880546346836241, "links": [{"pano_id": "DijURodZdrhED2HVNrC60Q", "heading": 165.59874, "description": "French Ordinary Ct"}, {"pano_id": "P_u2LWZTsKNeE2bVkfK-7w", "heading": 334.87888, "description": "St Katherines Row"}]}, "z-qhI4p6gprnSRlDJ1GuJQ": {"lat": 51.51191536261727, "lng": -0.07901968111350983, "links": [{"pano_id": "fHmy7PZyEW4ZNgr7IYuJUg", "heading": 146.57059, "description": "St Katherines Row"}, {"pano_id": "NbJf_5Nwfo5xuaPDj_ywdQ", "heading": 332.35504, "description": "St Katherines Row"}]}, "DijURodZdrhED2HVNrC60Q": {"lat": 51.51160578605596, "lng": -0.0787696355930503, "links": [{"pano_id": "bHI9c_nscEn8EnNn9LTUew", "heading": 345.59875, "description": "French Ordinary Ct"}, {"pano_id": "XT-DUUeFcVfbO4gfP-VfsQ", "heading": 153.43217, "description": "French Ordinary Ct"}]}, "NbJf_5Nwfo5xuaPDj_ywdQ": {"lat": 51.51205427641783, "lng": -0.07913659462527484, "links": [{"pano_id": "z-qhI4p6gprnSRlDJ1GuJQ", "heading": 152.35504, "description": "St Katherines Row"}, {"pano_id": "PDXvnbKcQOj70ZHr7fQUgA", "heading": 332.33554, "description": "St Katherines Row"}]}, "XT-DUUeFcVfbO4gfP-VfsQ": {"lat": 51.51152306122216, "lng": -0.07870316659176033, "links": [{"pano_id": "zlx105APAublaEkI9LvZWw", "heading": 145.09366, "description": "French Ordinary Ct"}, {"pano_id": "DijURodZdrhED2HVNrC60Q", "heading": 333.43216, "description": "French Ordinary Ct"}]}, "PDXvnbKcQOj70ZHr7fQUgA": {"lat": 51.51213307176541, "lng": -0.07920296598493692, "links": [{"pano_id": "yZNlYe21K6GfuaoycJ72cw", "heading": 332.29544, "description": "St Katherines Row"}, {"pano_id": "NbJf_5Nwfo5xuaPDj_ywdQ", "heading": 152.33553, "description": "St Katherines Row"}]}, "zlx105APAublaEkI9LvZWw": {"lat": 51.51144876898568, "lng": -0.07861987173818114, "links": [{"pano_id": "wVmu0Ki1PLDk6Uh_qKlQgQ", "heading": 155.98798, "description": "French Ordinary Ct"}, {"pano_id": "XT-DUUeFcVfbO4gfP-VfsQ", "heading": 325.09366, "description": "French Ordinary Ct"}]}, "yZNlYe21K6GfuaoycJ72cw": {"lat": 51.51221162661935, "lng": -0.07926924749491564, "links": [{"pano_id": "PDXvnbKcQOj70ZHr7fQUgA", "heading": 152.29544, "description": "St Katherines Row"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 331.24557, "description": "St Katherines Row"}]}, "wVmu0Ki1PLDk6Uh_qKlQgQ": {"lat": 51.51136668073481, "lng": -0.07856111353887002, "links": [{"pano_id": "zlx105APAublaEkI9LvZWw", "heading": 335.98798, "description": "French Ordinary Ct"}, {"pano_id": "gz5uShn32C4JBfPzh9jKCg", "heading": 168.15323, "description": "French Ordinary Ct"}]}, "gz5uShn32C4JBfPzh9jKCg": {"lat": 51.51124439940575, "lng": -0.07851989928573494, "links": [{"pano_id": "wVmu0Ki1PLDk6Uh_qKlQgQ", "heading": 348.15323, "description": "French Ordinary Ct"}, {"pano_id": "5QBvqqF4GQPAlRm5e1hSSw", "heading": 210.02185, "description": "Crutched Friars"}, {"pano_id": "GkjYuSSsf4WKWZ8mJzM_VA", "heading": 127.1, "distance": 5.11, "virtual": true}, {"pano_id": "gFH3KZQBaxtqJuCj57Vq8w", "heading": 237.42, "distance": 15.23, "virtual": true}, {"pano_id": "hfJVeZ32dIeEkm_sgTQT-A", "heading": 89.24, "distance": 13.89, "virtual": true}]}, "Nhk8T6wRTDfGHixGwYB9LA": {"lat": 51.51228801530736, "lng": -0.07933659889698219, "links": [{"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 333.49323, "description": "St Katherines Row"}, {"pano_id": "yZNlYe21K6GfuaoycJ72cw", "heading": 151.24556, "description": "St Katherines Row"}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 338.08, "distance": 9.51, "virtual": true}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 328.46, "distance": 9.29, "virtual": true}, {"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 17.86, "distance": 15.2, "virtual": true}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 285.18, "distance": 11.81, "virtual": true}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 277.54, "distance": 13.47, "virtual": true}]}, "5QBvqqF4GQPAlRm5e1hSSw": {"lat": 51.51119656910606, "lng": -0.07856430944509102, "links": [{"pano_id": "gz5uShn32C4JBfPzh9jKCg", "heading": 30.021854, "description": "French Ordinary Ct"}, {"pano_id": "gFH3KZQBaxtqJuCj57Vq8w", "heading": 253.54459, "description": "Crutched Friars"}, {"pano_id": "GkjYuSSsf4WKWZ8mJzM_VA", "heading": 72.61988, "description": "Crutched Friars"}, {"pano_id": "hfJVeZ32dIeEkm_sgTQT-A", "heading": 72.02, "distance": 17.83, "virtual": true}]}, "tH__9OF3C12VmFTmsQ2_dA": {"lat": 51.51236737412173, "lng": -0.07940019464351691, "links": [{"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 153.49323, "description": "St Katherines Row"}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 89.93786, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 206.68, "distance": 1.02, "virtual": true}, {"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 58.08, "distance": 10.68, "virtual": true}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 230.65, "distance": 9.04, "virtual": true}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 231.77, "distance": 11.4, "virtual": true}]}, "GkjYuSSsf4WKWZ8mJzM_VA": {"lat": 51.51121668865235, "lng": -0.07846102591005293, "links": [{"pano_id": "hfJVeZ32dIeEkm_sgTQT-A", "heading": 71.59307, "description": "Crutched Friars"}, {"pano_id": "5QBvqqF4GQPAlRm5e1hSSw", "heading": 252.61987, "description": "Crutched Friars"}, {"pano_id": "gz5uShn32C4JBfPzh9jKCg", "heading": 307.1, "distance": 5.11, "virtual": true}, {"pano_id": "gFH3KZQBaxtqJuCj57Vq8w", "heading": 253.15, "distance": 17.66, "virtual": true}]}, "gFH3KZQBaxtqJuCj57Vq8w": {"lat": 51.51117064967192, "lng": -0.07870530983346745, "links": [{"pano_id": "ue3OfJ_bhOvm7MLkdKyAkA", "heading": 253.5231, "description": "Crutched Friars"}, {"pano_id": "5QBvqqF4GQPAlRm5e1hSSw", "heading": 73.544586, "description": "Crutched Friars"}, {"pano_id": "gz5uShn32C4JBfPzh9jKCg", "heading": 57.42, "distance": 15.23, "virtual": true}, {"pano_id": "GkjYuSSsf4WKWZ8mJzM_VA", "heading": 73.15, "distance": 17.66, "virtual": true}]}, "qjLDRhZviC0_Zzqpq_INUw": {"lat": 51.51236738241072, "lng": -0.07938791500976844, "links": [{"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 269.93787, "description": "St Katherines Row"}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 235.12384, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 55.503048, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 158.08, "distance": 9.51, "virtual": true}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 233.83, "distance": 9.72, "virtual": true}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 234.26, "distance": 12.08, "virtual": true}]}, "zugpQhReuYHH2KmRYfyhuA": {"lat": 51.51235918887105, "lng": -0.07940680416525024, "links": [{"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 233.57338, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 55.123844, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 148.46, "distance": 9.29, "virtual": true}, {"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 26.68, "distance": 1.02, "virtual": true}, {"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 55.45, "distance": 11.56, "virtual": true}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 234.13, "distance": 10.49, "virtual": true}]}, "ue3OfJ_bhOvm7MLkdKyAkA": {"lat": 51.51114416674074, "lng": -0.0788491768645836, "links": [{"pano_id": "gFH3KZQBaxtqJuCj57Vq8w", "heading": 73.523094, "description": "Crutched Friars"}, {"pano_id": "w4TQ67oDuS9Y9fR-FLBhVA", "heading": 253.73337, "description": "Crutched Friars"}]}, "hfJVeZ32dIeEkm_sgTQT-A": {"lat": 51.51124605704739, "lng": -0.07831922881388126, "links": [{"pano_id": "GkjYuSSsf4WKWZ8mJzM_VA", "heading": 251.59306, "description": "Crutched Friars"}, {"pano_id": "pxc3uumrrbPKE7UCC5Tj6A", "heading": 73.30283, "description": "Crutched Friars"}, {"pano_id": "gz5uShn32C4JBfPzh9jKCg", "heading": 269.24, "distance": 13.89, "virtual": true}, {"pano_id": "5QBvqqF4GQPAlRm5e1hSSw", "heading": 252.02, "distance": 17.83, "virtual": true}]}, "_A-K0HCgA6fCIl0fgt5VRQ": {"lat": 51.5124181513054, "lng": -0.07926920661782295, "links": [{"pano_id": "rmN71Gecyz-Z12Io0529BA", "heading": 11.353305, "description": "Fenchurch Buildings"}, {"pano_id": "ybvQCOUcU3VYmHExRR45Og", "heading": 54.641945, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 235.50305, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 197.86, "distance": 15.2, "virtual": true}, {"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 238.08, "distance": 10.68, "virtual": true}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 235.45, "distance": 11.56, "virtual": true}]}, "rmN71Gecyz-Z12Io0529BA": {"lat": 51.51250848056922, "lng": -0.07924006362645886, "links": [{"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 191.3533, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Qn6Gi7tjs7l-sORZsQJOhQ", "heading": 332.76404, "description": "Fenchurch Buildings"}, {"pano_id": "ybvQCOUcU3VYmHExRR45Og", "heading": 123.73, "distance": 7.52, "virtual": true}, {"pano_id": "2w-BzGbiyVPPCU2YvlPQXg", "heading": 82.48, "distance": 14.51, "virtual": true}]}, "ybvQCOUcU3VYmHExRR45Og": {"lat": 51.51247092575667, "lng": -0.07914969708293837, "links": [{"pano_id": "_A-K0HCgA6fCIl0fgt5VRQ", "heading": 234.64194, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "2w-BzGbiyVPPCU2YvlPQXg", "heading": 53.230446, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "rmN71Gecyz-Z12Io0529BA", "heading": 303.73, "distance": 7.52, "virtual": true}]}, "pxc3uumrrbPKE7UCC5Tj6A": {"lat": 51.51127318194219, "lng": -0.07817393010987239, "links": [{"pano_id": "hfJVeZ32dIeEkm_sgTQT-A", "heading": 253.30283, "description": "Crutched Friars"}, {"pano_id": "3K17P0Ji21_3sTVDlN5iVA", "heading": 72.508316, "description": "Crutched Friars"}]}, "w4TQ67oDuS9Y9fR-FLBhVA": {"lat": 51.51111921181865, "lng": -0.07898659517729208, "links": [{"pano_id": "ue3OfJ_bhOvm7MLkdKyAkA", "heading": 73.73336, "description": "Crutched Friars"}, {"pano_id": "pHtXgW5z05Cm3KzsB6H4OQ", "heading": 254.51543, "description": "Crutched Friars"}]}, "SuB52ARwxutYXY9Z_7eAqA": {"lat": 51.5123158150344, "lng": -0.07950124303404478, "links": [{"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 53.573383, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 236.05313, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 105.18, "distance": 11.81, "virtual": true}, {"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 50.65, "distance": 9.04, "virtual": true}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 53.83, "distance": 9.72, "virtual": true}, {"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 240.61, "distance": 15.57, "virtual": true}]}, "t15gIXRbK6zDrGA4UCuhYQ": {"lat": 51.51230563311616, "lng": -0.07949538791735382, "links": [{"pano_id": "PE1Af5xa0X2wRcz_fp7JiA", "heading": 158.99107, "description": "Fenchurch Pl"}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 340.3087, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 100.11, "distance": 11.16, "virtual": true}, {"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 43.82, "distance": 9.51, "virtual": true}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 47.29, "distance": 10.12, "virtual": true}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 45.83, "distance": 8.55, "virtual": true}, {"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 265.42, "distance": 2.38, "virtual": true}, {"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 245.02, "distance": 15.41, "virtual": true}]}, "pHtXgW5z05Cm3KzsB6H4OQ": {"lat": 51.51109537903218, "lng": -0.07912482346957239, "links": [{"pano_id": "w4TQ67oDuS9Y9fR-FLBhVA", "heading": 74.51542, "description": "Crutched Friars"}]}, "2w-BzGbiyVPPCU2YvlPQXg": {"lat": 51.51252554343196, "lng": -0.0790322541568744, "links": [{"pano_id": "X0WVocsk2u357nYfwh4rbw", "heading": 52.853058, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "ybvQCOUcU3VYmHExRR45Og", "heading": 233.23044, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "rmN71Gecyz-Z12Io0529BA", "heading": 262.48, "distance": 14.51, "virtual": true}]}, "Qn6Gi7tjs7l-sORZsQJOhQ": {"lat": 51.51260026303041, "lng": -0.0793159745093646, "links": [{"pano_id": "rmN71Gecyz-Z12Io0529BA", "heading": 152.76404, "description": "Fenchurch Buildings"}]}, "3K17P0Ji21_3sTVDlN5iVA": {"lat": 51.51129965821112, "lng": -0.07803893680573179, "links": [{"pano_id": "pxc3uumrrbPKE7UCC5Tj6A", "heading": 252.50832, "description": "Crutched Friars"}, {"pano_id": "PjFIYhvOXCck5VQ9kgJjSA", "heading": 67.2156, "description": "Crutched Friars"}]}, "iNjdPnga_q2ageyxqCDC5A": {"lat": 51.51230392569401, "lng": -0.07952962268927884, "links": [{"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 241.42621, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 56.05313, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Nhk8T6wRTDfGHixGwYB9LA", "heading": 97.54, "distance": 13.47, "virtual": true}, {"pano_id": "tH__9OF3C12VmFTmsQ2_dA", "heading": 51.77, "distance": 11.4, "virtual": true}, {"pano_id": "qjLDRhZviC0_Zzqpq_INUw", "heading": 54.26, "distance": 12.08, "virtual": true}, {"pano_id": "zugpQhReuYHH2KmRYfyhuA", "heading": 54.13, "distance": 10.49, "virtual": true}]}, "li73SAVD28uxbG-ZE9XWvQ": {"lat": 51.5110734857985, "lng": -0.07924100891287202, "links": [{"pano_id": "VzgH5COMeVZmj0ZtvoYcBQ", "heading": 175.4681, "description": "Seething Ln"}, {"pano_id": "pHtXgW5z05Cm3KzsB6H4OQ", "heading": 73.15521, "description": "Crutched Friars"}, {"pano_id": "TYgqg_hX-6dbEdLQ6M5c3g", "heading": 259.74802, "description": "Hart St"}]}, "rU-WTUwunzsH7vFZIyUU2Q": {"lat": 51.5122471082092, "lng": -0.07969725294132608, "links": [{"pano_id": "iNjdPnga_q2ageyxqCDC5A", "heading": 61.426212, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "0-Rlc3TDxzCzBKkOCbfNdQ", "heading": 245.5706, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "SuB52ARwxutYXY9Z_7eAqA", "heading": 60.61, "distance": 15.57, "virtual": true}, {"pano_id": "Uw4XV9jfr5eImk4PrbfOGA", "heading": 245.68, "distance": 15.37, "virtual": true}, {"pano_id": "-Pb1J7xx6qbijO4c92OOtw", "heading": 219.0, "distance": 16.63, "virtual": true}]}, "PjFIYhvOXCck5VQ9kgJjSA": {"lat": 51.51133576070208, "lng": -0.077900833566826, "links": [{"pano_id": "3K17P0Ji21_3sTVDlN5iVA", "heading": 247.2156, "description": "Crutched Friars"}, {"pano_id": "mz9y4reggYxFkzg3m58ULQ", "heading": 63.5873, "description": "Crutched Friars"}, {"pano_id": "-AyQJqsBZKLko27IUtrlAw", "heading": 62.76, "distance": 9.26, "virtual": true}, {"pano_id": "jJZqpq8Ncvw3JoQGJoA0dA", "heading": 97.57, "distance": 9.21, "virtual": true}, {"pano_id": "tWfhuhDWzXAuf1WcwZvXJw", "heading": 133.29, "distance": 16.69, "virtual": true}]}, "X0WVocsk2u357nYfwh4rbw": {"lat": 51.51258192696459, "lng": -0.07891266487505563, "links": [{"pano_id": "2w-BzGbiyVPPCU2YvlPQXg", "heading": 232.85306, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "1oUJkF4L01e1VWiCwxm5ZA", "heading": 51.48797, "description": "\u82ac\u4e18\u5947\u8857"}]}, "eCztCUMx9ZU9RzA0aWdbmw": {"lat": 51.51268378921124, "lng": -0.07938496074231433, "links": [{"pano_id": "GEBdRPSPcvT1He4oUI32Dg", "heading": 332.75693, "description": "Fenchurch Buildings"}, {"pano_id": "Qn6Gi7tjs7l-sORZsQJOhQ", "heading": 152.79652, "description": "Fenchurch Buildings"}]}, "mz9y4reggYxFkzg3m58ULQ": {"lat": 51.51136911619353, "lng": -0.07779292678570864, "links": [{"pano_id": "PjFIYhvOXCck5VQ9kgJjSA", "heading": 243.5873, "description": "Crutched Friars"}, {"pano_id": "-AyQJqsBZKLko27IUtrlAw", "heading": 55.33276, "description": "Crutched Friars"}, {"pano_id": "jJZqpq8Ncvw3JoQGJoA0dA", "heading": 161.38, "distance": 5.19, "virtual": true}, {"pano_id": "CLnSM9vdViZZoVw4UZCEtQ", "heading": 53.95, "distance": 11.03, "virtual": true}, {"pano_id": "tWfhuhDWzXAuf1WcwZvXJw", "heading": 162.82, "distance": 15.86, "virtual": true}]}, "0-Rlc3TDxzCzBKkOCbfNdQ": {"lat": 51.51220128218027, "lng": -0.07985935730844386, "links": [{"pano_id": "-Pb1J7xx6qbijO4c92OOtw", "heading": 174.51315, "description": "London St"}, {"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 65.570595, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Uw4XV9jfr5eImk4PrbfOGA", "heading": 246.13739, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 247.43, "distance": 11.18, "virtual": true}]}, "1oUJkF4L01e1VWiCwxm5ZA": {"lat": 51.51263782469612, "lng": -0.07879979645796582, "links": [{"pano_id": "X0WVocsk2u357nYfwh4rbw", "heading": 231.48798, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "QnmbBrRAgws0ZAL2xZgdoA", "heading": 50.49775, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FowdTuKJKxhVBQEksOQNtQ", "heading": 50.92, "distance": 12.93, "virtual": true}, {"pano_id": "QLQgwIv1pdYrYw-S-KNHQw", "heading": 83.45, "distance": 11.28, "virtual": true}]}, "Uw4XV9jfr5eImk4PrbfOGA": {"lat": 51.51219018671078, "lng": -0.07989966035370664, "links": [{"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 247.91463, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "0-Rlc3TDxzCzBKkOCbfNdQ", "heading": 66.13738, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 65.68, "distance": 15.37, "virtual": true}, {"pano_id": "-Pb1J7xx6qbijO4c92OOtw", "heading": 151.77, "distance": 7.49, "virtual": true}]}, "-AyQJqsBZKLko27IUtrlAw": {"lat": 51.51137385542935, "lng": -0.0777819159526318, "links": [{"pano_id": "jJZqpq8Ncvw3JoQGJoA0dA", "heading": 170.6565, "description": "Savage Gardens"}, {"pano_id": "CLnSM9vdViZZoVw4UZCEtQ", "heading": 53.822727, "description": "Crutched Friars"}, {"pano_id": "mz9y4reggYxFkzg3m58ULQ", "heading": 235.33276, "description": "Crutched Friars"}, {"pano_id": "PjFIYhvOXCck5VQ9kgJjSA", "heading": 242.76, "distance": 9.26, "virtual": true}, {"pano_id": "tWfhuhDWzXAuf1WcwZvXJw", "heading": 165.96, "distance": 16.17, "virtual": true}]}, "-Pb1J7xx6qbijO4c92OOtw": {"lat": 51.51213087082336, "lng": -0.07984848956258055, "links": [{"pano_id": "6eLcvxp9RDnapopNnWGEHw", "heading": 158.95421, "description": "London St"}, {"pano_id": "0-Rlc3TDxzCzBKkOCbfNdQ", "heading": 354.51315, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "rU-WTUwunzsH7vFZIyUU2Q", "heading": 39.0, "distance": 16.63, "virtual": true}, {"pano_id": "Uw4XV9jfr5eImk4PrbfOGA", "heading": 331.77, "distance": 7.49, "virtual": true}, {"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 287.71, "distance": 11.63, "virtual": true}]}, "QnmbBrRAgws0ZAL2xZgdoA": {"lat": 51.51269155139995, "lng": -0.07869507826942837, "links": [{"pano_id": "1oUJkF4L01e1VWiCwxm5ZA", "heading": 230.49776, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FowdTuKJKxhVBQEksOQNtQ", "heading": 52.044765, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 52.17, "distance": 13.7, "virtual": true}, {"pano_id": "QLQgwIv1pdYrYw-S-KNHQw", "heading": 139.81, "distance": 6.14, "virtual": true}, {"pano_id": "_wSZnczLiUpxOLgwm5lqtQ", "heading": 141.77, "distance": 17.13, "virtual": true}]}, "6eLcvxp9RDnapopNnWGEHw": {"lat": 51.51204027890984, "lng": -0.07979247911623512, "links": [{"pano_id": "-Pb1J7xx6qbijO4c92OOtw", "heading": 338.9542, "description": "London St"}, {"pano_id": "AS53gVxYuu4YnLc0JMh6tw", "heading": 159.65315, "description": "London St"}]}, "jJZqpq8Ncvw3JoQGJoA0dA": {"lat": 51.51132486022006, "lng": -0.07776896287042921, "links": [{"pano_id": "tWfhuhDWzXAuf1WcwZvXJw", "heading": 163.52966, "description": "Savage Gardens"}, {"pano_id": "-AyQJqsBZKLko27IUtrlAw", "heading": 350.6565, "description": "Crutched Friars"}, {"pano_id": "PjFIYhvOXCck5VQ9kgJjSA", "heading": 277.57, "distance": 9.21, "virtual": true}, {"pano_id": "mz9y4reggYxFkzg3m58ULQ", "heading": 341.38, "distance": 5.19, "virtual": true}, {"pano_id": "CLnSM9vdViZZoVw4UZCEtQ", "heading": 32.47, "distance": 13.53, "virtual": true}]}, "FowdTuKJKxhVBQEksOQNtQ": {"lat": 51.51271114823232, "lng": -0.07865470935653336, "links": [{"pano_id": "QLQgwIv1pdYrYw-S-KNHQw", "heading": 170.36378, "description": "Lloyd's Ave"}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 52.21009, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "QnmbBrRAgws0ZAL2xZgdoA", "heading": 232.04477, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "1oUJkF4L01e1VWiCwxm5ZA", "heading": 230.92, "distance": 12.93, "virtual": true}, {"pano_id": "_wSZnczLiUpxOLgwm5lqtQ", "heading": 153.47, "distance": 17.47, "virtual": true}]}, "CLnSM9vdViZZoVw4UZCEtQ": {"lat": 51.51142750869518, "lng": -0.07766402748921006, "links": [{"pano_id": "hFv9EUhGQIwnlUBn7gfomw", "heading": 53.180573, "description": "Crutched Friars"}, {"pano_id": "-AyQJqsBZKLko27IUtrlAw", "heading": 233.82272, "description": "Crutched Friars"}, {"pano_id": "mz9y4reggYxFkzg3m58ULQ", "heading": 233.95, "distance": 11.03, "virtual": true}, {"pano_id": "jJZqpq8Ncvw3JoQGJoA0dA", "heading": 212.47, "distance": 13.53, "virtual": true}]}, "6jm-sJID7-CxPFo11F80-A": {"lat": 51.51216268304673, "lng": -0.08000857525248399, "links": [{"pano_id": "a2equgwXKyUC7pQnGgeAZA", "heading": 247.84845, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Uw4XV9jfr5eImk4PrbfOGA", "heading": 67.91463, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "0-Rlc3TDxzCzBKkOCbfNdQ", "heading": 67.43, "distance": 11.18, "virtual": true}, {"pano_id": "-Pb1J7xx6qbijO4c92OOtw", "heading": 107.71, "distance": 11.63, "virtual": true}, {"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 247.75, "distance": 16.79, "virtual": true}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 250.86, "distance": 15.93, "virtual": true}]}, "FRzoTm3p7fX1qFFkmqNc8g": {"lat": 51.51276712812442, "lng": -0.07853870360939563, "links": [{"pano_id": "gKGOa8AkJlbAER9F8YLhsA", "heading": 52.19824, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FowdTuKJKxhVBQEksOQNtQ", "heading": 232.21008, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "QnmbBrRAgws0ZAL2xZgdoA", "heading": 232.17, "distance": 13.7, "virtual": true}, {"pano_id": "QLQgwIv1pdYrYw-S-KNHQw", "heading": 207.66, "distance": 14.78, "virtual": true}, {"pano_id": "iBSfKSnSfhgepAinh4_-3A", "heading": 52.37, "distance": 12.4, "virtual": true}, {"pano_id": "8EdWmq1p9AODql1HzBRggw", "heading": 19.22, "distance": 12.99, "virtual": true}]}, "QLQgwIv1pdYrYw-S-KNHQw": {"lat": 51.51264940226726, "lng": -0.07863786379107272, "links": [{"pano_id": "_wSZnczLiUpxOLgwm5lqtQ", "heading": 142.86575, "description": "Lloyd's Ave"}, {"pano_id": "FowdTuKJKxhVBQEksOQNtQ", "heading": 350.3638, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "1oUJkF4L01e1VWiCwxm5ZA", "heading": 263.45, "distance": 11.28, "virtual": true}, {"pano_id": "QnmbBrRAgws0ZAL2xZgdoA", "heading": 319.81, "distance": 6.14, "virtual": true}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 27.66, "distance": 14.78, "virtual": true}]}, "tWfhuhDWzXAuf1WcwZvXJw": {"lat": 51.5112328166629, "lng": -0.07772523788070693, "links": [{"pano_id": "JYWZmE4f3ljOulww7dUEZw", "heading": 164.482, "description": "Savage Gardens"}, {"pano_id": "jJZqpq8Ncvw3JoQGJoA0dA", "heading": 343.52966, "description": "Savage Gardens"}, {"pano_id": "PjFIYhvOXCck5VQ9kgJjSA", "heading": 313.29, "distance": 16.69, "virtual": true}, {"pano_id": "mz9y4reggYxFkzg3m58ULQ", "heading": 342.82, "distance": 15.86, "virtual": true}, {"pano_id": "-AyQJqsBZKLko27IUtrlAw", "heading": 345.96, "distance": 16.17, "virtual": true}]}, "a2equgwXKyUC7pQnGgeAZA": {"lat": 51.51212319698868, "lng": -0.08016442355503217, "links": [{"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 67.84845, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 247.52023, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 258.94, "distance": 4.35, "virtual": true}, {"pano_id": "x8dDYqc6ryxR7AzTrp93UA", "heading": 245.76, "distance": 14.8, "virtual": true}]}, "AS53gVxYuu4YnLc0JMh6tw": {"lat": 51.51195593905089, "lng": -0.07974222339734946, "links": [{"pano_id": "6eLcvxp9RDnapopNnWGEHw", "heading": 339.65314, "description": "London St"}, {"pano_id": "2MMkd3RqrJpqtz_9Gh6bVQ", "heading": 159.71223, "description": "London St"}, {"pano_id": "Nu277kvK1CmxVP4UeDr_jg", "heading": 159.75, "distance": 8.75, "virtual": true}, {"pano_id": "77lb46tfh2aD27RInpa9-A", "heading": 133.89, "distance": 9.17, "virtual": true}]}, "hFv9EUhGQIwnlUBn7gfomw": {"lat": 51.51148059786809, "lng": -0.0775500808497512, "links": [{"pano_id": "H4ZDN2w1dTGj0afTS_IoaA", "heading": 53.04021, "description": "Crutched Friars"}, {"pano_id": "CLnSM9vdViZZoVw4UZCEtQ", "heading": 233.18057, "description": "Crutched Friars"}]}, "gKGOa8AkJlbAER9F8YLhsA": {"lat": 51.51282222444804, "lng": -0.07842457747025268, "links": [{"pano_id": "iBSfKSnSfhgepAinh4_-3A", "heading": 53.09274, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 232.19824, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "8EdWmq1p9AODql1HzBRggw", "heading": 329.48, "distance": 7.13, "virtual": true}, {"pano_id": "Aoa_b_eeQF8VqrT67JDqrA", "heading": 53.73, "distance": 9.96, "virtual": true}]}, "2MMkd3RqrJpqtz_9Gh6bVQ": {"lat": 51.51188619028432, "lng": -0.07970079358682151, "links": [{"pano_id": "Nu277kvK1CmxVP4UeDr_jg", "heading": 160.37935, "description": "London St"}, {"pano_id": "AS53gVxYuu4YnLc0JMh6tw", "heading": 339.71225, "description": "London St"}, {"pano_id": "77lb46tfh2aD27RInpa9-A", "heading": 69.56, "distance": 4.0, "virtual": true}]}, "JYWZmE4f3ljOulww7dUEZw": {"lat": 51.51114245521387, "lng": -0.0776849236656453, "links": [{"pano_id": "tWfhuhDWzXAuf1WcwZvXJw", "heading": 344.482, "description": "Savage Gardens"}, {"pano_id": "r75LcWxoAPzF-rsDQEFcKg", "heading": 167.95404, "description": "Savage Gardens"}]}, "H4ZDN2w1dTGj0afTS_IoaA": {"lat": 51.51153609606216, "lng": -0.07743156979332173, "links": [{"pano_id": "hFv9EUhGQIwnlUBn7gfomw", "heading": 233.0402, "description": "Crutched Friars"}]}, "t0UZcB6cJk5Q2zXF7FceOw": {"lat": 51.51210550537427, "lng": -0.08023312140162789, "links": [{"pano_id": "a2equgwXKyUC7pQnGgeAZA", "heading": 67.52024, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "x8dDYqc6ryxR7AzTrp93UA", "heading": 244.81621, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 23.2993, "description": "Billiter St"}, {"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 67.75, "distance": 16.79, "virtual": true}, {"pano_id": "t0ArT3ddfrZZA3hR5mGdyQ", "heading": 244.34, "distance": 16.41, "virtual": true}]}, "_wSZnczLiUpxOLgwm5lqtQ": {"lat": 51.51257054553603, "lng": -0.07854191497063535, "links": [{"pano_id": "QLQgwIv1pdYrYw-S-KNHQw", "heading": 322.86575, "description": "Lloyd's Ave"}, {"pano_id": "s3Yo9cK560IFLGjJs7pZTQ", "heading": 143.02559, "description": "Lloyd's Ave"}, {"pano_id": "QnmbBrRAgws0ZAL2xZgdoA", "heading": 321.77, "distance": 17.13, "virtual": true}, {"pano_id": "FowdTuKJKxhVBQEksOQNtQ", "heading": 333.47, "distance": 17.47, "virtual": true}]}, "r75LcWxoAPzF-rsDQEFcKg": {"lat": 51.5110523282679, "lng": -0.07765402102911821, "links": [{"pano_id": "J64Oj40L28cdM8VY7JCf8A", "heading": 168.56667, "description": "Savage Gardens"}, {"pano_id": "JYWZmE4f3ljOulww7dUEZw", "heading": 347.95404, "description": "Savage Gardens"}]}, "Nu277kvK1CmxVP4UeDr_jg": {"lat": 51.51188210150671, "lng": -0.0796984514909052, "links": [{"pano_id": "2MMkd3RqrJpqtz_9Gh6bVQ", "heading": 340.37936, "description": "London St"}, {"pano_id": "77lb46tfh2aD27RInpa9-A", "heading": 62.68464, "description": ""}, {"pano_id": "AS53gVxYuu4YnLc0JMh6tw", "heading": 339.75, "distance": 8.75, "virtual": true}]}, "W4nb-OpnJ3Vh2MmKwgdv-A": {"lat": 51.51211569602947, "lng": -0.0802260696664248, "links": [{"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 203.2993, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "6jm-sJID7-CxPFo11F80-A", "heading": 70.86, "distance": 15.93, "virtual": true}, {"pano_id": "a2equgwXKyUC7pQnGgeAZA", "heading": 78.94, "distance": 4.35, "virtual": true}, {"pano_id": "x8dDYqc6ryxR7AzTrp93UA", "heading": 240.4, "distance": 10.62, "virtual": true}, {"pano_id": "t0ArT3ddfrZZA3hR5mGdyQ", "heading": 241.67, "distance": 17.36, "virtual": true}]}, "iBSfKSnSfhgepAinh4_-3A": {"lat": 51.5128352361156, "lng": -0.07839673841531968, "links": [{"pano_id": "8EdWmq1p9AODql1HzBRggw", "heading": 310.23788, "description": "Hartshorn Alley"}, {"pano_id": "gKGOa8AkJlbAER9F8YLhsA", "heading": 233.09274, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "Aoa_b_eeQF8VqrT67JDqrA", "heading": 53.937885, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 232.37, "distance": 12.4, "virtual": true}]}, "s3Yo9cK560IFLGjJs7pZTQ": {"lat": 51.51249353165489, "lng": -0.07844875062821388, "links": [{"pano_id": "_wSZnczLiUpxOLgwm5lqtQ", "heading": 323.02557, "description": "Lloyd's Ave"}]}, "x8dDYqc6ryxR7AzTrp93UA": {"lat": 51.51206852550629, "lng": -0.08035948762407584, "links": [{"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 64.81621, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "t0ArT3ddfrZZA3hR5mGdyQ", "heading": 243.66312, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "a2equgwXKyUC7pQnGgeAZA", "heading": 65.76, "distance": 14.8, "virtual": true}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 60.4, "distance": 10.62, "virtual": true}]}, "8EdWmq1p9AODql1HzBRggw": {"lat": 51.5128774503809, "lng": -0.07847689871145662, "links": [{"pano_id": "iBSfKSnSfhgepAinh4_-3A", "heading": 130.23788, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "FRzoTm3p7fX1qFFkmqNc8g", "heading": 199.22, "distance": 12.99, "virtual": true}, {"pano_id": "gKGOa8AkJlbAER9F8YLhsA", "heading": 149.48, "distance": 7.13, "virtual": true}, {"pano_id": "Aoa_b_eeQF8VqrT67JDqrA", "heading": 91.21, "distance": 11.66, "virtual": true}]}, "Aoa_b_eeQF8VqrT67JDqrA": {"lat": 51.51287523670835, "lng": -0.07830847339704582, "links": [{"pano_id": "iBSfKSnSfhgepAinh4_-3A", "heading": 233.93788, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "gKGOa8AkJlbAER9F8YLhsA", "heading": 233.73, "distance": 9.96, "virtual": true}, {"pano_id": "8EdWmq1p9AODql1HzBRggw", "heading": 271.21, "distance": 11.66, "virtual": true}]}, "t0ArT3ddfrZZA3hR5mGdyQ": {"lat": 51.512041597605, "lng": -0.08044689226343371, "links": [{"pano_id": "x8dDYqc6ryxR7AzTrp93UA", "heading": 63.663113, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 64.34, "distance": 16.41, "virtual": true}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 61.67, "distance": 17.36, "virtual": true}]}, "J64Oj40L28cdM8VY7JCf8A": {"lat": 51.51096163907656, "lng": -0.07762455104313497, "links": [{"pano_id": "r75LcWxoAPzF-rsDQEFcKg", "heading": 348.56665, "description": "Savage Gardens"}]}, "oBO86VGnCBsPeFJWi4a4dg": {"lat": 51.51205656878576, "lng": -0.08036886470019163, "links": [{"pano_id": "9GFo3-5YDfOhhimwXcsUjA", "heading": 157.60745, "description": "Mark Ln"}, {"pano_id": "x8dDYqc6ryxR7AzTrp93UA", "heading": 26.016024, "description": "\u82ac\u4e18\u5947\u8857"}, {"pano_id": "a2equgwXKyUC7pQnGgeAZA", "heading": 62.36, "distance": 15.97, "virtual": true}, {"pano_id": "t0UZcB6cJk5Q2zXF7FceOw", "heading": 59.92, "distance": 10.86, "virtual": true}, {"pano_id": "W4nb-OpnJ3Vh2MmKwgdv-A", "heading": 56.36, "distance": 11.87, "virtual": true}, {"pano_id": "t0ArT3ddfrZZA3hR5mGdyQ", "heading": 252.87, "distance": 5.65, "virtual": true}]}, "77lb46tfh2aD27RInpa9-A": {"lat": 51.511898738638, "lng": -0.07964669196082848, "links": [{"pano_id": "Nu277kvK1CmxVP4UeDr_jg", "heading": 242.68463, "description": "London St"}, {"pano_id": "AS53gVxYuu4YnLc0JMh6tw", "heading": 313.89, "distance": 9.17, "virtual": true}, {"pano_id": "2MMkd3RqrJpqtz_9Gh6bVQ", "heading": 249.56, "distance": 4.0, "virtual": true}]}};
+        const targetPanos = ["FowdTuKJKxhVBQEksOQNtQ", "P_u2LWZTsKNeE2bVkfK-7w"];
+        const spawnPoints = ["8EdWmq1p9AODql1HzBRggw", "gKGOa8AkJlbAER9F8YLhsA", "t0ArT3ddfrZZA3hR5mGdyQ", "H4ZDN2w1dTGj0afTS_IoaA", "FowdTuKJKxhVBQEksOQNtQ", "J64Oj40L28cdM8VY7JCf8A"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_landmark_20260125_033254</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_landmark_20260125_033254</h3>
+        <div>Total Panos: <strong>73</strong></div>
+        <div>Spawn Points: <strong>4</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"cjR44fzaq_VMUs9iP26OeA": {"lat": 32.7805019720716, "lng": -96.8078522324763, "links": [{"pano_id": "07XuaeH1R53Mlh4inmxUrA", "heading": 255.67625, "description": "Pacific Ave"}, {"pano_id": "SlXQekqT4dFfSWYUKcgJDA", "heading": 74.78613, "description": "Pacific Ave"}]}, "SlXQekqT4dFfSWYUKcgJDA": {"lat": 32.78052479475078, "lng": -96.80775241557666, "links": [{"pano_id": "ljtb0oGFSWqUwgStprT42Q", "heading": 74.87381, "description": "Pacific Ave"}, {"pano_id": "cjR44fzaq_VMUs9iP26OeA", "heading": 254.78613, "description": "Pacific Ave"}]}, "07XuaeH1R53Mlh4inmxUrA": {"lat": 32.78047982422164, "lng": -96.80795540129203, "links": [{"pano_id": "cjR44fzaq_VMUs9iP26OeA", "heading": 75.676254, "description": "Pacific Ave"}, {"pano_id": "oJKeN5UmBtbrvzt5lhzxtQ", "heading": 257.39587, "description": "Pacific Ave"}]}, "ljtb0oGFSWqUwgStprT42Q": {"lat": 32.78054811120843, "lng": -96.8076498193326, "links": [{"pano_id": "VYpNNYDdcIhqPpiD01WNwQ", "heading": 74.78492, "description": "Pacific Ave"}, {"pano_id": "SlXQekqT4dFfSWYUKcgJDA", "heading": 254.87381, "description": "Pacific Ave"}]}, "oJKeN5UmBtbrvzt5lhzxtQ": {"lat": 32.78045969139576, "lng": -96.80806249429298, "links": [{"pano_id": "twUuK9IJ7RTD9JEj08v6LA", "heading": 262.0447, "description": "Pacific Ave"}, {"pano_id": "07XuaeH1R53Mlh4inmxUrA", "heading": 77.39587, "description": "Pacific Ave"}]}, "twUuK9IJ7RTD9JEj08v6LA": {"lat": 32.78044725298, "lng": -96.80816836121161, "links": [{"pano_id": "oJKeN5UmBtbrvzt5lhzxtQ", "heading": 82.0447, "description": "Pacific Ave"}, {"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 292.41006, "description": "N Houston St"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 237.97, "distance": 10.26, "virtual": true}]}, "VYpNNYDdcIhqPpiD01WNwQ": {"lat": 32.78057205731126, "lng": -96.80754509775565, "links": [{"pano_id": "ljtb0oGFSWqUwgStprT42Q", "heading": 254.78491, "description": "Pacific Ave"}, {"pano_id": "XDm7LerlcB-WVXisWsXQSw", "heading": 98.28775, "description": "N Record St"}, {"pano_id": "KrKxfyzGXvxBAAMYV3j-8A", "heading": 39.69, "distance": 10.93, "virtual": true}, {"pano_id": "wO1yZXpd6ckB_8fafuCuKg", "heading": 77.74, "distance": 17.82, "virtual": true}, {"pano_id": "5vbEf7YuRALnvI5Y_PmKhg", "heading": 131.54, "distance": 16.32, "virtual": true}]}, "XDm7LerlcB-WVXisWsXQSw": {"lat": 32.78055941244123, "lng": -96.80744184784145, "links": [{"pano_id": "wO1yZXpd6ckB_8fafuCuKg", "heading": 56.21429, "description": "Pacific Ave"}, {"pano_id": "KrKxfyzGXvxBAAMYV3j-8A", "heading": 344.75488, "description": "N Record St"}, {"pano_id": "VYpNNYDdcIhqPpiD01WNwQ", "heading": 278.28775, "description": "Pacific Ave"}, {"pano_id": "5vbEf7YuRALnvI5Y_PmKhg", "heading": 164.78305, "description": "N Record St"}]}, "wR2yl8Hx3DTXa9sbe4Csng": {"lat": 32.78048718881469, "lng": -96.80828354788494, "links": [{"pano_id": "twUuK9IJ7RTD9JEj08v6LA", "heading": 112.41006, "description": "Pacific Ave"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 168.16309, "description": "N Houston St"}, {"pano_id": "XCN1kcPl5d-ah_qi2gMPCA", "heading": 347.8902, "description": "N Houston St"}, {"pano_id": "ym3KvjmO7m3ajTQg7qfOMA", "heading": 267.79236, "description": "N Houston St"}, {"pano_id": "iv9kAUpHiK5XngAnKKcG9w", "heading": 217.47342, "description": "N Houston St"}, {"pano_id": "PfuliXTmzkXByls8snnXSQ", "heading": 305.75, "distance": 16.12, "virtual": true}]}, "ym3KvjmO7m3ajTQg7qfOMA": {"lat": 32.7804835164653, "lng": -96.80839685449236, "links": [{"pano_id": "iv9kAUpHiK5XngAnKKcG9w", "heading": 165.6801, "description": "N Houston St"}, {"pano_id": "PfuliXTmzkXByls8snnXSQ", "heading": 345.7725, "description": "N Houston St"}, {"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 87.79236, "description": "N Houston St"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 126.8, "distance": 15.82, "virtual": true}, {"pano_id": "XCN1kcPl5d-ah_qi2gMPCA", "heading": 40.9, "distance": 13.07, "virtual": true}]}, "9KL20VbOOglCANb1xUXnKA": {"lat": 32.78039831540662, "lng": -96.80826139344151, "links": [{"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 348.1631, "description": "N Houston St"}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 217.14676, "description": "N Houston St"}, {"pano_id": "twUuK9IJ7RTD9JEj08v6LA", "heading": 57.97, "distance": 10.26, "virtual": true}, {"pano_id": "ym3KvjmO7m3ajTQg7qfOMA", "heading": 306.8, "distance": 15.82, "virtual": true}, {"pano_id": "iv9kAUpHiK5XngAnKKcG9w", "heading": 266.68, "distance": 10.11, "virtual": true}]}, "KrKxfyzGXvxBAAMYV3j-8A": {"lat": 32.78064767791096, "lng": -96.80747046023197, "links": [{"pano_id": "XDm7LerlcB-WVXisWsXQSw", "heading": 164.75487, "description": "N Record St"}, {"pano_id": "jLIrvtzkp-EiLVkjRelvWw", "heading": 344.7412, "description": "N Record St"}, {"pano_id": "VYpNNYDdcIhqPpiD01WNwQ", "heading": 219.69, "distance": 10.93, "virtual": true}, {"pano_id": "wO1yZXpd6ckB_8fafuCuKg", "heading": 113.91, "distance": 11.41, "virtual": true}]}, "wO1yZXpd6ckB_8fafuCuKg": {"lat": 32.78060608881577, "lng": -96.80735887198017, "links": [{"pano_id": "gDypawqT7rTUf30J9c7CeA", "heading": 80.58947, "description": "Pacific Ave"}, {"pano_id": "XDm7LerlcB-WVXisWsXQSw", "heading": 236.2143, "description": "N Record St"}, {"pano_id": "VYpNNYDdcIhqPpiD01WNwQ", "heading": 257.74, "distance": 17.82, "virtual": true}, {"pano_id": "KrKxfyzGXvxBAAMYV3j-8A", "heading": 293.91, "distance": 11.41, "virtual": true}, {"pano_id": "5vbEf7YuRALnvI5Y_PmKhg", "heading": 199.59, "distance": 15.5, "virtual": true}]}, "5vbEf7YuRALnvI5Y_PmKhg": {"lat": 32.78047476562558, "lng": -96.80741446170803, "links": [{"pano_id": "XDm7LerlcB-WVXisWsXQSw", "heading": 344.78305, "description": "N Record St"}, {"pano_id": "1rpACsfrHo5Vb9yzFELBKw", "heading": 164.76196, "description": "N Record St"}, {"pano_id": "HUFYRhzR20bsa5IJKk1nhw", "heading": 112.526306, "description": "Pacific Ave"}, {"pano_id": "VYpNNYDdcIhqPpiD01WNwQ", "heading": 311.54, "distance": 16.32, "virtual": true}, {"pano_id": "wO1yZXpd6ckB_8fafuCuKg", "heading": 19.59, "distance": 15.5, "virtual": true}]}, "XCN1kcPl5d-ah_qi2gMPCA": {"lat": 32.78057239897985, "lng": -96.80830529358217, "links": [{"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 167.89021, "description": "N Houston St"}, {"pano_id": "Tvqvr67ZIGzjDzA8ZXB3gw", "heading": 347.86392, "description": "N Houston St"}, {"pano_id": "ym3KvjmO7m3ajTQg7qfOMA", "heading": 220.9, "distance": 13.07, "virtual": true}, {"pano_id": "PfuliXTmzkXByls8snnXSQ", "heading": 269.71, "distance": 11.05, "virtual": true}]}, "iv9kAUpHiK5XngAnKKcG9w": {"lat": 32.78039304633765, "lng": -96.80836938620575, "links": [{"pano_id": "ym3KvjmO7m3ajTQg7qfOMA", "heading": 345.6801, "description": "N Houston St"}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 167.76765, "description": "N Houston St"}, {"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 37.47342, "description": "N Houston St"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 86.68, "distance": 10.11, "virtual": true}]}, "1rpACsfrHo5Vb9yzFELBKw": {"lat": 32.78035693671154, "lng": -96.80737628463982, "links": [{"pano_id": "5vbEf7YuRALnvI5Y_PmKhg", "heading": 344.76196, "description": "N Record St"}, {"pano_id": "kCfBgTcqJ2CjIQSoNzl-xQ", "heading": 164.76866, "description": "N Record St"}, {"pano_id": "HUFYRhzR20bsa5IJKk1nhw", "heading": 34.15, "distance": 10.96, "virtual": true}]}, "uoOqGmQLpTu2_NZHfos1Gw": {"lat": 32.78030396018149, "lng": -96.80834641422499, "links": [{"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 165.36131, "description": "N Houston St"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 37.14676, "description": "N Houston St"}, {"pano_id": "SIC50zdEclWtDQVTPnylTQ", "heading": 141.07027, "description": "N Houston St"}, {"pano_id": "iv9kAUpHiK5XngAnKKcG9w", "heading": 347.76767, "description": "N Houston St"}]}, "gDypawqT7rTUf30J9c7CeA": {"lat": 32.78062084055272, "lng": -96.80725300637991, "links": [{"pano_id": "wO1yZXpd6ckB_8fafuCuKg", "heading": 260.58948, "description": "Pacific Ave"}, {"pano_id": "nUUfkx1wjtpKifVunQDXVg", "heading": 75.87875, "description": "Pacific Ave"}]}, "jLIrvtzkp-EiLVkjRelvWw": {"lat": 32.78073686828925, "lng": -96.80749939963404, "links": [{"pano_id": "UM4C8HM67Z7qhfXT3l4Kdg", "heading": 344.73935, "description": "N Record St"}, {"pano_id": "KrKxfyzGXvxBAAMYV3j-8A", "heading": 164.74121, "description": "N Record St"}]}, "HUFYRhzR20bsa5IJKk1nhw": {"lat": 32.78043850559201, "lng": -96.8073104762558, "links": [{"pano_id": "5vbEf7YuRALnvI5Y_PmKhg", "heading": 292.5263, "description": "N Record St"}, {"pano_id": "bNzUMCxxUHbVZ1STyOKbMA", "heading": 75.86024, "description": "Pacific Ave"}, {"pano_id": "1rpACsfrHo5Vb9yzFELBKw", "heading": 214.15, "distance": 10.96, "virtual": true}]}, "lmPVm3U5ldupVjI_2iEalQ": {"lat": 32.78033479528585, "lng": -96.80824741407334, "links": [{"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 349.51706, "description": "N Houston St"}, {"pano_id": "an7HblSce-qLWN_E_2N7Lg", "heading": 168.92085, "description": "N Houston St"}, {"pano_id": "twUuK9IJ7RTD9JEj08v6LA", "heading": 30.58, "distance": 14.53, "virtual": true}, {"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 348.73, "distance": 17.28, "virtual": true}, {"pano_id": "iv9kAUpHiK5XngAnKKcG9w", "heading": 299.6, "distance": 13.11, "virtual": true}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 249.67, "distance": 9.87, "virtual": true}]}, "PfuliXTmzkXByls8snnXSQ": {"lat": 32.78057188827184, "lng": -96.80842350528151, "links": [{"pano_id": "ym3KvjmO7m3ajTQg7qfOMA", "heading": 165.77248, "description": "N Houston St"}, {"pano_id": "IwZ2Ln2Zhb_NckoPoZHizQ", "heading": 345.7585, "description": "N Houston St"}, {"pano_id": "wR2yl8Hx3DTXa9sbe4Csng", "heading": 125.75, "distance": 16.12, "virtual": true}, {"pano_id": "XCN1kcPl5d-ah_qi2gMPCA", "heading": 89.71, "distance": 11.05, "virtual": true}, {"pano_id": "Tvqvr67ZIGzjDzA8ZXB3gw", "heading": 43.61, "distance": 13.09, "virtual": true}]}, "sgIUQ4EEOhx-EqByirbCGw": {"lat": 32.78013581455293, "lng": -96.80829417548043, "links": [{"pano_id": "Fb0leXztL5vijl2Q9i55Qw", "heading": 165.37256, "description": "N Houston St"}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 345.36133, "description": "N Houston St"}, {"pano_id": "SIC50zdEclWtDQVTPnylTQ", "heading": 75.64, "distance": 8.74, "virtual": true}, {"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 115.95, "distance": 11.15, "virtual": true}, {"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 165.39, "distance": 15.94, "virtual": true}]}, "bNzUMCxxUHbVZ1STyOKbMA": {"lat": 32.78046075503539, "lng": -96.80720542822807, "links": [{"pano_id": "YmPRqyjVwhP8bjqczF5wBw", "heading": 75.91801, "description": "Pacific Ave"}, {"pano_id": "HUFYRhzR20bsa5IJKk1nhw", "heading": 255.86023, "description": "Pacific Ave"}]}, "Tvqvr67ZIGzjDzA8ZXB3gw": {"lat": 32.78065709926998, "lng": -96.80832695753588, "links": [{"pano_id": "XCN1kcPl5d-ah_qi2gMPCA", "heading": 167.86392, "description": "N Houston St"}, {"pano_id": "SATwpvp53RoPCquaut2dEA", "heading": 346.8357, "description": "N Houston St"}, {"pano_id": "PfuliXTmzkXByls8snnXSQ", "heading": 223.61, "distance": 13.09, "virtual": true}, {"pano_id": "IwZ2Ln2Zhb_NckoPoZHizQ", "heading": 279.77, "distance": 12.13, "virtual": true}, {"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 306.94, "distance": 17.65, "virtual": true}]}, "kCfBgTcqJ2CjIQSoNzl-xQ": {"lat": 32.78027060665821, "lng": -96.80734832628717, "links": [{"pano_id": "PWaoufYSd7ILIhIDHhMMEA", "heading": 164.67508, "description": "N Record St"}, {"pano_id": "1rpACsfrHo5Vb9yzFELBKw", "heading": 344.76868, "description": "N Record St"}]}, "UM4C8HM67Z7qhfXT3l4Kdg": {"lat": 32.78082226843237, "lng": -96.80752711280235, "links": [{"pano_id": "oLGBIBap9gQUo_kVCRyTsA", "heading": 344.74426, "description": "N Record St"}, {"pano_id": "jLIrvtzkp-EiLVkjRelvWw", "heading": 164.73935, "description": "N Record St"}]}, "SIC50zdEclWtDQVTPnylTQ": {"lat": 32.78015530729434, "lng": -96.80820359572239, "links": [{"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 167.52434, "description": "N Houston St"}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 321.07028, "description": "N Houston St"}, {"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 255.64, "distance": 8.74, "virtual": true}, {"pano_id": "Fb0leXztL5vijl2Q9i55Qw", "heading": 212.98, "distance": 11.83, "virtual": true}]}, "nUUfkx1wjtpKifVunQDXVg": {"lat": 32.78064217773642, "lng": -96.80715212765946, "links": [{"pano_id": "sSs-v4ozweoDsYhn-Mq8hg", "heading": 75.88346, "description": "Pacific Ave"}, {"pano_id": "gDypawqT7rTUf30J9c7CeA", "heading": 255.87875, "description": "Pacific Ave"}]}, "IwZ2Ln2Zhb_NckoPoZHizQ": {"lat": 32.78067560526355, "lng": -96.80845481588518, "links": [{"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 345.85538, "description": "N Houston St"}, {"pano_id": "PfuliXTmzkXByls8snnXSQ", "heading": 165.7585, "description": "N Houston St"}, {"pano_id": "Tvqvr67ZIGzjDzA8ZXB3gw", "heading": 99.77, "distance": 12.13, "virtual": true}, {"pano_id": "SATwpvp53RoPCquaut2dEA", "heading": 53.71, "distance": 12.15, "virtual": true}]}, "Kf4u22hWawE3vGVpitP7ow": {"lat": 32.78075251633797, "lng": -96.80847786965523, "links": [{"pano_id": "IwZ2Ln2Zhb_NckoPoZHizQ", "heading": 165.85536, "description": "N Houston St"}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 346.19946, "description": "N Houston St"}, {"pano_id": "Tvqvr67ZIGzjDzA8ZXB3gw", "heading": 126.94, "distance": 17.65, "virtual": true}, {"pano_id": "SATwpvp53RoPCquaut2dEA", "heading": 96.51, "distance": 12.02, "virtual": true}, {"pano_id": "M7_xche0FAr9hMtwpZVaHg", "heading": 50.25, "distance": 12.6, "virtual": true}, {"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 346.21, "distance": 17.7, "virtual": true}]}, "Fb0leXztL5vijl2Q9i55Qw": {"lat": 32.78006602677128, "lng": -96.80827251153765, "links": [{"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 345.37256, "description": "N Houston St"}, {"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 165.41605, "description": "N Houston St"}, {"pano_id": "SIC50zdEclWtDQVTPnylTQ", "heading": 32.98, "distance": 11.83, "virtual": true}, {"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 70.2, "distance": 8.5, "virtual": true}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 133.23, "distance": 15.12, "virtual": true}]}, "SATwpvp53RoPCquaut2dEA": {"lat": 32.78074026250385, "lng": -96.80835009301138, "links": [{"pano_id": "Tvqvr67ZIGzjDzA8ZXB3gw", "heading": 166.83568, "description": "N Houston St"}, {"pano_id": "M7_xche0FAr9hMtwpZVaHg", "heading": 346.54346, "description": "N Houston St"}, {"pano_id": "IwZ2Ln2Zhb_NckoPoZHizQ", "heading": 233.71, "distance": 12.15, "virtual": true}, {"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 276.51, "distance": 12.02, "virtual": true}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 306.92, "distance": 17.81, "virtual": true}]}, "XZfbeuoGUSrpQ6NmXfKo8w": {"lat": 32.78009193361546, "lng": -96.80818691859658, "links": [{"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 187.28334, "description": "N Houston St"}, {"pano_id": "SIC50zdEclWtDQVTPnylTQ", "heading": 347.52432, "description": "N Houston St"}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 167.18077, "description": "N Houston St"}, {"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 295.95, "distance": 11.15, "virtual": true}, {"pano_id": "Fb0leXztL5vijl2Q9i55Qw", "heading": 250.2, "distance": 8.5, "virtual": true}, {"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 209.66, "distance": 12.14, "virtual": true}]}, "an7HblSce-qLWN_E_2N7Lg": {"lat": 32.78024423554766, "lng": -96.80822632240071, "links": [{"pano_id": "SIC50zdEclWtDQVTPnylTQ", "heading": 167.87354, "description": "N Houston St"}, {"pano_id": "lmPVm3U5ldupVjI_2iEalQ", "heading": 348.92087, "description": "N Houston St"}, {"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 207.75194, "description": "N Houston St"}, {"pano_id": "9KL20VbOOglCANb1xUXnKA", "heading": 349.17, "distance": 17.44, "virtual": true}, {"pano_id": "uoOqGmQLpTu2_NZHfos1Gw", "heading": 300.61, "distance": 13.04, "virtual": true}, {"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 167.73, "distance": 17.33, "virtual": true}]}, "YmPRqyjVwhP8bjqczF5wBw": {"lat": 32.78048280631656, "lng": -96.80710087086555, "links": [{"pano_id": "yAKli_-WoA7GC85NsgI4-A", "heading": 75.91502, "description": "Pacific Ave"}, {"pano_id": "bNzUMCxxUHbVZ1STyOKbMA", "heading": 255.918, "description": "Pacific Ave"}]}, "sSs-v4ozweoDsYhn-Mq8hg": {"lat": 32.78066513226291, "lng": -96.80704356467332, "links": [{"pano_id": "UGWpDe8B_Zfjwijfb7DrVQ", "heading": 76.0941, "description": "Pacific Ave"}, {"pano_id": "nUUfkx1wjtpKifVunQDXVg", "heading": 255.88345, "description": "Pacific Ave"}]}, "PWaoufYSd7ILIhIDHhMMEA": {"lat": 32.78016702202899, "lng": -96.80731456373113, "links": [{"pano_id": "stBJ1fhZMmXxVhxVRzJlEw", "heading": 164.78308, "description": "N Record St"}, {"pano_id": "kCfBgTcqJ2CjIQSoNzl-xQ", "heading": 344.67508, "description": "N Record St"}]}, "T8R7CFS63tIVYnwOdBWfiw": {"lat": 32.78066564989493, "lng": -96.80860172249598, "links": [{"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 50.164516, "description": "N Houston St"}, {"pano_id": "m16L499ANjZ9oqGA0nE8eQ", "heading": 197.0944, "description": ""}, {"pano_id": "QpAneAFkaZdRSWFgnZKCtg", "heading": 346.44495, "description": ""}, {"pano_id": "IwZ2Ln2Zhb_NckoPoZHizQ", "heading": 85.39, "distance": 13.78, "virtual": true}]}, "UGWpDe8B_Zfjwijfb7DrVQ": {"lat": 32.78068716874652, "lng": -96.8069376995866, "links": [{"pano_id": "RQNkVkIimKDA70f0JI8R-w", "heading": 76.76652, "description": "Pacific Ave"}, {"pano_id": "sSs-v4ozweoDsYhn-Mq8hg", "heading": 256.0941, "description": "Pacific Ave"}]}, "Qn5Sfnu8PqUfMKm9nAu3yg": {"lat": 32.77999707822994, "lng": -96.80825117460483, "links": [{"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 165.39557, "description": "N Houston St"}, {"pano_id": "Fb0leXztL5vijl2Q9i55Qw", "heading": 345.41605, "description": "N Houston St"}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 106.584946, "description": "N Houston St"}, {"pano_id": "sgIUQ4EEOhx-EqByirbCGw", "heading": 345.39, "distance": 15.94, "virtual": true}, {"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 29.66, "distance": 12.14, "virtual": true}, {"pano_id": "PCFxWloMHnmtQnBk7OpRBw", "heading": 132.33, "distance": 14.43, "virtual": true}]}, "yAKli_-WoA7GC85NsgI4-A": {"lat": 32.78050924259004, "lng": -96.80697554940089, "links": [{"pano_id": "YmPRqyjVwhP8bjqczF5wBw", "heading": 255.91502, "description": "Pacific Ave"}, {"pano_id": "tOukuO3ckbR8sxlDvIOF4Q", "heading": 75.89224, "description": "Pacific Ave"}]}, "stBJ1fhZMmXxVhxVRzJlEw": {"lat": 32.78008010072089, "lng": -96.80728644190607, "links": [{"pano_id": "PWaoufYSd7ILIhIDHhMMEA", "heading": 344.78308, "description": "N Record St"}, {"pano_id": "h0bFn1O-ccF41TICp4nNOg", "heading": 163.77428, "description": "N Record St"}]}, "KP0Dx0cPEjD-h1eB7G5CqQ": {"lat": 32.77988919059968, "lng": -96.80821773858243, "links": [{"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 7.2833447, "description": "N Houston St"}, {"pano_id": "2zy_GwpBTJm4-t8GXB2F0A", "heading": 165.35191, "description": "N Houston St"}, {"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 345.39557, "description": "N Houston St"}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 32.33, "distance": 11.02, "virtual": true}, {"pano_id": "PCFxWloMHnmtQnBk7OpRBw", "heading": 73.19, "distance": 7.88, "virtual": true}, {"pano_id": "TQrj7CF_5bIhF9y6Xj6Yrw", "heading": 117.52, "distance": 10.38, "virtual": true}]}, "oLGBIBap9gQUo_kVCRyTsA": {"lat": 32.78091853355388, "lng": -96.80755834122445, "links": [{"pano_id": "E6rG8rAq5PR855UpfYa4sg", "heading": 344.75296, "description": "N Record St"}, {"pano_id": "UM4C8HM67Z7qhfXT3l4Kdg", "heading": 164.74428, "description": "N Record St"}]}, "2zy_GwpBTJm4-t8GXB2F0A": {"lat": 32.77979715362096, "lng": -96.80818912586298, "links": [{"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 345.3519, "description": "N Houston St"}, {"pano_id": "-VgfIeOJqUrWohLSJkQ4Hg", "heading": 165.26385, "description": "N Houston St"}, {"pano_id": "PCFxWloMHnmtQnBk7OpRBw", "heading": 21.26, "distance": 13.43, "virtual": true}, {"pano_id": "TQrj7CF_5bIhF9y6Xj6Yrw", "heading": 50.25, "distance": 8.5, "virtual": true}, {"pano_id": "QAxczwGNUnOm0pLRzbv1Ag", "heading": 141.61, "distance": 17.85, "virtual": true}]}, "8_eMJEsnmwGyllDXkkEEzA": {"lat": 32.77997292324409, "lng": -96.8081547088657, "links": [{"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 286.58493, "description": "N Houston St"}, {"pano_id": "PCFxWloMHnmtQnBk7OpRBw", "heading": 166.78748, "description": "N Houston St"}, {"pano_id": "XZfbeuoGUSrpQ6NmXfKo8w", "heading": 347.18076, "description": "N Houston St"}, {"pano_id": "Fb0leXztL5vijl2Q9i55Qw", "heading": 313.23, "distance": 15.12, "virtual": true}, {"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 212.33, "distance": 11.02, "virtual": true}, {"pano_id": "TQrj7CF_5bIhF9y6Xj6Yrw", "heading": 166.77, "distance": 14.49, "virtual": true}]}, "h0bFn1O-ccF41TICp4nNOg": {"lat": 32.77999176986248, "lng": -96.80725586761008, "links": [{"pano_id": "qR8akPOXQcNZnagKQWXnHA", "heading": 163.11096, "description": "N Record St"}, {"pano_id": "stBJ1fhZMmXxVhxVRzJlEw", "heading": 343.77426, "description": "N Record St"}]}, "RQNkVkIimKDA70f0JI8R-w": {"lat": 32.78070761486958, "lng": -96.80683428713942, "links": [{"pano_id": "UhvwamwH6TQ5Do1h1gDF7g", "heading": 76.70568, "description": "Pacific Ave"}, {"pano_id": "UGWpDe8B_Zfjwijfb7DrVQ", "heading": 256.7665, "description": "Pacific Ave"}]}, "_j9k_VPq4LYrzDPj3HSdOQ": {"lat": 32.78083646097096, "lng": -96.8085023949515, "links": [{"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 166.19948, "description": "N Houston St"}, {"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 346.2188, "description": "N Houston St"}, {"pano_id": "SATwpvp53RoPCquaut2dEA", "heading": 126.92, "distance": 17.81, "virtual": true}, {"pano_id": "M7_xche0FAr9hMtwpZVaHg", "heading": 96.07, "distance": 12.05, "virtual": true}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 50.14, "distance": 12.68, "virtual": true}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 346.18, "distance": 16.15, "virtual": true}]}, "M7_xche0FAr9hMtwpZVaHg": {"lat": 32.78082500075959, "lng": -96.80837420950525, "links": [{"pano_id": "SATwpvp53RoPCquaut2dEA", "heading": 166.54346, "description": "N Houston St"}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 346.5619, "description": "N Houston St"}, {"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 230.25, "distance": 12.6, "virtual": true}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 276.07, "distance": 12.05, "virtual": true}, {"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 303.27, "distance": 16.64, "virtual": true}]}, "tOukuO3ckbR8sxlDvIOF4Q": {"lat": 32.78053081757884, "lng": -96.80687344487674, "links": [{"pano_id": "yAKli_-WoA7GC85NsgI4-A", "heading": 255.89224, "description": "Pacific Ave"}, {"pano_id": "lugJDCRTUXRffisaVNPe7A", "heading": 75.852516, "description": "Pacific Ave"}]}, "-VgfIeOJqUrWohLSJkQ4Hg": {"lat": 32.77970386203791, "lng": -96.80815994090213, "links": [{"pano_id": "vsmVt8Cu-CMRD8v0hWTNJw", "heading": 164.1423, "description": "N Houston St"}, {"pano_id": "2zy_GwpBTJm4-t8GXB2F0A", "heading": 345.26385, "description": "N Houston St"}, {"pano_id": "QAxczwGNUnOm0pLRzbv1Ag", "heading": 113.402016, "description": "N Houston St"}, {"pano_id": "TQrj7CF_5bIhF9y6Xj6Yrw", "heading": 13.54, "distance": 16.26, "virtual": true}]}, "lugJDCRTUXRffisaVNPe7A": {"lat": 32.78055306217561, "lng": -96.80676847930414, "links": [{"pano_id": "tOukuO3ckbR8sxlDvIOF4Q", "heading": 255.85252, "description": "Pacific Ave"}, {"pano_id": "LBeNqGQ1342UU2xyI7hSfg", "heading": 75.928314, "description": "Pacific Ave"}]}, "qR8akPOXQcNZnagKQWXnHA": {"lat": 32.77990619930262, "lng": -96.80722496633088, "links": [{"pano_id": "h0bFn1O-ccF41TICp4nNOg", "heading": 343.11096, "description": "N Record St"}, {"pano_id": "EIJCvM5yJmgqn5HsWyygTg", "heading": 163.1887, "description": "N Record St"}]}, "EWO-szWAovRoagfqdsherA": {"lat": 32.78090707724775, "lng": -96.8085229962075, "links": [{"pano_id": "iJzCPoOrGzGEnuksH8VETg", "heading": 28.738548, "description": "Ross Ave"}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 166.2188, "description": "N Houston St"}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 346.133, "description": "N Houston St"}, {"pano_id": "Kf4u22hWawE3vGVpitP7ow", "heading": 166.21, "distance": 17.7, "virtual": true}, {"pano_id": "M7_xche0FAr9hMtwpZVaHg", "heading": 123.27, "distance": 16.64, "virtual": true}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 88.64, "distance": 11.67, "virtual": true}]}, "PCFxWloMHnmtQnBk7OpRBw": {"lat": 32.77990968845505, "lng": -96.80813705074591, "links": [{"pano_id": "TQrj7CF_5bIhF9y6Xj6Yrw", "heading": 166.75426, "description": "N Houston St"}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 346.78748, "description": "N Houston St"}, {"pano_id": "Qn5Sfnu8PqUfMKm9nAu3yg", "heading": 312.33, "distance": 14.43, "virtual": true}, {"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 253.19, "distance": 7.88, "virtual": true}, {"pano_id": "2zy_GwpBTJm4-t8GXB2F0A", "heading": 201.26, "distance": 13.43, "virtual": true}]}, "ukasOM-JVDoWxbI8DAHzkQ": {"lat": 32.7809095719649, "lng": -96.80839824425716, "links": [{"pano_id": "iJzCPoOrGzGEnuksH8VETg", "heading": 327.4586, "description": "Ross Ave"}, {"pano_id": "M7_xche0FAr9hMtwpZVaHg", "heading": 166.56189, "description": "N Houston St"}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 230.14, "distance": 12.68, "virtual": true}, {"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 268.64, "distance": 11.67, "virtual": true}, {"pano_id": "3MvgZVSTRd5KCLrwnHhkzQ", "heading": 7.81, "distance": 12.26, "virtual": true}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 299.06, "distance": 15.55, "virtual": true}]}, "E6rG8rAq5PR855UpfYa4sg": {"lat": 32.78104259287824, "lng": -96.80759856214623, "links": [{"pano_id": "oLGBIBap9gQUo_kVCRyTsA", "heading": 164.75294, "description": "N Record St"}, {"pano_id": "ZKbbYDDlm9_ZSDGvTyyf7g", "heading": 344.798, "description": "N Record St"}]}, "UhvwamwH6TQ5Do1h1gDF7g": {"lat": 32.78072814216311, "lng": -96.80673095660552, "links": [{"pano_id": "XPW20RYDnDN3Z4unJ3q2Iw", "heading": 73.200294, "description": "Pacific Ave"}, {"pano_id": "RQNkVkIimKDA70f0JI8R-w", "heading": 256.7057, "description": "Pacific Ave"}]}, "iJzCPoOrGzGEnuksH8VETg": {"lat": 32.78099682144755, "lng": -96.8084644624972, "links": [{"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 208.73856, "description": "N Houston St"}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 147.45859, "description": "N Houston St"}, {"pano_id": "3MvgZVSTRd5KCLrwnHhkzQ", "heading": 72.73053, "description": "Ross Ave"}, {"pano_id": "YYQzWIo2ei2Y_RwQKmqoqA", "heading": 12.179159, "description": "N Houston St"}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 253.84, "distance": 7.71, "virtual": true}]}, "EIJCvM5yJmgqn5HsWyygTg": {"lat": 32.77983499582768, "lng": -96.80719937877484, "links": [{"pano_id": "qR8akPOXQcNZnagKQWXnHA", "heading": 343.1887, "description": "N Record St"}]}, "LBeNqGQ1342UU2xyI7hSfg": {"lat": 32.78057523429376, "lng": -96.80666326865497, "links": [{"pano_id": "lugJDCRTUXRffisaVNPe7A", "heading": 255.92831, "description": "Pacific Ave"}]}, "ZKbbYDDlm9_ZSDGvTyyf7g": {"lat": 32.78112555611243, "lng": -96.8076253761079, "links": [{"pano_id": "R_0_51dokVAfSpO4Kj2ZJw", "heading": 11.882938, "description": "Ross Ave"}, {"pano_id": "E6rG8rAq5PR855UpfYa4sg", "heading": 164.798, "description": "N Record St"}]}, "XPW20RYDnDN3Z4unJ3q2Iw": {"lat": 32.7807542047406, "lng": -96.80662828022508, "links": [{"pano_id": "UhvwamwH6TQ5Do1h1gDF7g", "heading": 253.2003, "description": "Pacific Ave"}]}, "TQrj7CF_5bIhF9y6Xj6Yrw": {"lat": 32.77984603397164, "lng": -96.80811922912987, "links": [{"pano_id": "PCFxWloMHnmtQnBk7OpRBw", "heading": 346.75427, "description": "N Houston St"}, {"pano_id": "KP0Dx0cPEjD-h1eB7G5CqQ", "heading": 297.52, "distance": 10.38, "virtual": true}, {"pano_id": "2zy_GwpBTJm4-t8GXB2F0A", "heading": 230.25, "distance": 8.5, "virtual": true}, {"pano_id": "8_eMJEsnmwGyllDXkkEEzA", "heading": 346.77, "distance": 14.49, "virtual": true}, {"pano_id": "-VgfIeOJqUrWohLSJkQ4Hg", "heading": 193.54, "distance": 16.26, "virtual": true}]}, "QAxczwGNUnOm0pLRzbv1Ag": {"lat": 32.77967134959616, "lng": -96.808070587588, "links": [{"pano_id": "-VgfIeOJqUrWohLSJkQ4Hg", "heading": 293.402, "description": "N Houston St"}, {"pano_id": "2zy_GwpBTJm4-t8GXB2F0A", "heading": 321.61, "distance": 17.85, "virtual": true}, {"pano_id": "vsmVt8Cu-CMRD8v0hWTNJw", "heading": 221.4, "distance": 8.38, "virtual": true}]}, "vsmVt8Cu-CMRD8v0hWTNJw": {"lat": 32.77961481887164, "lng": -96.80812985669847, "links": [{"pano_id": "-VgfIeOJqUrWohLSJkQ4Hg", "heading": 344.1423, "description": "N Houston St"}, {"pano_id": "QAxczwGNUnOm0pLRzbv1Ag", "heading": 41.4, "distance": 8.38, "virtual": true}]}, "YYQzWIo2ei2Y_RwQKmqoqA": {"lat": 32.78107261440014, "lng": -96.80844500577275, "links": [{"pano_id": "iJzCPoOrGzGEnuksH8VETg", "heading": 192.17915, "description": "Ross Ave"}, {"pano_id": "3MvgZVSTRd5KCLrwnHhkzQ", "heading": 134.75, "distance": 8.5, "virtual": true}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 221.1, "distance": 14.03, "virtual": true}]}, "R_0_51dokVAfSpO4Kj2ZJw": {"lat": 32.78121374700476, "lng": -96.80760330363863, "links": [{"pano_id": "ZKbbYDDlm9_ZSDGvTyyf7g", "heading": 191.88293, "description": "N Record St"}]}, "3MvgZVSTRd5KCLrwnHhkzQ": {"lat": 32.7810187871256, "lng": -96.80838042256951, "links": [{"pano_id": "iJzCPoOrGzGEnuksH8VETg", "heading": 252.73053, "description": "Ross Ave"}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 187.81, "distance": 12.26, "virtual": true}, {"pano_id": "YYQzWIo2ei2Y_RwQKmqoqA", "heading": 314.75, "distance": 8.5, "virtual": true}, {"pano_id": "S5lOL5QDnss_jamhdvYPRg", "heading": 253.27, "distance": 15.94, "virtual": true}]}, "S5lOL5QDnss_jamhdvYPRg": {"lat": 32.78097751761285, "lng": -96.8085436792211, "links": [{"pano_id": "EWO-szWAovRoagfqdsherA", "heading": 166.133, "description": "N Houston St"}, {"pano_id": "_j9k_VPq4LYrzDPj3HSdOQ", "heading": 166.18, "distance": 16.15, "virtual": true}, {"pano_id": "ukasOM-JVDoWxbI8DAHzkQ", "heading": 119.06, "distance": 15.55, "virtual": true}, {"pano_id": "iJzCPoOrGzGEnuksH8VETg", "heading": 73.84, "distance": 7.71, "virtual": true}, {"pano_id": "YYQzWIo2ei2Y_RwQKmqoqA", "heading": 41.1, "distance": 14.03, "virtual": true}, {"pano_id": "3MvgZVSTRd5KCLrwnHhkzQ", "heading": 73.27, "distance": 15.94, "virtual": true}]}};
+        const targetPanos = ["UhvwamwH6TQ5Do1h1gDF7g", "cjR44fzaq_VMUs9iP26OeA"];
+        const spawnPoints = ["UhvwamwH6TQ5Do1h1gDF7g", "vsmVt8Cu-CMRD8v0hWTNJw", "lugJDCRTUXRffisaVNPe7A", "XPW20RYDnDN3Z4unJ3q2Iw"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

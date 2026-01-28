@@ -1,0 +1,238 @@
+{
+  "task_id": "nav_0944_target_20260125_0323_6",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260125_032319",
+  "spawn_point": "frya6XGWrjKtvIXEb1w_Iw",
+  "spawn_heading": 92.3,
+  "description": "Navigate to Kedari Nagar Corner. Head east toward Bapusaheb Kedari Marg Pass by Nancy Towers (on the left in 28m) for 52m. Turn left after Much More (on the left) for 331m. Turn left for 17m. Total distance: approximately 400 m.",
+  "ground_truth": {
+    "target_name": "Kedari Nagar Corner",
+    "target_pano_id": "xGW5t3UetnKHRsqp16gzgA",
+    "optimal_distance_meters": 400,
+    "route_description": "left→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "xGW5t3UetnKHRsqp16gzgA"
+  ],
+  "max_steps": 86,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "frya6XGWrjKtvIXEb1w_Iw",
+      "heading": 92.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "SL3hvPyicSV-ynmDP-3vCg",
+      "heading": 92.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "CQfcCTTm7k1qyhXSRikGDw",
+      "heading": 92.3
+    },
+    {
+      "step_index": 3,
+      "pano_id": "PS-SgHcBCbXKjUd7sPcFmw",
+      "heading": 90.0
+    },
+    {
+      "step_index": 4,
+      "pano_id": "rA2EA7yS9HbUDgsig4NJDw",
+      "heading": 86.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "23YmkMYkwSLyl0I7d2Y9uQ",
+      "heading": 80.3
+    },
+    {
+      "step_index": 6,
+      "pano_id": "a7IoqHGw0_Dw9r_6nGG0xw",
+      "heading": 91.5
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ew64SOid9llndzM4QJLyCQ",
+      "heading": 339.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "E2Qyunpqp3nGIKuFnC6mWA",
+      "heading": 10.9
+    },
+    {
+      "step_index": 9,
+      "pano_id": "4ukZvR8N3HgWUDkHI6Z0pw",
+      "heading": 7.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "mZz0g7Dil7yaVEfnXQ_WZQ",
+      "heading": 4.5
+    },
+    {
+      "step_index": 11,
+      "pano_id": "sdoFJWe3TKJIQJuS0Deqzw",
+      "heading": 4.8
+    },
+    {
+      "step_index": 12,
+      "pano_id": "ccJNGHH-1Yqapp_-u-CXeA",
+      "heading": 4.5
+    },
+    {
+      "step_index": 13,
+      "pano_id": "OBu3QtMFHt7MKltD4o7VoQ",
+      "heading": 4.5
+    },
+    {
+      "step_index": 14,
+      "pano_id": "Bd3ASOXYTdkb_dyhgjynjA",
+      "heading": 4.4
+    },
+    {
+      "step_index": 15,
+      "pano_id": "pRG5VKnGBuaOdZBlXifq6A",
+      "heading": 4.4
+    },
+    {
+      "step_index": 16,
+      "pano_id": "OvxIXatURW99o4NKaMCKig",
+      "heading": 4.3
+    },
+    {
+      "step_index": 17,
+      "pano_id": "hpTF9Ww2uCSvaOTOG7lUCw",
+      "heading": 4.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "1OjMNdKi8GGaanP_ZH2blQ",
+      "heading": 4.4
+    },
+    {
+      "step_index": 19,
+      "pano_id": "pp5_HN4lHPvrIYz36sRxlA",
+      "heading": 4.3
+    },
+    {
+      "step_index": 20,
+      "pano_id": "74r8dHU7j3LgDzGvQrYs3w",
+      "heading": 4.4
+    },
+    {
+      "step_index": 21,
+      "pano_id": "u2TF4bVicwXNszI7jgKTvg",
+      "heading": 4.7
+    },
+    {
+      "step_index": 22,
+      "pano_id": "bHGZsDxR4afl6PinU_ou_Q",
+      "heading": 4.8
+    },
+    {
+      "step_index": 23,
+      "pano_id": "k-npFyKDaKjEuVcaoUEuyQ",
+      "heading": 4.8
+    },
+    {
+      "step_index": 24,
+      "pano_id": "Kjl-0Yt9nicnQ335L60lYg",
+      "heading": 4.8
+    },
+    {
+      "step_index": 25,
+      "pano_id": "yqaCpGRQW_vOY1B8TEJ1DA",
+      "heading": 4.8
+    },
+    {
+      "step_index": 26,
+      "pano_id": "PZemGSbbbNJ2YU0QBr1YtQ",
+      "heading": 349.1
+    },
+    {
+      "step_index": 27,
+      "pano_id": "YjCZpWaxxc8As7s5ifhF3Q",
+      "heading": 5.2
+    },
+    {
+      "step_index": 28,
+      "pano_id": "j0tHyhn9kjjq1rR0zxpsOQ",
+      "heading": 5.2
+    },
+    {
+      "step_index": 29,
+      "pano_id": "-nZoi-q3_OC91Raj141u8g",
+      "heading": 5.2
+    },
+    {
+      "step_index": 30,
+      "pano_id": "BFh4y835POqoZscQF5z0IQ",
+      "heading": 5.1
+    },
+    {
+      "step_index": 31,
+      "pano_id": "J-rOwrvIKszcxm28fa3SYA",
+      "heading": 6.0
+    },
+    {
+      "step_index": 32,
+      "pano_id": "n5hiQOgBdzqsaUBR26JV8A",
+      "heading": 9.1
+    },
+    {
+      "step_index": 33,
+      "pano_id": "4M8ITEdJghAfMBeaRaGnfw",
+      "heading": 30.0
+    },
+    {
+      "step_index": 34,
+      "pano_id": "-DHFG4XfyU0P6fn9YVA-DQ",
+      "heading": 53.6
+    },
+    {
+      "step_index": 35,
+      "pano_id": "rcs9BeItR3t50i1ktfE63Q",
+      "heading": 85.7
+    },
+    {
+      "step_index": 36,
+      "pano_id": "lZlvyfotOb3El_b4iXRo0Q",
+      "heading": 91.4
+    },
+    {
+      "step_index": 37,
+      "pano_id": "3acczLGsBoPBdz_MoLEaRw",
+      "heading": 91.4
+    },
+    {
+      "step_index": 38,
+      "pano_id": "gPIXV4pnBYvsuh9Gxaa1WA",
+      "heading": 91.4
+    },
+    {
+      "step_index": 39,
+      "pano_id": "oeP4WgPfmQvStaFcihapJg",
+      "heading": 91.3
+    },
+    {
+      "step_index": 40,
+      "pano_id": "NH8d8lUzyORVOW2r8bSrmw",
+      "heading": 103.5
+    },
+    {
+      "step_index": 41,
+      "pano_id": "coqqZLj4dk5kAY86xIbsuw",
+      "heading": 0.1
+    },
+    {
+      "step_index": 42,
+      "pano_id": "xGW5t3UetnKHRsqp16gzgA",
+      "heading": 0.8
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

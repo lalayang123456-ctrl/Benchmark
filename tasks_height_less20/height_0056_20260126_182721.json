@@ -1,0 +1,29 @@
+{
+  "task_id": "height_0056_20260126_182721",
+  "task_type": "building_height_estimation",
+  "description": "Facing the building to your North-East (approx. 66\u00b0), estimate the height of the main building in front of you in meters. Answer with one number and a short rationale.",
+  "spawn_pano_id": "PVbcZXspcE2xC4oSrmQvig",
+  "spawn_heading": 66.92739149284245,
+  "target_building": {
+    "lat": 48.1938708,
+    "lng": 16.3694181,
+    "height": 24.87,
+    "floors": 7,
+    "ground_elevation": 177.9786529541016,
+    "roof_elevation": 202.84425,
+    "name": "buildings/ChIJK1qA3oEHbUcRhxh7sQdTJNs",
+    "date": "2022-03-26"
+  },
+  "geofence_id": "list_height_0056_20260126_182721",
+  "ground_truth": {
+    "height_meters": 24.87
+  },
+  "answer": "",
+  "max_steps": null,
+  "max_time_seconds": 180,
+  "metadata": {
+    "created_at": "2026-01-26T18:27:21.109008",
+    "bearing_deg": 66.92739149284245,
+    "city": "Vienna, Austria"
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "task_id": "nav_0472_target_20260124_1353_20",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_135109",
+  "spawn_point": "xfpw3ERqTuBhZtN0K6sK8Q",
+  "spawn_heading": 2.8,
+  "description": "Head straight along the main road, passing the 'Asrama Yatim & Dhuafa' building on the right and the large blue-domed mosque on the left. Continue forward past the Erafone store on the left and stop on the street near the Pegadaian office on the left.",
+  "ground_truth": {
+    "target_name": "Kiddies jaya shop",
+    "target_pano_id": "bf3BONKhgGyCMU6m30-qYg",
+    "optimal_distance_meters": 262,
+    "route_description": "right→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "bf3BONKhgGyCMU6m30-qYg"
+  ],
+  "max_steps": 70,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "xfpw3ERqTuBhZtN0K6sK8Q",
+      "heading": 2.8
+    },
+    {
+      "step_index": 1,
+      "pano_id": "e6PTkKcqp-NIEVXyMhsB3w",
+      "heading": 2.8
+    },
+    {
+      "step_index": 2,
+      "pano_id": "GZ9r5WWccRRE5BcF9ghVLA",
+      "heading": 2.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "gn2w5_apgn7zPd2LNnd0Cw",
+      "heading": 1.7
+    },
+    {
+      "step_index": 4,
+      "pano_id": "wdX3JCmIZ-aIIrQm4HcixA",
+      "heading": 2.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "Vtao9RxVQf9bvN4mE2ut-Q",
+      "heading": 2.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "jdMDfY9uBfIe8XBilVhn5g",
+      "heading": 1.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "mMMyRCFEJ0MzjeUKUHfHTA",
+      "heading": 1.2
+    },
+    {
+      "step_index": 8,
+      "pano_id": "EmaT0r7GuEUwLO0cGA4j2Q",
+      "heading": 1.2
+    },
+    {
+      "step_index": 9,
+      "pano_id": "5iZr6KNNpBxI26ooVDs4KQ",
+      "heading": 2.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "RkLkx2jA00ZRGfoFM0t6EA",
+      "heading": 2.3
+    },
+    {
+      "step_index": 11,
+      "pano_id": "AOBPwtUd27_2Oa8Ux120qQ",
+      "heading": 1.8
+    },
+    {
+      "step_index": 12,
+      "pano_id": "67pd15mCR9_5f3g-zT_AWQ",
+      "heading": 1.2
+    },
+    {
+      "step_index": 13,
+      "pano_id": "VMdk74xn5IWzapR4fa49Nw",
+      "heading": 1.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "wTvNYjYv9g2G7eNBwenTeg",
+      "heading": 0.8
+    },
+    {
+      "step_index": 15,
+      "pano_id": "4nrE_Rgs6QZnDMwavPWQQw",
+      "heading": 0.1
+    },
+    {
+      "step_index": 16,
+      "pano_id": "Nj4iTt7DnEzGF1pWrbhq6w",
+      "heading": 0.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "yCCV96q5udG2u57u56CIUA",
+      "heading": 0.9
+    },
+    {
+      "step_index": 18,
+      "pano_id": "yP3ln16TGYZt7kokD6sbCA",
+      "heading": 317.0
+    },
+    {
+      "step_index": 19,
+      "pano_id": "VzSV0Ih4h3s4RTNo2KDjnQ",
+      "heading": 271.9
+    },
+    {
+      "step_index": 20,
+      "pano_id": "lFWPJW_YyU-Eoe5MGrcFHQ",
+      "heading": 271.9
+    },
+    {
+      "step_index": 21,
+      "pano_id": "xBBZxZ_WPMdBiE7eqFdCNA",
+      "heading": 271.9
+    },
+    {
+      "step_index": 22,
+      "pano_id": "wgPM2aXeRO8nQpj3r9G0HQ",
+      "heading": 271.9
+    },
+    {
+      "step_index": 23,
+      "pano_id": "ieqCVuWZ9tpAKFd3oiTDuA",
+      "heading": 271.7
+    },
+    {
+      "step_index": 24,
+      "pano_id": "f-vJPgewF2ijphlbOCe9Zg",
+      "heading": 269.0
+    },
+    {
+      "step_index": 25,
+      "pano_id": "c6oXWhksU2EA3w0gCWPPlQ",
+      "heading": 269.0
+    },
+    {
+      "step_index": 26,
+      "pano_id": "9nNSA_D6ofMCYqjK56QECQ",
+      "heading": 269.0
+    },
+    {
+      "step_index": 27,
+      "pano_id": "W3mwvhQPd_o0ZCkIlROpEQ",
+      "heading": 269.9
+    },
+    {
+      "step_index": 28,
+      "pano_id": "jbCdBtt3grPCyle56KT-gg",
+      "heading": 270.0
+    },
+    {
+      "step_index": 29,
+      "pano_id": "2CLszPaFY2y8QMNjyJdzLw",
+      "heading": 270.6
+    },
+    {
+      "step_index": 30,
+      "pano_id": "ZMyebOzzMHkueJuiK6Ak7w",
+      "heading": 270.7
+    },
+    {
+      "step_index": 31,
+      "pano_id": "tpw2sps1ubMYN-62Rkyirg",
+      "heading": 270.9
+    },
+    {
+      "step_index": 32,
+      "pano_id": "4fX9WQpGePNhEc4__pkirA",
+      "heading": 275.5
+    },
+    {
+      "step_index": 33,
+      "pano_id": "UOyQUFRu_ELPie_Yk1NPqA",
+      "heading": 274.7
+    },
+    {
+      "step_index": 34,
+      "pano_id": "bf3BONKhgGyCMU6m30-qYg",
+      "heading": 270.7
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight [262m] -> Stop",
+  "agent_concise_description": "Head straight along the main road, passing the 'Asrama Yatim & Dhuafa' building on the right and the large blue-domed mosque on the left. Continue forward past the Erafone store on the left and stop on the street near the Pegadaian office on the left."
+}

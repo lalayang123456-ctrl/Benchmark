@@ -1,0 +1,96 @@
+{
+  "task_id": "nav_0680_target_20260124_1543_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_service_20260124_154201",
+  "spawn_point": "GtaJ-Za1CtfttEqyeRB2Mw",
+  "spawn_heading": 319.4,
+  "description": "Navigate to VIMS Hospital. Walk straight down the narrow lane, passing N.K.S Medical and Happy Barber. At the end of the lane, turn right onto the main road under the flyover. VIMS Hospital will be immediately on your right.",
+  "ground_truth": {
+    "target_name": "VIMS Hospital",
+    "target_pano_id": "bGqIZaVPbKEPsVU7mQgKFg",
+    "optimal_distance_meters": 124,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "bGqIZaVPbKEPsVU7mQgKFg"
+  ],
+  "max_steps": 28,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "GtaJ-Za1CtfttEqyeRB2Mw",
+      "heading": 319.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "sxT6Pc09vZMVCfPG1646Dg",
+      "heading": 319.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "3J33XqSR_-C13_ZK96zfjQ",
+      "heading": 286.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "yDT3qNHhKKqQMumMcHipsw",
+      "heading": 286.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "PklQctNV1qLcOc2HecRUtA",
+      "heading": 286.6
+    },
+    {
+      "step_index": 5,
+      "pano_id": "K601qDJkqG6NJELERIKINQ",
+      "heading": 286.6
+    },
+    {
+      "step_index": 6,
+      "pano_id": "wpayUImnpsmXHmkY7gxC7w",
+      "heading": 286.6
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ak0dcsMh6mAMLwi5_QRNVQ",
+      "heading": 286.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "k5q-eDJg3HrlfGVy47QNvQ",
+      "heading": 286.6
+    },
+    {
+      "step_index": 9,
+      "pano_id": "dQMoX7sard62AFBHv1zbew",
+      "heading": 286.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "VPbesSIcY21s4B8oiv_DxA",
+      "heading": 286.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "7TSQ4P1rn21rg5ixY15nRA",
+      "heading": 287.0
+    },
+    {
+      "step_index": 12,
+      "pano_id": "MZe1cUDPfAOvT08nrNIOXw",
+      "heading": 10.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "bGqIZaVPbKEPsVU7mQgKFg",
+      "heading": 10.8
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight down the narrow lane [103m] -> Turn Right onto the main road under the flyover [18m]",
+  "agent_concise_description": "Walk straight down the narrow lane, passing N.K.S Medical and Happy Barber. At the end of the lane, turn right onto the main road under the flyover. VIMS Hospital will be immediately on your right."
+}

@@ -1,0 +1,93 @@
+{
+  "task_id": "nav_0581_target_20260124_1446_3",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_landmark_20260124_144525",
+  "spawn_point": "NsgE-TEg-VpIOfX8f87z1g",
+  "spawn_heading": 266.0,
+  "description": "Navigate to Franklin Square. Head west for 110m. Turn right Destination will be on the left for 29m. Total distance: approximately 139 m.",
+  "ground_truth": {
+    "target_name": "Franklin Square",
+    "target_pano_id": "F08NyX81a5_TqQNkaE10OQ",
+    "optimal_distance_meters": 139,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "F08NyX81a5_TqQNkaE10OQ"
+  ],
+  "max_steps": 28,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "NsgE-TEg-VpIOfX8f87z1g",
+      "heading": 266.0
+    },
+    {
+      "step_index": 1,
+      "pano_id": "BY6ZRolX8LdwbE4haptMOA",
+      "heading": 266.0
+    },
+    {
+      "step_index": 2,
+      "pano_id": "XcI1hae8RFvzjnQXxiGILg",
+      "heading": 246.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "oMF0kRgZhG6XIlNGZB2G2A",
+      "heading": 230.6
+    },
+    {
+      "step_index": 4,
+      "pano_id": "084h3TGZv0rqNBwMM91Vrg",
+      "heading": 230.7
+    },
+    {
+      "step_index": 5,
+      "pano_id": "2-zwW8IRM76h8vdDRZ86hQ",
+      "heading": 230.6
+    },
+    {
+      "step_index": 6,
+      "pano_id": "FhhfEDlY-va-H2EIwsRxoQ",
+      "heading": 230.6
+    },
+    {
+      "step_index": 7,
+      "pano_id": "E-Y8WIqHKNbiONeknA1JVw",
+      "heading": 230.6
+    },
+    {
+      "step_index": 8,
+      "pano_id": "v2wqjfKXDFEaSg28kbBp-g",
+      "heading": 230.7
+    },
+    {
+      "step_index": 9,
+      "pano_id": "uFJbJM05HgsFccTiF2VPLQ",
+      "heading": 230.6
+    },
+    {
+      "step_index": 10,
+      "pano_id": "UzlfNyQ_bJoy3FkJhrpk6Q",
+      "heading": 230.7
+    },
+    {
+      "step_index": 11,
+      "pano_id": "Ly_yKGDtdJpGYWUGPxzA0g",
+      "heading": 280.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "zx_AhGhfc6SNyuqtdPG0yQ",
+      "heading": 278.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "F08NyX81a5_TqQNkaE10OQ",
+      "heading": 246.1
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

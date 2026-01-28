@@ -1,0 +1,41 @@
+{
+  "task_id": "angle_0025_20260128_151531",
+  "task_type": "perception_angle",
+  "description": "Estimate the relative direction (0-360 deg, clockwise from North) of Sainsbury's from Footasylum Nottingham - Clumber Street.",
+  "spawn_pano_id": "y1TUDtbU-bY7IZgZJTtKzA",
+  "spawn_heading": 228.0,
+  "pois": [
+    {
+      "name": "Footasylum Nottingham - Clumber Street",
+      "type": "shoe_store",
+      "lat": 52.954443399999995,
+      "lng": -1.1477207999999999,
+      "address": "25-29 Clumber St, Nottingham NG1 3ED, UK",
+      "pano_id": "dFstBtq3NZn_3K0ZM0AIKw"
+    },
+    {
+      "name": "Sainsbury's",
+      "type": "supermarket",
+      "lat": 52.94643370000001,
+      "lng": -1.1624799,
+      "address": "11 Castle Bridge Rd, Nottingham NG7 1GX, UK",
+      "pano_id": "GPjNMvyzugpREmCZyX1FPg"
+    }
+  ],
+  "geofence_id": "list_perception_1769584531",
+  "ground_truth": {
+    "distance_between_pois_m": 1330.8,
+    "bearing_a_to_b_deg": 228.0,
+    "bearing_b_to_a_deg": 48.0
+  },
+  "answer": "",
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "metadata": {
+    "created_at": "2026-01-28T15:15:31.796131",
+    "spawn_location": {
+      "lat": 52.9548174193026,
+      "lng": -1.147735852813646
+    }
+  }
+}

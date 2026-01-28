@@ -1,0 +1,1669 @@
+{
+  "agent": "claude-opus-4-5-20251101-thinking",
+  "task_id": "nav_0453_target_20260124_1353_1",
+  "timestamp": "20260125_023531",
+  "success": true,
+  "done_reason": "max_steps",
+  "total_steps": 54,
+  "session_id": "claude-opus-4-5-20251101-thinking_20260125_023531_nav_0453_target_20260124_1353_1_20260125023531",
+  "trajectory": [
+    {
+      "step": 0,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Current heading (3°N) is correctly aligned north as required. Moving forward 10.4m to progress toward the 110m checkpoint where Dhuafa should appear on the right.",
+        "agent_vlm_duration_seconds": 7.11,
+        "agent_total_duration_seconds": 7.11
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.4,
+          "heading": 2.772811
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue northward on the correct heading (3°N). Still ~99m from the 110m checkpoint where Dhuafa should appear on the right. Forward movement maintains route progress.",
+        "agent_vlm_duration_seconds": 5.472,
+        "agent_total_duration_seconds": 5.472
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.4,
+          "heading": 2.8987691
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.4,
+          "heading": 182.77281
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Select the longer forward move (14.4m) to progress efficiently northward toward the 110m checkpoint where Dhuafa should appear on the right. Heading remains correct at 3°N.",
+        "agent_vlm_duration_seconds": 7.098,
+        "agent_total_duration_seconds": 7.098
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 1.6545023
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.4,
+          "heading": 1.88
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.4,
+          "heading": 182.89877
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue northward with the longest forward move (15.1m) to efficiently progress toward the 110m checkpoint. Heading remains optimal at 2°N.",
+        "agent_vlm_duration_seconds": 6.55,
+        "agent_total_duration_seconds": 6.55
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.6,
+          "heading": 2.7473786
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 2.01
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 4.1,
+          "heading": 182.46149
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 14.4,
+          "heading": 181.88
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue northward with the available forward move (10.1m). Still ~60m from the 110m checkpoint where Dhuafa should appear on the right. Heading remains correct at 2°N.",
+        "agent_vlm_duration_seconds": 4.441,
+        "agent_total_duration_seconds": 4.441
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 1.2112001
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 7.6,
+          "heading": 181.26704
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 182.01
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue northward with the available forward move (10.1m). Approximately 50m remaining to the 110m checkpoint. Heading remains optimal at 1°N.",
+        "agent_vlm_duration_seconds": 5.83,
+        "agent_total_duration_seconds": 5.83
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 1.2163036
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 181.2112
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 17.7,
+          "heading": 181.24
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Select the longest forward move (17.6m) to efficiently progress northward. Approximately 40m remaining to the 110m checkpoint where Dhuafa should appear on the right.",
+        "agent_vlm_duration_seconds": 6.053,
+        "agent_total_duration_seconds": 6.053
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.1,
+          "heading": 1.9547855
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 17.6,
+          "heading": 2.03
+        },
+        {
+          "id": 3,
+          "direction": "front",
+          "distance": 15.2,
+          "heading": 2.07
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 181.21631
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "action": {
+        "type": "rotation",
+        "heading": 92.03,
+        "pitch": 0.0,
+        "reason": "Approaching the 110m checkpoint (~22.9m remaining). Rotate right to scout for Dhuafa landmark which should be visible on the right side before proceeding further.",
+        "agent_vlm_duration_seconds": 5.762,
+        "agent_total_duration_seconds": 5.762
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.9,
+          "heading": 1.215216
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 18.0,
+          "heading": 1.22
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 2.3,
+          "heading": 181.82439
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 182.14
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 182.03
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "action": {
+        "type": "rotation",
+        "heading": 2.03,
+        "pitch": 0.0,
+        "reason": "Rotate back to north-facing heading to continue toward the 110m checkpoint. Need to maintain northward progress to reach Dhuafa and the left turn point.",
+        "agent_vlm_duration_seconds": 6.023,
+        "agent_total_duration_seconds": 6.023
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 2.3,
+          "heading": 181.82439
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 7.5,
+          "heading": 182.14
+        },
+        {
+          "id": 3,
+          "direction": "right",
+          "distance": 17.6,
+          "heading": 182.03
+        },
+        {
+          "id": 4,
+          "direction": "left",
+          "distance": 7.9,
+          "heading": 1.215216
+        },
+        {
+          "id": 5,
+          "direction": "left",
+          "distance": 18.0,
+          "heading": 1.22
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue northward with the longer forward move (18.0m) to reach the 110m checkpoint. Will be at approximately 105m total distance, very close to where the left turn should occur.",
+        "agent_vlm_duration_seconds": 6.666,
+        "agent_total_duration_seconds": 6.666
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 7.9,
+          "heading": 1.215216
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 18.0,
+          "heading": 1.22
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 2.3,
+          "heading": 181.82439
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 7.5,
+          "heading": 182.14
+        },
+        {
+          "id": 5,
+          "direction": "back",
+          "distance": 17.6,
+          "heading": 182.03
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Use the longer forward move (9.7m) to reach approximately 114.8m, past the 110m checkpoint. This positions me to identify and take the left turn toward Pizza Hut Delivery.",
+        "agent_vlm_duration_seconds": 5.501,
+        "agent_total_duration_seconds": 5.501
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 2.0,
+          "heading": 0.7972814
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 9.7,
+          "heading": 0.22
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.1,
+          "heading": 181.21938
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 18.0,
+          "heading": 181.22
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue northward with the available forward move (9.5m). Currently at approximately 114.8m, need to reach 135m before turning left. Remaining distance: approximately 20.2m.",
+        "agent_vlm_duration_seconds": 6.743,
+        "agent_total_duration_seconds": 6.743
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.5,
+          "heading": 0.6713917
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 7.7,
+          "heading": 180.06946
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.7,
+          "heading": 180.22
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Use the forward move (10.7m) to reach approximately 135m, the exact point where the left turn should occur. This positions me precisely at the left turn location.",
+        "agent_vlm_duration_seconds": 6.3,
+        "agent_total_duration_seconds": 6.3
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 0.88045084
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 10.7,
+          "heading": 359.0
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 9.5,
+          "heading": 180.67139
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 17.2,
+          "heading": 180.4
+        },
+        {
+          "id": 5,
+          "direction": "front-left 45°",
+          "distance": 15.4,
+          "heading": 315.81
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Take the left turn (move 3, 10.5m) at the 135m checkpoint. This begins the final 69m westward leg toward Pizza Hut Delivery - PHD Indonesia.",
+        "agent_vlm_duration_seconds": 5.538,
+        "agent_total_duration_seconds": 5.538
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right-back 48°",
+          "distance": 0.5,
+          "heading": 136.97084
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.7,
+          "heading": 179.0
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 10.5,
+          "heading": 271.93396
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue westward with the forward move (9.9m) along the final 69m leg toward Pizza Hut Delivery. Currently at approximately 145.5m total, with approximately 58.5m remaining.",
+        "agent_vlm_duration_seconds": 5.403,
+        "agent_total_duration_seconds": 5.403
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 271.9243
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.5,
+          "heading": 91.93395
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.9,
+          "heading": 93.81
+        },
+        {
+          "id": 4,
+          "direction": "left-back 46°",
+          "distance": 15.4,
+          "heading": 135.81
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue westward with the forward move (10.2m) toward Pizza Hut Delivery. Currently at approximately 155.4m total, with approximately 48.6m remaining to destination.",
+        "agent_vlm_duration_seconds": 4.41,
+        "agent_total_duration_seconds": 4.41
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 271.9318
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 9.9,
+          "heading": 91.9243
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Select the longer forward move (14.8m) to continue westward efficiently. Currently at approximately 165.6m total, with approximately 38.4m remaining to Pizza Hut Delivery.",
+        "agent_vlm_duration_seconds": 7.079,
+        "agent_total_duration_seconds": 7.079
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.8,
+          "heading": 271.89026
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 14.8,
+          "heading": 271.83
+        },
+        {
+          "id": 3,
+          "direction": "front-right 24°",
+          "distance": 16.1,
+          "heading": 296.01
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 91.93179
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue westward with the forward move (10.2m). Currently at approximately 180.4m total, with approximately 23.6m remaining to Pizza Hut Delivery.",
+        "agent_vlm_duration_seconds": 4.998,
+        "agent_total_duration_seconds": 4.998
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.2,
+          "heading": 268.9702
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 6.6,
+          "heading": 2.26
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 5.0,
+          "heading": 91.719795
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 14.8,
+          "heading": 91.83
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue westward with the forward move (10.3m). Currently at approximately 190.6m total, with approximately 13.4m remaining. This move will bring me to approximately 200.9m, very close to the destination.",
+        "agent_vlm_duration_seconds": 7.765,
+        "agent_total_duration_seconds": 7.765
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 269.0304
+        },
+        {
+          "id": 2,
+          "direction": "right-back 58°",
+          "distance": 12.5,
+          "heading": 57.02
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.2,
+          "heading": 88.97022
+        },
+        {
+          "id": 4,
+          "direction": "back",
+          "distance": 15.2,
+          "heading": 89.87
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Continue westward with the final forward move (10.3m). Currently at approximately 200.9m, just 3.1m from the 204m destination. This move should bring me to Pizza Hut Delivery - PHD Indonesia.",
+        "agent_vlm_duration_seconds": 5.942,
+        "agent_total_duration_seconds": 5.942
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 269.03857
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.0304
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "action": {
+        "type": "rotation",
+        "heading": 179.04,
+        "pitch": 0.0,
+        "reason": "Already at approximately 211.2m, exceeding the 204m destination. Rotate left to visually confirm Pizza Hut Delivery - PHD Indonesia before proceeding further.",
+        "agent_vlm_duration_seconds": 6.755,
+        "agent_total_duration_seconds": 6.755
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "action": {
+        "type": "rotation",
+        "heading": 269.04,
+        "pitch": 0.0,
+        "reason": "Rotate right to face west and look ahead for Pizza Hut Delivery. Currently at approximately 211.2m, should be at or near the destination.",
+        "agent_vlm_duration_seconds": 5.675,
+        "agent_total_duration_seconds": 5.675
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "action": {
+        "type": "rotation",
+        "heading": 269.04,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 211.2m, should be at or very near the destination location.",
+        "agent_vlm_duration_seconds": 6.203,
+        "agent_total_duration_seconds": 6.203
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "action": {
+        "type": "rotation",
+        "heading": 359.04,
+        "pitch": 0.0,
+        "reason": "Rotate right to face north and look for Pizza Hut Delivery. Currently at approximately 211.2m, should be at or very near the destination.",
+        "agent_vlm_duration_seconds": 4.934,
+        "agent_total_duration_seconds": 4.934
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "action": {
+        "type": "rotation",
+        "heading": 89.04,
+        "pitch": 0.0,
+        "reason": "Rotate right to face east and search for Pizza Hut Delivery. Currently at approximately 211.2m, should be at or very near the destination location.",
+        "agent_vlm_duration_seconds": 5.607,
+        "agent_total_duration_seconds": 5.607
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "action": {
+        "type": "rotation",
+        "heading": 89.04,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 211.2m, at or very near the destination. Signage may be visible above street level.",
+        "agent_vlm_duration_seconds": 6.947,
+        "agent_total_duration_seconds": 6.947
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "action": {
+        "type": "rotation",
+        "heading": 269.04,
+        "pitch": 0.0,
+        "reason": "Rotate back to face west (heading=269.04) to continue forward on the original path toward Pizza Hut Delivery. Need to move forward to reach the destination.",
+        "agent_vlm_duration_seconds": 5.693,
+        "agent_total_duration_seconds": 5.693
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue westward with the longer forward move (15.1m) to search for Pizza Hut Delivery. Currently at approximately 211.2m, will reach approximately 226.3m after this move.",
+        "agent_vlm_duration_seconds": 5.835,
+        "agent_total_duration_seconds": 5.835
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "action": {
+        "type": "rotation",
+        "heading": 179.9,
+        "pitch": 0.0,
+        "reason": "Rotate left to face south and search for Pizza Hut Delivery. Currently at approximately 226.3m, have exceeded the 204m target. Destination may be on the south side.",
+        "agent_vlm_duration_seconds": 5.529,
+        "agent_total_duration_seconds": 5.53
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "action": {
+        "type": "rotation",
+        "heading": 179.9,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 226.3m, should be at or past the destination. Signage may be visible above street level.",
+        "agent_vlm_duration_seconds": 5.821,
+        "agent_total_duration_seconds": 5.821
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "action": {
+        "type": "rotation",
+        "heading": 179.9,
+        "pitch": -30.0,
+        "reason": "Rotate down to look at street level for Pizza Hut Delivery entrance or signage. Currently at approximately 226.3m, should be at or past the destination.",
+        "agent_vlm_duration_seconds": 4.718,
+        "agent_total_duration_seconds": 4.718
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "action": {
+        "type": "rotation",
+        "heading": 269.9,
+        "pitch": 0.0,
+        "reason": "Rotate right to face west (heading=269.9) and look back along the path. May have passed Pizza Hut Delivery. Currently at approximately 226.3m, past the 204m target.",
+        "agent_vlm_duration_seconds": 5.6,
+        "agent_total_duration_seconds": 5.6
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Go back with move 3 (15.1m) to return toward the destination area. Currently at approximately 226.3m, need to search the area around 204m more carefully.",
+        "agent_vlm_duration_seconds": 5.129,
+        "agent_total_duration_seconds": 5.129
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "action": {
+        "type": "rotation",
+        "heading": 269.9,
+        "pitch": 0.0,
+        "reason": "Rotate back to face west (heading=269.9) to look along the path. Currently at approximately 211.2m, very close to the 204m destination. Need to locate Pizza Hut Delivery.",
+        "agent_vlm_duration_seconds": 5.705,
+        "agent_total_duration_seconds": 5.705
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "action": {
+        "type": "rotation",
+        "heading": 359.9,
+        "pitch": 0.0,
+        "reason": "Rotate right to face north (heading=359.9) to search for Pizza Hut Delivery. Currently at approximately 211.2m, at the destination area. Building may be on the north side.",
+        "agent_vlm_duration_seconds": 7.46,
+        "agent_total_duration_seconds": 7.46
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "action": {
+        "type": "rotation",
+        "heading": 359.9,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 211.2m, at the destination area. Signage may be visible above street level.",
+        "agent_vlm_duration_seconds": 4.949,
+        "agent_total_duration_seconds": 4.949
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "action": {
+        "type": "rotation",
+        "heading": 359.9,
+        "pitch": -30.0,
+        "reason": "Rotate down to look at street level for Pizza Hut Delivery entrance or signage. Currently at approximately 211.2m, at the destination area.",
+        "agent_vlm_duration_seconds": 4.648,
+        "agent_total_duration_seconds": 4.648
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (east) 10.3m to explore and search for Pizza Hut Delivery. Currently at approximately 211.2m, at the destination area. Building may be off the main path.",
+        "agent_vlm_duration_seconds": 8.051,
+        "agent_total_duration_seconds": 8.051
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Go back with move 2 (10.3m) to return to the destination area. Currently at approximately 221.5m, have moved too far east. Need to explore other directions.",
+        "agent_vlm_duration_seconds": 5.043,
+        "agent_total_duration_seconds": 5.043
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "action": {
+        "type": "rotation",
+        "heading": 269.03857,
+        "pitch": 0.0,
+        "reason": "Rotate to level view (pitch=0) to see the street and surroundings clearly. Currently at approximately 211.2m, at the destination area. Need to locate Pizza Hut Delivery.",
+        "agent_vlm_duration_seconds": 5.494,
+        "agent_total_duration_seconds": 5.494
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Continue westward with move 2 (15.1m) to search for Pizza Hut Delivery. Currently at approximately 211.2m, at the destination area. Will reach approximately 226.3m after this move.",
+        "agent_vlm_duration_seconds": 6.527,
+        "agent_total_duration_seconds": 6.527
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "action": {
+        "type": "rotation",
+        "heading": 179.9,
+        "pitch": 0.0,
+        "reason": "Rotate left to face south (heading=179.9) to search for Pizza Hut Delivery. Currently at approximately 226.3m, past the destination. Building may be on the south side of the street.",
+        "agent_vlm_duration_seconds": 6.498,
+        "agent_total_duration_seconds": 6.498
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move left (east) 15.1m to return toward the destination area. Currently at approximately 226.3m, need to get back to around 204m. Will reach approximately 211.2m after this move.",
+        "agent_vlm_duration_seconds": 8.312,
+        "agent_total_duration_seconds": 8.312
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 9.9,
+          "heading": 270.64453
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 5.1,
+          "heading": 89.96778
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 15.1,
+          "heading": 89.9
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "action": {
+        "type": "rotation",
+        "heading": 179.9,
+        "pitch": 0.0,
+        "reason": "Rotate right to face south (heading=179.9) to search for Pizza Hut Delivery. Currently at approximately 211.2m, at the destination area. Building may be on the south side.",
+        "agent_vlm_duration_seconds": 5.804,
+        "agent_total_duration_seconds": 5.804
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.03858
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 15.1,
+          "heading": 269.9
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move left (east) 10.3m to explore eastward. Currently at approximately 211.2m, at the destination area. Pizza Hut Delivery may be located to the east.",
+        "agent_vlm_duration_seconds": 5.881,
+        "agent_total_duration_seconds": 5.881
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "right",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "action": {
+        "type": "rotation",
+        "heading": 359.03858,
+        "pitch": 0.0,
+        "reason": "Rotate left to face north (heading=359.03858) to search for Pizza Hut Delivery. Currently at approximately 221.5m. Building may be on the north side.",
+        "agent_vlm_duration_seconds": 5.436,
+        "agent_total_duration_seconds": 5.436
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "action": {
+        "type": "rotation",
+        "heading": 359.03858,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 221.5m. Signage may be visible above street level.",
+        "agent_vlm_duration_seconds": 5.933,
+        "agent_total_duration_seconds": 5.933
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "action": {
+        "type": "move",
+        "move_id": 2,
+        "reason": "Move left (west) 10.3m to return toward the destination area. Currently at approximately 221.5m, need to get back to around 204m. Will reach approximately 211.2m after this move.",
+        "agent_vlm_duration_seconds": 8.759,
+        "agent_total_duration_seconds": 8.759
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "action": {
+        "type": "rotation",
+        "heading": 269.03857,
+        "pitch": -30.0,
+        "reason": "Rotate down to look at street level for Pizza Hut Delivery entrance or signage. Currently at approximately 211.2m, at the destination area.",
+        "agent_vlm_duration_seconds": 5.405,
+        "agent_total_duration_seconds": 5.405
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "action": {
+        "type": "move",
+        "move_id": 3,
+        "reason": "Move back 10.3m to get closer to the exact 204m target. Currently at approximately 211.2m. Will reach approximately 200.9m after this move, which is very close to the destination.",
+        "agent_vlm_duration_seconds": 8.175,
+        "agent_total_duration_seconds": 8.175
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.0,
+          "heading": 269.86447
+        },
+        {
+          "id": 2,
+          "direction": "front",
+          "distance": 15.1,
+          "heading": 269.9
+        },
+        {
+          "id": 3,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 89.03858
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "action": {
+        "type": "rotation",
+        "heading": 89.03858,
+        "pitch": 0.0,
+        "reason": "Rotate to level view (pitch=0) to see the street and surroundings clearly. Currently at approximately 200.9m, very close to the 204m destination.",
+        "agent_vlm_duration_seconds": 5.114,
+        "agent_total_duration_seconds": 5.114
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "action": {
+        "type": "rotation",
+        "heading": 359.03858,
+        "pitch": 0.0,
+        "reason": "Rotate left to face north (heading=359.03858) to search for Pizza Hut Delivery. Currently at approximately 200.9m, very close to the 204m destination.",
+        "agent_vlm_duration_seconds": 4.374,
+        "agent_total_duration_seconds": 4.374
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "front",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "back",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "action": {
+        "type": "rotation",
+        "heading": 359.03858,
+        "pitch": 30.0,
+        "reason": "Rotate up to look for Pizza Hut Delivery signage or building. Currently at approximately 200.9m, very close to the 204m destination. Signage may be visible above street level.",
+        "agent_vlm_duration_seconds": 5.947,
+        "agent_total_duration_seconds": 5.947
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "action": {
+        "type": "move",
+        "move_id": 1,
+        "reason": "Move right (east) 10.3m to explore and search for Pizza Hut Delivery. Currently at approximately 200.9m, very close to the 204m destination. Will reach approximately 211.2m after this move.",
+        "agent_vlm_duration_seconds": 6.312,
+        "agent_total_duration_seconds": 6.312
+      },
+      "available_moves": [
+        {
+          "id": 1,
+          "direction": "right",
+          "distance": 10.3,
+          "heading": 89.0304
+        },
+        {
+          "id": 2,
+          "direction": "left",
+          "distance": 10.3,
+          "heading": 269.03857
+        }
+      ]
+    }
+  ]
+}

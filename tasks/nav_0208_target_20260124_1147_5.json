@@ -1,0 +1,178 @@
+{
+  "task_id": "nav_0208_target_20260124_1147_5",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_pizza_hut_20260124_114636",
+  "spawn_point": "bBModVGJkaxAYYn3fOoYIw",
+  "spawn_heading": 277.9,
+  "description": "Navigate to FIESTA The Coffee Shop. Head east/Hyderabad - Mancherial Rd/Hyderabad - Ramagundam Rd/Karimnagar - Hyderabad Hwy/Rashtrapati Rd/Utkoor - Mogdumpur Rd for 9m. Continue for 243m. Turn left Destination will be on the right for 59m. Total distance: approximately 311 m.",
+  "ground_truth": {
+    "target_name": "FIESTA The Coffee Shop",
+    "target_pano_id": "Ma5c_I-V6etiXzv6Cvcxmg",
+    "optimal_distance_meters": 311,
+    "route_description": "straight→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "Ma5c_I-V6etiXzv6Cvcxmg"
+  ],
+  "max_steps": 62,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "bBModVGJkaxAYYn3fOoYIw",
+      "heading": 277.9
+    },
+    {
+      "step_index": 1,
+      "pano_id": "VVYhA9AUjZzfDk17WR7ETg",
+      "heading": 277.9
+    },
+    {
+      "step_index": 2,
+      "pano_id": "sHZGVvFotmDFSK3T3Yg4hQ",
+      "heading": 279.9
+    },
+    {
+      "step_index": 3,
+      "pano_id": "enyNSR7G3y1tf4L_uZJFmA",
+      "heading": 279.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "j-YElpZHzNxEt3jJNehokQ",
+      "heading": 280.8
+    },
+    {
+      "step_index": 5,
+      "pano_id": "iLhYXOE-QInOul253sTkJA",
+      "heading": 282.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "VxVnzFsLqmCpd1V7jDw34Q",
+      "heading": 282.7
+    },
+    {
+      "step_index": 7,
+      "pano_id": "jfUgZwfFfwcxcsQo0Bca_w",
+      "heading": 283.3
+    },
+    {
+      "step_index": 8,
+      "pano_id": "2Fmdv4BhuAXR0A8MAKPvhg",
+      "heading": 283.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "IA4JEV3Ler-QdGUsXpiBIA",
+      "heading": 283.4
+    },
+    {
+      "step_index": 10,
+      "pano_id": "1hITOv2C5k3LZeO17Slusg",
+      "heading": 287.4
+    },
+    {
+      "step_index": 11,
+      "pano_id": "ntC0ViB-zFUiyKg7PE1UoA",
+      "heading": 289.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "ZuNM4RaI2-dAYRU3ea4BgA",
+      "heading": 289.9
+    },
+    {
+      "step_index": 13,
+      "pano_id": "uTXk_hSg2NsSp9jqI3o53g",
+      "heading": 289.8
+    },
+    {
+      "step_index": 14,
+      "pano_id": "okIUbLgp5ONVz-6Saav4EQ",
+      "heading": 289.3
+    },
+    {
+      "step_index": 15,
+      "pano_id": "5DYVzPcoPV3NRfbbwWBEkA",
+      "heading": 289.1
+    },
+    {
+      "step_index": 16,
+      "pano_id": "hSbjp0JynK3Se_Dq1Pb1TA",
+      "heading": 288.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "3e46g8BUi2demmO9TcVKbQ",
+      "heading": 288.4
+    },
+    {
+      "step_index": 18,
+      "pano_id": "y-rmlNtKBsd7b1jtSaLoLg",
+      "heading": 288.4
+    },
+    {
+      "step_index": 19,
+      "pano_id": "gbzX3UmLpvfmUtVspN-_EA",
+      "heading": 288.4
+    },
+    {
+      "step_index": 20,
+      "pano_id": "xfYXxoqU_o7fqUDfb9A7cA",
+      "heading": 287.5
+    },
+    {
+      "step_index": 21,
+      "pano_id": "k0dQiI5bsi8j2kznOwmKDg",
+      "heading": 285.5
+    },
+    {
+      "step_index": 22,
+      "pano_id": "pR2n-Y84DtGYNdgohoFU3Q",
+      "heading": 285.6
+    },
+    {
+      "step_index": 23,
+      "pano_id": "fKJZRe83voo85Z6XAw7rkA",
+      "heading": 191.5
+    },
+    {
+      "step_index": 24,
+      "pano_id": "D6ALcqRuFwUVNDDBDsaYcA",
+      "heading": 189.6
+    },
+    {
+      "step_index": 25,
+      "pano_id": "krBqKSGSCNWa2TIWLQh3pw",
+      "heading": 190.9
+    },
+    {
+      "step_index": 26,
+      "pano_id": "c7FF4nIZACpoDQPgn3gBlg",
+      "heading": 190.9
+    },
+    {
+      "step_index": 27,
+      "pano_id": "F-sZLoFIMCw9vLDLKPuu3A",
+      "heading": 190.9
+    },
+    {
+      "step_index": 28,
+      "pano_id": "ivZYuA1SjbcaklXL9UOyvQ",
+      "heading": 190.9
+    },
+    {
+      "step_index": 29,
+      "pano_id": "u_MMuH8CC8AOuDk5wj7JdA",
+      "heading": 190.9
+    },
+    {
+      "step_index": 30,
+      "pano_id": "Ma5c_I-V6etiXzv6Cvcxmg",
+      "heading": 190.2
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

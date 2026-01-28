@@ -1,0 +1,181 @@
+{
+  "task_id": "nav_0520_target_20260124_1420_20",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_burger_king_20260124_141848",
+  "spawn_point": "4mRVLoER96LMPtWDq5-snw",
+  "spawn_heading": 267.5,
+  "description": "Navigate to Cityride. Head straight on the paved road, passing Fidelity Bank and a Conoil gas station on the right. At the end of the road, turn left near the GIG Logistics terminal. Finally, turn right to merge onto the main Lekki-Epe Expressway.",
+  "ground_truth": {
+    "target_name": "Cityride",
+    "target_pano_id": "8Q4RWK8Y2yAhwehuQEbSjg",
+    "optimal_distance_meters": 208,
+    "route_description": "right→left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "8Q4RWK8Y2yAhwehuQEbSjg"
+  ],
+  "max_steps": 62,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "4mRVLoER96LMPtWDq5-snw",
+      "heading": 267.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "ot35ObtjTvdl4p7CyMkGvg",
+      "heading": 267.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "Uza9HEOKIWJk8QFMJJ3OZQ",
+      "heading": 265.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "d_1jE4rC_Rn3sDw4dpTmQw",
+      "heading": 265.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "0hI2z9JBUuMCBJKet5HpKg",
+      "heading": 266.4
+    },
+    {
+      "step_index": 5,
+      "pano_id": "ahzWpWB9DoXnnRtj8W6wlA",
+      "heading": 266.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "hCx4TGjzlSp1yacjFs1A2A",
+      "heading": 266.4
+    },
+    {
+      "step_index": 7,
+      "pano_id": "ZM_yTFj309SH6n8mXek4EA",
+      "heading": 266.5
+    },
+    {
+      "step_index": 8,
+      "pano_id": "TPRoubnlbyu3o1xIU2Tjqw",
+      "heading": 266.4
+    },
+    {
+      "step_index": 9,
+      "pano_id": "DAHhG5T9vr_Jui4ySqyjxw",
+      "heading": 266.4
+    },
+    {
+      "step_index": 10,
+      "pano_id": "6ChFrJIwFsr7lCG6_ysp7w",
+      "heading": 266.6
+    },
+    {
+      "step_index": 11,
+      "pano_id": "z41IvhUOUHDAQBdXC1CggQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 12,
+      "pano_id": "jhKN9kPoMR3oXfff2Y66Lg",
+      "heading": 267.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "PlZbdJKGR1HjHLe9TxRISg",
+      "heading": 267.1
+    },
+    {
+      "step_index": 14,
+      "pano_id": "Opv1cAb4G-M8F4o-OYvaZw",
+      "heading": 267.0
+    },
+    {
+      "step_index": 15,
+      "pano_id": "gv6LtK4DztNiP0Qmidk88w",
+      "heading": 267.0
+    },
+    {
+      "step_index": 16,
+      "pano_id": "zGvSVnYd2p9WlmuMUlVLdw",
+      "heading": 267.1
+    },
+    {
+      "step_index": 17,
+      "pano_id": "jUFoauvPJhyKXOhzvFNaHQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 18,
+      "pano_id": "yEfPotPWVArkiuO6X8a_3w",
+      "heading": 267.0
+    },
+    {
+      "step_index": 19,
+      "pano_id": "GA27K6wPCAdqZS2ySaod9g",
+      "heading": 267.1
+    },
+    {
+      "step_index": 20,
+      "pano_id": "6_oGRNty9V9zlPCyf3H5sQ",
+      "heading": 267.1
+    },
+    {
+      "step_index": 21,
+      "pano_id": "OWpbTBiMjFIJJ8UyNTxaJg",
+      "heading": 267.0
+    },
+    {
+      "step_index": 22,
+      "pano_id": "6xtHgyhsP-sjxZJzREXZ8g",
+      "heading": 267.0
+    },
+    {
+      "step_index": 23,
+      "pano_id": "w8Ya0I2LJFAdlbk9YfOEYg",
+      "heading": 101.7
+    },
+    {
+      "step_index": 24,
+      "pano_id": "Sus5FXbR01w_pZ82gwIG1Q",
+      "heading": 175.3
+    },
+    {
+      "step_index": 25,
+      "pano_id": "N8QNkrIRHrBwsYeoECfw-w",
+      "heading": 175.4
+    },
+    {
+      "step_index": 26,
+      "pano_id": "CoGk10PexzhoBt5a9JGt3w",
+      "heading": 175.2
+    },
+    {
+      "step_index": 27,
+      "pano_id": "zSWBWyHnj5kXjaOjTI6LDA",
+      "heading": 175.2
+    },
+    {
+      "step_index": 28,
+      "pano_id": "7SLcf101zqX_bHUcOg2B3g",
+      "heading": 87.4
+    },
+    {
+      "step_index": 29,
+      "pano_id": "I_VaLG1KUzcMl6sV24HJrw",
+      "heading": 87.4
+    },
+    {
+      "step_index": 30,
+      "pano_id": "8Q4RWK8Y2yAhwehuQEbSjg",
+      "heading": 87.4
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight toward Peninsula Resort Way [90m] -> Turn Left at GIG Logistics [28m] -> Turn Right onto Lekki - Epe Expy [90m]",
+  "agent_concise_description": "Head straight on the paved road, passing Fidelity Bank and a Conoil gas station on the right. At the end of the road, turn left near the GIG Logistics terminal. Finally, turn right to merge onto the main Lekki-Epe Expressway."
+}

@@ -1,0 +1,31 @@
+{
+  "task_id": "nav_1078_target_20260125_0336_7",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_supermarket_20260125_033549",
+  "spawn_point": "B_HpAT1QuFJXcO0tkOxAxQ",
+  "spawn_heading": 0.0,
+  "description": "You have arrived at the destination area on the paved pedestrian street. The location is marked by a Rolex storefront on the right and a tall clock tower on the left.",
+  "ground_truth": {
+    "target_name": "MUFG Bank Kobe",
+    "target_pano_id": "B_HpAT1QuFJXcO0tkOxAxQ",
+    "optimal_distance_meters": 1,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "B_HpAT1QuFJXcO0tkOxAxQ"
+  ],
+  "max_steps": 2,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "B_HpAT1QuFJXcO0tkOxAxQ",
+      "heading": 0.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 1m -> Stop",
+  "agent_concise_description": "You have arrived at the destination area on the paved pedestrian street. The location is marked by a Rolex storefront on the right and a tall clock tower on the left."
+}

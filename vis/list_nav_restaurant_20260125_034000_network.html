@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_restaurant_20260125_034000</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_restaurant_20260125_034000</h3>
+        <div>Total Panos: <strong>71</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"D1H1452jFbrw_lB2mzTIgw": {"lat": 39.74934074011917, "lng": -104.9972913528696, "links": [{"pano_id": "LIdBPEKQWN54amQPZgRIhQ", "heading": 45.293922, "description": "Larimer St"}, {"pano_id": "VMqESYGwMK2ZYGT7OV96zw", "heading": 225.26456, "description": "Larimer St"}, {"pano_id": "9ZTq0INUG5O6UrRbgllEKA", "heading": 225.25, "distance": 10.5, "virtual": true}]}, "VMqESYGwMK2ZYGT7OV96zw": {"lat": 39.74933116396249, "lng": -104.9973039236085, "links": [{"pano_id": "9ZTq0INUG5O6UrRbgllEKA", "heading": 225.24231, "description": "Larimer St"}, {"pano_id": "D1H1452jFbrw_lB2mzTIgw", "heading": 45.26456, "description": "Larimer St"}, {"pano_id": "LIdBPEKQWN54amQPZgRIhQ", "heading": 45.29, "distance": 12.02, "virtual": true}]}, "LIdBPEKQWN54amQPZgRIhQ": {"lat": 39.74940722956507, "lng": -104.9972039818036, "links": [{"pano_id": "D1H1452jFbrw_lB2mzTIgw", "heading": 225.29393, "description": "Larimer St"}, {"pano_id": "SAoDKmhPGdKKE7RJ23IWbA", "heading": 45.268612, "description": "Larimer St"}, {"pano_id": "VMqESYGwMK2ZYGT7OV96zw", "heading": 225.29, "distance": 12.02, "virtual": true}]}, "SAoDKmhPGdKKE7RJ23IWbA": {"lat": 39.74947296280605, "lng": -104.9971176806339, "links": [{"pano_id": "4vs92O-4NKhlWOKQamgbVQ", "heading": 45.255733, "description": "Larimer St"}, {"pano_id": "LIdBPEKQWN54amQPZgRIhQ", "heading": 225.26862, "description": "Larimer St"}]}, "9ZTq0INUG5O6UrRbgllEKA": {"lat": 39.74927427404116, "lng": -104.9973785456745, "links": [{"pano_id": "VMqESYGwMK2ZYGT7OV96zw", "heading": 45.242306, "description": "Larimer St"}, {"pano_id": "VemMHZXHunSpaDkI9TeAyA", "heading": 225.25056, "description": "Larimer St"}, {"pano_id": "D1H1452jFbrw_lB2mzTIgw", "heading": 45.25, "distance": 10.5, "virtual": true}, {"pano_id": "OCH8Sar3uIHf2tzyE_h3Rw", "heading": 271.99, "distance": 14.54, "virtual": true}]}, "4vs92O-4NKhlWOKQamgbVQ": {"lat": 39.74953831788977, "lng": -104.9970319144346, "links": [{"pano_id": "Z08s54AMHCY09kdEHRQAYQ", "heading": 45.278107, "description": "Larimer St"}, {"pano_id": "SAoDKmhPGdKKE7RJ23IWbA", "heading": 225.25574, "description": "Larimer St"}]}, "VemMHZXHunSpaDkI9TeAyA": {"lat": 39.74920836317516, "lng": -104.9974650252925, "links": [{"pano_id": "OCH8Sar3uIHf2tzyE_h3Rw", "heading": 317.67343, "description": "16th St"}, {"pano_id": "9ZTq0INUG5O6UrRbgllEKA", "heading": 45.250565, "description": "Larimer St"}, {"pano_id": "2DVs6-FNuyW_NhMWlqf-9Q", "heading": 224.92178, "description": "Larimer St"}]}, "gXfhWcpLVH5bQRE4ORj1ww": {"lat": 39.74916359170768, "lng": -104.9973945042809, "links": [{"pano_id": "VemMHZXHunSpaDkI9TeAyA", "heading": 309.54767, "description": "Larimer St"}, {"pano_id": "0e89iayMnF7haVxsiCDPPQ", "heading": 133.3698, "description": "16th St"}, {"pano_id": "9ZTq0INUG5O6UrRbgllEKA", "heading": 6.33, "distance": 12.38, "virtual": true}, {"pano_id": "2DVs6-FNuyW_NhMWlqf-9Q", "heading": 260.03, "distance": 13.54, "virtual": true}]}, "2DVs6-FNuyW_NhMWlqf-9Q": {"lat": 39.74914251620446, "lng": -104.997550435105, "links": [{"pano_id": "VemMHZXHunSpaDkI9TeAyA", "heading": 44.92178, "description": "Larimer St"}, {"pano_id": "X_rdqQAPCL1GXOTBL7CAGQ", "heading": 224.95929, "description": "Larimer St"}, {"pano_id": "OCH8Sar3uIHf2tzyE_h3Rw", "heading": 0.63, "distance": 15.16, "virtual": true}]}, "OCH8Sar3uIHf2tzyE_h3Rw": {"lat": 39.74927880768325, "lng": -104.99754847371, "links": [{"pano_id": "VemMHZXHunSpaDkI9TeAyA", "heading": 137.67342, "description": "Larimer St"}, {"pano_id": "SGa1insHaYn0Lpa_oWvLLg", "heading": 314.82504, "description": "16th St"}, {"pano_id": "9ZTq0INUG5O6UrRbgllEKA", "heading": 91.99, "distance": 14.54, "virtual": true}, {"pano_id": "2DVs6-FNuyW_NhMWlqf-9Q", "heading": 180.63, "distance": 15.16, "virtual": true}]}, "Z08s54AMHCY09kdEHRQAYQ": {"lat": 39.74960647295703, "lng": -104.9969424038137, "links": [{"pano_id": "9GWHXS0qFkUHlUZuUIlZNA", "heading": 45.24369, "description": "Larimer St"}, {"pano_id": "4vs92O-4NKhlWOKQamgbVQ", "heading": 225.2781, "description": "Larimer St"}]}, "X_rdqQAPCL1GXOTBL7CAGQ": {"lat": 39.74907757901465, "lng": -104.9976347751104, "links": [{"pano_id": "2DVs6-FNuyW_NhMWlqf-9Q", "heading": 44.959282, "description": "Larimer St"}, {"pano_id": "fw4fD9hZ7zftoViozQ47og", "heading": 224.87712, "description": "Larimer St"}]}, "9GWHXS0qFkUHlUZuUIlZNA": {"lat": 39.74967674880634, "lng": -104.9968502186247, "links": [{"pano_id": "J-Ao44gJnoSlwfGeAeXtWg", "heading": 45.293404, "description": "Larimer St"}, {"pano_id": "Z08s54AMHCY09kdEHRQAYQ", "heading": 225.24368, "description": "Larimer St"}]}, "SGa1insHaYn0Lpa_oWvLLg": {"lat": 39.74934400703312, "lng": -104.9976337944124, "links": [{"pano_id": "OCH8Sar3uIHf2tzyE_h3Rw", "heading": 134.82503, "description": "16th St"}, {"pano_id": "C-Ak4G67wbdhXoMrTGgC2w", "heading": 314.88022, "description": "16th St"}]}, "C-Ak4G67wbdhXoMrTGgC2w": {"lat": 39.7494099464009, "lng": -104.9977199175497, "links": [{"pano_id": "Nwx4D0bO3jMjWtGOIWTTKQ", "heading": 314.82883, "description": "16th St"}, {"pano_id": "SGa1insHaYn0Lpa_oWvLLg", "heading": 134.8802, "description": "16th St"}]}, "J-Ao44gJnoSlwfGeAeXtWg": {"lat": 39.74973747195482, "lng": -104.9967704258779, "links": [{"pano_id": "9GWHXS0qFkUHlUZuUIlZNA", "heading": 225.2934, "description": "Larimer St"}, {"pano_id": "ukvwQtCfN0x1vXMbtEV5Ew", "heading": 45.228, "description": "Larimer St"}]}, "fw4fD9hZ7zftoViozQ47og": {"lat": 39.74901314363252, "lng": -104.9977182236159, "links": [{"pano_id": "sDmO6oolWHEyfw1_9R5lzw", "heading": 224.64735, "description": "Larimer St"}, {"pano_id": "X_rdqQAPCL1GXOTBL7CAGQ", "heading": 44.87712, "description": "Larimer St"}]}, "Nwx4D0bO3jMjWtGOIWTTKQ": {"lat": 39.74947494992675, "lng": -104.9978049708795, "links": [{"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 315.10028, "description": "16th St Mall"}, {"pano_id": "C-Ak4G67wbdhXoMrTGgC2w", "heading": 134.82883, "description": "16th St"}, {"pano_id": "pOaoqGq9IXtYtkvz_jB9Eg", "heading": 355.3, "distance": 10.14, "virtual": true}, {"pano_id": "7F5Q852RFAqzY7UYu63npw", "heading": 267.84, "distance": 9.99, "virtual": true}]}, "ukvwQtCfN0x1vXMbtEV5Ew": {"lat": 39.74979853782218, "lng": -104.9966903657091, "links": [{"pano_id": "GD-ltFc8F-Av8LUpi0AxWQ", "heading": 45.397625, "description": "Larimer St"}, {"pano_id": "J-Ao44gJnoSlwfGeAeXtWg", "heading": 225.228, "description": "Larimer St"}]}, "sDmO6oolWHEyfw1_9R5lzw": {"lat": 39.74894881382552, "lng": -104.9978008697745, "links": [{"pano_id": "fw4fD9hZ7zftoViozQ47og", "heading": 44.647354, "description": "Larimer St"}, {"pano_id": "Vqjrz1yZHJ3VuEkmp2-uiQ", "heading": 224.63017, "description": "Larimer St"}]}, "GD-ltFc8F-Av8LUpi0AxWQ": {"lat": 39.74986228509755, "lng": -104.9966062936593, "links": [{"pano_id": "HNqsZzKfyCb8TVf9vqzUvQ", "heading": 45.769684, "description": "Larimer St"}, {"pano_id": "ukvwQtCfN0x1vXMbtEV5Ew", "heading": 225.39763, "description": "Larimer St"}]}, "Vqjrz1yZHJ3VuEkmp2-uiQ": {"lat": 39.74888486196233, "lng": -104.9978829810484, "links": [{"pano_id": "sDmO6oolWHEyfw1_9R5lzw", "heading": 44.630177, "description": "Larimer St"}, {"pano_id": "wIkZPfskWUYoNyZB9qyj_A", "heading": 224.67314, "description": "Larimer St"}]}, "GekM7rdZX8YDnYTJKhAJPg": {"lat": 39.74954923939626, "lng": -104.997901257722, "links": [{"pano_id": "7F5Q852RFAqzY7UYu63npw", "heading": 191.47324, "description": ""}, {"pano_id": "Nwx4D0bO3jMjWtGOIWTTKQ", "heading": 135.10028, "description": "16th St"}, {"pano_id": "xSV3BIQxXnO6ef2LfqU4Qg", "heading": 315.33795, "description": "16th St"}, {"pano_id": "pOaoqGq9IXtYtkvz_jB9Eg", "heading": 75.97058, "description": ""}, {"pano_id": "U6NRLxLVSbFG3Mv0WitxDA", "heading": 315.41, "distance": 17.92, "virtual": true}, {"pano_id": "KdEdo0-kObVYPa4iz4K0TQ", "heading": 211.18, "distance": 17.75, "virtual": true}]}, "xSV3BIQxXnO6ef2LfqU4Qg": {"lat": 39.74959744429768, "lng": -104.9979632201188, "links": [{"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 135.33795, "description": "16th St Mall"}, {"pano_id": "U6NRLxLVSbFG3Mv0WitxDA", "heading": 315.46152, "description": "16th St Mall"}, {"pano_id": "pOaoqGq9IXtYtkvz_jB9Eg", "heading": 105.46, "distance": 13.17, "virtual": true}, {"pano_id": "7F5Q852RFAqzY7UYu63npw", "heading": 165.79, "distance": 14.44, "virtual": true}]}, "HNqsZzKfyCb8TVf9vqzUvQ": {"lat": 39.74992387499413, "lng": -104.9965240047283, "links": [{"pano_id": "n76b5_eXt9_rhz38azh-ww", "heading": 45.764484, "description": "Larimer St"}, {"pano_id": "GD-ltFc8F-Av8LUpi0AxWQ", "heading": 225.76968, "description": "Larimer St"}]}, "wIkZPfskWUYoNyZB9qyj_A": {"lat": 39.74882079786724, "lng": -104.9979653598279, "links": [{"pano_id": "Vqjrz1yZHJ3VuEkmp2-uiQ", "heading": 44.67315, "description": "Larimer St"}, {"pano_id": "ZFE1PJyVaLT8fE1fz4C_0g", "heading": 224.62157, "description": "Larimer St"}, {"pano_id": "DWW3XqiqHbEwohoMe2e3Zw", "heading": 159.8, "distance": 15.58, "virtual": true}]}, "pOaoqGq9IXtYtkvz_jB9Eg": {"lat": 39.74956587054783, "lng": -104.9978146887156, "links": [{"pano_id": "tVRpGTYItQbNH94ezSucOA", "heading": 32.925877, "description": ""}, {"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 255.97058, "description": "16th St Mall"}, {"pano_id": "Nwx4D0bO3jMjWtGOIWTTKQ", "heading": 175.3, "distance": 10.14, "virtual": true}, {"pano_id": "xSV3BIQxXnO6ef2LfqU4Qg", "heading": 285.46, "distance": 13.17, "virtual": true}, {"pano_id": "7F5Q852RFAqzY7UYu63npw", "heading": 221.12, "distance": 13.92, "virtual": true}]}, "7F5Q852RFAqzY7UYu63npw": {"lat": 39.74947156315321, "lng": -104.9979217632608, "links": [{"pano_id": "KdEdo0-kObVYPa4iz4K0TQ", "heading": 228.63588, "description": ""}, {"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 11.473236, "description": "16th St Mall"}, {"pano_id": "Nwx4D0bO3jMjWtGOIWTTKQ", "heading": 87.84, "distance": 9.99, "virtual": true}, {"pano_id": "xSV3BIQxXnO6ef2LfqU4Qg", "heading": 345.79, "distance": 14.44, "virtual": true}, {"pano_id": "pOaoqGq9IXtYtkvz_jB9Eg", "heading": 41.12, "distance": 13.92, "virtual": true}]}, "tVRpGTYItQbNH94ezSucOA": {"lat": 39.74966187758579, "lng": -104.9977338256383, "links": [{"pano_id": "QL7p49Lo3USkl8IuHGtvLQ", "heading": 40.7958, "description": ""}, {"pano_id": "pOaoqGq9IXtYtkvz_jB9Eg", "heading": 212.92587, "description": ""}, {"pano_id": "Jj0W7BNBnYLyQQXmsWDNTQ", "heading": 333.63132, "description": ""}]}, "U6NRLxLVSbFG3Mv0WitxDA": {"lat": 39.74966403868036, "lng": -104.9980484518861, "links": [{"pano_id": "xSV3BIQxXnO6ef2LfqU4Qg", "heading": 135.46152, "description": "16th St"}, {"pano_id": "ddakNZz4Q_kcaAneao8KKw", "heading": 315.42487, "description": "16th St"}, {"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 135.41, "distance": 17.92, "virtual": true}]}, "KdEdo0-kObVYPa4iz4K0TQ": {"lat": 39.74941265622284, "lng": -104.9980087780976, "links": [{"pano_id": "uMts349M5iOVCO1DcUpTEg", "heading": 228.63417, "description": ""}, {"pano_id": "7F5Q852RFAqzY7UYu63npw", "heading": 48.63587, "description": ""}, {"pano_id": "GekM7rdZX8YDnYTJKhAJPg", "heading": 31.18, "distance": 17.75, "virtual": true}]}, "n76b5_eXt9_rhz38azh-ww": {"lat": 39.74998527576952, "lng": -104.9964419833004, "links": [{"pano_id": "HNqsZzKfyCb8TVf9vqzUvQ", "heading": 225.76448, "description": "Larimer St"}, {"pano_id": "PB1k4C3SBGF5r5p4A7Snmw", "heading": 45.75398, "description": "Larimer St"}]}, "ZFE1PJyVaLT8fE1fz4C_0g": {"lat": 39.74875675715195, "lng": -104.9980475603402, "links": [{"pano_id": "bX9-8Y3HBl3H7N-z7vwR_w", "heading": 224.63878, "description": "Larimer St"}, {"pano_id": "wIkZPfskWUYoNyZB9qyj_A", "heading": 44.621574, "description": "Larimer St"}, {"pano_id": "5C-4ScXxsVQpwkLTZXj9tQ", "heading": 191.12, "distance": 16.36, "virtual": true}, {"pano_id": "x-DJvgJr0zbw9wqTS8P-eg", "heading": 154.83, "distance": 14.87, "virtual": true}, {"pano_id": "DWW3XqiqHbEwohoMe2e3Zw", "heading": 121.16, "distance": 14.5, "virtual": true}]}, "ddakNZz4Q_kcaAneao8KKw": {"lat": 39.74972825208521, "lng": -104.9981307415955, "links": [{"pano_id": "YW2t6JESeJnIqkClnOlpiA", "heading": 315.4672, "description": "16th St Mall"}, {"pano_id": "U6NRLxLVSbFG3Mv0WitxDA", "heading": 135.42488, "description": "16th St Mall"}]}, "bX9-8Y3HBl3H7N-z7vwR_w": {"lat": 39.74869317128233, "lng": -104.9981292259667, "links": [{"pano_id": "nHW57vcm9dxU1tuvnlshtw", "heading": 223.70192, "description": "Larimer St"}, {"pano_id": "ZFE1PJyVaLT8fE1fz4C_0g", "heading": 44.63877, "description": "Larimer St"}, {"pano_id": "5C-4ScXxsVQpwkLTZXj9tQ", "heading": 156.92, "distance": 9.76, "virtual": true}, {"pano_id": "x-DJvgJr0zbw9wqTS8P-eg", "heading": 115.65, "distance": 14.76, "virtual": true}]}, "QL7p49Lo3USkl8IuHGtvLQ": {"lat": 39.74973145213598, "lng": -104.9976557263871, "links": [{"pano_id": "tVRpGTYItQbNH94ezSucOA", "heading": 220.79579, "description": ""}, {"pano_id": "kN5mkpL-Y0A6cgTzvxXKDg", "heading": 45.406967, "description": ""}, {"pano_id": "Jj0W7BNBnYLyQQXmsWDNTQ", "heading": 283.66, "distance": 12.3, "virtual": true}]}, "uMts349M5iOVCO1DcUpTEg": {"lat": 39.74935308173065, "lng": -104.9980967736822, "links": [{"pano_id": "kEFD2Bgp7LGw1jNAHR9b1g", "heading": 228.64565, "description": ""}, {"pano_id": "KdEdo0-kObVYPa4iz4K0TQ", "heading": 48.63417, "description": ""}]}, "PB1k4C3SBGF5r5p4A7Snmw": {"lat": 39.75004629840554, "lng": -104.9963604968363, "links": [{"pano_id": "BsyRnejjJ6XypC4mG-kvOA", "heading": 45.741295, "description": "Larimer St"}, {"pano_id": "n76b5_eXt9_rhz38azh-ww", "heading": 225.75398, "description": "Larimer St"}]}, "Jj0W7BNBnYLyQQXmsWDNTQ": {"lat": 39.74975756357037, "lng": -104.9977955205073, "links": [{"pano_id": "tVRpGTYItQbNH94ezSucOA", "heading": 153.6313, "description": ""}, {"pano_id": "PumQ876FE7eoQN8O739RaQ", "heading": 315.56647, "description": ""}, {"pano_id": "QL7p49Lo3USkl8IuHGtvLQ", "heading": 103.65, "distance": 12.3, "virtual": true}]}, "YW2t6JESeJnIqkClnOlpiA": {"lat": 39.74979346612418, "lng": -104.9982141903577, "links": [{"pano_id": "ddakNZz4Q_kcaAneao8KKw", "heading": 135.46718, "description": "16th St"}, {"pano_id": "m5vhdFJQdu2cdg3eUkHQ5w", "heading": 294.8212, "description": "Market St"}, {"pano_id": "WpXhgjQWpDkvjVsWpFiqhQ", "heading": 339.56, "distance": 13.55, "virtual": true}]}, "kN5mkpL-Y0A6cgTzvxXKDg": {"lat": 39.74978450160059, "lng": -104.9975857402182, "links": [{"pano_id": "VcDFWAPIJWMCyCpF7HbmNw", "heading": 45.372253, "description": ""}, {"pano_id": "QL7p49Lo3USkl8IuHGtvLQ", "heading": 225.40697, "description": ""}]}, "PumQ876FE7eoQN8O739RaQ": {"lat": 39.74982307377479, "lng": -104.9978790582504, "links": [{"pano_id": "5EQuJYZMvSLXvE0XwZ7yoQ", "heading": 315.53647, "description": ""}, {"pano_id": "Jj0W7BNBnYLyQQXmsWDNTQ", "heading": 135.56645, "description": ""}]}, "nHW57vcm9dxU1tuvnlshtw": {"lat": 39.74862926368949, "lng": -104.9982086627674, "links": [{"pano_id": "bX9-8Y3HBl3H7N-z7vwR_w", "heading": 43.70192, "description": "Larimer St"}, {"pano_id": "ZhPueDL0SeZvLXN93H24JA", "heading": 222.2026, "description": "Larimer St"}, {"pano_id": "5C-4ScXxsVQpwkLTZXj9tQ", "heading": 100.01501, "description": ""}]}, "kEFD2Bgp7LGw1jNAHR9b1g": {"lat": 39.74929407420625, "lng": -104.9981839669228, "links": [{"pano_id": "wB_D4x1TFd42T2a9SXXqTA", "heading": 226.93433, "description": ""}, {"pano_id": "uMts349M5iOVCO1DcUpTEg", "heading": 48.645638, "description": ""}]}, "BsyRnejjJ6XypC4mG-kvOA": {"lat": 39.75011048729632, "lng": -104.9962748201936, "links": [{"pano_id": "PB1k4C3SBGF5r5p4A7Snmw", "heading": 225.74129, "description": "Larimer St"}, {"pano_id": "xZa0dS4KoMlWusKNTuloqA", "heading": 45.923203, "description": "Larimer St"}, {"pano_id": "UEnVhmiJ2m_hbujSIsOAbg", "heading": 346.73, "distance": 11.29, "virtual": true}, {"pano_id": "-opXzO_fEJ2rZc7Ei8eQQw", "heading": 102.92, "distance": 10.4, "virtual": true}]}, "ZhPueDL0SeZvLXN93H24JA": {"lat": 39.74856334904087, "lng": -104.9982864056676, "links": [{"pano_id": "_VlXzTlaGxSvn0a7zK7nSg", "heading": 222.202, "description": "Larimer St"}, {"pano_id": "nHW57vcm9dxU1tuvnlshtw", "heading": 42.202602, "description": "Larimer St"}]}, "5C-4ScXxsVQpwkLTZXj9tQ": {"lat": 39.74861240110312, "lng": -104.9980844703453, "links": [{"pano_id": "nHW57vcm9dxU1tuvnlshtw", "heading": 280.015, "description": "Larimer St"}, {"pano_id": "x-DJvgJr0zbw9wqTS8P-eg", "heading": 74.719025, "description": ""}, {"pano_id": "ZFE1PJyVaLT8fE1fz4C_0g", "heading": 11.12, "distance": 16.36, "virtual": true}, {"pano_id": "bX9-8Y3HBl3H7N-z7vwR_w", "heading": 336.92, "distance": 9.76, "virtual": true}, {"pano_id": "DWW3XqiqHbEwohoMe2e3Zw", "heading": 61.22, "distance": 17.76, "virtual": true}]}, "5EQuJYZMvSLXvE0XwZ7yoQ": {"lat": 39.74989068049518, "lng": -104.9979653598279, "links": [{"pano_id": "PumQ876FE7eoQN8O739RaQ", "heading": 135.53647, "description": ""}, {"pano_id": "8YfAIChKejs6YL_JR5cVSA", "heading": 315.5909, "description": ""}]}, "VcDFWAPIJWMCyCpF7HbmNw": {"lat": 39.74985121514168, "lng": -104.9974978340669, "links": [{"pano_id": "kN5mkpL-Y0A6cgTzvxXKDg", "heading": 225.37225, "description": ""}, {"pano_id": "9_UKuXc4sYugVjF4DUCR0Q", "heading": 45.39656, "description": ""}]}, "m5vhdFJQdu2cdg3eUkHQ5w": {"lat": 39.74984273336769, "lng": -104.9983527367956, "links": [{"pano_id": "gZ-GErmzo5mcnWZpQ8WHHw", "heading": 338.82285, "description": "16th St"}, {"pano_id": "eivpm0I4YuPrX8XmzNQ9xQ", "heading": 224.62177, "description": "Market St"}, {"pano_id": "WpXhgjQWpDkvjVsWpFiqhQ", "heading": 44.562252, "description": "Market St"}, {"pano_id": "YW2t6JESeJnIqkClnOlpiA", "heading": 114.8212, "description": "16th St Mall"}]}, "wB_D4x1TFd42T2a9SXXqTA": {"lat": 39.74923051898142, "lng": -104.9982724083766, "links": [{"pano_id": "kEFD2Bgp7LGw1jNAHR9b1g", "heading": 46.93433, "description": ""}, {"pano_id": "MYLR_qzulEJtFdUDK3Ppqg", "heading": 224.35016, "description": ""}]}, "xZa0dS4KoMlWusKNTuloqA": {"lat": 39.750176725347, "lng": -104.9961858449146, "links": [{"pano_id": "BsyRnejjJ6XypC4mG-kvOA", "heading": 225.9232, "description": "Larimer St"}, {"pano_id": "YZlnd47hQzBT0nUUpRhXow", "heading": 48.827805, "description": "Larimer St"}, {"pano_id": "-opXzO_fEJ2rZc7Ei8eQQw", "heading": 165.3653, "description": "17th St"}, {"pano_id": "UEnVhmiJ2m_hbujSIsOAbg", "heading": 289.558, "description": "17th St"}]}, "_VlXzTlaGxSvn0a7zK7nSg": {"lat": 39.74849697933627, "lng": -104.9983646835339, "links": [{"pano_id": "uR5cUhyxG_vDH4v4fxQpDw", "heading": 222.18672, "description": "Larimer St"}, {"pano_id": "ZhPueDL0SeZvLXN93H24JA", "heading": 42.201996, "description": "Larimer St"}]}, "MYLR_qzulEJtFdUDK3Ppqg": {"lat": 39.7491653078683, "lng": -104.9983553222837, "links": [{"pano_id": "wB_D4x1TFd42T2a9SXXqTA", "heading": 44.350166, "description": ""}]}, "x-DJvgJr0zbw9wqTS8P-eg": {"lat": 39.74863569862543, "lng": -104.9979735620463, "links": [{"pano_id": "DWW3XqiqHbEwohoMe2e3Zw", "heading": 45.588898, "description": ""}, {"pano_id": "5C-4ScXxsVQpwkLTZXj9tQ", "heading": 254.71902, "description": ""}, {"pano_id": "ZFE1PJyVaLT8fE1fz4C_0g", "heading": 334.83, "distance": 14.87, "virtual": true}, {"pano_id": "bX9-8Y3HBl3H7N-z7vwR_w", "heading": 295.65, "distance": 14.76, "virtual": true}]}, "WpXhgjQWpDkvjVsWpFiqhQ": {"lat": 39.74990767156982, "lng": -104.9982695554258, "links": [{"pano_id": "tkLKw68wXKa-UuL7BG8GfQ", "heading": 44.57884, "description": "Market St"}, {"pano_id": "m5vhdFJQdu2cdg3eUkHQ5w", "heading": 224.56226, "description": "Market St"}, {"pano_id": "YW2t6JESeJnIqkClnOlpiA", "heading": 159.56, "distance": 13.55, "virtual": true}, {"pano_id": "gZ-GErmzo5mcnWZpQ8WHHw", "heading": 289.29, "distance": 12.15, "virtual": true}]}, "gZ-GErmzo5mcnWZpQ8WHHw": {"lat": 39.74994376114373, "lng": -104.9984036441717, "links": [{"pano_id": "m5vhdFJQdu2cdg3eUkHQ5w", "heading": 158.82283, "description": "Market St"}, {"pano_id": "WpXhgjQWpDkvjVsWpFiqhQ", "heading": 109.29, "distance": 12.15, "virtual": true}]}, "UEnVhmiJ2m_hbujSIsOAbg": {"lat": 39.75020930713183, "lng": -104.9963051324241, "links": [{"pano_id": "xZa0dS4KoMlWusKNTuloqA", "heading": 109.558, "description": "Larimer St"}, {"pano_id": "PZg2laInik3Nh7r8ekJ0rQ", "heading": 316.83383, "description": "17th St"}, {"pano_id": "BsyRnejjJ6XypC4mG-kvOA", "heading": 166.73, "distance": 11.29, "virtual": true}]}, "9_UKuXc4sYugVjF4DUCR0Q": {"lat": 39.74991719596269, "lng": -104.9974108195059, "links": [{"pano_id": "oSR0xjrIVmBHdUYIBUK-9w", "heading": 45.37845, "description": ""}, {"pano_id": "VcDFWAPIJWMCyCpF7HbmNw", "heading": 225.39656, "description": ""}]}, "-opXzO_fEJ2rZc7Ei8eQQw": {"lat": 39.75008957678104, "lng": -104.9961562459349, "links": [{"pano_id": "nnh7hvMmCuzMMvYSzipdNw", "heading": 135.74641, "description": "17th St"}, {"pano_id": "xZa0dS4KoMlWusKNTuloqA", "heading": 345.3653, "description": "Larimer St"}, {"pano_id": "BsyRnejjJ6XypC4mG-kvOA", "heading": 282.92, "distance": 10.4, "virtual": true}, {"pano_id": "YZlnd47hQzBT0nUUpRhXow", "heading": 18.25, "distance": 17.62, "virtual": true}]}, "oSR0xjrIVmBHdUYIBUK-9w": {"lat": 39.74998260960433, "lng": -104.9973246073796, "links": [{"pano_id": "9_UKuXc4sYugVjF4DUCR0Q", "heading": 225.37845, "description": ""}]}, "8YfAIChKejs6YL_JR5cVSA": {"lat": 39.74996324406872, "lng": -104.9980578131185, "links": [{"pano_id": "5EQuJYZMvSLXvE0XwZ7yoQ", "heading": 135.59093, "description": ""}, {"pano_id": "JUv--SzeoEpj56PR63I23A", "heading": 333.10925, "description": "Market St"}, {"pano_id": "tkLKw68wXKa-UuL7BG8GfQ", "heading": 275.13, "distance": 11.08, "virtual": true}]}, "nnh7hvMmCuzMMvYSzipdNw": {"lat": 39.75002400638594, "lng": -104.9960731548523, "links": [{"pano_id": "iYBKgMiDKm_Y_S1SXjgYgA", "heading": 135.72638, "description": "17th St"}, {"pano_id": "-opXzO_fEJ2rZc7Ei8eQQw", "heading": 315.74643, "description": "17th St"}]}, "PZg2laInik3Nh7r8ekJ0rQ": {"lat": 39.75027668619123, "lng": -104.9963873320896, "links": [{"pano_id": "UEnVhmiJ2m_hbujSIsOAbg", "heading": 136.83383, "description": "17th St"}]}, "uR5cUhyxG_vDH4v4fxQpDw": {"lat": 39.74843170846272, "lng": -104.9984416241161, "links": [{"pano_id": "_VlXzTlaGxSvn0a7zK7nSg", "heading": 42.18672, "description": "Larimer St"}]}, "eivpm0I4YuPrX8XmzNQ9xQ": {"lat": 39.74977758254671, "lng": -104.9984363639824, "links": [{"pano_id": "m5vhdFJQdu2cdg3eUkHQ5w", "heading": 44.621758, "description": "Market St"}]}, "tkLKw68wXKa-UuL7BG8GfQ": {"lat": 39.74997215471985, "lng": -104.9981869090269, "links": [{"pano_id": "WpXhgjQWpDkvjVsWpFiqhQ", "heading": 224.57884, "description": "Market St"}, {"pano_id": "JUv--SzeoEpj56PR63I23A", "heading": 44.534496, "description": "Market St"}, {"pano_id": "8YfAIChKejs6YL_JR5cVSA", "heading": 95.13, "distance": 11.08, "virtual": true}]}, "YZlnd47hQzBT0nUUpRhXow": {"lat": 39.7502400300871, "lng": -104.9960916987811, "links": [{"pano_id": "xZa0dS4KoMlWusKNTuloqA", "heading": 228.8278, "description": "Larimer St"}, {"pano_id": "-opXzO_fEJ2rZc7Ei8eQQw", "heading": 198.25, "distance": 17.62, "virtual": true}]}, "iYBKgMiDKm_Y_S1SXjgYgA": {"lat": 39.74995890365488, "lng": -104.9959905987332, "links": [{"pano_id": "nnh7hvMmCuzMMvYSzipdNw", "heading": 315.72638, "description": "17th St"}]}, "DWW3XqiqHbEwohoMe2e3Zw": {"lat": 39.74868928613391, "lng": -104.9979024167307, "links": [{"pano_id": "x-DJvgJr0zbw9wqTS8P-eg", "heading": 225.5889, "description": ""}, {"pano_id": "wIkZPfskWUYoNyZB9qyj_A", "heading": 339.8, "distance": 15.58, "virtual": true}, {"pano_id": "ZFE1PJyVaLT8fE1fz4C_0g", "heading": 301.16, "distance": 14.5, "virtual": true}, {"pano_id": "5C-4ScXxsVQpwkLTZXj9tQ", "heading": 241.22, "distance": 17.76, "virtual": true}]}, "JUv--SzeoEpj56PR63I23A": {"lat": 39.75003569264805, "lng": -104.9981055999897, "links": [{"pano_id": "tkLKw68wXKa-UuL7BG8GfQ", "heading": 224.5345, "description": "Market St"}, {"pano_id": "8YfAIChKejs6YL_JR5cVSA", "heading": 153.10925, "description": ""}]}};
+        const targetPanos = ["D1H1452jFbrw_lB2mzTIgw"];
+        const spawnPoints = ["iYBKgMiDKm_Y_S1SXjgYgA", "uR5cUhyxG_vDH4v4fxQpDw", "JUv--SzeoEpj56PR63I23A"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

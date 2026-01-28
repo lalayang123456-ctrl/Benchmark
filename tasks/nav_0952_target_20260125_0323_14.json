@@ -1,0 +1,138 @@
+{
+  "task_id": "nav_0952_target_20260125_0323_14",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260125_032319",
+  "spawn_point": "VivHEF-RZe99ed2r2myeZg",
+  "spawn_heading": 356.2,
+  "description": "Navigate to Subway. Head north for 25m. Turn right toward Flower Valley Ln Pass by Nancy Towers (on the left) for 30m. Turn left after Much More (on the left) Destination will be on the left for 146m. Total distance: approximately 201 m.",
+  "ground_truth": {
+    "target_name": "Subway",
+    "target_pano_id": "u2TF4bVicwXNszI7jgKTvg",
+    "optimal_distance_meters": 201,
+    "route_description": "left→left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "u2TF4bVicwXNszI7jgKTvg"
+  ],
+  "max_steps": 46,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "VivHEF-RZe99ed2r2myeZg",
+      "heading": 356.2
+    },
+    {
+      "step_index": 1,
+      "pano_id": "KaVQWpcyCZaGkXB9GsZH7A",
+      "heading": 356.2
+    },
+    {
+      "step_index": 2,
+      "pano_id": "KllKbPrHhjuKpnRmn7xnrA",
+      "heading": 335.0
+    },
+    {
+      "step_index": 3,
+      "pano_id": "HPxxGi7l6Mr73rC4euBe7Q",
+      "heading": 26.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "PS-SgHcBCbXKjUd7sPcFmw",
+      "heading": 57.6
+    },
+    {
+      "step_index": 5,
+      "pano_id": "rA2EA7yS9HbUDgsig4NJDw",
+      "heading": 86.4
+    },
+    {
+      "step_index": 6,
+      "pano_id": "23YmkMYkwSLyl0I7d2Y9uQ",
+      "heading": 80.3
+    },
+    {
+      "step_index": 7,
+      "pano_id": "a7IoqHGw0_Dw9r_6nGG0xw",
+      "heading": 91.5
+    },
+    {
+      "step_index": 8,
+      "pano_id": "ew64SOid9llndzM4QJLyCQ",
+      "heading": 339.6
+    },
+    {
+      "step_index": 9,
+      "pano_id": "E2Qyunpqp3nGIKuFnC6mWA",
+      "heading": 10.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "4ukZvR8N3HgWUDkHI6Z0pw",
+      "heading": 7.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "mZz0g7Dil7yaVEfnXQ_WZQ",
+      "heading": 4.5
+    },
+    {
+      "step_index": 12,
+      "pano_id": "sdoFJWe3TKJIQJuS0Deqzw",
+      "heading": 4.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "ccJNGHH-1Yqapp_-u-CXeA",
+      "heading": 4.5
+    },
+    {
+      "step_index": 14,
+      "pano_id": "OBu3QtMFHt7MKltD4o7VoQ",
+      "heading": 4.5
+    },
+    {
+      "step_index": 15,
+      "pano_id": "Bd3ASOXYTdkb_dyhgjynjA",
+      "heading": 4.4
+    },
+    {
+      "step_index": 16,
+      "pano_id": "pRG5VKnGBuaOdZBlXifq6A",
+      "heading": 4.4
+    },
+    {
+      "step_index": 17,
+      "pano_id": "OvxIXatURW99o4NKaMCKig",
+      "heading": 4.3
+    },
+    {
+      "step_index": 18,
+      "pano_id": "hpTF9Ww2uCSvaOTOG7lUCw",
+      "heading": 4.4
+    },
+    {
+      "step_index": 19,
+      "pano_id": "1OjMNdKi8GGaanP_ZH2blQ",
+      "heading": 4.4
+    },
+    {
+      "step_index": 20,
+      "pano_id": "pp5_HN4lHPvrIYz36sRxlA",
+      "heading": 4.3
+    },
+    {
+      "step_index": 21,
+      "pano_id": "74r8dHU7j3LgDzGvQrYs3w",
+      "heading": 4.4
+    },
+    {
+      "step_index": 22,
+      "pano_id": "u2TF4bVicwXNszI7jgKTvg",
+      "heading": 4.7
+    }
+  ],
+  "agent_verification": "SKIPPED"
+}

@@ -1,0 +1,146 @@
+{
+  "task_id": "nav_0843_target_20260125_0315_16",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260125_031453",
+  "spawn_point": "980DF4mZP7kxEq9nyi9EKQ",
+  "spawn_heading": 266.7,
+  "description": "Navigate to McDonald's | Passeig de Gràcia. Follow the tree-lined pedestrian avenue (Rambla de Catalunya) straight for about 137 meters. At the major intersection with the wide boulevard (Passeig de Gràcia), turn right. Continue past the Swarovski store; the McDonald's is on your right.",
+  "ground_truth": {
+    "target_name": "McDonald's | Passeig de Gràcia",
+    "target_pano_id": "EC_3wi9eR9JRDkcUxKfjSA",
+    "optimal_distance_meters": 222,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "EC_3wi9eR9JRDkcUxKfjSA"
+  ],
+  "max_steps": 48,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "980DF4mZP7kxEq9nyi9EKQ",
+      "heading": 266.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "JRUZsittgfRKggyg6C-0hw",
+      "heading": 266.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "-v_IPBiR5U8pcCI1J6eV9A",
+      "heading": 266.6
+    },
+    {
+      "step_index": 3,
+      "pano_id": "5f2UxqCd3UuPtQh5dFbXYw",
+      "heading": 257.1
+    },
+    {
+      "step_index": 4,
+      "pano_id": "fHkX9qxxyYPLDS-8pzk7vQ",
+      "heading": 226.1
+    },
+    {
+      "step_index": 5,
+      "pano_id": "jf9RQ1jtbZC7UsumtWxnJg",
+      "heading": 226.1
+    },
+    {
+      "step_index": 6,
+      "pano_id": "z79opnvaAsz0TkgGfDJ8gA",
+      "heading": 226.1
+    },
+    {
+      "step_index": 7,
+      "pano_id": "YwmcTcNl5fwgBC3P7vahVA",
+      "heading": 226.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "PuGulzuaieuLiFZw7ecXVQ",
+      "heading": 226.1
+    },
+    {
+      "step_index": 9,
+      "pano_id": "W_EsD_7SXQJfoS6GsqhwSA",
+      "heading": 226.1
+    },
+    {
+      "step_index": 10,
+      "pano_id": "ewYmGnV_jyRjrvQNMaGEJQ",
+      "heading": 226.1
+    },
+    {
+      "step_index": 11,
+      "pano_id": "ZyKtM1JOjG9aUnNf1BsIUA",
+      "heading": 225.9
+    },
+    {
+      "step_index": 12,
+      "pano_id": "6VznNQUbPVYuQRH2pQjyLg",
+      "heading": 225.7
+    },
+    {
+      "step_index": 13,
+      "pano_id": "jj441-p5_jw-I3TTzK-0mw",
+      "heading": 225.7
+    },
+    {
+      "step_index": 14,
+      "pano_id": "xIj1OXJ6MnqdbZarg4GhUg",
+      "heading": 225.7
+    },
+    {
+      "step_index": 15,
+      "pano_id": "gU2WuOhFiKBLSv7yJA_yIw",
+      "heading": 225.7
+    },
+    {
+      "step_index": 16,
+      "pano_id": "M4tDFGrTWm7shZuLgSrVCg",
+      "heading": 225.7
+    },
+    {
+      "step_index": 17,
+      "pano_id": "gOMhXJHK9wyPEKNaWXWR7Q",
+      "heading": 225.7
+    },
+    {
+      "step_index": 18,
+      "pano_id": "kmOGmAUhoUxMR6ZDjqyBpA",
+      "heading": 319.2
+    },
+    {
+      "step_index": 19,
+      "pano_id": "tQjai2mrwOOyj0_3fsqlDg",
+      "heading": 314.0
+    },
+    {
+      "step_index": 20,
+      "pano_id": "WrvUKYk9cGDlk3U85CcxxQ",
+      "heading": 314.0
+    },
+    {
+      "step_index": 21,
+      "pano_id": "lYECzM84j2nEkqro-KgJCA",
+      "heading": 314.1
+    },
+    {
+      "step_index": 22,
+      "pano_id": "Fta2O0-XOKmObAZdAiCcdA",
+      "heading": 314.0
+    },
+    {
+      "step_index": 23,
+      "pano_id": "EC_3wi9eR9JRDkcUxKfjSA",
+      "heading": 314.0
+    }
+  ],
+  "agent_verification": "YES",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight along the pedestrian avenue [137m] -> Turn Right onto Passeig de Gràcia [56m]",
+  "agent_concise_description": "Follow the tree-lined pedestrian avenue (Rambla de Catalunya) straight for about 137 meters. At the major intersection with the wide boulevard (Passeig de Gràcia), turn right. Continue past the Swarovski store; the McDonald's is on your right."
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_starbucks_20260124_094323</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_starbucks_20260124_094323</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"ynloBLT-XnfWoFYdDO_VAA": {"lat": -19.64141921089056, "lng": -43.95429468676486, "links": [{"pano_id": "sbZZV9noQdEow8HoUklnog", "heading": 318.29434, "description": "LMG-800"}, {"pano_id": "vJYrT-xnZ-Rm-wtl1An0Jg", "heading": 138.2829, "description": "LMG-800"}, {"pano_id": "p-BeYtCYi-q1CalERgWZrA", "heading": 138.28, "distance": 15.39, "virtual": true}, {"pano_id": "ENdfQYXUHVvJqRNpHlTMmg", "heading": 318.31, "distance": 15.22, "virtual": true}]}, "vJYrT-xnZ-Rm-wtl1An0Jg": {"lat": -19.64147070139817, "lng": -43.95424594687781, "links": [{"pano_id": "p-BeYtCYi-q1CalERgWZrA", "heading": 138.28091, "description": "LMG-800"}, {"pano_id": "ynloBLT-XnfWoFYdDO_VAA", "heading": 318.2829, "description": "LMG-800"}, {"pano_id": "sbZZV9noQdEow8HoUklnog", "heading": 318.29, "distance": 15.31, "virtual": true}, {"pano_id": "4BqOb2RF0vkCeJOaP0Xnpg", "heading": 138.29, "distance": 15.47, "virtual": true}]}, "sbZZV9noQdEow8HoUklnog": {"lat": -19.64136793034824, "lng": -43.95434320836482, "links": [{"pano_id": "ynloBLT-XnfWoFYdDO_VAA", "heading": 138.29436, "description": "LMG-800"}, {"pano_id": "ENdfQYXUHVvJqRNpHlTMmg", "heading": 318.327, "description": "LMG-800"}, {"pano_id": "vJYrT-xnZ-Rm-wtl1An0Jg", "heading": 138.29, "distance": 15.31, "virtual": true}, {"pano_id": "mzy_VOM1L3Y2wm3rw2NwyQ", "heading": 318.29, "distance": 15.17, "virtual": true}]}, "p-BeYtCYi-q1CalERgWZrA": {"lat": -19.64152249572721, "lng": -43.9541969159568, "links": [{"pano_id": "4BqOb2RF0vkCeJOaP0Xnpg", "heading": 138.30882, "description": "LMG-800"}, {"pano_id": "vJYrT-xnZ-Rm-wtl1An0Jg", "heading": 318.2809, "description": "LMG-800"}, {"pano_id": "ynloBLT-XnfWoFYdDO_VAA", "heading": 318.28, "distance": 15.39, "virtual": true}, {"pano_id": "dcnQYP6EKFIbt9tpHbPt1g", "heading": 138.3, "distance": 15.57, "virtual": true}]}, "ENdfQYXUHVvJqRNpHlTMmg": {"lat": -19.64131697582955, "lng": -43.95439136618651, "links": [{"pano_id": "mzy_VOM1L3Y2wm3rw2NwyQ", "heading": 318.2564, "description": "LMG-800"}, {"pano_id": "sbZZV9noQdEow8HoUklnog", "heading": 138.327, "description": "LMG-800"}, {"pano_id": "ynloBLT-XnfWoFYdDO_VAA", "heading": 138.31, "distance": 15.22, "virtual": true}, {"pano_id": "0_8B0C0ntiRNQJdOYcc9qA", "heading": 318.28, "distance": 15.15, "virtual": true}]}, "mzy_VOM1L3Y2wm3rw2NwyQ": {"lat": -19.64126607080821, "lng": -43.95443959670609, "links": [{"pano_id": "ENdfQYXUHVvJqRNpHlTMmg", "heading": 138.25641, "description": "LMG-800"}, {"pano_id": "0_8B0C0ntiRNQJdOYcc9qA", "heading": 318.30807, "description": "LMG-800"}, {"pano_id": "sbZZV9noQdEow8HoUklnog", "heading": 138.29, "distance": 15.17, "virtual": true}, {"pano_id": "mPLSLGHRQgJ26dtTZdPb-g", "heading": 318.28, "distance": 15.09, "virtual": true}]}, "4BqOb2RF0vkCeJOaP0Xnpg": {"lat": -19.64157457167457, "lng": -43.95414766674723, "links": [{"pano_id": "p-BeYtCYi-q1CalERgWZrA", "heading": 318.30884, "description": "LMG-800"}, {"pano_id": "dcnQYP6EKFIbt9tpHbPt1g", "heading": 138.28624, "description": "LMG-800"}, {"pano_id": "vJYrT-xnZ-Rm-wtl1An0Jg", "heading": 318.29, "distance": 15.47, "virtual": true}, {"pano_id": "1CswiFexsQLFmDrWKm9lpA", "heading": 138.28, "distance": 15.67, "virtual": true}]}, "dcnQYP6EKFIbt9tpHbPt1g": {"lat": -19.6416270675048, "lng": -43.95409798100935, "links": [{"pano_id": "1CswiFexsQLFmDrWKm9lpA", "heading": 138.27509, "description": "LMG-800"}, {"pano_id": "4BqOb2RF0vkCeJOaP0Xnpg", "heading": 318.28622, "description": "LMG-800"}, {"pano_id": "p-BeYtCYi-q1CalERgWZrA", "heading": 318.3, "distance": 15.57, "virtual": true}, {"pano_id": "Owq5TXsnmooZslLJqPbmwQ", "heading": 138.29, "distance": 15.74, "virtual": true}]}, "0_8B0C0ntiRNQJdOYcc9qA": {"lat": -19.64121530409922, "lng": -43.95448760894024, "links": [{"pano_id": "mPLSLGHRQgJ26dtTZdPb-g", "heading": 318.24866, "description": "LMG-800"}, {"pano_id": "mzy_VOM1L3Y2wm3rw2NwyQ", "heading": 138.30806, "description": "LMG-800"}, {"pano_id": "ENdfQYXUHVvJqRNpHlTMmg", "heading": 138.28, "distance": 15.15, "virtual": true}, {"pano_id": "WtRHSH24dnunlReje6n2hQ", "heading": 318.28, "distance": 15.09, "virtual": true}]}, "1CswiFexsQLFmDrWKm9lpA": {"lat": -19.64167977330364, "lng": -43.95404807698113, "links": [{"pano_id": "dcnQYP6EKFIbt9tpHbPt1g", "heading": 318.2751, "description": "LMG-800"}, {"pano_id": "Owq5TXsnmooZslLJqPbmwQ", "heading": 138.30254, "description": "LMG-800"}, {"pano_id": "4BqOb2RF0vkCeJOaP0Xnpg", "heading": 318.28, "distance": 15.67, "virtual": true}, {"pano_id": "tWIGLvDuFPLyAtVh-VPPvA", "heading": 138.3, "distance": 15.86, "virtual": true}]}, "mPLSLGHRQgJ26dtTZdPb-g": {"lat": -19.64116479680063, "lng": -43.95453547563534, "links": [{"pano_id": "0_8B0C0ntiRNQJdOYcc9qA", "heading": 138.24866, "description": "LMG-800"}, {"pano_id": "WtRHSH24dnunlReje6n2hQ", "heading": 318.30804, "description": "LMG-800"}, {"pano_id": "mzy_VOM1L3Y2wm3rw2NwyQ", "heading": 138.28, "distance": 15.09, "virtual": true}, {"pano_id": "iesI3R7syqF4VwOK6vhfhw", "heading": 318.3, "distance": 15.11, "virtual": true}]}, "Owq5TXsnmooZslLJqPbmwQ": {"lat": -19.64173276072345, "lng": -43.95399795466187, "links": [{"pano_id": "1CswiFexsQLFmDrWKm9lpA", "heading": 318.30255, "description": "LMG-800"}, {"pano_id": "tWIGLvDuFPLyAtVh-VPPvA", "heading": 138.28944, "description": "LMG-800"}, {"pano_id": "dcnQYP6EKFIbt9tpHbPt1g", "heading": 318.29, "distance": 15.74, "virtual": true}, {"pano_id": "g2uxG90dQaCwgpPEYny2Ug", "heading": 138.28, "distance": 15.96, "virtual": true}]}, "WtRHSH24dnunlReje6n2hQ": {"lat": -19.64111403019051, "lng": -43.95458348777432, "links": [{"pano_id": "mPLSLGHRQgJ26dtTZdPb-g", "heading": 138.30804, "description": "LMG-800"}, {"pano_id": "iesI3R7syqF4VwOK6vhfhw", "heading": 318.29852, "description": "LMG-800"}, {"pano_id": "0_8B0C0ntiRNQJdOYcc9qA", "heading": 138.28, "distance": 15.09, "virtual": true}, {"pano_id": "pD6hqxxDNxec86BxQ7qvnQ", "heading": 318.3, "distance": 15.14, "virtual": true}]}, "iesI3R7syqF4VwOK6vhfhw": {"lat": -19.64106335748463, "lng": -43.95463142712008, "links": [{"pano_id": "pD6hqxxDNxec86BxQ7qvnQ", "heading": 318.2964, "description": "LMG-800"}, {"pano_id": "WtRHSH24dnunlReje6n2hQ", "heading": 138.29852, "description": "LMG-800"}, {"pano_id": "mPLSLGHRQgJ26dtTZdPb-g", "heading": 138.3, "distance": 15.11, "virtual": true}, {"pano_id": "Ygr16i53uD4Oq2BLOYNZlQ", "heading": 318.44, "distance": 15.24, "virtual": true}]}, "tWIGLvDuFPLyAtVh-VPPvA": {"lat": -19.64178626188524, "lng": -43.95394732306458, "links": [{"pano_id": "g2uxG90dQaCwgpPEYny2Ug", "heading": 138.26945, "description": "LMG-800"}, {"pano_id": "Owq5TXsnmooZslLJqPbmwQ", "heading": 318.28943, "description": "LMG-800"}, {"pano_id": "1CswiFexsQLFmDrWKm9lpA", "heading": 318.3, "distance": 15.86, "virtual": true}, {"pano_id": "L8riiPy50iuzpQZL9JHgnQ", "heading": 138.28, "distance": 16.06, "virtual": true}]}, "g2uxG90dQaCwgpPEYny2Ug": {"lat": -19.6418398791623, "lng": -43.95389654592097, "links": [{"pano_id": "tWIGLvDuFPLyAtVh-VPPvA", "heading": 318.26947, "description": "LMG-800"}, {"pano_id": "L8riiPy50iuzpQZL9JHgnQ", "heading": 138.2945, "description": "LMG-800"}, {"pano_id": "Owq5TXsnmooZslLJqPbmwQ", "heading": 318.28, "distance": 15.96, "virtual": true}, {"pano_id": "MYaFK13dtGSZMeQfDPvj8g", "heading": 138.29, "distance": 16.13, "virtual": true}]}, "pD6hqxxDNxec86BxQ7qvnQ": {"lat": -19.64101238106069, "lng": -43.95467965740025, "links": [{"pano_id": "Ygr16i53uD4Oq2BLOYNZlQ", "heading": 318.5838, "description": "LMG-800"}, {"pano_id": "iesI3R7syqF4VwOK6vhfhw", "heading": 138.29639, "description": "LMG-800"}, {"pano_id": "WtRHSH24dnunlReje6n2hQ", "heading": 138.3, "distance": 15.14, "virtual": true}, {"pano_id": "Po3iVk60EFJoj3YKCyV4qA", "heading": 318.87, "distance": 15.3, "virtual": true}]}, "L8riiPy50iuzpQZL9JHgnQ": {"lat": -19.64189408183565, "lng": -43.95384525949686, "links": [{"pano_id": "MYaFK13dtGSZMeQfDPvj8g", "heading": 138.28557, "description": "LMG-800"}, {"pano_id": "g2uxG90dQaCwgpPEYny2Ug", "heading": 318.2945, "description": "LMG-800"}, {"pano_id": "tWIGLvDuFPLyAtVh-VPPvA", "heading": 318.28, "distance": 16.06, "virtual": true}, {"pano_id": "5F6uzBLNKhtOdXN3MroZIg", "heading": 138.66, "distance": 16.18, "virtual": true}]}, "Ygr16i53uD4Oq2BLOYNZlQ": {"lat": -19.64096080927588, "lng": -43.95472796037774, "links": [{"pano_id": "pD6hqxxDNxec86BxQ7qvnQ", "heading": 138.58379, "description": "LMG-800"}, {"pano_id": "Po3iVk60EFJoj3YKCyV4qA", "heading": 319.15277, "description": "LMG-800"}, {"pano_id": "iesI3R7syqF4VwOK6vhfhw", "heading": 138.44, "distance": 15.24, "virtual": true}, {"pano_id": "dhF3ss4xZ36XqMtit64s-w", "heading": 319.13, "distance": 15.34, "virtual": true}]}, "Po3iVk60EFJoj3YKCyV4qA": {"lat": -19.64090874810936, "lng": -43.9547757540896, "links": [{"pano_id": "dhF3ss4xZ36XqMtit64s-w", "heading": 319.10678, "description": "LMG-800"}, {"pano_id": "Ygr16i53uD4Oq2BLOYNZlQ", "heading": 139.15276, "description": "LMG-800"}, {"pano_id": "pD6hqxxDNxec86BxQ7qvnQ", "heading": 138.87, "distance": 15.3, "virtual": true}, {"pano_id": "hwdzErHbMAzEkb5B0BardA", "heading": 319.05, "distance": 15.44, "virtual": true}]}, "MYaFK13dtGSZMeQfDPvj8g": {"lat": -19.64194819070927, "lng": -43.95379404576519, "links": [{"pano_id": "5F6uzBLNKhtOdXN3MroZIg", "heading": 139.02669, "description": "LMG-800"}, {"pano_id": "L8riiPy50iuzpQZL9JHgnQ", "heading": 318.28558, "description": "LMG-800"}, {"pano_id": "g2uxG90dQaCwgpPEYny2Ug", "heading": 318.29, "distance": 16.13, "virtual": true}, {"pano_id": "IiqqL9Itebu73zIgIjbHoA", "heading": 139.14, "distance": 16.25, "virtual": true}]}, "dhF3ss4xZ36XqMtit64s-w": {"lat": -19.64085645487856, "lng": -43.9548238387353, "links": [{"pano_id": "hwdzErHbMAzEkb5B0BardA", "heading": 319.00006, "description": "LMG-800"}, {"pano_id": "Po3iVk60EFJoj3YKCyV4qA", "heading": 139.10678, "description": "LMG-800"}, {"pano_id": "Ygr16i53uD4Oq2BLOYNZlQ", "heading": 139.13, "distance": 15.34, "virtual": true}, {"pano_id": "q8RVOhDIy3vYCzJxk9x59A", "heading": 319.0, "distance": 15.5, "virtual": true}]}, "5F6uzBLNKhtOdXN3MroZIg": {"lat": -19.64200333505038, "lng": -43.95374319571375, "links": [{"pano_id": "IiqqL9Itebu73zIgIjbHoA", "heading": 139.2615, "description": "LMG-800"}, {"pano_id": "MYaFK13dtGSZMeQfDPvj8g", "heading": 319.0267, "description": "LMG-800"}, {"pano_id": "L8riiPy50iuzpQZL9JHgnQ", "heading": 318.66, "distance": 16.18, "virtual": true}, {"pano_id": "LDCULdg_gJ3rSnEz8yV9LQ", "heading": 139.29, "distance": 16.22, "virtual": true}]}, "hwdzErHbMAzEkb5B0BardA": {"lat": -19.64080388517722, "lng": -43.95487235980437, "links": [{"pano_id": "dhF3ss4xZ36XqMtit64s-w", "heading": 139.00008, "description": "LMG-800"}, {"pano_id": "q8RVOhDIy3vYCzJxk9x59A", "heading": 319.00818, "description": "LMG-800"}, {"pano_id": "Po3iVk60EFJoj3YKCyV4qA", "heading": 139.05, "distance": 15.44, "virtual": true}, {"pano_id": "VlCnwow5iRWj01XctT78zg", "heading": 319.02, "distance": 15.56, "virtual": true}]}, "IiqqL9Itebu73zIgIjbHoA": {"lat": -19.64205869944476, "lng": -43.95369256384975, "links": [{"pano_id": "LDCULdg_gJ3rSnEz8yV9LQ", "heading": 139.31305, "description": "LMG-800"}, {"pano_id": "5F6uzBLNKhtOdXN3MroZIg", "heading": 319.2615, "description": "LMG-800"}, {"pano_id": "MYaFK13dtGSZMeQfDPvj8g", "heading": 319.14, "distance": 16.25, "virtual": true}, {"pano_id": "3TgwkY3bTXF6kxNHRDBxrw", "heading": 139.31, "distance": 16.18, "virtual": true}]}, "LDCULdg_gJ3rSnEz8yV9LQ": {"lat": -19.64211392563201, "lng": -43.95364215017389, "links": [{"pano_id": "3TgwkY3bTXF6kxNHRDBxrw", "heading": 139.30577, "description": "LMG-800"}, {"pano_id": "IiqqL9Itebu73zIgIjbHoA", "heading": 319.31305, "description": "LMG-800"}, {"pano_id": "5F6uzBLNKhtOdXN3MroZIg", "heading": 319.29, "distance": 16.22, "virtual": true}, {"pano_id": "yddnXLEpyH0lMPtIOnXNDg", "heading": 139.29, "distance": 16.11, "virtual": true}]}, "q8RVOhDIy3vYCzJxk9x59A": {"lat": -19.64075122167431, "lng": -43.95492095356987, "links": [{"pano_id": "hwdzErHbMAzEkb5B0BardA", "heading": 139.00816, "description": "LMG-800"}, {"pano_id": "VlCnwow5iRWj01XctT78zg", "heading": 319.03232, "description": "LMG-800"}, {"pano_id": "dhF3ss4xZ36XqMtit64s-w", "heading": 139.0, "distance": 15.5, "virtual": true}, {"pano_id": "yOP4gseE6ARcNMtHdZT-Yg", "heading": 319.02, "distance": 15.6, "virtual": true}]}, "VlCnwow5iRWj01XctT78zg": {"lat": -19.640698276662, "lng": -43.9549697655217, "links": [{"pano_id": "q8RVOhDIy3vYCzJxk9x59A", "heading": 139.0323, "description": "LMG-800"}, {"pano_id": "yOP4gseE6ARcNMtHdZT-Yg", "heading": 319.00195, "description": "LMG-800"}, {"pano_id": "hwdzErHbMAzEkb5B0BardA", "heading": 139.02, "distance": 15.56, "virtual": true}, {"pano_id": "6Q_wHvSh4gklW4tBZBuvvQ", "heading": 319.01, "distance": 15.63, "virtual": true}]}, "3TgwkY3bTXF6kxNHRDBxrw": {"lat": -19.6421690580204, "lng": -43.9535918091926, "links": [{"pano_id": "yddnXLEpyH0lMPtIOnXNDg", "heading": 139.26906, "description": "LMG-800"}, {"pano_id": "LDCULdg_gJ3rSnEz8yV9LQ", "heading": 319.3058, "description": "LMG-800"}, {"pano_id": "IiqqL9Itebu73zIgIjbHoA", "heading": 319.31, "distance": 16.18, "virtual": true}, {"pano_id": "NXBL5zDP09nBjp4aAwKVyA", "heading": 139.29, "distance": 15.99, "virtual": true}]}, "yddnXLEpyH0lMPtIOnXNDg": {"lat": -19.64222372118286, "lng": -43.95354183189488, "links": [{"pano_id": "NXBL5zDP09nBjp4aAwKVyA", "heading": 139.30655, "description": "LMG-800"}, {"pano_id": "3TgwkY3bTXF6kxNHRDBxrw", "heading": 319.26904, "description": "LMG-800"}, {"pano_id": "LDCULdg_gJ3rSnEz8yV9LQ", "heading": 319.29, "distance": 16.11, "virtual": true}, {"pano_id": "5r-W7unoUSStPIW_bMiaHQ", "heading": 139.3, "distance": 15.92, "virtual": true}]}, "yOP4gseE6ARcNMtHdZT-Yg": {"lat": -19.64064530949961, "lng": -43.95501865016922, "links": [{"pano_id": "VlCnwow5iRWj01XctT78zg", "heading": 139.00194, "description": "LMG-800"}, {"pano_id": "6Q_wHvSh4gklW4tBZBuvvQ", "heading": 319.01797, "description": "LMG-800"}, {"pano_id": "q8RVOhDIy3vYCzJxk9x59A", "heading": 139.02, "distance": 15.6, "virtual": true}, {"pano_id": "4zkP7PNW15b730HpY4cuew", "heading": 319.03, "distance": 15.7, "virtual": true}]}, "NXBL5zDP09nBjp4aAwKVyA": {"lat": -19.64227805842263, "lng": -43.95349221828187, "links": [{"pano_id": "yddnXLEpyH0lMPtIOnXNDg", "heading": 319.30655, "description": "LMG-800"}, {"pano_id": "5r-W7unoUSStPIW_bMiaHQ", "heading": 139.29916, "description": "LMG-800"}, {"pano_id": "3TgwkY3bTXF6kxNHRDBxrw", "heading": 319.29, "distance": 15.99, "virtual": true}, {"pano_id": "YbPu2hTQm_t31kncm5imRQ", "heading": 139.3, "distance": 15.85, "virtual": true}]}, "6Q_wHvSh4gklW4tBZBuvvQ": {"lat": -19.64059215468285, "lng": -43.95506768025714, "links": [{"pano_id": "4zkP7PNW15b730HpY4cuew", "heading": 319.04187, "description": "LMG-800"}, {"pano_id": "yOP4gseE6ARcNMtHdZT-Yg", "heading": 139.01799, "description": "LMG-800"}, {"pano_id": "VlCnwow5iRWj01XctT78zg", "heading": 139.01, "distance": 15.63, "virtual": true}, {"pano_id": "b747f6SyYEZcmX1qd1FClA", "heading": 319.02, "distance": 15.76, "virtual": true}]}, "4zkP7PNW15b730HpY4cuew": {"lat": -19.6405387183585, "lng": -43.95511692852982, "links": [{"pano_id": "6Q_wHvSh4gklW4tBZBuvvQ", "heading": 139.04185, "description": "LMG-800"}, {"pano_id": "b747f6SyYEZcmX1qd1FClA", "heading": 318.98972, "description": "LMG-800"}, {"pano_id": "yOP4gseE6ARcNMtHdZT-Yg", "heading": 139.03, "distance": 15.7, "virtual": true}, {"pano_id": "cwYNu0-V9_EmNpZVcadXVg", "heading": 319.01, "distance": 15.85, "virtual": true}]}, "5r-W7unoUSStPIW_bMiaHQ": {"lat": -19.64233230186143, "lng": -43.95344267736532, "links": [{"pano_id": "YbPu2hTQm_t31kncm5imRQ", "heading": 139.2995, "description": "LMG-800"}, {"pano_id": "NXBL5zDP09nBjp4aAwKVyA", "heading": 319.29916, "description": "LMG-800"}, {"pano_id": "yddnXLEpyH0lMPtIOnXNDg", "heading": 319.3, "distance": 15.92, "virtual": true}, {"pano_id": "5uqGE26L7COM84goAh6rRA", "heading": 139.3, "distance": 15.78, "virtual": true}]}, "YbPu2hTQm_t31kncm5imRQ": {"lat": -19.6423861477235, "lng": -43.95339350013512, "links": [{"pano_id": "5uqGE26L7COM84goAh6rRA", "heading": 139.29202, "description": "LMG-800"}, {"pano_id": "5r-W7unoUSStPIW_bMiaHQ", "heading": 319.2995, "description": "LMG-800"}, {"pano_id": "NXBL5zDP09nBjp4aAwKVyA", "heading": 319.3, "distance": 15.85, "virtual": true}, {"pano_id": "uz3uNIzqMRGhZCtRAFblqg", "heading": 139.29, "distance": 15.7, "virtual": true}]}, "b747f6SyYEZcmX1qd1FClA": {"lat": -19.64048514382817, "lng": -43.95516639498661, "links": [{"pano_id": "4zkP7PNW15b730HpY4cuew", "heading": 138.98973, "description": "LMG-800"}, {"pano_id": "cwYNu0-V9_EmNpZVcadXVg", "heading": 319.0293, "description": "LMG-800"}, {"pano_id": "6Q_wHvSh4gklW4tBZBuvvQ", "heading": 139.02, "distance": 15.76, "virtual": true}, {"pano_id": "KmsKo1VJB9ZuxUQFPcsMsQ", "heading": 319.04, "distance": 15.96, "virtual": true}]}, "cwYNu0-V9_EmNpZVcadXVg": {"lat": -19.64043110008447, "lng": -43.9552162251162, "links": [{"pano_id": "KmsKo1VJB9ZuxUQFPcsMsQ", "heading": 319.0527, "description": "LMG-800"}, {"pano_id": "b747f6SyYEZcmX1qd1FClA", "heading": 139.02928, "description": "LMG-800"}, {"pano_id": "4zkP7PNW15b730HpY4cuew", "heading": 139.01, "distance": 15.85, "virtual": true}, {"pano_id": "R8KKX6_SlyTY8H0COkyqcw", "heading": 319.16, "distance": 16.09, "virtual": true}]}, "5uqGE26L7COM84goAh6rRA": {"lat": -19.64243989978342, "lng": -43.95334439560241, "links": [{"pano_id": "uz3uNIzqMRGhZCtRAFblqg", "heading": 139.28474, "description": "LMG-800"}, {"pano_id": "YbPu2hTQm_t31kncm5imRQ", "heading": 319.29202, "description": "LMG-800"}, {"pano_id": "5r-W7unoUSStPIW_bMiaHQ", "heading": 319.3, "distance": 15.78, "virtual": true}, {"pano_id": "VyD4Ym2SdjrqZU3ooovRYA", "heading": 139.29, "distance": 15.59, "virtual": true}]}, "KmsKo1VJB9ZuxUQFPcsMsQ": {"lat": -19.64037677483582, "lng": -43.95526627342824, "links": [{"pano_id": "R8KKX6_SlyTY8H0COkyqcw", "heading": 319.27597, "description": "LMG-800"}, {"pano_id": "cwYNu0-V9_EmNpZVcadXVg", "heading": 139.05272, "description": "LMG-800"}, {"pano_id": "b747f6SyYEZcmX1qd1FClA", "heading": 139.04, "distance": 15.96, "virtual": true}, {"pano_id": "IlxeuUNUSG3zFFg5gCaYog", "heading": 319.91, "distance": 16.17, "virtual": true}]}, "uz3uNIzqMRGhZCtRAFblqg": {"lat": -19.64249316040764, "lng": -43.95329572750524, "links": [{"pano_id": "VyD4Ym2SdjrqZU3ooovRYA", "heading": 139.3002, "description": "LMG-800"}, {"pano_id": "5uqGE26L7COM84goAh6rRA", "heading": 319.28476, "description": "LMG-800"}, {"pano_id": "YbPu2hTQm_t31kncm5imRQ", "heading": 319.29, "distance": 15.7, "virtual": true}, {"pano_id": "vFvQ_8PrUClf10ZPncIa7Q", "heading": 139.31, "distance": 15.48, "virtual": true}]}, "R8KKX6_SlyTY8H0COkyqcw": {"lat": -19.64032162212512, "lng": -43.95531668541111, "links": [{"pano_id": "KmsKo1VJB9ZuxUQFPcsMsQ", "heading": 139.27597, "description": "LMG-800"}, {"pano_id": "IlxeuUNUSG3zFFg5gCaYog", "heading": 320.5374, "description": "LMG-800"}, {"pano_id": "cwYNu0-V9_EmNpZVcadXVg", "heading": 139.17, "distance": 16.09, "virtual": true}, {"pano_id": "EnEm3V3ZkA_fDkEzYBWfuQ", "heading": 320.54, "distance": 16.16, "virtual": true}]}, "VyD4Ym2SdjrqZU3ooovRYA": {"lat": -19.64254621116645, "lng": -43.95324727760202, "links": [{"pano_id": "vFvQ_8PrUClf10ZPncIa7Q", "heading": 139.3239, "description": "LMG-800"}, {"pano_id": "uz3uNIzqMRGhZCtRAFblqg", "heading": 319.3002, "description": "LMG-800"}, {"pano_id": "5uqGE26L7COM84goAh6rRA", "heading": 319.29, "distance": 15.59, "virtual": true}, {"pano_id": "wObbeXn4VsRXSniIXiN9Dw", "heading": 139.31, "distance": 15.37, "virtual": true}]}, "vFvQ_8PrUClf10ZPncIa7Q": {"lat": -19.6425987482825, "lng": -43.95319933688423, "links": [{"pano_id": "VyD4Ym2SdjrqZU3ooovRYA", "heading": 319.32388, "description": "LMG-800"}, {"pano_id": "wObbeXn4VsRXSniIXiN9Dw", "heading": 139.30092, "description": "LMG-800"}, {"pano_id": "uz3uNIzqMRGhZCtRAFblqg", "heading": 319.31, "distance": 15.48, "virtual": true}, {"pano_id": "VIdLtE8csYVOTJr3jZPcUw", "heading": 139.3, "distance": 15.28, "virtual": true}]}, "IlxeuUNUSG3zFFg5gCaYog": {"lat": -19.64026552997878, "lng": -43.95536571519687, "links": [{"pano_id": "R8KKX6_SlyTY8H0COkyqcw", "heading": 140.53743, "description": "LMG-800"}, {"pano_id": "EnEm3V3ZkA_fDkEzYBWfuQ", "heading": 320.5374, "description": "LMG-800"}, {"pano_id": "KmsKo1VJB9ZuxUQFPcsMsQ", "heading": 139.91, "distance": 16.17, "virtual": true}, {"pano_id": "8uBhMA3Xd6UaBv0ANCMXjw", "heading": 320.54, "distance": 16.18, "virtual": true}]}, "EnEm3V3ZkA_fDkEzYBWfuQ": {"lat": -19.64020943789089, "lng": -43.95541474493292, "links": [{"pano_id": "IlxeuUNUSG3zFFg5gCaYog", "heading": 140.53741, "description": "LMG-800"}, {"pano_id": "8uBhMA3Xd6UaBv0ANCMXjw", "heading": 320.54803, "description": "LMG-800"}, {"pano_id": "R8KKX6_SlyTY8H0COkyqcw", "heading": 140.54, "distance": 16.16, "virtual": true}, {"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 320.54, "distance": 16.17, "virtual": true}]}, "wObbeXn4VsRXSniIXiN9Dw": {"lat": -19.64265100387849, "lng": -43.95315161436228, "links": [{"pano_id": "VIdLtE8csYVOTJr3jZPcUw", "heading": 139.30904, "description": "LMG-800"}, {"pano_id": "vFvQ_8PrUClf10ZPncIa7Q", "heading": 319.30093, "description": "LMG-800"}, {"pano_id": "VyD4Ym2SdjrqZU3ooovRYA", "heading": 319.31, "distance": 15.37, "virtual": true}, {"pano_id": "1oyrBIozAnNgMDX9V9Zmmg", "heading": 139.32, "distance": 15.2, "virtual": true}]}, "8uBhMA3Xd6UaBv0ANCMXjw": {"lat": -19.6401531581552, "lng": -43.95546392010787, "links": [{"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 320.53204, "description": "LMG-800"}, {"pano_id": "EnEm3V3ZkA_fDkEzYBWfuQ", "heading": 140.54802, "description": "LMG-800"}, {"pano_id": "IlxeuUNUSG3zFFg5gCaYog", "heading": 140.54, "distance": 16.18, "virtual": true}, {"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 319.98, "distance": 14.54, "virtual": true}, {"pano_id": "KPYRknvFwXdzG6jSN_lBmA", "heading": 312.16, "distance": 13.24, "virtual": true}]}, "VIdLtE8csYVOTJr3jZPcUw": {"lat": -19.64270295574889, "lng": -43.95310418278466, "links": [{"pano_id": "1oyrBIozAnNgMDX9V9Zmmg", "heading": 139.325, "description": "LMG-800"}, {"pano_id": "wObbeXn4VsRXSniIXiN9Dw", "heading": 319.30902, "description": "LMG-800"}, {"pano_id": "vFvQ_8PrUClf10ZPncIa7Q", "heading": 319.3, "distance": 15.28, "virtual": true}, {"pano_id": "tCSZhTxYGZuSnMV3ewtQrQ", "heading": 139.36, "distance": 15.11, "virtual": true}]}, "1oyrBIozAnNgMDX9V9Zmmg": {"lat": -19.64275469775039, "lng": -43.95305696940429, "links": [{"pano_id": "VIdLtE8csYVOTJr3jZPcUw", "heading": 319.32498, "description": "LMG-800"}, {"pano_id": "tCSZhTxYGZuSnMV3ewtQrQ", "heading": 139.3968, "description": "LMG-800"}, {"pano_id": "wObbeXn4VsRXSniIXiN9Dw", "heading": 319.32, "distance": 15.2, "virtual": true}, {"pano_id": "PSGUo3bz0bXNNdopHBoQTg", "heading": 139.41, "distance": 15.02, "virtual": true}]}, "f5tSsrKjIzbwqRBjsvucSA": {"lat": -19.64009716003742, "lng": -43.95551287700012, "links": [{"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 319.29068, "description": "LMG-800"}, {"pano_id": "8uBhMA3Xd6UaBv0ANCMXjw", "heading": 140.53206, "description": "LMG-800"}, {"pano_id": "KPYRknvFwXdzG6jSN_lBmA", "heading": 299.5638, "description": ""}, {"pano_id": "EnEm3V3ZkA_fDkEzYBWfuQ", "heading": 140.54, "distance": 16.17, "virtual": true}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 296.14, "distance": 14.01, "virtual": true}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 319.09, "distance": 15.95, "virtual": true}]}, "tCSZhTxYGZuSnMV3ewtQrQ": {"lat": -19.64280609161504, "lng": -43.95301019246583, "links": [{"pano_id": "1oyrBIozAnNgMDX9V9Zmmg", "heading": 319.39682, "description": "LMG-800"}, {"pano_id": "PSGUo3bz0bXNNdopHBoQTg", "heading": 139.41335, "description": "LMG-800"}, {"pano_id": "VIdLtE8csYVOTJr3jZPcUw", "heading": 319.36, "distance": 15.11, "virtual": true}, {"pano_id": "rEC1Nqk_xMUzy8grekNpMQ", "heading": 139.43, "distance": 14.92, "virtual": true}]}, "lLS4N3JGGoMcf3yMLDDgqg": {"lat": -19.64005304697744, "lng": -43.95555317728731, "links": [{"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 139.29066, "description": "LMG-800"}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 318.95203, "description": "LMG-800"}, {"pano_id": "8uBhMA3Xd6UaBv0ANCMXjw", "heading": 139.98, "distance": 14.54, "virtual": true}, {"pano_id": "KPYRknvFwXdzG6jSN_lBmA", "heading": 191.68, "distance": 2.3, "virtual": true}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 278.62, "distance": 8.45, "virtual": true}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 318.97, "distance": 17.42, "virtual": true}]}, "KPYRknvFwXdzG6jSN_lBmA": {"lat": -19.64007325922718, "lng": -43.9555576146815, "links": [{"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 119.56383, "description": "LMG-800"}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 293.9991, "description": ""}, {"pano_id": "8uBhMA3Xd6UaBv0ANCMXjw", "heading": 132.16, "distance": 13.24, "virtual": true}, {"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 11.68, "distance": 2.3, "virtual": true}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 328.49, "distance": 11.02, "virtual": true}]}, "Mj8KXewHKrmH_1YtORlLCw": {"lat": -19.64004165890443, "lng": -43.95563297757638, "links": [{"pano_id": "KPYRknvFwXdzG6jSN_lBmA", "heading": 113.9991, "description": ""}, {"pano_id": "UXf63YMRwjRqT0rVEQnTcg", "heading": 294.01193, "description": ""}, {"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 116.14, "distance": 14.01, "virtual": true}, {"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 98.62, "distance": 8.45, "virtual": true}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 19.93, "distance": 6.26, "virtual": true}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 345.47, "distance": 12.26, "virtual": true}]}, "i6OvXgd-NuSguWF2ul-FFg": {"lat": -19.63998876459537, "lng": -43.955612609238, "links": [{"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 138.95203, "description": "LMG-800"}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 318.98364, "description": "LMG-800"}, {"pano_id": "f5tSsrKjIzbwqRBjsvucSA", "heading": 139.09, "distance": 15.95, "virtual": true}, {"pano_id": "KPYRknvFwXdzG6jSN_lBmA", "heading": 148.49, "distance": 11.02, "virtual": true}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 199.93, "distance": 6.26, "virtual": true}, {"pano_id": "UXf63YMRwjRqT0rVEQnTcg", "heading": 261.02, "distance": 11.46, "virtual": true}, {"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 318.99, "distance": 15.83, "virtual": true}]}, "PSGUo3bz0bXNNdopHBoQTg": {"lat": -19.64285727560921, "lng": -43.95296363372631, "links": [{"pano_id": "tCSZhTxYGZuSnMV3ewtQrQ", "heading": 319.41333, "description": "LMG-800"}, {"pano_id": "rEC1Nqk_xMUzy8grekNpMQ", "heading": 139.44684, "description": "LMG-800"}, {"pano_id": "1oyrBIozAnNgMDX9V9Zmmg", "heading": 319.41, "distance": 15.02, "virtual": true}, {"pano_id": "CniIT92WdJ12Dmyc1xT5AA", "heading": 139.44, "distance": 14.82, "virtual": true}]}, "rEC1Nqk_xMUzy8grekNpMQ": {"lat": -19.64290803981166, "lng": -43.95291751143077, "links": [{"pano_id": "CniIT92WdJ12Dmyc1xT5AA", "heading": 139.42366, "description": "LMG-800"}, {"pano_id": "PSGUo3bz0bXNNdopHBoQTg", "heading": 319.44684, "description": "LMG-800"}, {"pano_id": "tCSZhTxYGZuSnMV3ewtQrQ", "heading": 319.43, "distance": 14.92, "virtual": true}, {"pano_id": "nB9-NHqQMC__RTadTs9V4w", "heading": 139.44, "distance": 14.76, "virtual": true}]}, "UXf63YMRwjRqT0rVEQnTcg": {"lat": -19.64000485108831, "lng": -43.95572070682152, "links": [{"pano_id": "JqZXFce_eO69tp_Y3ONyQg", "heading": 294.00412, "description": ""}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 114.011925, "description": ""}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 81.02, "distance": 11.46, "virtual": true}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 38.14, "distance": 9.89, "virtual": true}, {"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 3.87, "distance": 13.77, "virtual": true}]}, "DN_E_ntxrm7VR3Eu5OwotA": {"lat": -19.63993488686176, "lng": -43.95566236616379, "links": [{"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 318.98962, "description": "LMG-800"}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 138.98363, "description": "LMG-800"}, {"pano_id": "lLS4N3JGGoMcf3yMLDDgqg", "heading": 138.97, "distance": 17.42, "virtual": true}, {"pano_id": "Mj8KXewHKrmH_1YtORlLCw", "heading": 165.47, "distance": 12.26, "virtual": true}, {"pano_id": "UXf63YMRwjRqT0rVEQnTcg", "heading": 218.14, "distance": 9.89, "virtual": true}, {"pano_id": "JqZXFce_eO69tp_Y3ONyQg", "heading": 256.31, "distance": 15.69, "virtual": true}, {"pano_id": "kWhEhoE1sHC8DTodgDSyuA", "heading": 318.98, "distance": 15.75, "virtual": true}]}, "aE2kQUDFowZ1i4YGDT5IyA": {"lat": -19.63988131294427, "lng": -43.95571183206267, "links": [{"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 138.98961, "description": "LMG-800"}, {"pano_id": "kWhEhoE1sHC8DTodgDSyuA", "heading": 318.96555, "description": "LMG-800"}, {"pano_id": "i6OvXgd-NuSguWF2ul-FFg", "heading": 138.99, "distance": 15.83, "virtual": true}, {"pano_id": "UXf63YMRwjRqT0rVEQnTcg", "heading": 183.87, "distance": 13.77, "virtual": true}, {"pano_id": "JqZXFce_eO69tp_Y3ONyQg", "heading": 226.14, "distance": 13.96, "virtual": true}, {"pano_id": "oHsguMKj-WTthvJXx398WA", "heading": 318.99, "distance": 15.67, "virtual": true}]}, "CniIT92WdJ12Dmyc1xT5AA": {"lat": -19.64295852248891, "lng": -43.95287160733588, "links": [{"pano_id": "rEC1Nqk_xMUzy8grekNpMQ", "heading": 319.42365, "description": "LMG-800"}, {"pano_id": "nB9-NHqQMC__RTadTs9V4w", "heading": 139.44838, "description": "LMG-800"}, {"pano_id": "PSGUo3bz0bXNNdopHBoQTg", "heading": 319.44, "distance": 14.82, "virtual": true}, {"pano_id": "6ki6owdZDt8UpkHe-NVf_Q", "heading": 139.43, "distance": 16.75, "virtual": true}]}, "JqZXFce_eO69tp_Y3ONyQg": {"lat": -19.63996827036338, "lng": -43.95580792670101, "links": [{"pano_id": "UXf63YMRwjRqT0rVEQnTcg", "heading": 114.004135, "description": ""}, {"pano_id": "jkljvv6HNZBmLAIzO2uClA", "heading": 293.988, "description": ""}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 76.31, "distance": 15.69, "virtual": true}, {"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 46.14, "distance": 13.96, "virtual": true}, {"pano_id": "kWhEhoE1sHC8DTodgDSyuA", "heading": 17.46, "distance": 16.35, "virtual": true}]}, "kWhEhoE1sHC8DTodgDSyuA": {"lat": -19.63982802063909, "lng": -43.95576107967938, "links": [{"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 138.96555, "description": "LMG-800"}, {"pano_id": "oHsguMKj-WTthvJXx398WA", "heading": 319.00983, "description": "LMG-800"}, {"pano_id": "DN_E_ntxrm7VR3Eu5OwotA", "heading": 138.98, "distance": 15.75, "virtual": true}, {"pano_id": "JqZXFce_eO69tp_Y3ONyQg", "heading": 197.46, "distance": 16.35, "virtual": true}]}, "jkljvv6HNZBmLAIzO2uClA": {"lat": -19.63993135157302, "lng": -43.95589601934706, "links": [{"pano_id": "JqZXFce_eO69tp_Y3ONyQg", "heading": 113.98801, "description": ""}, {"pano_id": "ecfCq5jD0L8zGVwqtPQR_g", "heading": 294.03293, "description": ""}]}, "nB9-NHqQMC__RTadTs9V4w": {"lat": -19.64300888915135, "lng": -43.95282584869395, "links": [{"pano_id": "CniIT92WdJ12Dmyc1xT5AA", "heading": 319.44836, "description": "LMG-800"}, {"pano_id": "6ki6owdZDt8UpkHe-NVf_Q", "heading": 139.41951, "description": "LMG-800"}, {"pano_id": "rEC1Nqk_xMUzy8grekNpMQ", "heading": 319.44, "distance": 14.76, "virtual": true}, {"pano_id": "uvqMltetLgqk-NUTv1yHow", "heading": 139.4, "distance": 14.66, "virtual": true}]}, "oHsguMKj-WTthvJXx398WA": {"lat": -19.63977496049859, "lng": -43.9558100362708, "links": [{"pano_id": "kWhEhoE1sHC8DTodgDSyuA", "heading": 139.00983, "description": "LMG-800"}, {"pano_id": "aE2kQUDFowZ1i4YGDT5IyA", "heading": 138.99, "distance": 15.67, "virtual": true}]}, "6ki6owdZDt8UpkHe-NVf_Q": {"lat": -19.6430729632552, "lng": -43.95276757729237, "links": [{"pano_id": "nB9-NHqQMC__RTadTs9V4w", "heading": 319.41953, "description": "LMG-800"}, {"pano_id": "uvqMltetLgqk-NUTv1yHow", "heading": 139.37857, "description": "LMG-800"}, {"pano_id": "CniIT92WdJ12Dmyc1xT5AA", "heading": 319.43, "distance": 16.75, "virtual": true}]}, "ecfCq5jD0L8zGVwqtPQR_g": {"lat": -19.63989359113023, "lng": -43.95598593042065, "links": [{"pano_id": "jkljvv6HNZBmLAIzO2uClA", "heading": 114.03292, "description": ""}]}, "uvqMltetLgqk-NUTv1yHow": {"lat": -19.64310898781746, "lng": -43.95273476777071, "links": [{"pano_id": "6ki6owdZDt8UpkHe-NVf_Q", "heading": 319.37857, "description": "LMG-800"}, {"pano_id": "nB9-NHqQMC__RTadTs9V4w", "heading": 319.4, "distance": 14.66, "virtual": true}]}};
+        const targetPanos = ["ynloBLT-XnfWoFYdDO_VAA"];
+        const spawnPoints = ["uz3uNIzqMRGhZCtRAFblqg", "ecfCq5jD0L8zGVwqtPQR_g", "VlCnwow5iRWj01XctT78zg", "uvqMltetLgqk-NUTv1yHow", "R8KKX6_SlyTY8H0COkyqcw", "LDCULdg_gJ3rSnEz8yV9LQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

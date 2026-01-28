@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_gas_station_20260124_152602</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_gas_station_20260124_152602</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>6</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"1Z7GvYzGuqryloNU_DTfoA": {"lat": 37.77216659611626, "lng": -122.4191115515611, "links": [{"pano_id": "y9OW3pEWQvbYpBpgvLdf2w", "heading": 24.93322, "description": "US-101N"}, {"pano_id": "k3z9fUraF2EL8Ct9ltemsA", "heading": 204.8996, "description": "Mission St"}, {"pano_id": "jVOE20BLFplPpne4Quj_pw", "heading": 23.67, "distance": 14.66, "virtual": true}]}, "k3z9fUraF2EL8Ct9ltemsA": {"lat": 37.77208816055638, "lng": -122.4191576111046, "links": [{"pano_id": "pKllGRJ4QwWWjCc4xWi0eQ", "heading": 203.2666, "description": "Mission St"}, {"pano_id": "1Z7GvYzGuqryloNU_DTfoA", "heading": 24.8996, "description": "US-101N"}, {"pano_id": "y9OW3pEWQvbYpBpgvLdf2w", "heading": 24.91, "distance": 14.43, "virtual": true}]}, "y9OW3pEWQvbYpBpgvLdf2w": {"lat": 37.77220582716048, "lng": -122.4190884785739, "links": [{"pano_id": "1Z7GvYzGuqryloNU_DTfoA", "heading": 204.93323, "description": "US-101N"}, {"pano_id": "jVOE20BLFplPpne4Quj_pw", "heading": 23.049662, "description": "US-101N"}, {"pano_id": "k3z9fUraF2EL8Ct9ltemsA", "heading": 204.91, "distance": 14.43, "virtual": true}]}, "jVOE20BLFplPpne4Quj_pw": {"lat": 37.77228737907392, "lng": -122.4190445793933, "links": [{"pano_id": "iOFd_ogv4HLB1yKohbZsLw", "heading": 32.435253, "description": "US-101N"}, {"pano_id": "y9OW3pEWQvbYpBpgvLdf2w", "heading": 203.04967, "description": "US-101N"}, {"pano_id": "1Z7GvYzGuqryloNU_DTfoA", "heading": 203.67, "distance": 14.66, "virtual": true}]}, "pKllGRJ4QwWWjCc4xWi0eQ": {"lat": 37.77196933083168, "lng": -122.4192222499796, "links": [{"pano_id": "9i5jJb-gKmief1bJBtHWgQ", "heading": 204.8782, "description": "US-101N"}, {"pano_id": "k3z9fUraF2EL8Ct9ltemsA", "heading": 23.2666, "description": "Mission St"}, {"pano_id": "LQdyi_bqxxz9M3JUZJ7kCg", "heading": 111.2, "distance": 11.55, "virtual": true}]}, "iOFd_ogv4HLB1yKohbZsLw": {"lat": 37.77235971918542, "lng": -122.4189864215923, "links": [{"pano_id": "jVOE20BLFplPpne4Quj_pw", "heading": 212.43526, "description": "US-101N"}, {"pano_id": "2ac5FeFeFqNap_Wu8R2XxQ", "heading": 28.213531, "description": "US-101N"}]}, "9i5jJb-gKmief1bJBtHWgQ": {"lat": 37.77188949266841, "lng": -122.4192690872145, "links": [{"pano_id": "pKllGRJ4QwWWjCc4xWi0eQ", "heading": 24.878206, "description": "Mission St"}, {"pano_id": "ELh6fl_OtoVgmlBz08IBGg", "heading": 202.48567, "description": "US-101N"}, {"pano_id": "LQdyi_bqxxz9M3JUZJ7kCg", "heading": 72.47955, "description": ""}]}, "2ac5FeFeFqNap_Wu8R2XxQ": {"lat": 37.77243267384323, "lng": -122.4189369053411, "links": [{"pano_id": "iOFd_ogv4HLB1yKohbZsLw", "heading": 208.21353, "description": "US-101N"}, {"pano_id": "9EeMB5qh-FEJiGZFRhA3VA", "heading": 28.741573, "description": "US-101N"}, {"pano_id": "QSBNrFAALbGTxYNfqO1Wag", "heading": 51.1, "distance": 16.63, "virtual": true}]}, "LQdyi_bqxxz9M3JUZJ7kCg": {"lat": 37.77193175836214, "lng": -122.4190997126133, "links": [{"pano_id": "9i5jJb-gKmief1bJBtHWgQ", "heading": 252.47955, "description": "US-101N"}, {"pano_id": "DV6yVDlJxPYNBNo5S1QDMA", "heading": 109.808136, "description": ""}, {"pano_id": "pKllGRJ4QwWWjCc4xWi0eQ", "heading": 291.2, "distance": 11.55, "virtual": true}]}, "ELh6fl_OtoVgmlBz08IBGg": {"lat": 37.77180846488027, "lng": -122.4193115172376, "links": [{"pano_id": "9i5jJb-gKmief1bJBtHWgQ", "heading": 22.48567, "description": "US-101N"}, {"pano_id": "a1Xv5X-lh8PR-rib1pD53Q", "heading": 202.52388, "description": "US-101N"}]}, "a1Xv5X-lh8PR-rib1pD53Q": {"lat": 37.77172775442947, "lng": -122.4193538608281, "links": [{"pano_id": "ELh6fl_OtoVgmlBz08IBGg", "heading": 22.523882, "description": "US-101N"}, {"pano_id": "ifWZUq_x475KWhnzj42jCw", "heading": 201.43959, "description": "US-101N"}]}, "9EeMB5qh-FEJiGZFRhA3VA": {"lat": 37.77250541179724, "lng": -122.4188864384922, "links": [{"pano_id": "QSBNrFAALbGTxYNfqO1Wag", "heading": 74.52459, "description": ""}, {"pano_id": "2ac5FeFeFqNap_Wu8R2XxQ", "heading": 208.74158, "description": "US-101N"}, {"pano_id": "Yq2lgqR_mlWJukDKEh6qJg", "heading": 29.206312, "description": "Mission St"}, {"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 96.12, "distance": 16.73, "virtual": true}]}, "DV6yVDlJxPYNBNo5S1QDMA": {"lat": 37.77190176697643, "lng": -122.4189943718434, "links": [{"pano_id": "LQdyi_bqxxz9M3JUZJ7kCg", "heading": 289.80814, "description": ""}]}, "ifWZUq_x475KWhnzj42jCw": {"lat": 37.7716439119715, "lng": -122.419395513078, "links": [{"pano_id": "0zb-b6cH1p0JVw-QotVgvw", "heading": 200.86317, "description": "US-101N"}, {"pano_id": "a1Xv5X-lh8PR-rib1pD53Q", "heading": 21.439589, "description": "US-101N"}]}, "Yq2lgqR_mlWJukDKEh6qJg": {"lat": 37.77262173659943, "lng": -122.4188041705631, "links": [{"pano_id": "_Za53Q9TT6Stb_oQ0r4XCg", "heading": 30.08665, "description": "Mission St"}, {"pano_id": "9EeMB5qh-FEJiGZFRhA3VA", "heading": 209.20631, "description": "US-101N"}, {"pano_id": "QSBNrFAALbGTxYNfqO1Wag", "heading": 173.12, "distance": 10.66, "virtual": true}, {"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 147.43, "distance": 17.47, "virtual": true}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 30.31, "distance": 16.95, "virtual": true}]}, "QSBNrFAALbGTxYNfqO1Wag": {"lat": 37.77252659294214, "lng": -122.4187896526865, "links": [{"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 116.98844, "description": ""}, {"pano_id": "9EeMB5qh-FEJiGZFRhA3VA", "heading": 254.5246, "description": "US-101N"}, {"pano_id": "2ac5FeFeFqNap_Wu8R2XxQ", "heading": 231.1, "distance": 16.63, "virtual": true}, {"pano_id": "Yq2lgqR_mlWJukDKEh6qJg", "heading": 353.12, "distance": 10.66, "virtual": true}]}, "0zb-b6cH1p0JVw-QotVgvw": {"lat": 37.77155931726831, "lng": -122.4194363011574, "links": [{"pano_id": "ifWZUq_x475KWhnzj42jCw", "heading": 20.863174, "description": "US-101N"}, {"pano_id": "7Wz33PyN_9q8sTWHFDNaRw", "heading": 199.7817, "description": "US-101N"}]}, "4r5tU_wrEKVI6j6pcweyag": {"lat": 37.7724893708308, "lng": -122.4186971875925, "links": [{"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 125.021515, "description": "Blue Star Memorial Hwy"}, {"pano_id": "QSBNrFAALbGTxYNfqO1Wag", "heading": 296.98843, "description": ""}, {"pano_id": "9EeMB5qh-FEJiGZFRhA3VA", "heading": 276.12, "distance": 16.73, "virtual": true}, {"pano_id": "Yq2lgqR_mlWJukDKEh6qJg", "heading": 327.43, "distance": 17.47, "virtual": true}, {"pano_id": "vOiLfctlxBEqXP-XT3-hMw", "heading": 100.48, "distance": 13.59, "virtual": true}, {"pano_id": "iEX1v8bYw5mIs0Lfoph1NQ", "heading": 58.44, "distance": 12.8, "virtual": true}]}, "_Za53Q9TT6Stb_oQ0r4XCg": {"lat": 37.77269400900082, "lng": -122.4187511975872, "links": [{"pano_id": "Yq2lgqR_mlWJukDKEh6qJg", "heading": 210.08665, "description": "Mission St"}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 30.583588, "description": "Mission St"}, {"pano_id": "B8I2-vXJns6qgms7UP39sg", "heading": 31.97, "distance": 15.39, "virtual": true}, {"pano_id": "gb4B52GA0MiBrRMe7UnKSQ", "heading": 115.55, "distance": 14.76, "virtual": true}, {"pano_id": "x2RHsNHRbatOsNAIM-9bbA", "heading": 72.91, "distance": 11.21, "virtual": true}]}, "tqJE55rtCWLn7chwvCDVuw": {"lat": 37.77275329988446, "lng": -122.4187068661856, "links": [{"pano_id": "B8I2-vXJns6qgms7UP39sg", "heading": 33.34192, "description": "Blue Star Memorial Hwy"}, {"pano_id": "_Za53Q9TT6Stb_oQ0r4XCg", "heading": 210.58359, "description": "Mission St"}, {"pano_id": "Yq2lgqR_mlWJukDKEh6qJg", "heading": 210.31, "distance": 16.95, "virtual": true}, {"pano_id": "hfG3WFGi8tIzUU6PswvdYw", "heading": 6.85, "distance": 16.37, "virtual": true}, {"pano_id": "gb4B52GA0MiBrRMe7UnKSQ", "heading": 143.99, "distance": 16.02, "virtual": true}, {"pano_id": "x2RHsNHRbatOsNAIM-9bbA", "heading": 115.8, "distance": 7.58, "virtual": true}]}, "bw2h78VAaQl4nodgpJtIEQ": {"lat": 37.77239095480735, "lng": -122.4185195161178, "links": [{"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 305.0215, "description": ""}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 165.24321, "description": "Blue Star Memorial Hwy"}, {"pano_id": "vOiLfctlxBEqXP-XT3-hMw", "heading": 345.1364, "description": "S Van Ness Ave"}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 165.78, "distance": 11.84, "virtual": true}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 140.57, "distance": 16.29, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 107.15, "distance": 16.8, "virtual": true}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 84.49, "distance": 14.69, "virtual": true}]}, "7Wz33PyN_9q8sTWHFDNaRw": {"lat": 37.77147309228751, "lng": -122.4194755337441, "links": [{"pano_id": "1sT2NjcUlsart4wzECS5KQ", "heading": 199.35599, "description": "US-101N"}, {"pano_id": "0zb-b6cH1p0JVw-QotVgvw", "heading": 19.781687, "description": "US-101N"}]}, "6Yr5Yvm8EmID-IuOa1Tlog": {"lat": 37.7723756545756, "lng": -122.4185144175642, "links": [{"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 345.24323, "description": "Blue Star Memorial Hwy"}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 165.87466, "description": "Blue Star Memorial Hwy"}, {"pano_id": "vOiLfctlxBEqXP-XT3-hMw", "heading": 345.15, "distance": 10.52, "virtual": true}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 137.71, "distance": 14.71, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 101.78, "distance": 15.94, "virtual": true}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 77.62, "distance": 14.51, "virtual": true}]}, "1sT2NjcUlsart4wzECS5KQ": {"lat": 37.77138811873969, "lng": -122.4195132972555, "links": [{"pano_id": "h3XeZ3Ars1GbJ2Z5PZs1jA", "heading": 198.34718, "description": "US-101N"}, {"pano_id": "7Wz33PyN_9q8sTWHFDNaRw", "heading": 19.35599, "description": "US-101N"}]}, "vOiLfctlxBEqXP-XT3-hMw": {"lat": 37.77246713849866, "lng": -122.4185450952981, "links": [{"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 165.13643, "description": "Blue Star Memorial Hwy"}, {"pano_id": "iEX1v8bYw5mIs0Lfoph1NQ", "heading": 344.9819, "description": "S Van Ness Ave"}, {"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 280.48, "distance": 13.59, "virtual": true}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 165.15, "distance": 10.52, "virtual": true}]}, "B8I2-vXJns6qgms7UP39sg": {"lat": 37.77281144030499, "lng": -122.4186584732112, "links": [{"pano_id": "hfG3WFGi8tIzUU6PswvdYw", "heading": 346.77454, "description": "Blue Star Memorial Hwy"}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 213.34192, "description": "Mission St"}, {"pano_id": "_Za53Q9TT6Stb_oQ0r4XCg", "heading": 211.97, "distance": 15.39, "virtual": true}, {"pano_id": "x2RHsNHRbatOsNAIM-9bbA", "heading": 165.27, "distance": 10.09, "virtual": true}]}, "h3XeZ3Ars1GbJ2Z5PZs1jA": {"lat": 37.77130263909927, "lng": -122.4195491596164, "links": [{"pano_id": "1sT2NjcUlsart4wzECS5KQ", "heading": 18.34719, "description": "US-101N"}, {"pano_id": "qGC3lTX_f2nhe4uHJNOi4A", "heading": 197.88484, "description": "US-101N"}]}, "iEX1v8bYw5mIs0Lfoph1NQ": {"lat": 37.77254963060003, "lng": -122.4185730941233, "links": [{"pano_id": "gb4B52GA0MiBrRMe7UnKSQ", "heading": 346.42563, "description": "S Van Ness Ave"}, {"pano_id": "vOiLfctlxBEqXP-XT3-hMw", "heading": 164.98189, "description": "S Van Ness Ave"}, {"pano_id": "4r5tU_wrEKVI6j6pcweyag", "heading": 238.44, "distance": 12.8, "virtual": true}]}, "hfG3WFGi8tIzUU6PswvdYw": {"lat": 37.7728995065752, "lng": -122.4186846572697, "links": [{"pano_id": "B8I2-vXJns6qgms7UP39sg", "heading": 166.77454, "description": "Blue Star Memorial Hwy"}, {"pano_id": "XhkmfvXY-T5U5RhyhlWM8Q", "heading": 346.7391, "description": "Blue Star Memorial Hwy"}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 186.85, "distance": 16.37, "virtual": true}, {"pano_id": "-iKJCPYNDUL_zMNEEoK6EA", "heading": 48.57, "distance": 17.21, "virtual": true}, {"pano_id": "vQHliut3_3djhWkHYp4D1A", "heading": 292.57, "distance": 16.11, "virtual": true}]}, "oQP3BQKdVQC4mGEbV5Wnjg": {"lat": 37.77228770917824, "lng": -122.4184864187233, "links": [{"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 98.424034, "description": "12th St"}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 345.87466, "description": "Blue Star Memorial Hwy"}, {"pano_id": "LQjULdStgy8neoqT8DKGnA", "heading": 165.80403, "description": "Blue Star Memorial Hwy"}, {"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 345.78, "distance": 11.84, "virtual": true}, {"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 94.4, "distance": 15.28, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 63.59, "distance": 14.67, "virtual": true}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 42.26, "distance": 17.42, "virtual": true}]}, "l1MzjbrIq6C2Qjoxwt1cWg": {"lat": 37.77227780551134, "lng": -122.4184018172419, "links": [{"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 90.51499, "description": "12th St"}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 278.42404, "description": "Blue Star Memorial Hwy"}, {"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 320.57, "distance": 16.29, "virtual": true}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 317.71, "distance": 14.71, "virtual": true}, {"pano_id": "LQjULdStgy8neoqT8DKGnA", "heading": 208.05, "distance": 10.32, "virtual": true}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 134.89, "distance": 13.8, "virtual": true}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 96.17, "distance": 17.76, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 36.79, "distance": 9.52, "virtual": true}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 16.99, "distance": 14.63, "virtual": true}]}, "XhkmfvXY-T5U5RhyhlWM8Q": {"lat": 37.77298761883231, "lng": -122.4187109277378, "links": [{"pano_id": "V0zX3fmrw9pGuQxNYzoKmw", "heading": 346.6721, "description": "Blue Star Memorial Hwy"}, {"pano_id": "hfG3WFGi8tIzUU6PswvdYw", "heading": 166.73912, "description": "Blue Star Memorial Hwy"}, {"pano_id": "-iKJCPYNDUL_zMNEEoK6EA", "heading": 84.02, "distance": 15.3, "virtual": true}, {"pano_id": "vQHliut3_3djhWkHYp4D1A", "heading": 253.97, "distance": 13.08, "virtual": true}, {"pano_id": "bQWk-nakNj6msg69PNdbrw", "heading": 51.65, "distance": 16.48, "virtual": true}]}, "qGC3lTX_f2nhe4uHJNOi4A": {"lat": 37.77121500473869, "lng": -122.4195849355497, "links": [{"pano_id": "h3XeZ3Ars1GbJ2Z5PZs1jA", "heading": 17.884844, "description": "US-101N"}, {"pano_id": "5Obip8ZT5HQEUdMfz0fWPA", "heading": 197.21988, "description": "US-101N"}]}, "gb4B52GA0MiBrRMe7UnKSQ": {"lat": 37.77263676468562, "lng": -122.4185997102837, "links": [{"pano_id": "x2RHsNHRbatOsNAIM-9bbA", "heading": 344.95056, "description": "S Van Ness Ave"}, {"pano_id": "iEX1v8bYw5mIs0Lfoph1NQ", "heading": 166.42563, "description": "S Van Ness Ave"}, {"pano_id": "_Za53Q9TT6Stb_oQ0r4XCg", "heading": 295.55, "distance": 14.76, "virtual": true}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 323.99, "distance": 16.02, "virtual": true}]}, "LQjULdStgy8neoqT8DKGnA": {"lat": 37.77219589906632, "lng": -122.4184570372155, "links": [{"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 345.80402, "description": "Blue Star Memorial Hwy"}, {"pano_id": "3OoKFjawgTQdMrhctP_MKg", "heading": 168.36598, "description": "Blue Star Memorial Hwy"}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 28.05, "distance": 10.32, "virtual": true}, {"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 54.47, "distance": 15.55, "virtual": true}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 92.47, "distance": 14.64, "virtual": true}]}, "V0zX3fmrw9pGuQxNYzoKmw": {"lat": 37.77307728987991, "lng": -122.4187378031111, "links": [{"pano_id": "vQHliut3_3djhWkHYp4D1A", "heading": 216.92522, "description": "Otis St"}, {"pano_id": "Zd8cTFXs6jdk1VvORLTgyg", "heading": 346.29208, "description": "Blue Star Memorial Hwy"}, {"pano_id": "XhkmfvXY-T5U5RhyhlWM8Q", "heading": 166.67209, "description": "Blue Star Memorial Hwy"}, {"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 55.34774, "description": "Otis St"}, {"pano_id": "bQWk-nakNj6msg69PNdbrw", "heading": 89.04, "distance": 15.29, "virtual": true}]}, "x2RHsNHRbatOsNAIM-9bbA": {"lat": 37.77272364954262, "lng": -122.4186292645837, "links": [{"pano_id": "gb4B52GA0MiBrRMe7UnKSQ", "heading": 164.95055, "description": "S Van Ness Ave"}, {"pano_id": "-iKJCPYNDUL_zMNEEoK6EA", "heading": 14.557309, "description": "Blue Star Memorial Hwy"}, {"pano_id": "_Za53Q9TT6Stb_oQ0r4XCg", "heading": 252.91, "distance": 11.21, "virtual": true}, {"pano_id": "tqJE55rtCWLn7chwvCDVuw", "heading": 295.8, "distance": 7.58, "virtual": true}, {"pano_id": "B8I2-vXJns6qgms7UP39sg", "heading": 345.27, "distance": 10.09, "virtual": true}]}, "3OoKFjawgTQdMrhctP_MKg": {"lat": 37.77210764823632, "lng": -122.4184340505008, "links": [{"pano_id": "z-cR5RdqVqz9kK3YzlNofw", "heading": 166.47806, "description": "Blue Star Memorial Hwy"}, {"pano_id": "LQjULdStgy8neoqT8DKGnA", "heading": 348.36597, "description": "Blue Star Memorial Hwy"}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 53.94, "distance": 15.6, "virtual": true}, {"pano_id": "GIN0VB2eEAvz2cmFACw4Aw", "heading": 91.26, "distance": 15.01, "virtual": true}]}, "Zzj8m0BVuG8um10FgNMg5Q": {"lat": 37.77227717494114, "lng": -122.4183130677086, "links": [{"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 270.51498, "description": "12th St"}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 100.57358, "description": "12th St"}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 168.45657, "description": "Blue Star Memorial Hwy"}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 344.7657, "description": "S Van Ness Ave"}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 274.4, "distance": 15.28, "virtual": true}, {"pano_id": "LQjULdStgy8neoqT8DKGnA", "heading": 234.47, "distance": 15.55, "virtual": true}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 345.93, "distance": 14.5, "virtual": true}]}, "5Obip8ZT5HQEUdMfz0fWPA": {"lat": 37.77112794787996, "lng": -122.4196190695811, "links": [{"pano_id": "qGC3lTX_f2nhe4uHJNOi4A", "heading": 17.219877, "description": "US-101N"}, {"pano_id": "ZsHLipJ5LuToOPQGlI9PRg", "heading": 196.92348, "description": "US-101N"}, {"pano_id": "83uM-VIHtc_GGJu4FFzddQ", "heading": 151.8, "distance": 14.92, "virtual": true}]}, "z-cR5RdqVqz9kK3YzlNofw": {"lat": 37.7720178902576, "lng": -122.4184067429684, "links": [{"pano_id": "3OoKFjawgTQdMrhctP_MKg", "heading": 346.47806, "description": "Blue Star Memorial Hwy"}, {"pano_id": "G_-X4lnSyOmPFyouJxdy4Q", "heading": 166.95334, "description": "S Van Ness Ave"}, {"pano_id": "GIN0VB2eEAvz2cmFACw4Aw", "heading": 52.57, "distance": 15.88, "virtual": true}, {"pano_id": "m73bz1cFq9x6wurpkXYcOg", "heading": 89.74, "distance": 14.93, "virtual": true}]}, "-iKJCPYNDUL_zMNEEoK6EA": {"lat": 37.77300194446925, "lng": -122.4185378363421, "links": [{"pano_id": "bQWk-nakNj6msg69PNdbrw", "heading": 345.1693, "description": "Blue Star Memorial Hwy"}, {"pano_id": "x2RHsNHRbatOsNAIM-9bbA", "heading": 194.55731, "description": "S Van Ness Ave"}, {"pano_id": "hfG3WFGi8tIzUU6PswvdYw", "heading": 228.57, "distance": 17.21, "virtual": true}, {"pano_id": "XhkmfvXY-T5U5RhyhlWM8Q", "heading": 264.02, "distance": 15.3, "virtual": true}, {"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 339.29, "distance": 17.4, "virtual": true}]}, "vQHliut3_3djhWkHYp4D1A": {"lat": 37.77295512981306, "lng": -122.4188539461245, "links": [{"pano_id": "V0zX3fmrw9pGuQxNYzoKmw", "heading": 36.925224, "description": "Blue Star Memorial Hwy"}, {"pano_id": "DdSDdGNxv75YLW4pia2uBA", "heading": 225.56157, "description": "Otis St"}, {"pano_id": "hfG3WFGi8tIzUU6PswvdYw", "heading": 112.57, "distance": 16.11, "virtual": true}, {"pano_id": "XhkmfvXY-T5U5RhyhlWM8Q", "heading": 73.97, "distance": 13.08, "virtual": true}]}, "QOEZIDPacrTKJhHULKTd6g": {"lat": 37.77219021880965, "lng": -122.4182905994605, "links": [{"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 348.45657, "description": "12th St"}, {"pano_id": "GIN0VB2eEAvz2cmFACw4Aw", "heading": 165.83768, "description": "Blue Star Memorial Hwy"}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 314.89, "distance": 13.8, "virtual": true}, {"pano_id": "LQjULdStgy8neoqT8DKGnA", "heading": 272.47, "distance": 14.64, "virtual": true}, {"pano_id": "3OoKFjawgTQdMrhctP_MKg", "heading": 233.94, "distance": 15.6, "virtual": true}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 45.2, "distance": 11.11, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 346.81, "distance": 17.84, "virtual": true}, {"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 116.27, "distance": 12.39, "virtual": true}]}, "BJLXvN24z19wtiKakf9Cgg": {"lat": 37.77226062429562, "lng": -122.4182008992525, "links": [{"pano_id": "TgVfygw7vO1QgG_ratwySw", "heading": 111.60086, "description": "12th St"}, {"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 280.57358, "description": "12th St"}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 276.17, "distance": 17.76, "virtual": true}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 225.2, "distance": 11.11, "virtual": true}, {"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 308.58, "distance": 15.29, "virtual": true}, {"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 166.37, "distance": 13.7, "virtual": true}]}, "0ekNyJDbarOEr__3m3yFTQ": {"lat": 37.77314829942096, "lng": -122.4186078333962, "links": [{"pano_id": "V0zX3fmrw9pGuQxNYzoKmw", "heading": 235.34775, "description": "Blue Star Memorial Hwy"}, {"pano_id": "rnjjh380VbDkSGFrbs6QjA", "heading": 45.848183, "description": "Mission St"}, {"pano_id": "bQWk-nakNj6msg69PNdbrw", "heading": 153.15837, "description": "Blue Star Memorial Hwy"}, {"pano_id": "sCo7CYMKMVjRuIGZOyfR5A", "heading": 353.03763, "description": "\u51e1\u5185\u65af\u5927\u9053"}, {"pano_id": "-iKJCPYNDUL_zMNEEoK6EA", "heading": 159.29, "distance": 17.4, "virtual": true}, {"pano_id": "Zd8cTFXs6jdk1VvORLTgyg", "heading": 279.34, "distance": 14.09, "virtual": true}]}, "4cE59yL_wIOIPQPR60tp7g": {"lat": 37.77234640156702, "lng": -122.418336918613, "links": [{"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 164.7657, "description": "12th St"}, {"pano_id": "qeWWP_YRR4nMz_FDN3FCIA", "heading": 347.35535, "description": "S Van Ness Ave"}, {"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 287.15, "distance": 16.8, "virtual": true}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 281.78, "distance": 15.94, "virtual": true}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 243.59, "distance": 14.67, "virtual": true}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 216.79, "distance": 9.52, "virtual": true}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 166.81, "distance": 17.84, "virtual": true}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 128.58, "distance": 15.29, "virtual": true}]}, "ZsHLipJ5LuToOPQGlI9PRg": {"lat": 37.77104308765124, "lng": -122.4196517345424, "links": [{"pano_id": "6cFAOeVdgEfXISHb54Pacw", "heading": 196.0358, "description": "US-101N"}, {"pano_id": "5Obip8ZT5HQEUdMfz0fWPA", "heading": 16.92347, "description": "US-101N"}, {"pano_id": "83uM-VIHtc_GGJu4FFzddQ", "heading": 110.5, "distance": 10.59, "virtual": true}]}, "GIN0VB2eEAvz2cmFACw4Aw": {"lat": 37.77210467782828, "lng": -122.4182632918908, "links": [{"pano_id": "m73bz1cFq9x6wurpkXYcOg", "heading": 166.36514, "description": "Blue Star Memorial Hwy"}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 345.83768, "description": "Blue Star Memorial Hwy"}, {"pano_id": "3OoKFjawgTQdMrhctP_MKg", "heading": 271.26, "distance": 15.01, "virtual": true}, {"pano_id": "z-cR5RdqVqz9kK3YzlNofw", "heading": 232.57, "distance": 15.88, "virtual": true}, {"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 65.19, "distance": 9.6, "virtual": true}]}, "TgVfygw7vO1QgG_ratwySw": {"lat": 37.77222292181116, "lng": -122.4180804346909, "links": [{"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 218.90274, "description": ""}, {"pano_id": "VIzsZAaYKfw3XQZPouwYww", "heading": 113.76065, "description": "12th St"}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 291.60086, "description": "12th St"}]}, "6cFAOeVdgEfXISHb54Pacw": {"lat": 37.77095467869817, "lng": -122.4196838810024, "links": [{"pano_id": "DWTLTtWB7oQ2CeFUtGF2LA", "heading": 114.200294, "description": ""}, {"pano_id": "83uM-VIHtc_GGJu4FFzddQ", "heading": 64.34288, "description": "Plum St"}, {"pano_id": "ZsHLipJ5LuToOPQGlI9PRg", "heading": 16.035803, "description": "US-101N"}, {"pano_id": "U2q3jbod6SMq59orkqlhhQ", "heading": 195.06169, "description": "US-101N"}]}, "Zd8cTFXs6jdk1VvORLTgyg": {"lat": 37.77316886220819, "lng": -122.4187660611329, "links": [{"pano_id": "V0zX3fmrw9pGuQxNYzoKmw", "heading": 166.29208, "description": "Blue Star Memorial Hwy"}, {"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 99.34, "distance": 14.09, "virtual": true}, {"pano_id": "sCo7CYMKMVjRuIGZOyfR5A", "heading": 49.91, "distance": 16.15, "virtual": true}]}, "DdSDdGNxv75YLW4pia2uBA": {"lat": 37.77289029228735, "lng": -122.4189375966677, "links": [{"pano_id": "vQHliut3_3djhWkHYp4D1A", "heading": 45.561565, "description": "Otis St"}, {"pano_id": "UQAQESJc9jQcBQRKBBU4rg", "heading": 225.86958, "description": "Otis St"}]}, "rnjjh380VbDkSGFrbs6QjA": {"lat": 37.77321587328426, "lng": -122.4185197753663, "links": [{"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 225.84819, "description": "Otis St"}, {"pano_id": "UZyX7-ZVHgAasg1nj6_V0Q", "heading": 46.126137, "description": "Mission St"}, {"pano_id": "bQWk-nakNj6msg69PNdbrw", "heading": 194.34, "distance": 15.64, "virtual": true}, {"pano_id": "sCo7CYMKMVjRuIGZOyfR5A", "heading": 299.12, "distance": 10.63, "virtual": true}, {"pano_id": "E9unyE3l64XrN3qU_U07MQ", "heading": 46.09, "distance": 14.63, "virtual": true}]}, "bQWk-nakNj6msg69PNdbrw": {"lat": 37.77307959406491, "lng": -122.4185638475985, "links": [{"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 333.1584, "description": "Otis St"}, {"pano_id": "-iKJCPYNDUL_zMNEEoK6EA", "heading": 165.1693, "description": "Blue Star Memorial Hwy"}, {"pano_id": "XhkmfvXY-T5U5RhyhlWM8Q", "heading": 231.65, "distance": 16.48, "virtual": true}, {"pano_id": "V0zX3fmrw9pGuQxNYzoKmw", "heading": 269.04, "distance": 15.29, "virtual": true}, {"pano_id": "rnjjh380VbDkSGFrbs6QjA", "heading": 14.34, "distance": 15.64, "virtual": true}]}, "oqJbXed_PzMaAD4l9YWXCw": {"lat": 37.7721408989724, "lng": -122.4181641722667, "links": [{"pano_id": "TgVfygw7vO1QgG_ratwySw", "heading": 38.902744, "description": "12th St"}, {"pano_id": "QOEZIDPacrTKJhHULKTd6g", "heading": 296.27, "distance": 12.39, "virtual": true}, {"pano_id": "BJLXvN24z19wtiKakf9Cgg", "heading": 346.37, "distance": 13.7, "virtual": true}, {"pano_id": "GIN0VB2eEAvz2cmFACw4Aw", "heading": 245.19, "distance": 9.6, "virtual": true}, {"pano_id": "VIzsZAaYKfw3XQZPouwYww", "heading": 74.65, "distance": 17.93, "virtual": true}, {"pano_id": "m73bz1cFq9x6wurpkXYcOg", "heading": 205.14, "distance": 15.03, "virtual": true}]}, "UQAQESJc9jQcBQRKBBU4rg": {"lat": 37.77282681101304, "lng": -122.4190203829867, "links": [{"pano_id": "4ceOojU7IF8uI5BqKYyr4w", "heading": 225.91179, "description": "Otis St"}, {"pano_id": "DdSDdGNxv75YLW4pia2uBA", "heading": 45.869587, "description": "Otis St"}]}, "G_-X4lnSyOmPFyouJxdy4Q": {"lat": 37.77193151988078, "lng": -122.4183814230033, "links": [{"pano_id": "z-cR5RdqVqz9kK3YzlNofw", "heading": 346.95334, "description": "Blue Star Memorial Hwy"}, {"pano_id": "m73bz1cFq9x6wurpkXYcOg", "heading": 52.72, "distance": 15.97, "virtual": true}]}, "DWTLTtWB7oQ2CeFUtGF2LA": {"lat": 37.77090377909229, "lng": -122.4195406045001, "links": [{"pano_id": "ajp1ucOJUSPibRcgrIlcIw", "heading": 83.18576, "description": ""}, {"pano_id": "6cFAOeVdgEfXISHb54Pacw", "heading": 294.2003, "description": "US-101N"}, {"pano_id": "83uM-VIHtc_GGJu4FFzddQ", "heading": 0.74, "distance": 11.78, "virtual": true}, {"pano_id": "U2q3jbod6SMq59orkqlhhQ", "heading": 255.27, "distance": 15.71, "virtual": true}]}, "sCo7CYMKMVjRuIGZOyfR5A": {"lat": 37.77326240714287, "lng": -122.4186254622765, "links": [{"pano_id": "0ekNyJDbarOEr__3m3yFTQ", "heading": 173.03763, "description": "Otis St"}, {"pano_id": "Zd8cTFXs6jdk1VvORLTgyg", "heading": 229.91, "distance": 16.15, "virtual": true}, {"pano_id": "rnjjh380VbDkSGFrbs6QjA", "heading": 119.12, "distance": 10.63, "virtual": true}, {"pano_id": "UZyX7-ZVHgAasg1nj6_V0Q", "heading": 90.22, "distance": 14.61, "virtual": true}]}, "VIzsZAaYKfw3XQZPouwYww": {"lat": 37.77218358833058, "lng": -122.4179674018202, "links": [{"pano_id": "oZcq_l9BPSgmG23mJ0evhg", "heading": 119.2208, "description": "12th St"}, {"pano_id": "TgVfygw7vO1QgG_ratwySw", "heading": 293.76065, "description": "12th St"}, {"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 254.65, "distance": 17.93, "virtual": true}]}, "UZyX7-ZVHgAasg1nj6_V0Q": {"lat": 37.77326191021138, "lng": -122.4184591976208, "links": [{"pano_id": "E9unyE3l64XrN3qU_U07MQ", "heading": 46.055695, "description": "Mission St"}, {"pano_id": "rnjjh380VbDkSGFrbs6QjA", "heading": 226.12614, "description": "Mission St"}, {"pano_id": "sCo7CYMKMVjRuIGZOyfR5A", "heading": 270.22, "distance": 14.61, "virtual": true}]}, "83uM-VIHtc_GGJu4FFzddQ": {"lat": 37.77100973658036, "lng": -122.4195388761937, "links": [{"pano_id": "6cFAOeVdgEfXISHb54Pacw", "heading": 244.34288, "description": "US-101N"}, {"pano_id": "5Obip8ZT5HQEUdMfz0fWPA", "heading": 331.8, "distance": 14.92, "virtual": true}, {"pano_id": "ZsHLipJ5LuToOPQGlI9PRg", "heading": 290.5, "distance": 10.59, "virtual": true}, {"pano_id": "DWTLTtWB7oQ2CeFUtGF2LA", "heading": 180.74, "distance": 11.78, "virtual": true}, {"pano_id": "ajp1ucOJUSPibRcgrIlcIw", "heading": 125.56, "distance": 17.33, "virtual": true}]}, "ajp1ucOJUSPibRcgrIlcIw": {"lat": 37.77091909195181, "lng": -122.4193784892351, "links": [{"pano_id": "U2q3jbod6SMq59orkqlhhQ", "heading": 259.04993, "description": "US-101N"}, {"pano_id": "DWTLTtWB7oQ2CeFUtGF2LA", "heading": 263.18576, "description": ""}, {"pano_id": "83uM-VIHtc_GGJu4FFzddQ", "heading": 305.56, "distance": 17.33, "virtual": true}]}, "m73bz1cFq9x6wurpkXYcOg": {"lat": 37.77201850745568, "lng": -122.418236848478, "links": [{"pano_id": "GIN0VB2eEAvz2cmFACw4Aw", "heading": 346.36514, "description": "Blue Star Memorial Hwy"}, {"pano_id": "z-cR5RdqVqz9kK3YzlNofw", "heading": 269.74, "distance": 14.93, "virtual": true}, {"pano_id": "oqJbXed_PzMaAD4l9YWXCw", "heading": 25.14, "distance": 15.03, "virtual": true}, {"pano_id": "G_-X4lnSyOmPFyouJxdy4Q", "heading": 232.72, "distance": 15.97, "virtual": true}]}, "U2q3jbod6SMq59orkqlhhQ": {"lat": 37.77086786661402, "lng": -122.4197134349973, "links": [{"pano_id": "6cFAOeVdgEfXISHb54Pacw", "heading": 15.061686, "description": "US-101N"}, {"pano_id": "ajp1ucOJUSPibRcgrIlcIw", "heading": 79.049934, "description": ""}, {"pano_id": "DWTLTtWB7oQ2CeFUtGF2LA", "heading": 75.27, "distance": 15.71, "virtual": true}]}, "E9unyE3l64XrN3qU_U07MQ": {"lat": 37.77330713886845, "lng": -122.418399829668, "links": [{"pano_id": "UZyX7-ZVHgAasg1nj6_V0Q", "heading": 226.0557, "description": "Mission St"}, {"pano_id": "rnjjh380VbDkSGFrbs6QjA", "heading": 226.09, "distance": 14.63, "virtual": true}]}, "oZcq_l9BPSgmG23mJ0evhg": {"lat": 37.77213662975937, "lng": -122.4178611957475, "links": [{"pano_id": "VIzsZAaYKfw3XQZPouwYww", "heading": 299.2208, "description": "12th St"}]}, "qeWWP_YRR4nMz_FDN3FCIA": {"lat": 37.77240364315526, "lng": -122.418353164878, "links": [{"pano_id": "4cE59yL_wIOIPQPR60tp7g", "heading": 167.35533, "description": "S Van Ness Ave"}, {"pano_id": "bw2h78VAaQl4nodgpJtIEQ", "heading": 264.49, "distance": 14.69, "virtual": true}, {"pano_id": "6Yr5Yvm8EmID-IuOa1Tlog", "heading": 257.62, "distance": 14.51, "virtual": true}, {"pano_id": "oQP3BQKdVQC4mGEbV5Wnjg", "heading": 222.26, "distance": 17.42, "virtual": true}, {"pano_id": "l1MzjbrIq6C2Qjoxwt1cWg", "heading": 196.99, "distance": 14.63, "virtual": true}, {"pano_id": "Zzj8m0BVuG8um10FgNMg5Q", "heading": 165.93, "distance": 14.5, "virtual": true}]}, "4ceOojU7IF8uI5BqKYyr4w": {"lat": 37.77276448189524, "lng": -122.4191017865896, "links": [{"pano_id": "UQAQESJc9jQcBQRKBBU4rg", "heading": 45.91179, "description": "Otis St"}]}};
+        const targetPanos = ["1Z7GvYzGuqryloNU_DTfoA", "4ceOojU7IF8uI5BqKYyr4w"];
+        const spawnPoints = ["ajp1ucOJUSPibRcgrIlcIw", "0ekNyJDbarOEr__3m3yFTQ", "oZcq_l9BPSgmG23mJ0evhg", "-iKJCPYNDUL_zMNEEoK6EA", "U2q3jbod6SMq59orkqlhhQ", "E9unyE3l64XrN3qU_U07MQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

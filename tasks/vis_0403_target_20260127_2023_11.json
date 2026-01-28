@@ -1,0 +1,121 @@
+{
+  "task_id": "nav_0403_target_20260124_1338_8",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_subway_20260124_133749",
+  "spawn_point": "537FG99Z0cCrigxEdCNQUA",
+  "spawn_heading": 80.4,
+  "description": "Travel straight along Av. Pontes Vieira, keeping the bike lane on your right. Pass the gas station on the right and the large glass building on the left, continuing forward on the main road.",
+  "ground_truth": {
+    "target_name": "Av. Pontes Vieira, 2080",
+    "target_pano_id": "GcQpVhyyy_XAaKuXavGXCw",
+    "optimal_distance_meters": 104,
+    "route_description": "right→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "GcQpVhyyy_XAaKuXavGXCw"
+  ],
+  "max_steps": 38,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "537FG99Z0cCrigxEdCNQUA",
+      "heading": 80.4
+    },
+    {
+      "step_index": 1,
+      "pano_id": "1k1dxLrJFOG7GK_ETV6e0A",
+      "heading": 80.4
+    },
+    {
+      "step_index": 2,
+      "pano_id": "MLrPbIFtQog0l8EohxpBDA",
+      "heading": 80.4
+    },
+    {
+      "step_index": 3,
+      "pano_id": "itzIlT3AnLMtKrNMcYj-9g",
+      "heading": 81.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "mQclVwQ66bqsID0W93i5HA",
+      "heading": 83.0
+    },
+    {
+      "step_index": 5,
+      "pano_id": "KRQVwqtVP8_niCrwH8-VOQ",
+      "heading": 83.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "FFvBNgmFDJAWXV8AFoX1FA",
+      "heading": 83.0
+    },
+    {
+      "step_index": 7,
+      "pano_id": "a1pU1zyvitD2A8CRww0lVw",
+      "heading": 83.0
+    },
+    {
+      "step_index": 8,
+      "pano_id": "IS9A5GE_V78u_N00lRzLng",
+      "heading": 83.0
+    },
+    {
+      "step_index": 9,
+      "pano_id": "Gs2DvL-GWJPQ9l3mQpfZmQ",
+      "heading": 80.0
+    },
+    {
+      "step_index": 10,
+      "pano_id": "t1s32Z_9_fmZ8qdj6bov6g",
+      "heading": 30.7
+    },
+    {
+      "step_index": 11,
+      "pano_id": "dGbdwEwrI50ULuRHo7SKOg",
+      "heading": 263.8
+    },
+    {
+      "step_index": 12,
+      "pano_id": "aid3Qfw4SSUI99DM8qJtUQ",
+      "heading": 263.8
+    },
+    {
+      "step_index": 13,
+      "pano_id": "VEty0XwDAFpZx6r9CYLUzQ",
+      "heading": 263.8
+    },
+    {
+      "step_index": 14,
+      "pano_id": "EtlsKuGcR0zL6u4pMiwsww",
+      "heading": 263.8
+    },
+    {
+      "step_index": 15,
+      "pano_id": "wczHul3zA5JwqetIeIEEyg",
+      "heading": 263.9
+    },
+    {
+      "step_index": 16,
+      "pano_id": "2l5OB0xHCVOzM9l-90H9Aw",
+      "heading": 263.8
+    },
+    {
+      "step_index": 17,
+      "pano_id": "wT66XpUwXXu8qvheXgluaw",
+      "heading": 263.8
+    },
+    {
+      "step_index": 18,
+      "pano_id": "GcQpVhyyy_XAaKuXavGXCw",
+      "heading": 263.8
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 100m -> Stop",
+  "agent_concise_description": "Travel straight along Av. Pontes Vieira, keeping the bike lane on your right. Pass the gas station on the right and the large glass building on the left, continuing forward on the main road."
+}

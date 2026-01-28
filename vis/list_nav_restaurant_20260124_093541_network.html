@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_restaurant_20260124_093541</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_restaurant_20260124_093541</h3>
+        <div>Total Panos: <strong>70</strong></div>
+        <div>Spawn Points: <strong>5</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"CLwNmvJWFgPLjoT9GO5u8w": {"lat": -26.19611797350448, "lng": 28.05711936342119, "links": [{"pano_id": "xXo3RL1PbvJtqOiwnx-hMg", "heading": 18.196949, "description": "Siemert Rd"}, {"pano_id": "g6wmTcbI5mDUtl17ihGT2Q", "heading": 198.03052, "description": "Siemert Rd"}]}, "g6wmTcbI5mDUtl17ihGT2Q": {"lat": -26.1962080934733, "lng": 28.0570866706405, "links": [{"pano_id": "SsPW53mNmbJMcPCeNkl9WQ", "heading": 198.01186, "description": "Siemert Rd"}, {"pano_id": "CLwNmvJWFgPLjoT9GO5u8w", "heading": 18.030521, "description": "Siemert Rd"}]}, "xXo3RL1PbvJtqOiwnx-hMg": {"lat": -26.19602580917174, "lng": 28.05715312808997, "links": [{"pano_id": "8kxR2uYTNoe-j37kjb2CWA", "heading": 18.23321, "description": "Siemert Rd"}, {"pano_id": "CLwNmvJWFgPLjoT9GO5u8w", "heading": 198.19695, "description": "Siemert Rd"}]}, "SsPW53mNmbJMcPCeNkl9WQ": {"lat": -26.19630053179067, "lng": 28.05705317393268, "links": [{"pano_id": "aZ2kq4LRRHI_YIC6Uvb7Kw", "heading": 198.00124, "description": "Siemert Rd"}, {"pano_id": "g6wmTcbI5mDUtl17ihGT2Q", "heading": 18.01185, "description": "Siemert Rd"}]}, "8kxR2uYTNoe-j37kjb2CWA": {"lat": -26.19594186998431, "lng": 28.05718394504393, "links": [{"pano_id": "owjM-CF2DHEVWOw-IltifA", "heading": 18.2266, "description": "Siemert Rd"}, {"pano_id": "xXo3RL1PbvJtqOiwnx-hMg", "heading": 198.23322, "description": "Siemert Rd"}]}, "owjM-CF2DHEVWOw-IltifA": {"lat": -26.19585497739926, "lng": 28.05721583388627, "links": [{"pano_id": "pFCugd8W3QsQ6-E084x2jw", "heading": 17.906332, "description": "M31"}, {"pano_id": "8kxR2uYTNoe-j37kjb2CWA", "heading": 198.22661, "description": "Siemert Rd"}, {"pano_id": "uarNIdwT4BUA1vv7rUdNMg", "heading": 17.78, "distance": 13.28, "virtual": true}]}, "aZ2kq4LRRHI_YIC6Uvb7Kw": {"lat": -26.19639475490383, "lng": 28.05701905194645, "links": [{"pano_id": "Bo9VnlUGMzt4_4HrsggSfQ", "heading": 198.05434, "description": "Siemert Rd"}, {"pano_id": "SsPW53mNmbJMcPCeNkl9WQ", "heading": 18.00124, "description": "Siemert Rd"}, {"pano_id": "0PzRQsLH-Qyu22qp4LOvZQ", "heading": 198.05, "distance": 12.46, "virtual": true}, {"pano_id": "iEmiKNdX3skNf48CEAbdhQ", "heading": 187.74, "distance": 12.65, "virtual": true}, {"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 154.97, "distance": 17.17, "virtual": true}]}, "Bo9VnlUGMzt4_4HrsggSfQ": {"lat": -26.19648130528364, "lng": 28.0569876096915, "links": [{"pano_id": "iEmiKNdX3skNf48CEAbdhQ", "heading": 153.72272, "description": "Currey St"}, {"pano_id": "aZ2kq4LRRHI_YIC6Uvb7Kw", "heading": 18.054333, "description": "Siemert Rd"}, {"pano_id": "0PzRQsLH-Qyu22qp4LOvZQ", "heading": 198.02075, "description": "M31"}, {"pano_id": "cs27cDZte3JRol3kyP80aw", "heading": 198.15, "distance": 11.76, "virtual": true}, {"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 119.7, "distance": 11.97, "virtual": true}]}, "pFCugd8W3QsQ6-E084x2jw": {"lat": -26.19577832825805, "lng": 28.05724343514852, "links": [{"pano_id": "owjM-CF2DHEVWOw-IltifA", "heading": 197.90633, "description": "Siemert Rd"}, {"pano_id": "uarNIdwT4BUA1vv7rUdNMg", "heading": 17.52885, "description": "M31"}, {"pano_id": "KIIhqUjQz3vvamSWZzHq-g", "heading": 17.53, "distance": 14.86, "virtual": true}]}, "0PzRQsLH-Qyu22qp4LOvZQ": {"lat": -26.19650126138264, "lng": 28.0569803743991, "links": [{"pano_id": "Bo9VnlUGMzt4_4HrsggSfQ", "heading": 18.020754, "description": "Siemert Rd"}, {"pano_id": "cs27cDZte3JRol3kyP80aw", "heading": 198.18527, "description": "M31"}, {"pano_id": "aZ2kq4LRRHI_YIC6Uvb7Kw", "heading": 18.05, "distance": 12.46, "virtual": true}, {"pano_id": "iEmiKNdX3skNf48CEAbdhQ", "heading": 107.67, "distance": 2.26, "virtual": true}, {"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 108.47, "distance": 11.73, "virtual": true}]}, "iEmiKNdX3skNf48CEAbdhQ": {"lat": -26.1965074408217, "lng": 28.05700199095085, "links": [{"pano_id": "Bo9VnlUGMzt4_4HrsggSfQ", "heading": 333.72272, "description": "Siemert Rd"}, {"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 108.65669, "description": "Currey St"}, {"pano_id": "aZ2kq4LRRHI_YIC6Uvb7Kw", "heading": 7.74, "distance": 12.65, "virtual": true}, {"pano_id": "0PzRQsLH-Qyu22qp4LOvZQ", "heading": 287.67, "distance": 2.26, "virtual": true}, {"pano_id": "cs27cDZte3JRol3kyP80aw", "heading": 211.66, "distance": 9.71, "virtual": true}]}, "uarNIdwT4BUA1vv7rUdNMg": {"lat": -26.19574127961324, "lng": 28.05725647652011, "links": [{"pano_id": "KIIhqUjQz3vvamSWZzHq-g", "heading": 17.52762, "description": "M31"}, {"pano_id": "pFCugd8W3QsQ6-E084x2jw", "heading": 197.52885, "description": "M31"}, {"pano_id": "owjM-CF2DHEVWOw-IltifA", "heading": 197.78, "distance": 13.28, "virtual": true}]}, "cs27cDZte3JRol3kyP80aw": {"lat": -26.19658177740385, "lng": 28.05695089727879, "links": [{"pano_id": "i_qHkDxVGOXuKhPBi83Biw", "heading": 198.19147, "description": "M31"}, {"pano_id": "0PzRQsLH-Qyu22qp4LOvZQ", "heading": 18.185265, "description": "M31"}, {"pano_id": "Bo9VnlUGMzt4_4HrsggSfQ", "heading": 18.15, "distance": 11.76, "virtual": true}, {"pano_id": "iEmiKNdX3skNf48CEAbdhQ", "heading": 31.66, "distance": 9.71, "virtual": true}, {"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 69.57, "distance": 15.01, "virtual": true}]}, "sDwmhOOCtW3YVsrcxWz1yw": {"lat": -26.19653466483695, "lng": 28.05709185146407, "links": [{"pano_id": "ugARuSht9_fSvPC6SpzsOA", "heading": 108.71395, "description": "Currey St"}, {"pano_id": "iEmiKNdX3skNf48CEAbdhQ", "heading": 288.6567, "description": "Currey St"}, {"pano_id": "aZ2kq4LRRHI_YIC6Uvb7Kw", "heading": 334.97, "distance": 17.17, "virtual": true}, {"pano_id": "Bo9VnlUGMzt4_4HrsggSfQ", "heading": 299.7, "distance": 11.97, "virtual": true}, {"pano_id": "0PzRQsLH-Qyu22qp4LOvZQ", "heading": 288.47, "distance": 11.73, "virtual": true}, {"pano_id": "cs27cDZte3JRol3kyP80aw", "heading": 249.57, "distance": 15.01, "virtual": true}]}, "KIIhqUjQz3vvamSWZzHq-g": {"lat": -26.19565093502947, "lng": 28.05728827602489, "links": [{"pano_id": "SzCqumWvvvulD3zDFmSaaQ", "heading": 17.554943, "description": "M31"}, {"pano_id": "uarNIdwT4BUA1vv7rUdNMg", "heading": 197.52762, "description": "M31"}, {"pano_id": "pFCugd8W3QsQ6-E084x2jw", "heading": 197.53, "distance": 14.86, "virtual": true}]}, "ugARuSht9_fSvPC6SpzsOA": {"lat": -26.19656504666496, "lng": 28.05719180559944, "links": [{"pano_id": "sDwmhOOCtW3YVsrcxWz1yw", "heading": 288.71396, "description": "Currey St"}, {"pano_id": "lJSqU9cFfZFenka1V60QKQ", "heading": 108.71882, "description": "Currey St"}]}, "SzCqumWvvvulD3zDFmSaaQ": {"lat": -26.19556200696709, "lng": 28.0573196289018, "links": [{"pano_id": "KIIhqUjQz3vvamSWZzHq-g", "heading": 197.55495, "description": "M31"}, {"pano_id": "pnhwp0XJSUmVd-TDLE82AQ", "heading": 17.540297, "description": "M31"}]}, "i_qHkDxVGOXuKhPBi83Biw": {"lat": -26.19666811758307, "lng": 28.05691927636244, "links": [{"pano_id": "cs27cDZte3JRol3kyP80aw", "heading": 18.191463, "description": "M31"}]}, "lJSqU9cFfZFenka1V60QKQ": {"lat": -26.19659323712991, "lng": 28.05728452439822, "links": [{"pano_id": "ugARuSht9_fSvPC6SpzsOA", "heading": 288.7188, "description": "Currey St"}, {"pano_id": "DeFISKZ22jP8hwBz_uGlKQ", "heading": 108.68349, "description": "Currey St"}]}, "pnhwp0XJSUmVd-TDLE82AQ": {"lat": -26.19547147824637, "lng": 28.05735151771961, "links": [{"pano_id": "4vKIlOu6as9IjQ9rNlx2eQ", "heading": 17.51624, "description": "M31"}, {"pano_id": "SzCqumWvvvulD3zDFmSaaQ", "heading": 197.5403, "description": "M31"}]}, "DeFISKZ22jP8hwBz_uGlKQ": {"lat": -26.19662242742128, "lng": 28.05738072679976, "links": [{"pano_id": "lJSqU9cFfZFenka1V60QKQ", "heading": 288.68347, "description": "Currey St"}, {"pano_id": "kiUN4IBT8cuPkbNRZspJPQ", "heading": 108.71228, "description": "Currey St"}]}, "4vKIlOu6as9IjQ9rNlx2eQ": {"lat": -26.19538310259465, "lng": 28.05738260261209, "links": [{"pano_id": "UQIoE0W1qYXjzorlxPKH_w", "heading": 17.514051, "description": "M31"}, {"pano_id": "pnhwp0XJSUmVd-TDLE82AQ", "heading": 197.51624, "description": "M31"}]}, "UQIoE0W1qYXjzorlxPKH_w": {"lat": -26.1952977629806, "lng": 28.05741261560653, "links": [{"pano_id": "9_poYRN-1wzBfxJnBZFIcw", "heading": 17.544006, "description": "Siemert Rd"}, {"pano_id": "4vKIlOu6as9IjQ9rNlx2eQ", "heading": 197.51405, "description": "M31"}]}, "kiUN4IBT8cuPkbNRZspJPQ": {"lat": -26.19665353927148, "lng": 28.05748309252875, "links": [{"pano_id": "DeFISKZ22jP8hwBz_uGlKQ", "heading": 288.71228, "description": "Currey St"}, {"pano_id": "0APGTq3BiMMTrK5XSm4M5w", "heading": 107.88806, "description": "Currey St"}]}, "0APGTq3BiMMTrK5XSm4M5w": {"lat": -26.1966814520074, "lng": 28.05757947347056, "links": [{"pano_id": "K8vlx2GyZMFhMI8ie12Y9A", "heading": 107.581024, "description": "Currey St"}, {"pano_id": "kiUN4IBT8cuPkbNRZspJPQ", "heading": 287.88806, "description": "Currey St"}]}, "9_poYRN-1wzBfxJnBZFIcw": {"lat": -26.1952108038503, "lng": 28.05744325386641, "links": [{"pano_id": "UQIoE0W1qYXjzorlxPKH_w", "heading": 197.544, "description": "M31"}, {"pano_id": "Nh89MyO5a3XvlBehPAHIHw", "heading": 17.549564, "description": "Siemert Rd"}]}, "Nh89MyO5a3XvlBehPAHIHw": {"lat": -26.19512286025391, "lng": 28.05747424941838, "links": [{"pano_id": "9_poYRN-1wzBfxJnBZFIcw", "heading": 197.54956, "description": "Siemert Rd"}, {"pano_id": "wUvhnedc1PdWrdFylFt3RA", "heading": 17.524061, "description": "Siemert Rd"}]}, "K8vlx2GyZMFhMI8ie12Y9A": {"lat": -26.19670862532256, "lng": 28.05767505044148, "links": [{"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 107.607445, "description": "Currey St"}, {"pano_id": "0APGTq3BiMMTrK5XSm4M5w", "heading": 287.58102, "description": "Currey St"}]}, "eYddWapzqo9R_i5ufOkkUQ": {"lat": -26.1967365289145, "lng": 28.05777303911396, "links": [{"pano_id": "K8vlx2GyZMFhMI8ie12Y9A", "heading": 287.60745, "description": "Currey St"}, {"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 107.656296, "description": "Currey St"}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 105.53, "distance": 10.28, "virtual": true}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 125.68, "distance": 10.77, "virtual": true}, {"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 107.59, "distance": 11.64, "virtual": true}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 157.37, "distance": 15.78, "virtual": true}]}, "wUvhnedc1PdWrdFylFt3RA": {"lat": -26.19503858774537, "lng": 28.05750390509988, "links": [{"pano_id": "oWV5U0AZhaY77oc1tk_iHQ", "heading": 17.534863, "description": "Siemert Rd"}, {"pano_id": "Nh89MyO5a3XvlBehPAHIHw", "heading": 197.52406, "description": "Siemert Rd"}]}, "oWV5U0AZhaY77oc1tk_iHQ": {"lat": -26.19494904349056, "lng": 28.05753543658709, "links": [{"pano_id": "wUvhnedc1PdWrdFylFt3RA", "heading": 197.53487, "description": "Siemert Rd"}, {"pano_id": "jpkDrmJxYSV2e63M9SnKGQ", "heading": 17.538368, "description": "Siemert Rd"}]}, "kYZ3b0RLrUSUgGlJv35qqw": {"lat": -26.19676451502099, "lng": 28.05787102773199, "links": [{"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 107.1241, "description": "Currey St"}, {"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 287.65628, "description": "Currey St"}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 19.107492, "description": "Sivewright Ave"}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 197.90367, "description": "Sivewright Ave"}, {"pano_id": "V3MYwX1VrcUzn7LvBT583A", "heading": 107.16, "distance": 11.79, "virtual": true}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 197.94, "distance": 12.03, "virtual": true}]}, "jpkDrmJxYSV2e63M9SnKGQ": {"lat": -26.19486306882624, "lng": 28.05756571752843, "links": [{"pano_id": "oWV5U0AZhaY77oc1tk_iHQ", "heading": 197.53836, "description": "Siemert Rd"}, {"pano_id": "lLLpyRitqpK-w1ZVsveHRw", "heading": 17.548586, "description": "Siemert Rd"}]}, "PlUaZMwqOn6NdL94r5bPNQ": {"lat": -26.1967612759972, "lng": 28.05787227827006, "links": [{"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 199.1075, "description": "Currey St"}, {"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 285.53, "distance": 10.28, "virtual": true}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 198.03, "distance": 3.71, "virtual": true}, {"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 122.7, "distance": 1.42, "virtual": true}, {"pano_id": "V3MYwX1VrcUzn7LvBT583A", "heading": 109.01, "distance": 11.78, "virtual": true}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 197.98, "distance": 12.42, "virtual": true}]}, "kJovw1jzqOB9PCOvSqTyVQ": {"lat": -26.1967930455927, "lng": 28.05786075545462, "links": [{"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 17.90367, "description": "Currey St"}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 197.9585, "description": "Sivewright Ave"}, {"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 305.68, "distance": 10.77, "virtual": true}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 18.03, "distance": 3.71, "virtual": true}, {"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 40.28, "distance": 3.63, "virtual": true}, {"pano_id": "V3MYwX1VrcUzn7LvBT583A", "heading": 91.43, "distance": 12.29, "virtual": true}, {"pano_id": "qwIV-sV_WeT744PYomfRBw", "heading": 197.94, "distance": 17.45, "virtual": true}]}, "kjfAu_R7QJhP2PJ_nMmI-Q": {"lat": -26.19676816972959, "lng": 28.05788424770546, "links": [{"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 287.12408, "description": "Currey St"}, {"pano_id": "V3MYwX1VrcUzn7LvBT583A", "heading": 107.16456, "description": "Currey St"}, {"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 287.59, "distance": 11.64, "virtual": true}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 302.7, "distance": 1.42, "virtual": true}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 220.28, "distance": 3.63, "virtual": true}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 204.47, "distance": 12.13, "virtual": true}]}, "V3MYwX1VrcUzn7LvBT583A": {"lat": -26.19679579737362, "lng": 28.05798393341944, "links": [{"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 287.16455, "description": "Currey St"}, {"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 287.16, "distance": 11.79, "virtual": true}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 289.01, "distance": 11.78, "virtual": true}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 271.43, "distance": 12.29, "virtual": true}, {"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 241.97, "distance": 16.96, "virtual": true}]}, "3yRmssrvMDkg0WZkgDvNgw": {"lat": -26.19686747765818, "lng": 28.05783386888234, "links": [{"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 17.958504, "description": "Sivewright Ave"}, {"pano_id": "qwIV-sV_WeT744PYomfRBw", "heading": 197.917, "description": "Sivewright Ave"}, {"pano_id": "eYddWapzqo9R_i5ufOkkUQ", "heading": 337.37, "distance": 15.78, "virtual": true}, {"pano_id": "kYZ3b0RLrUSUgGlJv35qqw", "heading": 17.94, "distance": 12.03, "virtual": true}, {"pano_id": "PlUaZMwqOn6NdL94r5bPNQ", "heading": 17.98, "distance": 12.42, "virtual": true}, {"pano_id": "kjfAu_R7QJhP2PJ_nMmI-Q", "heading": 24.47, "distance": 12.13, "virtual": true}, {"pano_id": "V3MYwX1VrcUzn7LvBT583A", "heading": 61.97, "distance": 16.96, "virtual": true}]}, "lLLpyRitqpK-w1ZVsveHRw": {"lat": -26.19477816126752, "lng": 28.05759564116741, "links": [{"pano_id": "jpkDrmJxYSV2e63M9SnKGQ", "heading": 197.54858, "description": "Siemert Rd"}, {"pano_id": "-_PdxJS62MyELTd2QOY4wA", "heading": 17.50798, "description": "Siemert Rd"}]}, "-_PdxJS62MyELTd2QOY4wA": {"lat": -26.19469380611931, "lng": 28.0576252968285, "links": [{"pano_id": "lLLpyRitqpK-w1ZVsveHRw", "heading": 197.50798, "description": "Siemert Rd"}, {"pano_id": "s6B6EFe-a3fMcNaCvoEJ9A", "heading": 17.553804, "description": "Siemert Rd"}]}, "qwIV-sV_WeT744PYomfRBw": {"lat": -26.19694234177714, "lng": 28.05780689298177, "links": [{"pano_id": "3yRmssrvMDkg0WZkgDvNgw", "heading": 17.917007, "description": "Sivewright Ave"}, {"pano_id": "HUFB4IOKLCT7n9zrZut2ag", "heading": 197.98837, "description": "Sivewright Ave"}, {"pano_id": "kJovw1jzqOB9PCOvSqTyVQ", "heading": 17.94, "distance": 17.45, "virtual": true}]}, "s6B6EFe-a3fMcNaCvoEJ9A": {"lat": -26.19460943211337, "lng": 28.05765504180886, "links": [{"pano_id": "pVrJYZAm2Gk2Vf891NxqYw", "heading": 17.535135, "description": "Siemert Rd"}, {"pano_id": "-_PdxJS62MyELTd2QOY4wA", "heading": 197.5538, "description": "Siemert Rd"}, {"pano_id": "wV5vnFcgc1V6eHSv58eaxw", "heading": 352.87, "distance": 10.84, "virtual": true}, {"pano_id": "5FDXs-2sAXaf9z1P_G0tWg", "heading": 17.28, "distance": 17.4, "virtual": true}, {"pano_id": "1AnoKWcFu9dShyszr87brg", "heading": 308.45, "distance": 14.4, "virtual": true}]}, "HUFB4IOKLCT7n9zrZut2ag": {"lat": -26.19703342707774, "lng": 28.05777393235594, "links": [{"pano_id": "qwIV-sV_WeT744PYomfRBw", "heading": 17.988367, "description": "Sivewright Ave"}, {"pano_id": "e15mP5sYS-nfHiFHS4xibA", "heading": 197.96063, "description": "Sivewright Ave"}]}, "e15mP5sYS-nfHiFHS4xibA": {"lat": -26.19712342641781, "lng": 28.05774141834501, "links": [{"pano_id": "HUFB4IOKLCT7n9zrZut2ag", "heading": 17.960629, "description": "Sivewright Ave"}, {"pano_id": "RMLVgQk-vqIFyRv7pY5_6g", "heading": 197.95708, "description": "Sivewright Ave"}]}, "pVrJYZAm2Gk2Vf891NxqYw": {"lat": -26.19452470869145, "lng": 28.05768487610845, "links": [{"pano_id": "wV5vnFcgc1V6eHSv58eaxw", "heading": 287.16846, "description": "Beit St"}, {"pano_id": "5FDXs-2sAXaf9z1P_G0tWg", "heading": 16.943964, "description": "Siemert Rd"}, {"pano_id": "s6B6EFe-a3fMcNaCvoEJ9A", "heading": 197.53514, "description": "Siemert Rd"}, {"pano_id": "1AnoKWcFu9dShyszr87brg", "heading": 268.12, "distance": 14.26, "virtual": true}, {"pano_id": "JbN_UvI9Uszxw8OK4WUUZQ", "heading": 16.77, "distance": 17.7, "virtual": true}]}, "wV5vnFcgc1V6eHSv58eaxw": {"lat": -26.19451269891302, "lng": 28.05764155384542, "links": [{"pano_id": "pVrJYZAm2Gk2Vf891NxqYw", "heading": 107.16845, "description": "Siemert Rd"}, {"pano_id": "1AnoKWcFu9dShyszr87brg", "heading": 259.70752, "description": "Beit St"}, {"pano_id": "s6B6EFe-a3fMcNaCvoEJ9A", "heading": 172.87, "distance": 10.84, "virtual": true}, {"pano_id": "5FDXs-2sAXaf9z1P_G0tWg", "heading": 48.03, "distance": 8.76, "virtual": true}]}, "RMLVgQk-vqIFyRv7pY5_6g": {"lat": -26.19720948790572, "lng": 28.05771033351578, "links": [{"pano_id": "CKmSisgS-FwMqAYUWnFs4w", "heading": 197.96794, "description": "Sivewright Ave"}, {"pano_id": "e15mP5sYS-nfHiFHS4xibA", "heading": 17.957071, "description": "Sivewright Ave"}]}, "5FDXs-2sAXaf9z1P_G0tWg": {"lat": -26.19445999073069, "lng": 28.05770684987078, "links": [{"pano_id": "pVrJYZAm2Gk2Vf891NxqYw", "heading": 196.94397, "description": "Siemert Rd"}, {"pano_id": "JbN_UvI9Uszxw8OK4WUUZQ", "heading": 16.647997, "description": "Siemert Rd"}, {"pano_id": "s6B6EFe-a3fMcNaCvoEJ9A", "heading": 197.28, "distance": 17.4, "virtual": true}, {"pano_id": "wV5vnFcgc1V6eHSv58eaxw", "heading": 228.03, "distance": 8.76, "virtual": true}]}, "1AnoKWcFu9dShyszr87brg": {"lat": -26.19452891317732, "lng": 28.05754204658652, "links": [{"pano_id": "-pODdx_XYCAZnOT77QFwkg", "heading": 259.707, "description": "Beit St"}, {"pano_id": "wV5vnFcgc1V6eHSv58eaxw", "heading": 79.70752, "description": "Beit St"}, {"pano_id": "s6B6EFe-a3fMcNaCvoEJ9A", "heading": 128.45, "distance": 14.4, "virtual": true}, {"pano_id": "pVrJYZAm2Gk2Vf891NxqYw", "heading": 88.12, "distance": 14.26, "virtual": true}]}, "CKmSisgS-FwMqAYUWnFs4w": {"lat": -26.19729895369566, "lng": 28.05767799814162, "links": [{"pano_id": "RMLVgQk-vqIFyRv7pY5_6g", "heading": 17.967945, "description": "Sivewright Ave"}, {"pano_id": "TUtTfNgIAL274uea1aEy7Q", "heading": 197.97961, "description": "Sivewright Ave"}]}, "JbN_UvI9Uszxw8OK4WUUZQ": {"lat": -26.1943723416468, "lng": 28.05773605889209, "links": [{"pano_id": "oTwiNVJkgRqCUELNgDHZfg", "heading": 16.68322, "description": "Siemert Rd"}, {"pano_id": "5FDXs-2sAXaf9z1P_G0tWg", "heading": 196.648, "description": "Siemert Rd"}, {"pano_id": "pVrJYZAm2Gk2Vf891NxqYw", "heading": 196.77, "distance": 17.7, "virtual": true}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 16.81, "distance": 17.66, "virtual": true}, {"pano_id": "z2nS62gpipDhZCna6uBxJA", "heading": 18.0, "distance": 16.38, "virtual": true}]}, "oTwiNVJkgRqCUELNgDHZfg": {"lat": -26.19427258612611, "lng": 28.0577693768218, "links": [{"pano_id": "z2nS62gpipDhZCna6uBxJA", "heading": 21.164494, "description": ""}, {"pano_id": "JbN_UvI9Uszxw8OK4WUUZQ", "heading": 196.68323, "description": "Siemert Rd"}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 17.046364, "description": "Siemert Rd"}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 17.39, "distance": 16.55, "virtual": true}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 27.04, "distance": 13.82, "virtual": true}]}, "-pODdx_XYCAZnOT77QFwkg": {"lat": -26.19454485171901, "lng": 28.05744423643443, "links": [{"pano_id": "1AnoKWcFu9dShyszr87brg", "heading": 79.707, "description": "Beit St"}, {"pano_id": "f6WV3pRrijkq1hZ38BQMcg", "heading": 259.72644, "description": "Beit St"}]}, "TUtTfNgIAL274uea1aEy7Q": {"lat": -26.19738243006826, "lng": 28.05764780654383, "links": [{"pano_id": "CKmSisgS-FwMqAYUWnFs4w", "heading": 17.979612, "description": "Sivewright Ave"}, {"pano_id": "tLxrooeryIMBt_4el668rQ", "heading": 197.95325, "description": "Sivewright Ave"}]}, "f6WV3pRrijkq1hZ38BQMcg": {"lat": -26.19456093384302, "lng": 28.0573453543351, "links": [{"pano_id": "-pODdx_XYCAZnOT77QFwkg", "heading": 79.72644, "description": "Beit St"}, {"pano_id": "6kBs3qWy47CYHFsj1sxYfg", "heading": 259.72107, "description": "Beit St"}]}, "3uYrW7voQe1dIPH6budAhg": {"lat": -26.19422030515807, "lng": 28.05778724166088, "links": [{"pano_id": "oTwiNVJkgRqCUELNgDHZfg", "heading": 197.04637, "description": "Siemert Rd"}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 17.590752, "description": "Siemert Rd"}, {"pano_id": "JbN_UvI9Uszxw8OK4WUUZQ", "heading": 196.81, "distance": 17.66, "virtual": true}, {"pano_id": "z2nS62gpipDhZCna6uBxJA", "heading": 181.93, "distance": 1.33, "virtual": true}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 34.7, "distance": 7.91, "virtual": true}, {"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 32.14, "distance": 17.89, "virtual": true}]}, "tLxrooeryIMBt_4el668rQ": {"lat": -26.19746875833286, "lng": 28.05761663237382, "links": [{"pano_id": "Ps-GgN3wfxpBM2C4Jyhz8w", "heading": 197.97162, "description": "Sivewright Ave"}, {"pano_id": "TUtTfNgIAL274uea1aEy7Q", "heading": 17.953253, "description": "Sivewright Ave"}]}, "z2nS62gpipDhZCna6uBxJA": {"lat": -26.19423221691032, "lng": 28.05778679503992, "links": [{"pano_id": "oTwiNVJkgRqCUELNgDHZfg", "heading": 201.16449, "description": "Siemert Rd"}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 30.156128, "description": ""}, {"pano_id": "JbN_UvI9Uszxw8OK4WUUZQ", "heading": 198.0, "distance": 16.38, "virtual": true}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 1.93, "distance": 1.33, "virtual": true}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 15.85, "distance": 11.75, "virtual": true}]}, "X7MUr3hS7Axd4SKUuvr21Q": {"lat": -26.19413055790736, "lng": 28.05781895174578, "links": [{"pano_id": "I6v_zZkzsI8Gh3MRjoKZDw", "heading": 17.612709, "description": "Siemert Rd"}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 197.59076, "description": "Siemert Rd"}, {"pano_id": "oTwiNVJkgRqCUELNgDHZfg", "heading": 197.39, "distance": 16.55, "virtual": true}, {"pano_id": "z2nS62gpipDhZCna6uBxJA", "heading": 195.85, "distance": 11.75, "virtual": true}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 158.99, "distance": 3.73, "virtual": true}, {"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 50.86, "distance": 8.19, "virtual": true}, {"pano_id": "DVxMMjmtXEMHUreHIv3vQQ", "heading": 17.64, "distance": 9.23, "virtual": true}]}, "Ps-GgN3wfxpBM2C4Jyhz8w": {"lat": -26.19755795734854, "lng": 28.05758438630678, "links": [{"pano_id": "8J5UOrtBZhLTXPjjh7jFSg", "heading": 197.94876, "description": "Sivewright Ave"}, {"pano_id": "tLxrooeryIMBt_4el668rQ", "heading": 17.971617, "description": "Sivewright Ave"}]}, "-atwJo9wO9jJSPpNxYcv_Q": {"lat": -26.19416185943231, "lng": 28.05783235037148, "links": [{"pano_id": "z2nS62gpipDhZCna6uBxJA", "heading": 210.15613, "description": ""}, {"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 30.113358, "description": ""}, {"pano_id": "oTwiNVJkgRqCUELNgDHZfg", "heading": 207.04, "distance": 13.82, "virtual": true}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 214.7, "distance": 7.91, "virtual": true}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 338.99, "distance": 3.73, "virtual": true}, {"pano_id": "I6v_zZkzsI8Gh3MRjoKZDw", "heading": 6.73, "distance": 12.32, "virtual": true}, {"pano_id": "DVxMMjmtXEMHUreHIv3vQQ", "heading": 6.79, "distance": 12.37, "virtual": true}]}, "6kBs3qWy47CYHFsj1sxYfg": {"lat": -26.19457705361298, "lng": 28.05724629353141, "links": [{"pano_id": "f6WV3pRrijkq1hZ38BQMcg", "heading": 79.721085, "description": "Beit St"}, {"pano_id": "CPxrB7Vdt5wG86OpgK5mGQ", "heading": 259.70172, "description": "Beit St"}]}, "yukNKimPwxZUOKR2fELSXg": {"lat": -26.1940840566195, "lng": 28.0578826398709, "links": [{"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 210.11336, "description": ""}, {"pano_id": "4T-LhY4SnubgCGUtigy16g", "heading": 29.900206, "description": ""}, {"pano_id": "3uYrW7voQe1dIPH6budAhg", "heading": 212.14, "distance": 17.89, "virtual": true}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 230.86, "distance": 8.19, "virtual": true}, {"pano_id": "I6v_zZkzsI8Gh3MRjoKZDw", "heading": 315.12, "distance": 5.06, "virtual": true}, {"pano_id": "DVxMMjmtXEMHUreHIv3vQQ", "heading": 315.58, "distance": 5.08, "virtual": true}]}, "8J5UOrtBZhLTXPjjh7jFSg": {"lat": -26.19764777255443, "lng": 28.05755196158522, "links": [{"pano_id": "UnsB4b3eXrz3_1fF4dQG5A", "heading": 197.98483, "description": "Sivewright Ave"}, {"pano_id": "Ps-GgN3wfxpBM2C4Jyhz8w", "heading": 17.94876, "description": "Sivewright Ave"}]}, "I6v_zZkzsI8Gh3MRjoKZDw": {"lat": -26.19405178620489, "lng": 28.05784682088611, "links": [{"pano_id": "DVxMMjmtXEMHUreHIv3vQQ", "heading": 23.522495, "description": "Joe Slovo Dr"}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 197.61272, "description": "Siemert Rd"}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 186.73, "distance": 12.32, "virtual": true}, {"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 135.12, "distance": 5.06, "virtual": true}, {"pano_id": "4T-LhY4SnubgCGUtigy16g", "heading": 58.39, "distance": 10.25, "virtual": true}]}, "CPxrB7Vdt5wG86OpgK5mGQ": {"lat": -26.19459302966577, "lng": 28.05714830456625, "links": [{"pano_id": "_VtIOSVsjhU_lakVgigTIQ", "heading": 257.83987, "description": "Beit St"}, {"pano_id": "6kBs3qWy47CYHFsj1sxYfg", "heading": 79.70171, "description": "Beit St"}]}, "4T-LhY4SnubgCGUtigy16g": {"lat": -26.19400349176197, "lng": 28.05793426921773, "links": [{"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 209.9002, "description": ""}, {"pano_id": "I6v_zZkzsI8Gh3MRjoKZDw", "heading": 238.39, "distance": 10.25, "virtual": true}, {"pano_id": "DVxMMjmtXEMHUreHIv3vQQ", "heading": 238.53, "distance": 10.21, "virtual": true}]}, "UnsB4b3eXrz3_1fF4dQG5A": {"lat": -26.19773295107948, "lng": 28.05752114469557, "links": [{"pano_id": "8J5UOrtBZhLTXPjjh7jFSg", "heading": 17.984837, "description": "Sivewright Ave"}]}, "DVxMMjmtXEMHUreHIv3vQQ": {"lat": -26.19405141793131, "lng": 28.05784699953443, "links": [{"pano_id": "I6v_zZkzsI8Gh3MRjoKZDw", "heading": 203.52249, "description": "Siemert Rd"}, {"pano_id": "X7MUr3hS7Axd4SKUuvr21Q", "heading": 197.64, "distance": 9.23, "virtual": true}, {"pano_id": "-atwJo9wO9jJSPpNxYcv_Q", "heading": 186.79, "distance": 12.37, "virtual": true}, {"pano_id": "yukNKimPwxZUOKR2fELSXg", "heading": 135.58, "distance": 5.08, "virtual": true}, {"pano_id": "4T-LhY4SnubgCGUtigy16g", "heading": 58.53, "distance": 10.21, "virtual": true}]}, "_VtIOSVsjhU_lakVgigTIQ": {"lat": -26.19461282205349, "lng": 28.05704593864296, "links": [{"pano_id": "CPxrB7Vdt5wG86OpgK5mGQ", "heading": 77.83988, "description": "Beit St"}]}};
+        const targetPanos = ["CLwNmvJWFgPLjoT9GO5u8w", "8kxR2uYTNoe-j37kjb2CWA"];
+        const spawnPoints = ["Nh89MyO5a3XvlBehPAHIHw", "V3MYwX1VrcUzn7LvBT583A", "4T-LhY4SnubgCGUtigy16g", "UnsB4b3eXrz3_1fF4dQG5A", "6kBs3qWy47CYHFsj1sxYfg"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

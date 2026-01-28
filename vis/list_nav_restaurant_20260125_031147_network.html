@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_nav_restaurant_20260125_031147</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .info-panel h3 { margin: 0 0 10px 0; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .selected-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>list_nav_restaurant_20260125_031147</h3>
+        <div>Total Panos: <strong>74</strong></div>
+        <div>Spawn Points: <strong>3</strong></div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #e74c3c;"></div>
+                <span>Target</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #3498db;"></div>
+                <span>Spawn Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #95a5a6;"></div>
+                <span>Panorama</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2ecc71;"></div>
+                <span>Connected (click)</span>
+            </div>
+        </div>
+        <div class="selected-info" id="selected-info">
+            Click a point to see connections
+        </div>
+    </div>
+    
+    <script>
+        // Data
+        const panoData = {"Wl_pZlwPlgN2yq9OdwGEDg": {"lat": 1.35504355109098, "lng": 103.8299781711327, "links": [{"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 207.73105, "description": "Jasmine Rd"}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 32.272667, "description": "Jasmine Rd"}, {"pano_id": "6yY8sF2ph_1hsuSUNy7e1Q", "heading": 269.4, "distance": 1.96, "virtual": true}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 211.77, "distance": 16.56, "virtual": true}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 345.22, "distance": 11.25, "virtual": true}]}, "9_ha1Y2J_qZ7ErROzeQS6Q": {"lat": 1.35499527637083, "lng": 103.8299527858549, "links": [{"pano_id": "6yY8sF2ph_1hsuSUNy7e1Q", "heading": 9.191188, "description": "Jasmine Rd"}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 214.09793, "description": "Jasmine Rd"}, {"pano_id": "Wl_pZlwPlgN2yq9OdwGEDg", "heading": 27.731052, "description": "Jasmine Rd"}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 30.55, "distance": 16.01, "virtual": true}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 359.83, "distance": 16.25, "virtual": true}, {"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 256.2, "distance": 17.5, "virtual": true}]}, "mYOChm91DGBV-3zWWgCLQw": {"lat": 1.355119303818812, "lng": 103.8300260228366, "links": [{"pano_id": "uy34Bg0uPffmC4ypzru7tw", "heading": 8.125043, "description": "Jasmine Rd"}, {"pano_id": "Wl_pZlwPlgN2yq9OdwGEDg", "heading": 212.27266, "description": "Jasmine Rd"}, {"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 210.55, "distance": 16.01, "virtual": true}, {"pano_id": "6yY8sF2ph_1hsuSUNy7e1Q", "heading": 220.75, "distance": 11.15, "virtual": true}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 286.7, "distance": 8.55, "virtual": true}]}, "uy34Bg0uPffmC4ypzru7tw": {"lat": 1.355204777004801, "lng": 103.8300382290041, "links": [{"pano_id": "kLroqUnSbBRiW6Zm4CntYw", "heading": 352.17188, "description": "Jasmine Rd"}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 188.12505, "description": "Jasmine Rd"}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 233.57, "distance": 11.87, "virtual": true}]}, "6yY8sF2ph_1hsuSUNy7e1Q": {"lat": 1.355043367431061, "lng": 103.8299605694936, "links": [{"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 189.1912, "description": "Jasmine Rd"}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 355.20514, "description": "Jasmine Rd"}, {"pano_id": "Wl_pZlwPlgN2yq9OdwGEDg", "heading": 89.4, "distance": 1.96, "virtual": true}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 40.75, "distance": 11.15, "virtual": true}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 205.69, "distance": 15.6, "virtual": true}]}, "kvFyLYWyHKHKpDQqkrTCzQ": {"lat": 1.354916907769826, "lng": 103.829899715603, "links": [{"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 34.097935, "description": "Jasmine Rd"}, {"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 218.37984, "description": "Jasmine Rd"}, {"pano_id": "Wl_pZlwPlgN2yq9OdwGEDg", "heading": 31.77, "distance": 16.56, "virtual": true}, {"pano_id": "6yY8sF2ph_1hsuSUNy7e1Q", "heading": 25.69, "distance": 15.6, "virtual": true}, {"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 217.58, "distance": 10.01, "virtual": true}, {"pano_id": "ajvVMBDLSxZB2EOmCeYE2g", "heading": 238.02, "distance": 7.87, "virtual": true}, {"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 292.27, "distance": 11.99, "virtual": true}]}, "VQ-jQ0UVAzzrRluDQhLHCg": {"lat": 1.354858740135666, "lng": 103.8298536329511, "links": [{"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 213.85672, "description": "Jasmine Rd"}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 38.37983, "description": "Jasmine Rd"}, {"pano_id": "ajvVMBDLSxZB2EOmCeYE2g", "heading": 325.96, "distance": 2.78, "virtual": true}, {"pano_id": "UxszugG4KTX9HmPgtra3Mg", "heading": 212.65, "distance": 11.25, "virtual": true}, {"pano_id": "h9ATIT6cghgoYD0hHNdGGg", "heading": 213.95, "distance": 17.99, "virtual": true}, {"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 331.54, "distance": 12.52, "virtual": true}]}, "Uqnmh1fZSt8fpVayl49Pxw": {"lat": 1.355141404801659, "lng": 103.8299523436027, "links": [{"pano_id": "6yY8sF2ph_1hsuSUNy7e1Q", "heading": 175.20512, "description": "Jasmine Rd"}, {"pano_id": "Wl_pZlwPlgN2yq9OdwGEDg", "heading": 165.22, "distance": 11.25, "virtual": true}, {"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 179.83, "distance": 16.25, "virtual": true}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 106.7, "distance": 8.55, "virtual": true}, {"pano_id": "uy34Bg0uPffmC4ypzru7tw", "heading": 53.57, "distance": 11.87, "virtual": true}]}, "kLroqUnSbBRiW6Zm4CntYw": {"lat": 1.35529096260909, "lng": 103.8300263766385, "links": [{"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 331.16132, "description": "Jasmine Rd"}, {"pano_id": "uy34Bg0uPffmC4ypzru7tw", "heading": 172.17189, "description": "Jasmine Rd"}, {"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 290.24, "distance": 11.35, "virtual": true}]}, "Ns1VxXEtOg1AJdGuRZpzTg": {"lat": 1.355367884657453, "lng": 103.8299840088628, "links": [{"pano_id": "kLroqUnSbBRiW6Zm4CntYw", "heading": 151.16132, "description": "Jasmine Rd"}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 313.46564, "description": "Jasmine Rd"}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 323.72, "distance": 13.16, "virtual": true}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 331.72, "distance": 17.58, "virtual": true}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 306.85, "distance": 9.14, "virtual": true}, {"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 232.08, "distance": 7.53, "virtual": true}]}, "D8eg1Uhk7cHr48YwwMye-g": {"lat": 1.355209896239238, "lng": 103.8299451791175, "links": [{"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 352.85458, "description": "Jasmine Rd"}, {"pano_id": "Uqnmh1fZSt8fpVayl49Pxw", "heading": 174.03, "description": "Jasmine Rd"}, {"pano_id": "mYOChm91DGBV-3zWWgCLQw", "heading": 138.26, "distance": 13.5, "virtual": true}, {"pano_id": "uy34Bg0uPffmC4ypzru7tw", "heading": 93.15, "distance": 10.36, "virtual": true}, {"pano_id": "kLroqUnSbBRiW6Zm4CntYw", "heading": 45.04, "distance": 12.76, "virtual": true}]}, "6l_uhDtsrXFDKTaOwioajw": {"lat": 1.354845559518854, "lng": 103.8298447879142, "links": [{"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 33.856728, "description": "Jasmine Rd"}, {"pano_id": "UxszugG4KTX9HmPgtra3Mg", "heading": 212.42271, "description": "Jasmine Rd"}, {"pano_id": "ajvVMBDLSxZB2EOmCeYE2g", "heading": 351.3873, "description": "Carnation Dr"}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 37.58, "distance": 10.01, "virtual": true}, {"pano_id": "h9ATIT6cghgoYD0hHNdGGg", "heading": 213.96, "distance": 16.23, "virtual": true}, {"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 338.22, "distance": 13.43, "virtual": true}]}, "w70ZDvXJTOyn18wW6QSWwA": {"lat": 1.355421356767668, "lng": 103.8299275774826, "links": [{"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 133.46562, "description": "Jasmine Rd"}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 342.00458, "description": "Jasmine Rd"}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 347.83, "distance": 9.75, "virtual": true}, {"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 325.92, "distance": 10.25, "virtual": true}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 246.04, "distance": 1.14, "virtual": true}, {"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 178.19, "distance": 10.58, "virtual": true}]}, "ajvVMBDLSxZB2EOmCeYE2g": {"lat": 1.354879420608003, "lng": 103.829839657793, "links": [{"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 171.3873, "description": "Jasmine Rd"}, {"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 333.1228, "description": "Carnation Dr"}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 58.02, "distance": 7.87, "virtual": true}, {"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 145.96, "distance": 2.78, "virtual": true}, {"pano_id": "UxszugG4KTX9HmPgtra3Mg", "heading": 200.98, "distance": 12.6, "virtual": true}]}, "UxszugG4KTX9HmPgtra3Mg": {"lat": 1.354773585634919, "lng": 103.8297990590823, "links": [{"pano_id": "h9ATIT6cghgoYD0hHNdGGg", "heading": 216.12166, "description": "Jasmine Rd"}, {"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 32.422714, "description": "Jasmine Rd"}, {"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 32.65, "distance": 11.25, "virtual": true}, {"pano_id": "ajvVMBDLSxZB2EOmCeYE2g", "heading": 20.98, "distance": 12.6, "virtual": true}, {"pano_id": "CKNy7-I9TH0fmAIVn33GcQ", "heading": 217.34, "distance": 16.47, "virtual": true}]}, "h9ATIT6cghgoYD0hHNdGGg": {"lat": 1.354724513598172, "lng": 103.8297632367006, "links": [{"pano_id": "CKNy7-I9TH0fmAIVn33GcQ", "heading": 218.18, "description": "Jasmine Rd"}, {"pano_id": "UxszugG4KTX9HmPgtra3Mg", "heading": 36.12166, "description": "Jasmine Rd"}, {"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 33.95, "distance": 17.99, "virtual": true}, {"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 33.96, "distance": 16.23, "virtual": true}]}, "B6iE0j5IvRdcaPeFpOwHUA": {"lat": 1.354957756927656, "lng": 103.8297999435857, "links": [{"pano_id": "ajvVMBDLSxZB2EOmCeYE2g", "heading": 153.1228, "description": "Carnation Dr"}, {"pano_id": "8GmUz8S6J71X1XJrp8t1bQ", "heading": 333.09244, "description": "Carnation Dr"}, {"pano_id": "9_ha1Y2J_qZ7ErROzeQS6Q", "heading": 76.2, "distance": 17.5, "virtual": true}, {"pano_id": "kvFyLYWyHKHKpDQqkrTCzQ", "heading": 112.27, "distance": 11.99, "virtual": true}, {"pano_id": "VQ-jQ0UVAzzrRluDQhLHCg", "heading": 151.54, "distance": 12.52, "virtual": true}, {"pano_id": "6l_uhDtsrXFDKTaOwioajw", "heading": 158.22, "distance": 13.43, "virtual": true}]}, "-8Xou670V5QDmNGDez88-w": {"lat": 1.355463278657886, "lng": 103.8299139561185, "links": [{"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 353.66434, "description": "Jasmine Rd"}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 174.73816, "description": "Jasmine Rd"}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 162.00456, "description": "Jasmine Rd"}, {"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 312.14505, "description": "Gardenia Rd"}, {"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 143.72, "distance": 13.16, "virtual": true}, {"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 173.08, "distance": 15.35, "virtual": true}, {"pano_id": "h-BgTo3c8Jim5c2S1oiE1A", "heading": 308.25, "distance": 15.78, "virtual": true}]}, "8GmUz8S6J71X1XJrp8t1bQ": {"lat": 1.355043482646509, "lng": 103.8297564260267, "links": [{"pano_id": "B6iE0j5IvRdcaPeFpOwHUA", "heading": 153.09242, "description": "Carnation Dr"}, {"pano_id": "xCaeLOs8kJYx8y3LyxxaQw", "heading": 332.38016, "description": "Carnation Dr"}]}, "CKNy7-I9TH0fmAIVn33GcQ": {"lat": 1.354655806852883, "lng": 103.8297091935699, "links": [{"pano_id": "h9ATIT6cghgoYD0hHNdGGg", "heading": 38.179985, "description": "Jasmine Rd"}, {"pano_id": "cWUayO9RAMX1-EAgJdKHXQ", "heading": 218.2106, "description": "Jasmine Rd"}, {"pano_id": "UxszugG4KTX9HmPgtra3Mg", "heading": 37.34, "distance": 16.47, "virtual": true}]}, "FuvcodLQ0LAyFXEQLwcrBg": {"lat": 1.355507080815195, "lng": 103.829909091346, "links": [{"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 173.66432, "description": "Jasmine Rd"}, {"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 151.72, "distance": 17.58, "virtual": true}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 167.83, "distance": 9.75, "virtual": true}, {"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 254.19, "distance": 3.83, "virtual": true}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 174.21, "distance": 10.05, "virtual": true}, {"pano_id": "h-BgTo3c8Jim5c2S1oiE1A", "heading": 292.45, "distance": 12.82, "virtual": true}]}, "wwiW1ILqfaAOadh97mCAtw": {"lat": 1.355497689448306, "lng": 103.8298759224468, "links": [{"pano_id": "h-BgTo3c8Jim5c2S1oiE1A", "heading": 306.05353, "description": "Gardenia Rd"}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 132.14505, "description": "Jasmine Rd"}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 145.92, "distance": 10.25, "virtual": true}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 74.19, "distance": 3.83, "virtual": true}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 152.3, "distance": 10.11, "virtual": true}]}, "PEOHbRCOg2-E2DVXctRYZw": {"lat": 1.355417191329178, "lng": 103.8299182017384, "links": [{"pano_id": "O1f5XkTvk7IoPCfxEUCTXA", "heading": 172.24547, "description": "Jasmine Rd"}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 354.73816, "description": "Jasmine Rd"}, {"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 126.85, "distance": 9.14, "virtual": true}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 66.04, "distance": 1.14, "virtual": true}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 354.21, "distance": 10.05, "virtual": true}, {"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 332.3, "distance": 10.11, "virtual": true}]}, "O1f5XkTvk7IoPCfxEUCTXA": {"lat": 1.355326281637419, "lng": 103.829930584797, "links": [{"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 352.24545, "description": "Jasmine Rd"}, {"pano_id": "kLroqUnSbBRiW6Zm4CntYw", "heading": 110.24, "distance": 11.35, "virtual": true}, {"pano_id": "Ns1VxXEtOg1AJdGuRZpzTg", "heading": 52.08, "distance": 7.53, "virtual": true}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 358.19, "distance": 10.58, "virtual": true}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 353.08, "distance": 15.35, "virtual": true}]}, "bluF1qWPlfv4OBnmxvAu9A": {"lat": 1.355569065339619, "lng": 103.8299508399453, "links": [{"pano_id": "14CMEocEzNc7nO2iclVt7w", "heading": 40.22668, "description": "Jasmine Rd"}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 213.95412, "description": "Jasmine Rd"}, {"pano_id": "w70ZDvXJTOyn18wW6QSWwA", "heading": 188.95, "distance": 16.63, "virtual": true}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 199.22, "distance": 12.46, "virtual": true}, {"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 226.38, "distance": 11.5, "virtual": true}, {"pano_id": "PEOHbRCOg2-E2DVXctRYZw", "heading": 192.13, "distance": 17.27, "virtual": true}, {"pano_id": "h-BgTo3c8Jim5c2S1oiE1A", "heading": 263.1, "distance": 16.61, "virtual": true}]}, "cWUayO9RAMX1-EAgJdKHXQ": {"lat": 1.354596498699324, "lng": 103.8296624918311, "links": [{"pano_id": "CKNy7-I9TH0fmAIVn33GcQ", "heading": 38.2106, "description": "Jasmine Rd"}, {"pano_id": "1cBWRlqd0Ulc52Jrk_JDbw", "heading": 218.205, "description": "Jasmine Rd"}, {"pano_id": "ocegOeaJHOngoomMUEz_Ow", "heading": 276.83, "distance": 17.98, "virtual": true}]}, "h-BgTo3c8Jim5c2S1oiE1A": {"lat": 1.355551117599265, "lng": 103.8298025086455, "links": [{"pano_id": "wwiW1ILqfaAOadh97mCAtw", "heading": 126.05353, "description": "Gardenia Rd"}, {"pano_id": "xA1l0fgWtAngwJNB7qHw2Q", "heading": 315.4517, "description": "Gardenia Rd"}, {"pano_id": "-8Xou670V5QDmNGDez88-w", "heading": 128.25, "distance": 15.78, "virtual": true}, {"pano_id": "FuvcodLQ0LAyFXEQLwcrBg", "heading": 112.45, "distance": 12.82, "virtual": true}]}, "xCaeLOs8kJYx8y3LyxxaQw": {"lat": 1.355121898578306, "lng": 103.8297153850895, "links": [{"pano_id": "7v-LknFKPuBW_N82eKNQXw", "heading": 330.0617, "description": "Carnation Dr"}, {"pano_id": "8GmUz8S6J71X1XJrp8t1bQ", "heading": 152.38014, "description": "Carnation Dr"}]}, "xA1l0fgWtAngwJNB7qHw2Q": {"lat": 1.355621185693444, "lng": 103.8297335173986, "links": [{"pano_id": "h-BgTo3c8Jim5c2S1oiE1A", "heading": 135.45169, "description": "Gardenia Rd"}, {"pano_id": "pKDwHhefWBRJIZJqdxtFmQ", "heading": 314.7404, "description": "Gardenia Rd"}]}, "1cBWRlqd0Ulc52Jrk_JDbw": {"lat": 1.354517967036854, "lng": 103.8296006651221, "links": [{"pano_id": "WE1jNZBrsuO-mK-RoKjG5A", "heading": 218.54268, "description": "Jasmine Rd"}, {"pano_id": "cWUayO9RAMX1-EAgJdKHXQ", "heading": 38.205006, "description": "Jasmine Rd"}, {"pano_id": "ocegOeaJHOngoomMUEz_Ow", "heading": 314.71, "distance": 15.45, "virtual": true}]}, "7v-LknFKPuBW_N82eKNQXw": {"lat": 1.355198975265198, "lng": 103.8296709830551, "links": [{"pano_id": "p2_85jszKbHb4wx3D8bMDA", "heading": 326.76654, "description": "Carnation Dr"}, {"pano_id": "xCaeLOs8kJYx8y3LyxxaQw", "heading": 150.06172, "description": "Carnation Dr"}]}, "p2_85jszKbHb4wx3D8bMDA": {"lat": 1.355271851678228, "lng": 103.8296232199268, "links": [{"pano_id": "kI02qzYhpKUpDiZhG-2e6w", "heading": 323.12143, "description": "Carnation Dr"}, {"pano_id": "7v-LknFKPuBW_N82eKNQXw", "heading": 146.76656, "description": "Carnation Dr"}]}, "pKDwHhefWBRJIZJqdxtFmQ": {"lat": 1.355686731307399, "lng": 103.8296673565948, "links": [{"pano_id": "-kyV6ppWRByFTLUX4iD56g", "heading": 314.7211, "description": "Gardenia Rd"}, {"pano_id": "xA1l0fgWtAngwJNB7qHw2Q", "heading": 134.7404, "description": "Gardenia Rd"}]}, "WE1jNZBrsuO-mK-RoKjG5A": {"lat": 1.354408968758115, "lng": 103.8295138070463, "links": [{"pano_id": "1cBWRlqd0Ulc52Jrk_JDbw", "heading": 38.542686, "description": "Jasmine Rd"}, {"pano_id": "p0xV1f3ifEP3N7oN7MnEag", "heading": 218.90285, "description": "Jasmine Rd"}, {"pano_id": "ocegOeaJHOngoomMUEz_Ow", "heading": 356.6959, "description": "Orchid Dr"}]}, "p0xV1f3ifEP3N7oN7MnEag": {"lat": 1.354306953796169, "lng": 103.8294314599811, "links": [{"pano_id": "WE1jNZBrsuO-mK-RoKjG5A", "heading": 38.902843, "description": "Jasmine Rd"}, {"pano_id": "5OQ3lJa-PKv76_BNtLYKkg", "heading": 218.8678, "description": "Jasmine Rd"}]}, "ocegOeaJHOngoomMUEz_Ow": {"lat": 1.354615743459007, "lng": 103.8295018662765, "links": [{"pano_id": "WE1jNZBrsuO-mK-RoKjG5A", "heading": 176.69589, "description": "Jasmine Rd"}, {"pano_id": "LMAPKr9FVou8cDjbQVDKew", "heading": 337.71594, "description": "Orchid Dr"}, {"pano_id": "cWUayO9RAMX1-EAgJdKHXQ", "heading": 96.83, "distance": 17.98, "virtual": true}, {"pano_id": "1cBWRlqd0Ulc52Jrk_JDbw", "heading": 134.71, "distance": 15.45, "virtual": true}]}, "-kyV6ppWRByFTLUX4iD56g": {"lat": 1.355749255438603, "lng": 103.8296042031304, "links": [{"pano_id": "pKDwHhefWBRJIZJqdxtFmQ", "heading": 134.72112, "description": "Gardenia Rd"}, {"pano_id": "btJD9P1IzADzgrEIISZuDQ", "heading": 314.71686, "description": "Gardenia Rd"}]}, "kI02qzYhpKUpDiZhG-2e6w": {"lat": 1.355344337709248, "lng": 103.8295688230512, "links": [{"pano_id": "p2_85jszKbHb4wx3D8bMDA", "heading": 143.12143, "description": "Carnation Dr"}, {"pano_id": "5Wq9A_XYSgfAnfEQMeYteg", "heading": 320.80072, "description": "Carnation Dr"}]}, "5Wq9A_XYSgfAnfEQMeYteg": {"lat": 1.355413186377776, "lng": 103.8295126571943, "links": [{"pano_id": "x_YmV8OwK4ptNcdz7yuGFA", "heading": 318.29446, "description": "Carnation Dr"}, {"pano_id": "kI02qzYhpKUpDiZhG-2e6w", "heading": 140.80074, "description": "Carnation Dr"}]}, "5OQ3lJa-PKv76_BNtLYKkg": {"lat": 1.354230922777965, "lng": 103.8293701640777, "links": [{"pano_id": "p0xV1f3ifEP3N7oN7MnEag", "heading": 38.8678, "description": "Jasmine Rd"}, {"pano_id": "XYoPSYvfGtVAdXI_rPZAJQ", "heading": 218.87686, "description": "Jasmine Rd"}]}, "btJD9P1IzADzgrEIISZuDQ": {"lat": 1.355811420002648, "lng": 103.8295414034961, "links": [{"pano_id": "-kyV6ppWRByFTLUX4iD56g", "heading": 134.71684, "description": "Gardenia Rd"}, {"pano_id": "F75RoANYgNK1SPAloYmxrg", "heading": 314.74316, "description": "Gardenia Rd"}]}, "LMAPKr9FVou8cDjbQVDKew": {"lat": 1.35470572138477, "lng": 103.8294649825719, "links": [{"pano_id": "BDCLJZUqAKiuOp4m43Se4g", "heading": 335.88867, "description": "Orchid Dr"}, {"pano_id": "ocegOeaJHOngoomMUEz_Ow", "heading": 157.71594, "description": "Orchid Dr"}]}, "XYoPSYvfGtVAdXI_rPZAJQ": {"lat": 1.354164787363551, "lng": 103.8293168287039, "links": [{"pano_id": "5OQ3lJa-PKv76_BNtLYKkg", "heading": 38.876865, "description": "Jasmine Rd"}, {"pano_id": "_8NASFKMssGDq9-phACLNA", "heading": 218.87929, "description": "Jasmine Rd"}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 259.3, "distance": 16.87, "virtual": true}]}, "BDCLJZUqAKiuOp4m43Se4g": {"lat": 1.354783169826374, "lng": 103.8294303101298, "links": [{"pano_id": "LMAPKr9FVou8cDjbQVDKew", "heading": 155.88867, "description": "Orchid Dr"}, {"pano_id": "2iyufekIlL3xs2_Vxssdpw", "heading": 333.5512, "description": "Orchid Dr"}]}, "x_YmV8OwK4ptNcdz7yuGFA": {"lat": 1.355478973991719, "lng": 103.8294540147576, "links": [{"pano_id": "5Wq9A_XYSgfAnfEQMeYteg", "heading": 138.29446, "description": "Carnation Dr"}, {"pano_id": "87M_FjjVNgVbmczgFlGRaQ", "heading": 315.96786, "description": "Carnation Dr"}]}, "F75RoANYgNK1SPAloYmxrg": {"lat": 1.355871713665913, "lng": 103.8294805497937, "links": [{"pano_id": "Nbd__H-jxVgvDpn4zjzp7g", "heading": 314.72385, "description": "Gardenia Rd"}, {"pano_id": "btJD9P1IzADzgrEIISZuDQ", "heading": 134.74316, "description": "Gardenia Rd"}]}, "87M_FjjVNgVbmczgFlGRaQ": {"lat": 1.355571261539294, "lng": 103.8293647686244, "links": [{"pano_id": "x_YmV8OwK4ptNcdz7yuGFA", "heading": 135.96785, "description": "Carnation Dr"}, {"pano_id": "Z5OyBL_6_WnaQGzjPGg2NA", "heading": 313.08908, "description": "Carnation Dr"}]}, "2iyufekIlL3xs2_Vxssdpw": {"lat": 1.354863868968392, "lng": 103.8293901537921, "links": [{"pano_id": "gN3T3s2b-dddeeQ1LGkM8w", "heading": 332.77734, "description": "Orchid Dr"}, {"pano_id": "BDCLJZUqAKiuOp4m43Se4g", "heading": 153.5512, "description": "Orchid Dr"}]}, "_8NASFKMssGDq9-phACLNA": {"lat": 1.354094380666679, "lng": 103.8292600438017, "links": [{"pano_id": "EdOCZ2lq4xbWcd5D6N7UTQ", "heading": 218.87047, "description": "Jasmine Rd"}, {"pano_id": "XYoPSYvfGtVAdXI_rPZAJQ", "heading": 38.879295, "description": "Jasmine Rd"}, {"pano_id": "Clqw_ElJcAV3Mzq-CmmnMg", "heading": 217.96, "distance": 16.66, "virtual": true}, {"pano_id": "rv7TWX71KW_RLFWWzsgtXQ", "heading": 240.4, "distance": 9.58, "virtual": true}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 294.58, "distance": 11.29, "virtual": true}]}, "Nbd__H-jxVgvDpn4zjzp7g": {"lat": 1.355929777238239, "lng": 103.8294219073709, "links": [{"pano_id": "F75RoANYgNK1SPAloYmxrg", "heading": 134.72385, "description": "Gardenia Rd"}, {"pano_id": "PvlmQ4xzYL8V_G-r3zxYQw", "heading": 314.7325, "description": "Gardenia Rd"}]}, "gN3T3s2b-dddeeQ1LGkM8w": {"lat": 1.354941563211253, "lng": 103.8293501743664, "links": [{"pano_id": "2iyufekIlL3xs2_Vxssdpw", "heading": 152.77736, "description": "Orchid Dr"}, {"pano_id": "t17PMLKLxrAJywfg9MI7Hw", "heading": 330.83908, "description": "Orchid Dr"}]}, "PvlmQ4xzYL8V_G-r3zxYQw": {"lat": 1.355996618714422, "lng": 103.8293544199685, "links": [{"pano_id": "P-zU12MwgOTfPwJoqUwHyw", "heading": 314.7429, "description": "Gardenia Rd"}, {"pano_id": "Nbd__H-jxVgvDpn4zjzp7g", "heading": 134.73251, "description": "Gardenia Rd"}]}, "EdOCZ2lq4xbWcd5D6N7UTQ": {"lat": 1.354020770412466, "lng": 103.8292006938747, "links": [{"pano_id": "Clqw_ElJcAV3Mzq-CmmnMg", "heading": 216.39095, "description": "Jasmine Rd"}, {"pano_id": "_8NASFKMssGDq9-phACLNA", "heading": 38.87046, "description": "Jasmine Rd"}, {"pano_id": "rv7TWX71KW_RLFWWzsgtXQ", "heading": 333.39, "distance": 3.86, "virtual": true}, {"pano_id": "rru3qFgY4_YAqXnR_jA_nQ", "heading": 216.01, "distance": 15.99, "virtual": true}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 344.11, "distance": 13.39, "virtual": true}]}, "Z5OyBL_6_WnaQGzjPGg2NA": {"lat": 1.355630568394458, "lng": 103.829301349951, "links": [{"pano_id": "87M_FjjVNgVbmczgFlGRaQ", "heading": 133.08907, "description": "Carnation Dr"}, {"pano_id": "yeEsVkg6OXvG8cuZmDACCQ", "heading": 313.23013, "description": "Carnation Dr"}]}, "P-zU12MwgOTfPwJoqUwHyw": {"lat": 1.356058927342559, "lng": 103.829291532, "links": [{"pano_id": "w5gm1Z6096n6dw8yH9ctZg", "heading": 314.72778, "description": "Gardenia Rd"}, {"pano_id": "PvlmQ4xzYL8V_G-r3zxYQw", "heading": 134.74289, "description": "Gardenia Rd"}]}, "yeEsVkg6OXvG8cuZmDACCQ": {"lat": 1.355688506062356, "lng": 103.8292397003066, "links": [{"pano_id": "Z5OyBL_6_WnaQGzjPGg2NA", "heading": 133.23012, "description": "Carnation Dr"}]}, "t17PMLKLxrAJywfg9MI7Hw": {"lat": 1.355020640798254, "lng": 103.8293060378017, "links": [{"pano_id": "QgqFJgsSk4xXHpfLCFsjkw", "heading": 325.91177, "description": "Orchid Dr"}, {"pano_id": "gN3T3s2b-dddeeQ1LGkM8w", "heading": 150.83908, "description": "Orchid Dr"}]}, "Clqw_ElJcAV3Mzq-CmmnMg": {"lat": 1.3539762590439, "lng": 103.8291678789486, "links": [{"pano_id": "rv7TWX71KW_RLFWWzsgtXQ", "heading": 12.85296, "description": "Gladiola Dr"}, {"pano_id": "rru3qFgY4_YAqXnR_jA_nQ", "heading": 215.77309, "description": "Jasmine Rd"}, {"pano_id": "EdOCZ2lq4xbWcd5D6N7UTQ", "heading": 36.390953, "description": "Jasmine Rd"}, {"pano_id": "_8NASFKMssGDq9-phACLNA", "heading": 37.96, "distance": 16.66, "virtual": true}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 359.94, "distance": 17.83, "virtual": true}]}, "QgqFJgsSk4xXHpfLCFsjkw": {"lat": 1.355096685698886, "lng": 103.8292545599027, "links": [{"pano_id": "t17PMLKLxrAJywfg9MI7Hw", "heading": 145.91176, "description": "Orchid Dr"}, {"pano_id": "9EHstexYYyaag30sajZ5Uw", "heading": 322.71075, "description": "Orchid Dr"}]}, "w5gm1Z6096n6dw8yH9ctZg": {"lat": 1.356158866351643, "lng": 103.8291906105812, "links": [{"pano_id": "qF2WX5T5yR21TeeBdYbDUQ", "heading": 314.69534, "description": "Gardenia Rd"}, {"pano_id": "P-zU12MwgOTfPwJoqUwHyw", "heading": 134.7278, "description": "Gardenia Rd"}, {"pano_id": "vOdSLFeSkbDhJd_PGg0dJQ", "heading": 308.37, "distance": 14.08, "virtual": true}]}, "uDpv5kwdn8vfdK6GvMmlxQ": {"lat": 1.355762152508156, "lng": 103.8291581494572, "links": [{"pano_id": "yeEsVkg6OXvG8cuZmDACCQ", "heading": 132.09235, "description": "Carnation Dr"}, {"pano_id": "lNwr-FvQ1WzQjJyYszR4yQ", "heading": 307.88284, "description": "Carnation Dr"}]}, "rv7TWX71KW_RLFWWzsgtXQ": {"lat": 1.354051830645198, "lng": 103.829185126685, "links": [{"pano_id": "Clqw_ElJcAV3Mzq-CmmnMg", "heading": 192.85297, "description": "Jasmine Rd"}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 348.38974, "description": "Gladiola Dr"}, {"pano_id": "_8NASFKMssGDq9-phACLNA", "heading": 60.4, "distance": 9.58, "virtual": true}, {"pano_id": "EdOCZ2lq4xbWcd5D6N7UTQ", "heading": 153.39, "distance": 3.86, "virtual": true}]}, "rru3qFgY4_YAqXnR_jA_nQ": {"lat": 1.353904464318108, "lng": 103.8291161357524, "links": [{"pano_id": "pRAXK7nWvKmZQPbsSI3Hug", "heading": 215.80069, "description": "Jasmine Rd"}, {"pano_id": "Clqw_ElJcAV3Mzq-CmmnMg", "heading": 35.77309, "description": "Jasmine Rd"}, {"pano_id": "EdOCZ2lq4xbWcd5D6N7UTQ", "heading": 36.01, "distance": 15.99, "virtual": true}]}, "pRAXK7nWvKmZQPbsSI3Hug": {"lat": 1.353827470602219, "lng": 103.8290605892322, "links": [{"pano_id": "rru3qFgY4_YAqXnR_jA_nQ", "heading": 35.800682, "description": "Jasmine Rd"}, {"pano_id": "PuMPX4LpU4KFVmtQG1rs6Q", "heading": 215.7789, "description": "Jasmine Rd"}]}, "9EHstexYYyaag30sajZ5Uw": {"lat": 1.355166589870922, "lng": 103.8292013130243, "links": [{"pano_id": "QgqFJgsSk4xXHpfLCFsjkw", "heading": 142.71075, "description": "Orchid Dr"}, {"pano_id": "LuaKsNDWyemvUeWMmBdiqg", "heading": 319.179, "description": "Orchid Dr"}]}, "qF2WX5T5yR21TeeBdYbDUQ": {"lat": 1.356214772274726, "lng": 103.8291340910815, "links": [{"pano_id": "vOdSLFeSkbDhJd_PGg0dJQ", "heading": 297.9509, "description": "Gardenia Rd"}, {"pano_id": "w5gm1Z6096n6dw8yH9ctZg", "heading": 134.69533, "description": "Gardenia Rd"}]}, "ZUB1N55o58NfledNhDpP8w": {"lat": 1.354136616008847, "lng": 103.8291677020487, "links": [{"pano_id": "9rVOQTD7MvyHsNJnV7AZgA", "heading": 347.4237, "description": "Gladiola Dr"}, {"pano_id": "rv7TWX71KW_RLFWWzsgtXQ", "heading": 168.38972, "description": "Gladiola Dr"}, {"pano_id": "XYoPSYvfGtVAdXI_rPZAJQ", "heading": 79.3, "distance": 16.87, "virtual": true}, {"pano_id": "_8NASFKMssGDq9-phACLNA", "heading": 114.58, "distance": 11.29, "virtual": true}, {"pano_id": "EdOCZ2lq4xbWcd5D6N7UTQ", "heading": 164.11, "distance": 13.39, "virtual": true}, {"pano_id": "Clqw_ElJcAV3Mzq-CmmnMg", "heading": 179.94, "distance": 17.83, "virtual": true}]}, "PuMPX4LpU4KFVmtQG1rs6Q": {"lat": 1.353702685036644, "lng": 103.8289706357596, "links": [{"pano_id": "SJlzW4lAonR3DD58VDcsnQ", "heading": 235.63818, "description": "Marigold Dr"}, {"pano_id": "pRAXK7nWvKmZQPbsSI3Hug", "heading": 35.778904, "description": "Jasmine Rd"}]}, "vOdSLFeSkbDhJd_PGg0dJQ": {"lat": 1.356237481229816, "lng": 103.8290912813353, "links": [{"pano_id": "qF2WX5T5yR21TeeBdYbDUQ", "heading": 117.95091, "description": "Gardenia Rd"}, {"pano_id": "w5gm1Z6096n6dw8yH9ctZg", "heading": 128.37, "distance": 14.08, "virtual": true}]}, "LuaKsNDWyemvUeWMmBdiqg": {"lat": 1.355236607931674, "lng": 103.8291408132743, "links": [{"pano_id": "9EHstexYYyaag30sajZ5Uw", "heading": 139.17897, "description": "Orchid Dr"}]}, "9rVOQTD7MvyHsNJnV7AZgA": {"lat": 1.354228571955459, "lng": 103.8291471816677, "links": [{"pano_id": "n6tPrNIkQxhHwaBubpaLHw", "heading": 346.67, "description": "Gladiola Dr"}, {"pano_id": "ZUB1N55o58NfledNhDpP8w", "heading": 167.4237, "description": "Gladiola Dr"}]}, "tJ740oqZNgPd9W9pfqyz4Q": {"lat": 1.356267500348179, "lng": 103.829058289536, "links": [{"pano_id": "msb8cP-pMi5kTvxC5lnQhQ", "heading": 307.4936, "description": "Jasmine Rd"}, {"pano_id": "qF2WX5T5yR21TeeBdYbDUQ", "heading": 124.83026, "description": "Gardenia Rd"}, {"pano_id": "qQA1R4VaR5xjikiA4eUVNA", "heading": 265.61737, "description": "Gardenia Rd"}, {"pano_id": "vOdSLFeSkbDhJd_PGg0dJQ", "heading": 132.31, "distance": 4.96, "virtual": true}]}, "n6tPrNIkQxhHwaBubpaLHw": {"lat": 1.354299478440972, "lng": 103.8291303761856, "links": [{"pano_id": "9rVOQTD7MvyHsNJnV7AZgA", "heading": 166.67, "description": "Gladiola Dr"}]}, "SJlzW4lAonR3DD58VDcsnQ": {"lat": 1.353658005535461, "lng": 103.828905271376, "links": [{"pano_id": "PuMPX4LpU4KFVmtQG1rs6Q", "heading": 55.638184, "description": "Jasmine Rd"}]}};
+        const targetPanos = ["Wl_pZlwPlgN2yq9OdwGEDg"];
+        const spawnPoints = ["yeEsVkg6OXvG8cuZmDACCQ", "vOdSLFeSkbDhJd_PGg0dJQ", "EdOCZ2lq4xbWcd5D6N7UTQ"];
+        
+        // Initialize map
+        const map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Markers and lines
+        const markers = {};
+        const connectionLines = [];
+        let selectedPano = null;
+        
+        // Create markers
+        const bounds = [];
+        Object.entries(panoData).forEach(([panoId, data]) => {
+            const lat = data.lat;
+            const lng = data.lng;
+            bounds.push([lat, lng]);
+            
+            // Determine marker style
+            let color = '#95a5a6';  // Default gray
+            let radius = 6;
+            let zIndex = 100;
+            
+            if (targetPanos.includes(panoId)) {
+                color = '#e74c3c';  // Red for target
+                radius = 10;
+                zIndex = 300;
+            } else if (spawnPoints.includes(panoId)) {
+                color = '#3498db';  // Blue for spawn
+                radius = 8;
+                zIndex = 200;
+            }
+            
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#333',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.panoId = panoId;
+            marker.originalColor = color;
+            marker.on('click', () => selectPano(panoId));
+            
+            markers[panoId] = marker;
+        });
+        
+        // Fit map to bounds
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+        
+        // Select panorama function
+        function selectPano(panoId) {
+            // Clear previous selection
+            clearSelection();
+            
+            selectedPano = panoId;
+            const data = panoData[panoId];
+            const links = data.links || [];
+            
+            // Highlight connected panos
+            links.forEach(link => {
+                const targetId = link.pano_id;
+                if (markers[targetId]) {
+                    markers[targetId].setStyle({ fillColor: '#2ecc71' });
+                    
+                    // Draw connection line
+                    const line = L.polyline([
+                        [data.lat, data.lng],
+                        [panoData[targetId].lat, panoData[targetId].lng]
+                    ], {
+                        color: link.virtual ? '#e67e22' : '#27ae60',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: link.virtual ? '5, 5' : null
+                    }).addTo(map);
+                    connectionLines.push(line);
+                }
+            });
+            
+            // Update info panel
+            const infoDiv = document.getElementById('selected-info');
+            const virtualCount = links.filter(l => l.virtual).length;
+            const nativeCount = links.length - virtualCount;
+            
+            let typeStr = '';
+            if (targetPanos.includes(panoId)) {
+                typeStr = ' (Target)';
+            } else if (spawnPoints.includes(panoId)) {
+                typeStr = ' (Spawn)';
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Selected:</strong> ${panoId.substring(0, 20)}...${typeStr}<br>
+                <strong>Connections:</strong> ${links.length}<br>
+                <span style="color: #27ae60;">● Native: ${nativeCount}</span><br>
+                <span style="color: #e67e22;">○ Virtual: ${virtualCount}</span>
+            `;
+        }
+        
+        // Clear selection
+        function clearSelection() {
+            // Reset marker colors
+            Object.entries(markers).forEach(([panoId, marker]) => {
+                marker.setStyle({ fillColor: marker.originalColor });
+            });
+            
+            // Remove connection lines
+            connectionLines.forEach(line => map.removeLayer(line));
+            connectionLines.length = 0;
+        }
+        
+        // Click on map to deselect
+        map.on('click', (e) => {
+            if (e.originalEvent.target === map._container) {
+                clearSelection();
+                document.getElementById('selected-info').innerHTML = 'Click a point to see connections';
+            }
+        });
+    </script>
+</body>
+</html>

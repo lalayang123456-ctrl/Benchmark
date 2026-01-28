@@ -1,0 +1,61 @@
+{
+  "task_id": "nav_0113_target_20260124_0340_29",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_kfc_20260124_034002",
+  "spawn_point": "a13ooouZN_KLRyy74Wi22w",
+  "spawn_heading": 19.3,
+  "description": "Navigate to PostFinance Store Lausanne. The route begins by proceeding straight into the pedestrian street located between 'Assador' and 'Maniak'. Continue straight for approximately 95 meters, passing 'Tacos' and 'Crisp' on the right. The path ends near 'Wawa's Asian Kitchen' and 'Redwood', with the final right turn mentioned in the text not visible in the images.",
+  "ground_truth": {
+    "target_name": "PostFinance Store Lausanne",
+    "target_pano_id": "P-G7qrPo9u_eOPjE56m1BA",
+    "optimal_distance_meters": 123,
+    "route_description": "left→right"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "P-G7qrPo9u_eOPjE56m1BA"
+  ],
+  "max_steps": 14,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "a13ooouZN_KLRyy74Wi22w",
+      "heading": 19.3
+    },
+    {
+      "step_index": 1,
+      "pano_id": "62ViG28dM8RqsoYbk0EHlw",
+      "heading": 19.3
+    },
+    {
+      "step_index": 2,
+      "pano_id": "3pYdYDa1ZQ1ZMbHHV3tyvA",
+      "heading": 258.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "1WisMhFGFZFE0peFzR_Qbg",
+      "heading": 287.9
+    },
+    {
+      "step_index": 4,
+      "pano_id": "Ik3ODFMyw3YuilJoAKvbcg",
+      "heading": 287.9
+    },
+    {
+      "step_index": 5,
+      "pano_id": "C5H9DAHg-njsygY8ExkC_Q",
+      "heading": 288.0
+    },
+    {
+      "step_index": 6,
+      "pano_id": "P-G7qrPo9u_eOPjE56m1BA",
+      "heading": 288.0
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight down the pedestrian street [95m]",
+  "agent_concise_description": "The route begins by proceeding straight into the pedestrian street located between 'Assador' and 'Maniak'. Continue straight for approximately 95 meters, passing 'Tacos' and 'Crisp' on the right. The path ends near 'Wawa's Asian Kitchen' and 'Redwood', with the final right turn mentioned in the text not visible in the images."
+}

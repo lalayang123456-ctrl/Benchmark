@@ -1,0 +1,111 @@
+{
+  "task_id": "nav_1092_target_20260125_0340_2",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_restaurant_20260125_034000",
+  "spawn_point": "iYBKgMiDKm_Y_S1SXjgYgA",
+  "spawn_heading": 315.7,
+  "description": "Navigate to The Cheesecake Factory. Head straight on Larimer St towards the intersection with 17th St. Turn left onto 17th St and continue forward. The Cheesecake Factory will be on the left side of the street.",
+  "ground_truth": {
+    "target_name": "The Cheesecake Factory",
+    "target_pano_id": "D1H1452jFbrw_lB2mzTIgw",
+    "optimal_distance_meters": 155,
+    "route_description": "left"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "D1H1452jFbrw_lB2mzTIgw"
+  ],
+  "max_steps": 34,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "iYBKgMiDKm_Y_S1SXjgYgA",
+      "heading": 315.7
+    },
+    {
+      "step_index": 1,
+      "pano_id": "nnh7hvMmCuzMMvYSzipdNw",
+      "heading": 315.7
+    },
+    {
+      "step_index": 2,
+      "pano_id": "-opXzO_fEJ2rZc7Ei8eQQw",
+      "heading": 315.7
+    },
+    {
+      "step_index": 3,
+      "pano_id": "xZa0dS4KoMlWusKNTuloqA",
+      "heading": 345.4
+    },
+    {
+      "step_index": 4,
+      "pano_id": "BsyRnejjJ6XypC4mG-kvOA",
+      "heading": 225.9
+    },
+    {
+      "step_index": 5,
+      "pano_id": "PB1k4C3SBGF5r5p4A7Snmw",
+      "heading": 225.7
+    },
+    {
+      "step_index": 6,
+      "pano_id": "n76b5_eXt9_rhz38azh-ww",
+      "heading": 225.8
+    },
+    {
+      "step_index": 7,
+      "pano_id": "HNqsZzKfyCb8TVf9vqzUvQ",
+      "heading": 225.8
+    },
+    {
+      "step_index": 8,
+      "pano_id": "GD-ltFc8F-Av8LUpi0AxWQ",
+      "heading": 225.8
+    },
+    {
+      "step_index": 9,
+      "pano_id": "ukvwQtCfN0x1vXMbtEV5Ew",
+      "heading": 225.4
+    },
+    {
+      "step_index": 10,
+      "pano_id": "J-Ao44gJnoSlwfGeAeXtWg",
+      "heading": 225.2
+    },
+    {
+      "step_index": 11,
+      "pano_id": "9GWHXS0qFkUHlUZuUIlZNA",
+      "heading": 225.3
+    },
+    {
+      "step_index": 12,
+      "pano_id": "Z08s54AMHCY09kdEHRQAYQ",
+      "heading": 225.2
+    },
+    {
+      "step_index": 13,
+      "pano_id": "4vs92O-4NKhlWOKQamgbVQ",
+      "heading": 225.3
+    },
+    {
+      "step_index": 14,
+      "pano_id": "SAoDKmhPGdKKE7RJ23IWbA",
+      "heading": 225.3
+    },
+    {
+      "step_index": 15,
+      "pano_id": "LIdBPEKQWN54amQPZgRIhQ",
+      "heading": 225.3
+    },
+    {
+      "step_index": 16,
+      "pano_id": "D1H1452jFbrw_lB2mzTIgw",
+      "heading": 225.3
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head straight [28m] -> Turn Left [127m]",
+  "agent_concise_description": "Head straight on Larimer St towards the intersection with 17th St. Turn left onto 17th St and continue forward. The Cheesecake Factory will be on the left side of the street."
+}
