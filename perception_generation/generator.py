@@ -22,8 +22,8 @@ load_dotenv(env_path)
 
 from .config import TASKS_DIR, WHITELIST_PATH, STATE_PATH, PANO_METADATA_PATH, MAX_STEPS, MAX_PANOS_PER_WHITELIST
 from .places_searcher import PlacesSearcher, POI
-from ..data_generator.whitelist_generator import WhitelistGenerator
-from ..cache.metadata_cache import metadata_cache as sqlite_cache
+from data_generator.whitelist_generator import WhitelistGenerator
+from cache.metadata_cache import metadata_cache as sqlite_cache
 
 logger = logging.getLogger(__name__)
 

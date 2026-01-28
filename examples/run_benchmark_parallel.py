@@ -17,10 +17,16 @@ import threading
 
 # Configuration
 AGENTS = [
+    "gpt-5.2",
+    "claude-opus-4-5-20251101-thinking",
+    "gpt-4o",
+    "qwen3-vl-235b-a22b-instruct",
+    "qwen3-vl-235b-a22b-thinking",
     "gemini-2.5-pro-thinking",
-    "doubao-seed-1-8-251228-thinking"
+    "doubao-seed-1-8-251228-thinking",
+    "glm-4.6v"
 ]
-TASKS_DIR = project_root / "tasks_nav"
+TASKS_DIR = project_root / "tasks_test_small"
 LOGS_DIR = project_root / "logs"
 
 # Global state for progress tracking
@@ -36,6 +42,8 @@ def get_tasks():
     tasks.extend(list(TASKS_DIR.glob("vis_*.json")))
     tasks.extend(list(TASKS_DIR.glob("nav_*.json")))
     tasks.extend(list(TASKS_DIR.glob("height_*.json")))
+    tasks.extend(list(TASKS_DIR.glob("dis_*.json")))
+    # tasks.extend(list(TASKS_DIR.glob("angle_*.json")))
     
     tasks = sorted(tasks)
     

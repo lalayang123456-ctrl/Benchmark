@@ -1,0 +1,41 @@
+{
+  "task_id": "dis_0054_20260128_163350",
+  "task_type": "perception_distance",
+  "description": "Estimate the distance between Caff\u00e8 Nero and Five Guys Burgers and Fries Sheffield The Moor in meters.",
+  "spawn_pano_id": "aEX2pyhSVVim0sF_pYhkQA",
+  "spawn_heading": 41.6,
+  "pois": [
+    {
+      "name": "Caff\u00e8 Nero",
+      "type": "coffee_shop",
+      "lat": 53.379570099999995,
+      "lng": -1.4691182,
+      "address": "Unit 2a, 121 St Paul's Pl, Norfolk St, Sheffield City Centre, Sheffield S1 2JX, UK",
+      "pano_id": "RNGdUTpXaPhwsugduXy8yA"
+    },
+    {
+      "name": "Five Guys Burgers and Fries Sheffield The Moor",
+      "type": "hamburger_restaurant",
+      "lat": 53.377613999999994,
+      "lng": -1.4718509,
+      "address": "3 The Moor, Sheffield City Centre, Sheffield S1 4PF, UK",
+      "pano_id": "GX0IbSgdylWLZCZZxsGo_g"
+    }
+  ],
+  "geofence_id": "list_perception_1769589230",
+  "ground_truth": {
+    "distance_between_pois_m": 283.1,
+    "bearing_a_to_b_deg": 219.8,
+    "bearing_b_to_a_deg": 39.8
+  },
+  "answer": "",
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "metadata": {
+    "created_at": "2026-01-28T16:33:50.224076",
+    "spawn_location": {
+      "lat": 53.37746954036457,
+      "lng": -1.472246707679393
+    }
+  }
+}

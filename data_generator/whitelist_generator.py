@@ -261,7 +261,7 @@ class WhitelistGenerator:
                     continue
 
                 # NEW: Date filtering (Gen 4 camera check)
-                # Skip panoramas older than 2018 (Gen 4 rollout complete by 2018)
+                # Skip panoramas older than 2020 (Gen 4 rollout complete by 2020)
                 capture_date = meta.get("date", "")
                 if capture_date:
                     try:

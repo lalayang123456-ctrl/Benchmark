@@ -34,13 +34,16 @@ You must strictly follow this json format for every response:
 ```
 
 
-### CURRENT MISSION: NAVIGATION
-**Goal**: Navigate to the destination described in the instruction.
-**Instruction**: "{{instruction}}"
+### CURRENT MISSION: DISTANCE ESTIMATION
+**Goal**: Estimate the straight-line physical distance (in meters) between **Target A** and **Target B**.
+**Targets**:
+* Target A: "{{target_a_description}}"
+* Target B: "{{target_b_description}}"
 
 **Task Rules**:
-1.  Explore the environment using `ROTATION` and `MOVE` commands.
-2.  When you believe you have reached the destination described in the instruction, execute the stop command.
+1.  You may rotate or move slightly to identify both targets in the environment.
+2.  Estimate the geodesic distance between them based on visual depth and scale.
 
 **Output Requirement**:
-* Upon arrival: `STOP("ARRIVED")`
+* Output the estimated distance (number only): `STOP(distance_in_meters)`
+    * Example: `STOP(15.5)`
