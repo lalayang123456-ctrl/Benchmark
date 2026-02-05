@@ -22,6 +22,9 @@ py360convert>=0.1.0
 requests>=2.31.0
 aiohttp>=3.9.0
 
+# OpenAI API
+openai>=1.0.0
+
 # Selenium for Maps JS API
 selenium>=4.15.0
 webdriver-manager>=4.0.1

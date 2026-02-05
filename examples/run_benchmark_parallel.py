@@ -11,18 +11,18 @@ current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent
 sys.path.insert(0, str(project_root))
 
+from dotenv import load_dotenv
 from examples.vln_agent import VLNAgent, AgentConfig
 
 import threading
 
+# Load environment variables from .env file
+load_dotenv(project_root / ".env")
+
 # Configuration
 AGENTS = [
-    "gpt-5.2",
-    "claude-opus-4-5-20251101-thinking",
-    "gpt-4o",
-    "qwen3-vl-235b-a22b-instruct",
-    "qwen3-vl-235b-a22b-thinking",
-    "gemini-2.5-pro-thinking"
+    "gemini-2.5-pro-thinking",
+    "gemini-3-pro-preview"
 ]
 TASKS_DIR = project_root / "tasks_test_small"
 LOGS_DIR = project_root / "logs"
@@ -53,14 +53,37 @@ def get_tasks():
     # Return task IDs
     return [t.stem for t in tasks]
 
+def get_agent_config(agent_name: str) -> AgentConfig:
+    """Get agent-specific configuration from config/agent_configs.json.
+    
+    Falls back to default environment variables if agent not found in config file.
+    """
+    config = AgentConfig.from_env()  # Use defaults as fallback
+    
+    # Load agent configs from JSON file
+    agent_configs_path = project_root / "config" / "agent_configs.json"
+    try:
+        if agent_configs_path.exists():
+            with open(agent_configs_path, 'r', encoding='utf-8') as f:
+                agent_configs = json.load(f)
+            if agent_name in agent_configs:
+                agent_cfg = agent_configs[agent_name]
+                config.api_base_url = agent_cfg.get("api_base_url", config.api_base_url)
+                config.api_key = agent_cfg.get("api_key", config.api_key)
+    except (json.JSONDecodeError, IOError) as e:
+        with print_lock:
+            print(f"Warning: Failed to load agent_configs.json: {e}")
+    
+    config.model_name = agent_name
+    return config
+
 def run_single_task(agent_name: str, task_id: str):
     """Run a single task with specific agent."""
     with print_lock:
         print(f"[{agent_name}] Starting task: {task_id}")
     
-    # Configure agent
-    config = AgentConfig.from_env()
-    config.model_name = agent_name
+    # Configure agent with per-agent settings
+    config = get_agent_config(agent_name)
     # Ensure URL is correct - assuming default localhost:8000
     if not config.benchmark_url:
         config.benchmark_url = "http://localhost:8000"

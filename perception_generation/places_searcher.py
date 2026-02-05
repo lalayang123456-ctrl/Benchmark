@@ -9,6 +9,7 @@ import os
 import asyncio
 import aiohttp
 import logging
+import math
 from pathlib import Path
 from typing import List, Optional
 from dataclasses import dataclass
@@ -54,6 +55,18 @@ class PlacesSearcher:
         self.max_retries = 3
         self.retry_delay = 2.0
     
+    @staticmethod
+    def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+        """Calculate distance between two points in meters using Haversine formula."""
+        R = 6371000  # Earth's radius in meters
+        phi1, phi2 = math.radians(lat1), math.radians(lat2)
+        delta_phi = math.radians(lat2 - lat1)
+        delta_lambda = math.radians(lng2 - lng1)
+        
+        a = math.sin(delta_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        return R * c
+    
     async def search_by_name(
         self,
         lat: float,
@@ -91,7 +104,7 @@ class PlacesSearcher:
                     "radius": radius
                 }
             },
-            "maxResultCount": 5
+            "maxResultCount": 10  # Get more results to filter
         }
         
         for attempt in range(self.max_retries + 1):
@@ -103,25 +116,33 @@ class PlacesSearcher:
                             places = data.get("places", [])
                             
                             if not places:
-                                logger.info(f"  [-] '{name}' not found within {radius}m")
+                                logger.info(f"  [-] '{name}' not found nearby")
                                 return None
                             
-                            # Return first (most relevant) result
-                            place = places[0]
-                            location = place.get("location", {})
-                            display_name = place.get("displayName", {})
+                            # Find first result within radius
+                            for place in places:
+                                location = place.get("location", {})
+                                place_lat = location.get("latitude", 0)
+                                place_lng = location.get("longitude", 0)
+                                
+                                # Check if within radius
+                                distance = self._haversine_distance(lat, lng, place_lat, place_lng)
+                                if distance <= radius:
+                                    display_name = place.get("displayName", {})
+                                    poi = POI(
+                                        place_id=place.get("id", ""),
+                                        name=display_name.get("text", name),
+                                        lat=place_lat,
+                                        lng=place_lng,
+                                        address=place.get("formattedAddress", ""),
+                                        place_type=place.get("primaryType", "")
+                                    )
+                                    logger.info(f"  [+] Found '{poi.name}' at ({poi.lat:.6f}, {poi.lng:.6f}) - {distance:.0f}m from center")
+                                    return poi
                             
-                            poi = POI(
-                                place_id=place.get("id", ""),
-                                name=display_name.get("text", name),
-                                lat=location.get("latitude", 0),
-                                lng=location.get("longitude", 0),
-                                address=place.get("formattedAddress", ""),
-                                place_type=place.get("primaryType", "")
-                            )
-                            
-                            logger.info(f"  [+] Found '{poi.name}' at ({poi.lat:.6f}, {poi.lng:.6f})")
-                            return poi
+                            # No results within radius
+                            logger.info(f"  [-] '{name}' found but outside {radius}m radius")
+                            return None
                         else:
                             error_text = await response.text()
                             logger.warning(f"Places API error (attempt {attempt + 1}): {response.status} - {error_text}")

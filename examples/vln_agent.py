@@ -71,7 +71,7 @@ class AgentConfig:
     # Agent Behavior
     max_history_turns: int = 1000  # Number of conversation turns to keep
     temperature: float = 0.3
-    max_tokens: int = 500
+    max_tokens: int = 16384
     
     # Retry Configuration
     max_retries: int = 3
@@ -127,10 +127,31 @@ class VLNAgent:
         # System prompt for VLN task
         self.system_prompt = self._build_system_prompt()
     
-    def _build_system_prompt(self) -> str:
-        """Build the system prompt for the VLN agent by loading from external file."""
+    def _build_system_prompt(self, task_id: Optional[str] = None) -> str:
+        """Build the system prompt for the VLN agent by loading from external file.
+        
+        Args:
+            task_id: Optional task ID to determine which prompt file to load.
+                     - height_* tasks -> system_prompt_height.txt
+                     - dis_* tasks -> system_prompt_dis.txt
+                     - angle_* tasks -> system_prompt_angle.txt
+                     - vis_* or nav_* tasks -> system_prompt_nav.txt
+                     - others -> system_prompt.txt (default)
+        """
+        # Determine prompt filename based on task_id prefix
+        prompt_filename = "system_prompt.txt"  # default
+        if task_id:
+            if task_id.startswith("height_"):
+                prompt_filename = "system_prompt_height.txt"
+            elif task_id.startswith("dis_"):
+                prompt_filename = "system_prompt_dis.txt"
+            elif task_id.startswith("angle_"):
+                prompt_filename = "system_prompt_angle.txt"
+            elif task_id.startswith("vis_") or task_id.startswith("nav_"):
+                prompt_filename = "system_prompt_nav.txt"
+        
         # Try to load from external file
-        system_prompt_path = Path(__file__).parent.parent / "config" / "system_prompt.txt"
+        system_prompt_path = Path(__file__).parent.parent / "config" / prompt_filename
         
         if system_prompt_path.exists():
             try:
@@ -232,6 +253,9 @@ IMPORTANT: Respond ONLY with valid JSON, no additional text."""
             
         self.session_id = session.session_id
         
+        # Rebuild system prompt based on task type
+        self.system_prompt = self._build_system_prompt(task_id)
+        
         # Log session start
         # session_logger.log_session_start(session)
         
@@ -249,7 +273,7 @@ IMPORTANT: Respond ONLY with valid JSON, no additional text."""
         except Exception as e:
             pass # print(f"Error generating initial observation: {e}")
             
-        # Reset conversation history
+        # Reset conversation history with task-specific system prompt
         self.messages = [{"role": "system", "content": self.system_prompt}]
         self.step_count = 0
         
@@ -436,13 +460,40 @@ Analyze the image and decide your next action."""
                 json_str = json_str.split("```json")[1].split("```")[0]
             elif "```" in json_str:
                 parts = json_str.split("```")
-                if len(parts) >= 2:
-                    json_str = parts[1]
+                # Find the part that looks like JSON
+                for part in parts:
+                    if "{" in part and "}" in part:
+                        json_str = part
+                        break
             
-            # Remove any non-json text before/after braces if needed
-            json_str = json_str.strip()
+            # Remove any non-json text before/after braces
+            # Find the LAST '}' which is definitely the end of the main JSON object
+            end_idx = json_str.rfind('}')
+            if end_idx == -1:
+                 raise ValueError("No JSON object found (missing closing brace)")
             
-            decision = json.loads(json_str)
+            # Iterate through all '{' positions to find the valid start
+            # This handles cases where text contains braces (e.g. LaTeX \frac{a}{b})
+            valid_json = None
+            current_idx = 0
+            while True:
+                start_idx = json_str.find('{', current_idx)
+                if start_idx == -1 or start_idx > end_idx:
+                    break
+                
+                candidate = json_str[start_idx : end_idx + 1]
+                try:
+                    decision = json.loads(candidate)
+                    valid_json = decision
+                    break # Found valid JSON!
+                except json.JSONDecodeError:
+                    # Move past this '{' and try the next one
+                    current_idx = start_idx + 1
+            
+            if valid_json is None:
+                 raise ValueError("Could not find valid JSON object in response")
+            
+            decision = valid_json
             
             # Support both uppercase and lowercase keys provided by different prompts
             thought = decision.get("THOUGHT") or decision.get("thought", "")
@@ -503,18 +554,18 @@ Analyze the image and decide your next action."""
                 
         except Exception as e:
             print(f"[{self.config.model_name}] Failed to parse response: {e}")
-            print(f"[{self.config.model_name}] Response was: {repr(response_text)}")
+            print(f"[{self.config.model_name}] Response was: {repr(response_text)[:500]}...")
             
-            # Attempt to repair JSON using GPT-4o
-            # print(f"[{self.config.model_name}] Attempting to repair JSON with GPT-4o...")
-            # repaired_json = self._repair_json_with_gpt4o(response_text)
+            # Attempt to repair JSON using GPT-4o-mini
+            print(f"[{self.config.model_name}] Attempting to repair JSON with GPT-4o-mini...")
+            repaired_json = self._repair_json_with_gpt4o(response_text)
             
-            # if repaired_json:
-            #     try:
-            #         # Try parsing the repaired JSON
-            #         return self._parse_repaired_json(repaired_json)
-            #     except Exception as repair_e:
-            #         print(f"[{self.config.model_name}] Repair also failed: {repair_e}")
+            if repaired_json:
+                try:
+                    # Try parsing the repaired JSON
+                    return self._parse_repaired_json(repaired_json)
+                except Exception as repair_e:
+                    print(f"[{self.config.model_name}] Repair also failed: {repair_e}")
             
             # Fallback: stay in place with current orientation
             current_heading = observation.get("heading", 0)
@@ -529,7 +580,7 @@ Analyze the image and decide your next action."""
     
     def _repair_json_with_gpt4o(self, malformed_response: str) -> Optional[str]:
         """
-        Use GPT-4o to repair a malformed JSON response.
+        Use GPT-4o-mini to repair a malformed JSON response.
         
         Args:
             malformed_response: The original malformed response text
@@ -562,28 +613,28 @@ Malformed response to fix:
 """
         
         try:
-            # Create a separate client for GPT-4o repair
+            # Create a separate client for GPT-4o-mini repair
             repair_client = OpenAI(
                 base_url=self.config.api_base_url,
                 api_key=self.config.api_key
             )
             
             response = repair_client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",  # Changed from gpt-4o to gpt-4o-mini for cost efficiency
                 messages=[
                     {"role": "system", "content": repair_prompt},
-                    {"role": "user", "content": malformed_response}
+                    {"role": "user", "content": malformed_response[:2000]}  # Truncate to avoid token limits
                 ],
                 max_tokens=500,
                 temperature=0.0
             )
             
             repaired = response.choices[0].message.content.strip()
-            print(f"[GPT-4o Repair] Repaired response: {repaired}")
+            print(f"[GPT-4o-mini Repair] Repaired response: {repaired[:200]}...")
             return repaired
             
         except Exception as e:
-            print(f"[GPT-4o Repair] Failed to call repair API: {e}")
+            print(f"[GPT-4o-mini Repair] Failed to call repair API: {e}")
             return None
     
     def _parse_repaired_json(self, repaired_text: str) -> dict:
@@ -689,6 +740,15 @@ Malformed response to fix:
                 else:
                     assistant_message = raw_content.strip() if raw_content else ""
                 # print(f"\n[{self.config.model_name}] Response:\n{assistant_message}\n")
+                
+                # Debug logging for empty responses
+                if not assistant_message:
+                    print(f"[{self.config.model_name}] Warning: Empty response received.")
+                    print(f"[{self.config.model_name}] Full Response Object: {response}")
+                    try:
+                        print(f"[{self.config.model_name}] Finish Reason: {response.choices[0].finish_reason}")
+                    except:
+                        pass
                 
                 # Add assistant response to history
                 self.messages.append({"role": "assistant", "content": assistant_message})

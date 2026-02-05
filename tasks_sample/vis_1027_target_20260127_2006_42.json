@@ -1,0 +1,106 @@
+{
+  "task_id": "nav_1027_target_20260125_0332_4",
+  "task_type": "navigation_to_poi",
+  "geofence": "list_nav_transit_20260125_033221",
+  "spawn_point": "MNl-z66MX2N8epiFNYvsrw",
+  "spawn_heading": 7.5,
+  "description": "Head straight along the road, starting from under the overpass. Keep the canal and the prominent BNI building on your left side, continuing forward past the bus stop signs on the left sidewalk.",
+  "ground_truth": {
+    "target_name": "Perintis Kemerdekaan",
+    "target_pano_id": "_Nocdr2ozdOv_oYm_wwdTA",
+    "optimal_distance_meters": 147,
+    "route_description": "straight"
+  },
+  "answer": "",
+  "target_pano_ids": [
+    "_Nocdr2ozdOv_oYm_wwdTA"
+  ],
+  "max_steps": 32,
+  "max_time_seconds": null,
+  "visual_path": [
+    {
+      "step_index": 0,
+      "pano_id": "MNl-z66MX2N8epiFNYvsrw",
+      "heading": 7.5
+    },
+    {
+      "step_index": 1,
+      "pano_id": "giTp8DSfqybXThZXkuGwMA",
+      "heading": 7.5
+    },
+    {
+      "step_index": 2,
+      "pano_id": "oq-wI5W--uADAXLk-_D41w",
+      "heading": 7.5
+    },
+    {
+      "step_index": 3,
+      "pano_id": "eSij9_t6Ae4f2sSeuhLYpg",
+      "heading": 7.5
+    },
+    {
+      "step_index": 4,
+      "pano_id": "9PHT9Z-3KrzWQWvc4Um5FQ",
+      "heading": 7.5
+    },
+    {
+      "step_index": 5,
+      "pano_id": "ErppnkaeuoKpYjBBZwEbUg",
+      "heading": 7.5
+    },
+    {
+      "step_index": 6,
+      "pano_id": "LUIQnkTxOkQ93kSY8SmOYA",
+      "heading": 11.7
+    },
+    {
+      "step_index": 7,
+      "pano_id": "2_3cR5-B_FkObr0VByqhIQ",
+      "heading": 19.1
+    },
+    {
+      "step_index": 8,
+      "pano_id": "cwmFEb3oO0DWf9wqKMdrHQ",
+      "heading": 33.5
+    },
+    {
+      "step_index": 9,
+      "pano_id": "9fbatalzectqhW7SvEn3yA",
+      "heading": 41.9
+    },
+    {
+      "step_index": 10,
+      "pano_id": "iKJ0RblgjAfrdg2wFqK2OQ",
+      "heading": 63.9
+    },
+    {
+      "step_index": 11,
+      "pano_id": "dbK19-wQk0yJJfUr-umIUQ",
+      "heading": 63.4
+    },
+    {
+      "step_index": 12,
+      "pano_id": "B-cSgiGdUhZBDBKpcVgwBw",
+      "heading": 63.1
+    },
+    {
+      "step_index": 13,
+      "pano_id": "-pzP9WqZFIcIxzSXinnsMQ",
+      "heading": 65.2
+    },
+    {
+      "step_index": 14,
+      "pano_id": "WwVQkccIanaKSpf9C4mbeQ",
+      "heading": 65.1
+    },
+    {
+      "step_index": 15,
+      "pano_id": "_Nocdr2ozdOv_oYm_wwdTA",
+      "heading": 66.8
+    }
+  ],
+  "agent_verification": "NO",
+  "agent_model": "gemini-3-pro-preview",
+  "agent_refined_route": "Head Straight 147m",
+  "agent_concise_description": "Head straight along the road, starting from under the overpass. Keep the canal and the prominent BNI building on your left side, continuing forward past the bus stop signs on the left sidewalk."
+}

@@ -1,0 +1,41 @@
+{
+  "task_id": "angle_0059_20260128_171214",
+  "task_type": "perception_angle",
+  "description": "Estimate the relative direction (0-360 deg, clockwise from North) of Barclays Bank from lululemon.",
+  "spawn_pano_id": "ehTHfJ5B1vvEmHnDBB1dww",
+  "spawn_heading": 96.5,
+  "pois": [
+    {
+      "name": "lululemon",
+      "type": "clothing_store",
+      "lat": 53.4825224,
+      "lng": -2.2452386,
+      "address": "7 St Anns Square, Manchester M2 7EF, UK",
+      "pano_id": "pbvedPnwoOsaNh9GxJEOWg"
+    },
+    {
+      "name": "Barclays Bank",
+      "type": "bank",
+      "lat": 53.482187599999996,
+      "lng": -2.2402968,
+      "address": "86-88 Market St, Manchester M1 1PD, UK",
+      "pano_id": "6qeEkd0c4bCjmeexBQuZvQ"
+    }
+  ],
+  "geofence_id": "list_perception_1769591534",
+  "ground_truth": {
+    "distance_between_pois_m": 329.1,
+    "bearing_a_to_b_deg": 96.5,
+    "bearing_b_to_a_deg": 276.5
+  },
+  "answer": "",
+  "max_steps": 20,
+  "max_time_seconds": null,
+  "metadata": {
+    "created_at": "2026-01-28T17:12:14.098909",
+    "spawn_location": {
+      "lat": 53.48237992856929,
+      "lng": -2.245410488631541
+    }
+  }
+}

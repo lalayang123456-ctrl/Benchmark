@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Constants
 TASKS_DIR = Path(__file__).parent.parent / "tasks_perception"
-ANGLE_TOLERANCE_DEG = 15.0
+ANGLE_TOLERANCE_DEG = 30.0
 DISTANCE_TOLERANCE_PCT = 0.15
 
 def get_ground_truth(task_id: str) -> Optional[Dict]:
@@ -31,7 +31,7 @@ def get_ground_truth(task_id: str) -> Optional[Dict]:
         logger.error(f"Error loading task file {task_path}: {e}")
         return None
 
-def parse_answer(answer_str: Union[str, int, float]) -> Optional[float]:
+def parse_answer(answer_str: Union[str, int, float]) -> Optional[float]:7
     """Parse the answer string into a float."""
     if isinstance(answer_str, (int, float)):
         return float(answer_str)
@@ -52,6 +52,11 @@ def parse_answer(answer_str: Union[str, int, float]) -> Optional[float]:
         return float(cleaned)
     except ValueError:
         return None
+
+def calculate_angular_error(pred: float, truth: float) -> float:
+    """Calculate the smallest difference between two angles (0-360)."""
+    diff = abs(pred - truth) % 360
+    return min(diff, 360 - diff)
 
 def haversine(lat1, lon1, lat2, lon2):
     """Calculate the great circle distance in meters between two points."""

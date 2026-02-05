@@ -121,7 +121,7 @@ class ObservationGenerator:
                 equi_img,
                 fov_deg=(fov, v_fov),
                 u_deg=image_u,
-                v_deg=-pitch,  # Negate pitch (py360convert convention)
+                v_deg=pitch,  # positive=UP, negative=DOWN (matching system prompt)
                 out_hw=(height, width),
                 mode='bilinear'
             )

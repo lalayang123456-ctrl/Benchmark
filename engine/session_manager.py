@@ -191,7 +191,8 @@ class SessionManager:
         self._sessions[session_id] = session
         
         # Persist to database
-        self._save_session_to_db(session)
+        # DISABLED: Avoid database lock issues during parallel execution
+        # self._save_session_to_db(session)
         
         return session
     
@@ -233,7 +234,8 @@ class SessionManager:
             session.trajectory.append(new_state.pano_id)
         
         # Persist
-        self._save_session_to_db(session)
+        # DISABLED: Avoid database lock issues during parallel execution
+        # self._save_session_to_db(session)
         
         return True
     
@@ -266,7 +268,8 @@ class SessionManager:
             session.elapsed_time = (datetime.now() - session.start_time).total_seconds()
         
         # Persist
-        self._save_session_to_db(session)
+        # DISABLED: Avoid database lock issues during parallel execution
+        # self._save_session_to_db(session)
         
         return session
     
@@ -277,7 +280,8 @@ class SessionManager:
             return False
         
         session.status = SessionStatus.PAUSED
-        self._save_session_to_db(session)
+        # DISABLED: Avoid database lock issues during parallel execution
+        # self._save_session_to_db(session)
         return True
     
     def resume_session(self, session_id: str) -> Optional[Session]:
@@ -296,7 +300,8 @@ class SessionManager:
         
         if session.status == SessionStatus.PAUSED:
             session.status = SessionStatus.RUNNING
-            self._save_session_to_db(session)
+            # DISABLED: Avoid database lock issues during parallel execution
+            # self._save_session_to_db(session)
         
         return session
     
