@@ -24,7 +24,7 @@ AGENTS = [
     "gemini-2.5-pro-thinking",
     "gemini-3-pro-preview"
 ]
-TASKS_DIR = project_root / "tasks_test_small"
+TASKS_DIR = project_root / "tasks_1000"
 LOGS_DIR = project_root / "logs"
 
 # Global state for progress tracking
